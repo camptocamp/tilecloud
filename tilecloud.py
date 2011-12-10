@@ -352,7 +352,6 @@ class S3Bucket(object):
 class S3TileStore(TileStore):
 
     def __init__(self, bucket_name, tile_layout, bucket=None, dry_run=False, s3connection=None, s3connection_factory=boto.s3.connection.S3Connection):
-        TileStore.__init__(self)
         self.dry_run = dry_run
         self.s3bucket = S3Bucket(bucket_name, bucket=bucket, s3connection=s3connection, s3connection_factory=s3connection_factory)
         self.tile_layout = tile_layout
