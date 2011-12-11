@@ -39,6 +39,60 @@ def consume(iterator, n):
         next(islice(iterator, n, n), None)
 
 
+class Bounds(object):
+
+    def __init__(self, start=None, stop=None):
+        self.start = start
+        if stop is None:
+            self.stop = self.start + 1 if start is not None else None
+        else:
+            assert start is not None
+            self.stop = stop
+
+    def __contains__(self, key):
+        if self.start is None:
+            return False
+        else:
+            return self.start <= key < self.stop
+
+    def __len__(self):
+        if self.start is None:
+            return 0
+        else:
+            return self.stop - self.start
+
+    def __iter__(self):
+        if self.start is not None:
+            for i in xrange(self.start, self.stop):
+                yield i
+
+    def add(self, value):
+        if self.start is None:
+            self.start = value
+            self.stop = value + 1
+        else:
+            self.start = min(self.start, value)
+            self.stop = max(self.stop, value + 1)
+
+    def update(self, other):
+        if self.start is None:
+            self.start = other.start
+            self.stop = other.stop
+        else:
+            self.start = min(self.start, other.start)
+            self.stop = max(self.stop, other.stop)
+
+    def union(self, other):
+        if self and other:
+            return Bounds(min(self.start, other.start), max(self.start, other.start))
+        elif self:
+            return Bounds(self.start, self.stop)
+        elif other:
+            return Bounds(other.start, other.stop)
+        else:
+            return Bounds()
+
+
 
 class TileCoord(object):
     """A tile coordinate"""
@@ -216,42 +270,34 @@ class BoundingBoxTileStore(TileStore):
     def __contains__(self, key):
         if key.z not in self.bounds:
             return False
-        xslice, yslice = self.bounds[key.z]
-        return xslice.start <= key.x < xslice.stop and yslice.start <= key.y < yslice.stop
+        xbounds, ybounds = self.bounds[key.z]
+        return key.x in xbounds and key.y in ybounds
 
     def __len__(self):
-        return sum((slices[0].stop - slices[0].start) * (slices[1].stop - slices[1].start) for slices in self.bounds.itervalues())
+        return sum(len(xbounds) * len(ybounds) for xbounds, ybounds in self.bounds.itervalues())
 
     # FIXME find a better name for this function
-    def populate_lower_levels(self, upto=0):
-        for z in xrange(max(self.bounds), upto, -1):
-            xslice, yslice = self.bounds[z]
-            self.put_one(Tile(TileCoord(z - 1, xslice.start // 2, yslice.start // 2)))
-            self.put_one(Tile(TileCoord(z - 1, xslice.stop // 2, yslice.stop // 2)))
+    def populate_lower_levels(self, downto=0):
+        for z in xrange(max(self.bounds), downto, -1):
+            xbounds, ybounds = self.bounds[z]
+            self.put_one(Tile(TileCoord(z - 1, xbounds.start // 2, ybounds.start // 2)))
+            self.put_one(Tile(TileCoord(z - 1, xbounds.stop // 2, ybounds.stop // 2)))
 
     def list(self):
         for z in sorted(self.bounds.keys()):
-            xslice, yslice = self.bounds[z]
-            for x in xrange(xslice.start, xslice.stop):
-                for y in xrange(yslice.start, yslice.stop):
+            xbounds, ybounds = self.bounds[z]
+            for x in xbounds:
+                for y in ybounds:
                     yield Tile(TileCoord(z, x, y))
 
     def put_one(self, tile):
         tilecoord = tile.tilecoord
         if tilecoord.z in self.bounds:
-            xslice, yslice = self.bounds[tilecoord.z]
-            contains_x = xslice.start <= tilecoord.x < xslice.stop
-            contains_y = yslice.start <= tilecoord.y < yslice.stop
-            if not contains_x or not contains_y:
-                if not contains_x:
-                    xslice = slice(min(xslice.start, tilecoord.x), max(xslice.stop, tilecoord.x + 1))
-                if not contains_y:
-                    yslice = slice(min(yslice.start, tilecoord.y), max(yslice.stop, tilecoord.y + 1))
-                self.bounds[tilecoord.z] = (xslice, yslice)
+            xbounds, ybounds = self.bounds[tilecoord.z]
+            xbounds.add(tilecoord.x)
+            ybounds.add(tilecoord.y)
         else:
-            xslice = slice(tilecoord.x, tilecoord.x + 1)
-            yslice = slice(tilecoord.y, tilecoord.y + 1)
-            self.bounds[tilecoord.z] = (xslice, yslice)
+            self.bounds[tilecoord.z] = (Bounds(tilecoord.x), Bounds(tilecoord.y))
         return tile
 
 
@@ -310,9 +356,9 @@ class MaskTileStore(TileStore):
 
     def __init__(self, z, slices, file=None):
         self.z = z
-        self.xslice, self.yslice = slices
-        self.width = self.xslice.stop - self.xslice.start
-        self.height = self.yslice.stop - self.yslice.start
+        self.xbounds, self.ybounds = slices
+        self.width = self.xbounds.stop - self.xbounds.start
+        self.height = self.ybounds.stop - self.ybounds.start
         if file:
             self.image = PIL.Image.open(file)
             assert self.image.mode == '1'
@@ -323,8 +369,8 @@ class MaskTileStore(TileStore):
 
     def delete_one(self, tile):
         if tile.tilecoord.z == self.z:
-            x = tile.tilecoord.x - self.xslice.start
-            y = self.yslice.stop - tile.tilecoord.y - 1
+            x = tile.tilecoord.x - self.xbounds.start
+            y = self.ybounds.stop - tile.tilecoord.y - 1
             if 0 <= x < self.width and 0 <= y < self.height:
                 self.pixels[x, y] = 0
         return tile
@@ -333,11 +379,11 @@ class MaskTileStore(TileStore):
         for x in xrange(0, self.width):
             for y in xrange(0, self.height):
                 if self.pixels[x, y]:
-                    yield Tile(TileCoord(self.z, self.xslice.start + x, self.yslice.stop - y - 1))
+                    yield Tile(TileCoord(self.z, self.xbounds.start + x, self.ybounds.stop - y - 1))
 
     def put_one(self, tile):
-        x = tile.tilecoord.x - self.xslice.start
-        y = self.yslice.stop - tile.tilecoord.y - 1
+        x = tile.tilecoord.x - self.xbounds.start
+        y = self.ybounds.stop - tile.tilecoord.y - 1
         if 0 <= x < self.width and 0 <= y < self.height:
             self.pixels[x, y] = 1
         return tile
