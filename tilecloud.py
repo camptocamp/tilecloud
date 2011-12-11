@@ -65,6 +65,12 @@ class Bounds(object):
             for i in xrange(self.start, self.stop):
                 yield i
 
+    def __repr__(self):
+        if self.start is None:
+            return '%s(None)' % (self.__class__.__name__,)
+        else:
+            return '%s(%r, %r)' % (self.__class__.__name__, self.start, self.stop)
+
     def add(self, value):
         if self.start is None:
             self.start = value
