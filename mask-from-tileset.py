@@ -7,7 +7,7 @@ import sys
 
 from mbtiles import MBTilesTileStore
 from tilecloud import MaskTileStore
-from tilecloud import BoundingBoxTileStore
+from tilecloud import BoundingPyramidTileStore
 from tilecloud import consume
 
 
@@ -20,11 +20,11 @@ def main(argv):
     assert options.output
     assert options.z
     mbtiles_tile_stores = [MBTilesTileStore(sqlite3.connect(arg)) for arg in args]
-    bounding_box = BoundingBoxTileStore()
+    bounding_pyramid_tile_store = BoundingPyramidTileStore()
     tilestream = chain(*(mbtiles_tile_store.list() for mbtiles_tile_store in mbtiles_tile_stores))
-    tilestream = bounding_box.put(tilestream)
+    tilestream = bounding_pyramid_tile_store.put(tilestream)
     consume(tilestream, options.limit)
-    mask_tile_store = MaskTileStore(options.z, bounding_box.bounds[options.z])
+    mask_tile_store = MaskTileStore(options.z, bounding_pyramid_tile_store.bounding_pyramid.bounds[options.z])
     tilestream = chain(*(mbtiles_tile_store.list() for mbtiles_tile_store in mbtiles_tile_stores))
     tilestream = mask_tile_store.put(tilestream)
     consume(tilestream, options.limit)

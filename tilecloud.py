@@ -98,6 +98,80 @@ class Bounds(object):
             return Bounds()
 
 
+class BoundingPyramid(object):
+
+    def __init__(self, bounds=None):
+        self.bounds = bounds or {}
+
+    def __contains__(self, tilecoord):
+        if tilecoord.z not in self.bounds:
+            return False
+        xbounds, ybounds = self.bounds[tilecoord.z]
+        return tilecoord.x in xbounds and tilecoord.y in ybounds
+
+    def __iter__(self):
+        return self.itertopdown()
+
+    def __len__(self):
+        return sum(len(xbounds) * len(ybounds) for xbounds, ybounds in self.bounds.itervalues())
+
+    def add(self, tilecoord):
+        if tilecoord.z in self.bounds:
+            xbounds, ybounds = self.bounds[tilecoord.z]
+            xbounds.add(tilecoord.x)
+            ybounds.add(tilecoord.y)
+        else:
+            self.bounds[tilecoord.z] = (Bounds(tilecoord.x), Bounds(tilecoord.y))
+
+    def filldown(self, bottom, start=None):
+        if start is None:
+            start = max(self.bounds)
+        for z in xrange(start, bottom):
+            xbounds, ybounds = self.bounds[z]
+            self.add(TileCoord(z + 1, xbounds.start * 2, ybounds.start * 2))
+            self.add(TileCoord(z + 1, xbounds.stop * 2, ybounds.stop * 2))
+
+    def fillup(self, top=0):
+        for z in xrange(max(self.bounds), top, -1):
+            xbounds, ybounds = self.bounds[z]
+            self.add(TileCoord(z - 1, xbounds.start // 2, ybounds.start // 2))
+            self.add(TileCoord(z - 1, xbounds.stop // 2, ybounds.stop // 2))
+
+    def iterbottomup(self):
+        for z in reversed(sorted(self.bounds.keys())):
+            for tilecoord in self.ziter(z):
+                yield tilecoord
+
+    def itertopdown(self):
+        for z in sorted(self.bounds.keys()):
+            for tilecoord in self.ziter(z):
+                yield tilecoord
+
+    def ziter(self, z):
+        if z in self.bounds:
+            xbounds, ybounds = self.bounds[z]
+            for x in xbounds:
+                for y in ybounds:
+                    yield TileCoord(z, x, y)
+
+    @classmethod
+    def from_string(cls, s):
+        match = re.match(r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):(?:(?P<z2>\d+)/)?(?P<x2>\d+)/(?P<y2>\d+)\Z', s)
+        if not match:
+            raise RuntimeError # FIXME
+        z1 = int(match.group('z1'))
+        xbounds = Bounds(int(match.group('x1')), int(match.group('x2')))
+        ybounds = Bounds(int(match.group('y1')), int(match.group('y2')))
+        result = cls({z1: (xbounds, ybounds)})
+        if match.group('z2'):
+            z2 = int(match.group('z2'))
+            if z1 < z2:
+                result.filldown(z2)
+            elif z1 > z2:
+                result.fillup(z2)
+        return result
+
+
 
 class TileCoord(object):
     """A tile coordinate"""
@@ -266,43 +340,18 @@ class TileStore(object):
 
 
 
-class BoundingBoxTileStore(TileStore):
+class BoundingPyramidTileStore(TileStore):
     """All tiles in a bounding box"""
 
-    def __init__(self, bounds=None):
-        self.bounds = bounds or {}
-
-    def __contains__(self, key):
-        if key.z not in self.bounds:
-            return False
-        xbounds, ybounds = self.bounds[key.z]
-        return key.x in xbounds and key.y in ybounds
-
-    def __len__(self):
-        return sum(len(xbounds) * len(ybounds) for xbounds, ybounds in self.bounds.itervalues())
-
-    # FIXME find a better name for this function
-    def populate_lower_levels(self, downto=0):
-        for z in xrange(max(self.bounds), downto, -1):
-            xbounds, ybounds = self.bounds[z]
-            self.put_one(Tile(TileCoord(z - 1, xbounds.start // 2, ybounds.start // 2)))
-            self.put_one(Tile(TileCoord(z - 1, xbounds.stop // 2, ybounds.stop // 2)))
+    def __init__(self, bounding_pyramid=None):
+        self.bounding_pyramid = bounding_pyramid or BoundingPyramid()
 
     def list(self):
-        for z in sorted(self.bounds.keys()):
-            xbounds, ybounds = self.bounds[z]
-            for x in xbounds:
-                for y in ybounds:
-                    yield Tile(TileCoord(z, x, y))
+        for tilecoord in self.bounding_pyramid:
+            yield Tile(tilecoord)
 
     def put_one(self, tile):
-        tilecoord = tile.tilecoord
-        if tilecoord.z in self.bounds:
-            xbounds, ybounds = self.bounds[tilecoord.z]
-            xbounds.add(tilecoord.x)
-            ybounds.add(tilecoord.y)
-        else:
-            self.bounds[tilecoord.z] = (Bounds(tilecoord.x), Bounds(tilecoord.y))
+        self.bounding_pyramid.add(tile.tilecoord)
         return tile
 
 
