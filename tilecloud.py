@@ -319,7 +319,7 @@ class TileStore(object):
         raise NotImplementedError
 
     def get(self, tiles):
-        """A generator that gets the specified tiles and their data from the store"""
+        """A generator that returns the specified tiles and their data from the store"""
         return imap(self.get_one, tiles)
 
     def get_one(self, tile):
@@ -327,7 +327,7 @@ class TileStore(object):
         raise NotImplementedError
 
     def list(self):
-        """A generator that lists tiles in the store without necessarily retrieving their data"""
+        """A generator that returns the tiles in the store without necessarily retrieving their data"""
         raise NotImplementedError
 
     def put(self, tiles):
