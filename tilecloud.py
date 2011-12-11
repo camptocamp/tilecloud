@@ -322,6 +322,10 @@ class TileStore(object):
         """A generator that returns the specified tiles and their data from the store"""
         return imap(self.get_one, tiles)
 
+    def get_all(self):
+        """A generator that returns all the tiles in the store with their data"""
+        return self.imap(self.get_one, self.list())
+
     def get_one(self, tile):
         """A function that gets the specified tile and its data from the store"""
         raise NotImplementedError
