@@ -213,6 +213,12 @@ class BoundingBoxTileStore(TileStore):
     def __init__(self, bounds=None):
         self.bounds = bounds or {}
 
+    def __contains__(self, key):
+        if key.z not in self.bounds:
+            return False
+        xslice, yslice = self.bounds[key.z]
+        return xslice.start <= key.x < xslice.stop and yslice.start <= key.y < yslice.stop
+
     def list(self):
         for z in sorted(self.bounds.keys()):
             xslice, yslice = self.bounds[z]
