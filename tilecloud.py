@@ -291,7 +291,7 @@ class LinesTileStore(TileStore):
 
 
 
-class BinaryMaskTileStore(TileStore):
+class MaskTileStore(TileStore):
     """A black and white image representing present and absent tiles"""
 
     def __init__(self, z, slices, file=None):
