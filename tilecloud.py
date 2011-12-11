@@ -188,15 +188,15 @@ class TileStore(object):
         raise NotImplementedError
 
     def get(self, tiles):
-        """A generator that gets the specified tiles and their contents from the store"""
+        """A generator that gets the specified tiles and their data from the store"""
         return imap(self.get_one, tiles)
 
     def get_one(self, tile):
-        """A function that gets the specified tile and its content from the store"""
+        """A function that gets the specified tile and its data from the store"""
         raise NotImplementedError
 
     def list(self):
-        """A generator that lists tiles in the store without necessarily retrieving their contents"""
+        """A generator that lists tiles in the store without necessarily retrieving their data"""
         raise NotImplementedError
 
     def put(self, tiles):
@@ -257,7 +257,7 @@ class FilesystemTileStore(TileStore):
     def get_one(self, tile):
         filename = self.tile_layout.filename(tile.tilecoord)
         with open(filename) as file:
-            tile.content = file.read()
+            tile.data = file.read()
         return tile
 
     def put_one(self, tile):
@@ -266,8 +266,8 @@ class FilesystemTileStore(TileStore):
         if not os.path.exists(dirname):
             os.makedirs(dirname)
         with open(filename, 'w') as file:
-            if hasattr(tile, 'content'):
-                file.write(tile.content)
+            if hasattr(tile, 'data'):
+                file.write(tile.data)
             else:
                 assert False
         return tile
@@ -383,7 +383,7 @@ class S3TileStore(TileStore):
         key_name = self.tile_layout.filename(tile.tilecoord)
         for bucket in self.s3bucket.boto_is_braindead():
             s3key = bucket.new_key(key_name)
-            return Tile(tile.tilecoord, content=s3key.read(), s3key=s3key)
+            return Tile(tile.tilecoord, data=s3key.read(), s3key=s3key)
 
     def list(self):
         prefix = getattr(self.tile_layout, 'prefix', '')
@@ -408,9 +408,9 @@ class S3TileStore(TileStore):
                 headers['Content-Encoding'] = tile.content_encoding
             if hasattr(tile, 'content_type'):
                 headers['Content-Type'] = tile.content_type
-            if hasattr(tile, 'content'):
+            if hasattr(tile, 'data'):
                 if not self.dry_run:
-                    s3key.set_contents_from_string(tile.content, headers)
+                    s3key.set_contents_from_string(tile.data, headers)
             else:
                 assert False
             return tile
@@ -436,12 +436,12 @@ class GzipCompressor(object):
         self.compresslevel = compresslevel
 
     def __call__(self, tile):
-        assert hasattr(tile, 'content')
+        assert hasattr(tile, 'data')
         string_io = StringIO()
         gzip_file = GzipFile(compresslevel=self.compresslevel, fileobj=string_io, mode='w')
-        gzip_file.write(tile.content)
+        gzip_file.write(tile.data)
         gzip_file.close()
-        return Tile(tile.tilecoord, content=string_io.getvalue(), content_encoding='gzip')
+        return Tile(tile.tilecoord, data=string_io.getvalue(), content_encoding='gzip')
 
 
 
@@ -459,10 +459,10 @@ class ImageFormatConverter(object):
             assert False
 
     def __call__(self, tile):
-        assert hasattr(tile, 'content')
+        assert hasattr(tile, 'data')
         string_io = StringIO()
-        PIL.Image.open(StringIO(tile.content)).save(string_io, self.format, **self.kwargs)
-        return Tile(tile.tilecoord, content=string_io.getvalue(), content_type=self.content_type)
+        PIL.Image.open(StringIO(tile.data)).save(string_io, self.format, **self.kwargs)
+        return Tile(tile.tilecoord, data=string_io.getvalue(), content_type=self.content_type)
 
 
 
