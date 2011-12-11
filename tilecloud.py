@@ -5,10 +5,14 @@
 # TODO read tiles from database
 # TODO write tiles to database
 # TODO extend BinaryMaskTileStore to support multiple zs
+# TODO thumbnail generator
+# TODO PNG optimizer
+# TODO periodically flush BinaryMaskTileStore
 
 from cStringIO import StringIO
 import collections
-from itertools import islice, repeat, starmap
+from gzip import GzipFile
+from itertools import imap, islice
 import logging
 import os
 import os.path
@@ -36,15 +40,6 @@ def consume(iterator, n):
         # advance to the empty slice starting at position n
         next(islice(iterator, n, n), None)
 
-
-def repeatfunc(func, times=None, *args):
-    """Repeat calls to func with specified arguments.
-
-    Example:  repeatfunc(random.random)
-    """
-    if times is None:
-        return starmap(func, repeat(args))
-    return starmap(func, repeat(args, times))
 
 
 class TileCoord(object):
@@ -82,6 +77,7 @@ class TileCoord(object):
         return cls(z, x, y)
 
 
+
 class TileLayout(object):
     """Maps tile coordinates to filenames and vice versa"""
 
@@ -104,6 +100,7 @@ class TileLayout(object):
         raise NotImplementedError
 
 
+
 class OSMTileLayout(TileLayout):
     """OpenStreetMap tile layout"""
 
@@ -120,6 +117,7 @@ class OSMTileLayout(TileLayout):
         return TileCoord(*map(int, match.groups()))
 
 
+
 class I3DTileLayout(TileLayout):
     """I3D (FHNW/OpenWebGlobe) tile layout"""
 
@@ -134,6 +132,7 @@ class I3DTileLayout(TileLayout):
 
     def _tilecoord(self, match):
         return TileCoord.from_quadcode(re.sub(r'/', '', match.group()))
+
 
 
 class WrappedTileLayout(object):
@@ -158,6 +157,7 @@ class WrappedTileLayout(object):
         return self.tile_layout.tilecoord(match.group(1))
 
 
+
 class Tile(object):
     """An actual tile with optional metadata"""
 
@@ -167,90 +167,103 @@ class Tile(object):
             setattr(self, key, value)
 
 
+
 class TileStore(object):
     """A tile store"""
 
     def delete(self, tiles):
+        """A generator that has the side effect of deleting the specified tiles from the store"""
+        return imap(self.delete_one, tiles)
+
+    def delete_one(self, tile):
+        """A function that deletes tile from the store and returns the tile"""
         raise NotImplementedError
 
     def get(self, tiles):
+        """A generator that gets the specified tiles and their contents from the store"""
+        return imap(self.get_one, tiles)
+
+    def get_one(self, tile):
+        """A function that gets the specified tile and its content from the store"""
         raise NotImplementedError
 
     def list(self):
+        """A generator that lists tiles in the store without necessarily retrieving their contents"""
         raise NotImplementedError
 
     def put(self, tiles):
+        """A generator that has the side effect of putting the specified tiles in the store"""
+        return imap(self.put_one, tiles)
+
+    def put_one(self, tile):
+        """A function that puts tile in the store and returns the tile"""
         raise NotImplementedError
 
 
+
 class BoundingBoxTileStore(TileStore):
-    """All tile coordinates in a bounding box"""
+    """All tiles in a bounding box"""
 
     def __init__(self, bounds=None):
         self.bounds = bounds or {}
 
-    def get(self):
+    def list(self):
         for z in sorted(self.bounds.keys()):
             xslice, yslice = self.bounds[z]
             for x in xrange(xslice.start, xslice.stop):
                 for y in xrange(yslice.start, yslice.stop):
                     yield Tile(TileCoord(z, x, y))
 
-    list = get
-
-    def put(self, tiles):
-        for tile in tiles:
-            tilecoord = tile.tilecoord
-            if tilecoord.z in self.bounds:
-                xslice, yslice = self.bounds[tilecoord.z]
-                contains_x = xslice.start <= tilecoord.x < xslice.stop
-                contains_y = yslice.start <= tilecoord.y < yslice.stop
-                if contains_x and contains_y:
-                    continue
+    def put_one(self, tile):
+        tilecoord = tile.tilecoord
+        if tilecoord.z in self.bounds:
+            xslice, yslice = self.bounds[tilecoord.z]
+            contains_x = xslice.start <= tilecoord.x < xslice.stop
+            contains_y = yslice.start <= tilecoord.y < yslice.stop
+            if not contains_x or not contains_y:
                 if not contains_x:
                     xslice = slice(min(xslice.start, tilecoord.x), max(xslice.stop, tilecoord.x + 1))
                 if not contains_y:
                     yslice = slice(min(yslice.start, tilecoord.y), max(yslice.stop, tilecoord.y + 1))
                 self.bounds[tilecoord.z] = (xslice, yslice)
-            else:
-                xslice = slice(tilecoord.x, tilecoord.x + 1)
-                yslice = slice(tilecoord.y, tilecoord.y + 1)
-                self.bounds[tilecoord.z] = (xslice, yslice)
-            yield tile
+        else:
+            xslice = slice(tilecoord.x, tilecoord.x + 1)
+            yslice = slice(tilecoord.y, tilecoord.y + 1)
+            self.bounds[tilecoord.z] = (xslice, yslice)
+        return tile
+
 
 
 class FilesystemTileStore(TileStore):
+    """Tiles stored in a filesystem"""
 
     def __init__(self, tile_layout):
         self.tile_layout = tile_layout
 
-    def delete(self, tiles, remove_empty_directories=True):
-        dirnames = set()
-        for tile in tiles:
-            filename = self.tile_layout.filename(tile.tilecoord)
-            if os.path.exists(filename):
-                os.remove(filename)
-                if remove_empty_directories:
-                    dirnames.add(os.path.dirname(filename))
-                yield tile
-        for dirname in reversed(sorted(dirnames, key=len)):
-            try:
-                os.rmdir(dirname)
-            except OSError:
-                pass
+    def delete_one(self, tile):
+        filename = self.tile_layout.filename(tile.tilecoord)
+        if os.path.exists(filename):
+            os.remove(filename)
+        return tile
 
-    def put(self, tiles):
-        for tile in tiles:
-            filename = self.tile_layout.filename(tile.tilecoord)
-            dirname = os.path.dirname(filename)
-            if not os.path.exists(dirname):
-                os.makedirs(dirname)
-            with open(filename, 'w') as file:
-                if hasattr(tile, 'contents'):
-                    file.write(tile.contents)
-                else:
-                    assert False
-            yield tile
+    def get_one(self, tile):
+        filename = self.tile_layout.filename(tile.tilecoord)
+        with open(filename) as file:
+            tile.content = file.read()
+        return tile
+
+    def put_one(self, tile):
+        filename = self.tile_layout.filename(tile.tilecoord)
+        dirname = os.path.dirname(filename)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+        with open(filename, 'w') as file:
+            if hasattr(tile, 'content'):
+                file.write(tile.content)
+            else:
+                assert False
+        return tile
+
 
 
 class LinesTileStore(TileStore):
@@ -260,7 +273,7 @@ class LinesTileStore(TileStore):
         self.tile_layout = tile_layout
         self.lines = lines
 
-    def get(self):
+    def list(self):
         # FIXME warn that this consumes lines
         filename_re = re.compile(self.tile_layout.pattern)
         for line in self.lines:
@@ -268,15 +281,10 @@ class LinesTileStore(TileStore):
             if match:
                 yield Tile(self.tile_layout.tilecoord(match.group()), line=line)
 
-    list = get
-
-    def put(self, tiles):
-        for tile in tiles:
-            logger.info(self.tile_layout.filename(tile.tilecoord))
-            yield tile
 
 
 class BinaryMaskTileStore(TileStore):
+    """A black and white image representing present and absent tiles"""
 
     def __init__(self, z, slices, file=None):
         self.z = z
@@ -291,33 +299,30 @@ class BinaryMaskTileStore(TileStore):
             self.image = PIL.Image.new('1', (self.width, self.height))
         self.pixels = self.image.load()
 
-    def delete(self, tiles):
-        for tile in tiles:
-            if tile.tilecoord.z == self.z:
-                x = tile.tilecoord.x - self.xslice.start
-                y = self.yslice.stop - tile.tilecoord.y - 1
-                if 0 <= x < self.width and 0 <= y < self.height:
-                    self.pixels[x, y] = 0
-            yield tile
-
-    def get(self):
-        for x in xrange(0, self.width):
-            for y in xrange(0, self.height):
-                if self.pixels[x, y]:
-                    yield Tile(TileCoord(self, self.xslice.start + x, self.yslice.start + y))
-
-    list = get
-
-    def put(self, tiles):
-        for tile in tiles:
+    def delete_one(self, tile):
+        if tile.tilecoord.z == self.z:
             x = tile.tilecoord.x - self.xslice.start
             y = self.yslice.stop - tile.tilecoord.y - 1
             if 0 <= x < self.width and 0 <= y < self.height:
-                self.pixels[x, y] = 1
-            yield tile
+                self.pixels[x, y] = 0
+        return tile
+
+    def list(self):
+        for x in xrange(0, self.width):
+            for y in xrange(0, self.height):
+                if self.pixels[x, y]:
+                    yield Tile(TileCoord(self.z, self.xslice.start + x, self.yslice.stop - y - 1))
+
+    def put_one(self, tile):
+        x = tile.tilecoord.x - self.xslice.start
+        y = self.yslice.stop - tile.tilecoord.y - 1
+        if 0 <= x < self.width and 0 <= y < self.height:
+            self.pixels[x, y] = 1
+        return tile
 
     def save(self, file, format, **kwargs):
         self.image.save(file, format, **kwargs)
+
 
 
 class S3Bucket(object):
@@ -330,6 +335,7 @@ class S3Bucket(object):
         self.s3connection = s3connection
 
     def boto_is_braindead(self):
+        """Keeps yielding buckets until one doesn't raise an SSLError"""
         while True:
             try:
                 if not self.bucket:
@@ -349,27 +355,27 @@ class S3Bucket(object):
                     raise
 
 
+
 class S3TileStore(TileStore):
+    """Tiles stored in Amazon S3"""
 
     def __init__(self, bucket_name, tile_layout, bucket=None, dry_run=False, s3connection=None, s3connection_factory=boto.s3.connection.S3Connection):
         self.dry_run = dry_run
         self.s3bucket = S3Bucket(bucket_name, bucket=bucket, s3connection=s3connection, s3connection_factory=s3connection_factory)
         self.tile_layout = tile_layout
 
-    def delete(self, tiles):
-        for tile in tiles:
-            key_name = self.tile_layout.filename(tile.tilecoord)
-            for bucket in self.s3bucket.boto_is_braindead():
-                if not self.dry_run:
-                    bucket.delete_key(key_name)
-                yield tile
+    def delete_one(self, tile):
+        key_name = self.tile_layout.filename(tile.tilecoord)
+        for bucket in self.s3bucket.boto_is_braindead():
+            if not self.dry_run:
+                bucket.delete_key(key_name)
+            return tile
 
-    def get(self, tiles):
-        for tile in tiles:
-            key_name = self.tile_layout.filename(tile.tilecoord)
-            for bucket in self.s3bucket.boto_is_braindead():
-                s3key = bucket.new_key(key_name)
-                yield Tile(tile.tilecoord, contents=s3key.read(), s3key=s3key)
+    def get_one(self, tile):
+        key_name = self.tile_layout.filename(tile.tilecoord)
+        for bucket in self.s3bucket.boto_is_braindead():
+            s3key = bucket.new_key(key_name)
+            return Tile(tile.tilecoord, content=s3key.read(), s3key=s3key)
 
     def list(self):
         prefix = getattr(self.tile_layout, 'prefix', '')
@@ -377,6 +383,7 @@ class S3TileStore(TileStore):
         while True:
             for bucket in self.s3bucket.boto_is_braindead():
                 s3keys = bucket.get_all_keys(prefix=prefix, marker=marker)
+                break
             for s3key in s3keys:
                 yield Tile(self.tile_layout.tilecoord(s3key.name), s3key=s3key)
             if s3keys.is_truncated:
@@ -384,33 +391,85 @@ class S3TileStore(TileStore):
             else:
                 break
 
-    def put(self, tiles):
-        for tile in tiles:
-            key_name = self.tile_layout.filename(tile.tilecoord)
-            for bucket in self.s3bucket.boto_is_braindead():
-                s3key = bucket.new_key(key_name)
-                headers = {}
-                if hasattr(tile, 'content_type'):
-                    headers['Content-Type'] = tile.content_type
-                if hasattr(tile, 'contents'):
-                    if not self.dry_run:
-                        s3key.set_contents_from_string(tile.contents, headers)
-                else:
-                    assert False
-                yield tile
+    def put_one(self, tile):
+        key_name = self.tile_layout.filename(tile.tilecoord)
+        for bucket in self.s3bucket.boto_is_braindead():
+            s3key = bucket.new_key(key_name)
+            headers = {}
+            if hasattr(tile, 'content_encoding'):
+                headers['Content-Encoding'] = tile.content_encoding
+            if hasattr(tile, 'content_type'):
+                headers['Content-Type'] = tile.content_type
+            if hasattr(tile, 'content'):
+                if not self.dry_run:
+                    s3key.set_contents_from_string(tile.content, headers)
+            else:
+                assert False
+            return tile
 
 
-def convert_format(content_type, **kwargs):
-    """Returns a function that converts a tile converted into the desired format"""
-    def converter(tile):
-        assert hasattr(tile, 'contents')
-        if content_type == 'image/jpeg':
-            format = 'JPEG'
+
+class ContentTypeAdder(object):
+    """A class that adds a content type to a tile"""
+
+    def __init__(self, content_type):
+        self.content_type = content_type
+
+    def __call__(self, tile):
+        tile.content_type = self.content_type
+        return tile
+
+
+
+class GzipCompressor(object):
+    """A class that compresses a tile with gzip"""
+
+    def __init__(self, compresslevel=9):
+        self.compresslevel = compresslevel
+
+    def __call__(self, tile):
+        assert hasattr(tile, 'content')
+        string_io = StringIO()
+        gzip_file = GzipFile(compresslevel=self.compresslevel, fileobj=string_io, mode='w')
+        gzip_file.write(tile.content)
+        gzip_file.close()
+        return Tile(tile.tilecoord, content=string_io.getvalue(), content_encoding='gzip')
+
+
+
+class ImageFormatConverter(object):
+    """A class that converts a tile into the desired format"""
+
+    def __init__(self, content_type, **kwargs):
+        self.content_type = content_type
+        self.kwargs = kwargs
+        if self.content_type == 'image/jpeg':
+            self.format = 'JPEG'
         elif content_type == 'image/png':
-            format = 'PNG'
+            self.format = 'PNG'
         else:
             assert False
+
+    def __call__(self, tile):
+        assert hasattr(tile, 'content')
         string_io = StringIO()
-        PIL.Image.open(StringIO(tile.contents)).save(string_io, format, **kwargs)
-        return Tile(tile.tilecoord, content_type=content_type, contents=string_io.getvalue())
-    return converter
+        PIL.Image.open(StringIO(tile.content)).save(string_io, self.format, **self.kwargs)
+        return Tile(tile.tilecoord, content=string_io.getvalue(), content_type=self.content_type)
+
+
+
+class Logger(object):
+
+    def __init__(self, logger, level, msgformat, *args, **kwargs):
+        self.logger = logger
+        self.level = level
+        self.msgformat = msgformat
+        self.args = args
+        self.kwargs = kwargs
+
+    def __call__(self, tile):
+        variables = dict()
+        variables.update(tile.__dict__)
+        variables.update(tile.tilecoord.__dict__)
+        logger.log(self.level, self.msgformat % variables, *self.args, **self.kwargs)
+        return tile
