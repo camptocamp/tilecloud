@@ -56,6 +56,13 @@ class TileCoord(object):
     def __str__(self):
         return '%d/%d/%d' % (self.z, self.x, self.y)
 
+    def normalize(self):
+        return (float(self.x) / (1 << self.z), float(self.y) / (1 << self.z))
+
+    @classmethod
+    def from_normalized_coord(cls, z, xy):
+        return cls(z, int(xy[0] * (1 << z)), int(xy[1] * (1 << z)))
+
 
 
 class TileLayout(object):
