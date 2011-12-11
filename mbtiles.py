@@ -137,7 +137,7 @@ class Tiles(SQLiteDict):
 
 
 class MBTilesTileStore(TileStore):
-    """A MBTile tile store"""
+    """A MBTiles tile store"""
 
     def __init__(self, connection, commit=True, **kwargs):
         self.connection = connection
