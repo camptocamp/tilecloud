@@ -2,8 +2,6 @@
 
 # FIXME handle S3 403/404
 # TODO generate tilecoords from coordinate systems (pyproj)
-# TODO read tiles from database
-# TODO write tiles to database
 # TODO extend BinaryMaskTileStore to support multiple zs
 # TODO thumbnail generator
 # TODO PNG optimizer
