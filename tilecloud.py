@@ -219,6 +219,16 @@ class BoundingBoxTileStore(TileStore):
         xslice, yslice = self.bounds[key.z]
         return xslice.start <= key.x < xslice.stop and yslice.start <= key.y < yslice.stop
 
+    def __len__(self):
+        return sum((slices[0].stop - slices[0].start) * (slices[1].stop - slices[1].start) for slices in self.bounds.itervalues())
+
+    # FIXME find a better name for this function
+    def populate_lower_levels(self, upto=0):
+        for z in xrange(max(self.bounds), upto, -1):
+            xslice, yslice = self.bounds[z]
+            self.put_one(Tile(TileCoord(z - 1, xslice.start // 2, yslice.start // 2)))
+            self.put_one(Tile(TileCoord(z - 1, xslice.stop // 2, yslice.stop // 2)))
+
     def list(self):
         for z in sorted(self.bounds.keys()):
             xslice, yslice = self.bounds[z]
