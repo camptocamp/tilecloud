@@ -148,6 +148,10 @@ class MBTilesTileStore(TileStore):
         del self.tiles[tile.tilecoord]
         return tile
 
+    def get_all(self):
+        for tilecoord, data in self.tiles.iteritems():
+            yield Tile(tilecoord, data=data)
+
     def get_one(self, tile):
         return Tile(tile.tilecoord, data=self.tiles[tile.tilecoord])
 
