@@ -414,6 +414,10 @@ class LinesTileStore(TileStore):
         self.tile_layout = tile_layout
         self.lines = lines
 
+    def get_one(self, tile):
+        tile.data = None
+        return tile
+
     def list(self):
         # FIXME warn that this consumes lines
         filename_re = re.compile(self.tile_layout.pattern)
