@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+
+from collections import defaultdict
+from optparse import OptionParser
+import os.path
+import sqlite3
+import sys
+
+from tilecloud import BoundingPyramid
+import mbtiles
+
+
+def main(argv):
+    option_parser = OptionParser()
+    option_parser.add_option('-m', '--metadata', action='store_true')
+    option_parser.add_option('-t', '--tiles', choices=('bounding-pyramid', 'count', 'list'))
+    options, args = option_parser.parse_args(argv[1:])
+    for arg in args:
+        assert os.path.exists(arg)
+        connection = sqlite3.connect(arg)
+        if options.metadata:
+            metadata = mbtiles.Metadata(connection)
+            for key, value in metadata.iteritems():
+                print '%s: %s' % (key, value)
+        if options.tiles:
+            tiles = mbtiles.Tiles(connection)
+            if options.tiles == 'count':
+                print len(tiles)
+            elif options.tiles == 'bounding-pyramid':
+                bounding_pyramid = BoundingPyramid()
+                zlen = defaultdict(int)
+                for key in tiles:
+                    zlen[key.z] += 1
+                    bounding_pyramid.add(key)
+                for z in sorted(bounding_pyramid.bounds):
+                    xbounds, ybounds = bounding_pyramid.bounds[z]
+                    zexpect = len(xbounds) * len(ybounds)
+                    if zlen[z] != zexpect:
+                        extra = ' # %+d' % (zlen[z] - zexpect,)
+                    else:
+                        extra = ''
+                    print '%d/%d/%d:%d/%d%s' % (z, xbounds.start, ybounds.start, xbounds.stop, ybounds.stop, extra)
+            elif options.tiles == 'list':
+                for key in tiles:
+                    print '%d/%d/%d' % (key.z, key.x, key.y)
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
