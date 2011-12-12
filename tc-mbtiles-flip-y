@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import os.path
+import sqlite3
+import sys
+
+
+def main(argv):
+    for arg in argv[1:]:
+        assert os.path.exists(arg)
+        connection = sqlite3.connect(arg)
+        cursor = connection.cursor()
+        try:
+            cursor.execute('UPDATE tiles SET tile_row = (1 << zoom_level) - tile_row - 1')
+        except sqlite3.OperationalError:
+            cursor.execute('UPDATE map SET tile_row = (1 << zoom_level) - tile_row - 1')
+        connection.commit()
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
