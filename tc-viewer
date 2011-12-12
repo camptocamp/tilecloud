@@ -5,8 +5,8 @@ import bottle
 from tilecloud import Tile, TileCoord
 from tilecloud.layout.i3d import I3DTileLayout
 from tilecloud.layout.osm import OSMTileLayout
+from tilecloud.layout.wrapped import WrappedTileLayout
 from tilecloud.store.s3 import S3TileStore
-from tilecloud.store.wrapped import WrappedTileLayout
 
 
 tile_stores = []
