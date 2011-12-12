@@ -593,7 +593,9 @@ class GzipCompressor(object):
         gzip_file = GzipFile(compresslevel=self.compresslevel, fileobj=string_io, mode='w')
         gzip_file.write(tile.data)
         gzip_file.close()
-        return Tile(tile.tilecoord, data=string_io.getvalue(), content_encoding='gzip')
+        tile.content_encoding = 'gzip'
+        tile.data = string_io.getvalue()
+        return tile
 
 
 
