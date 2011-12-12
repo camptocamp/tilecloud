@@ -94,7 +94,7 @@ class SQLiteDict(UserDict.DictMixin):
 
 
 
-class MetaData(SQLiteDict):
+class Metadata(SQLiteDict):
     """A dict facade for the metadata table"""
 
     CREATE_TABLE_SQL = 'CREATE TABLE IF NOT EXISTS metadata (name text, value text, PRIMARY KEY (name))'
@@ -141,7 +141,7 @@ class MBTilesTileStore(TileStore):
 
     def __init__(self, connection, commit=True, **kwargs):
         self.connection = connection
-        self.metadata = MetaData(self.connection, commit, **kwargs)
+        self.metadata = Metadata(self.connection, commit, **kwargs)
         self.tiles = Tiles(self.connection, commit)
 
     def delete_one(self, tile):
