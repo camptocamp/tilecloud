@@ -2,6 +2,7 @@
 
 from contextlib import contextmanager
 from itertools import imap
+import mimetypes
 import sqlite3
 import UserDict
 
@@ -143,6 +144,10 @@ class MBTilesTileStore(TileStore):
     def __init__(self, connection, commit=True, **kwargs):
         self.connection = connection
         self.metadata = Metadata(self.connection, commit, **kwargs)
+        if 'format' in self.metadata:
+            self.content_type = mimetypes.types_map.get('.' + self.metadata['format'], None)
+        else:
+            self.content_type = None
         self.tiles = Tiles(self.connection, commit)
 
     def delete_one(self, tile):
@@ -151,10 +156,16 @@ class MBTilesTileStore(TileStore):
 
     def get_all(self):
         for tilecoord, data in self.tiles.iteritems():
-            yield Tile(tilecoord, data=data)
+            tile = Tile(tilecoord, data=data)
+            if self.content_type is not None:
+                tile.content_type = self.content_type
+            yield tile
 
     def get_one(self, tile):
         return Tile(tile.tilecoord, data=self.tiles[tile.tilecoord])
+        if self.content_type is not None:
+            tile.content_type = self.content_type
+        return tile
 
     def list(self):
         return (Tile(tilecoord) for tilecoord in self.tiles)
