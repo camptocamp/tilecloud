@@ -50,8 +50,9 @@ def main(argv):
     if options.bounds:
         bounds = BoundingPyramid.from_string(options.bounds)
         tilestream = BoundingPyramidTileStore(bounds).list()
+        tilestream = store.get(tilestream)
     else:
-        tilestream = store.list()
+        tilestream = store.get_all()
     connection = sqlite3.connect(options.output)
     kwargs = {}
     mbtiles_tile_store = MBTilesTileStore(connection, commit=False)
@@ -59,7 +60,6 @@ def main(argv):
         value = getattr(options, key)
         if value is not None:
             mbtiles_tile_store.metadata[key] = getattr(options, key)
-    tilestream = store.get(tilestream)
     tilestream = mbtiles_tile_store.put(tilestream)
     consume(tilestream, options.limit)
     connection.commit()
