@@ -1,4 +1,6 @@
 /boto
+/bottle.py
+/openlayers
 *.jpg
 *.log
 *.mbtiles
