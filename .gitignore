@@ -1,1 +1,5 @@
 /boto
+*.jpg
+*.log
+*.mbtiles
+*.png
