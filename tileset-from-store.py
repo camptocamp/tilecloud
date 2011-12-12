@@ -29,13 +29,16 @@ def main(argv):
     option_parser.add_option('--prefix', default='', metavar='STRING')
     option_parser.add_option('--store', choices=tile_stores)
     option_parser.add_option('--suffix', default='', metavar='STRING')
+    option_parser.add_option('--name', metavar='NAME')
+    option_parser.add_option('--type', default='baselayer', choices=('baselayer', 'overlay'))
+    option_parser.add_option('--version', metavar='VERSION')
+    option_parser.add_option('--description', metavar='DESCRIPTION')
+    option_parser.add_option('--format', metavar='FORMAT')
     options, args = option_parser.parse_args(argv[1:])
     assert options.store
     tile_layout = tile_layouts[options.tile_layout]()
     if options.prefix or options.suffix:
         tile_layout = WrappedTileLayout(tile_layout, options.prefix, options.suffix)
-    connection = sqlite3.connect(options.output)
-    mbtiles_tile_store = MBTilesTileStore(connection, commit=False)
     if options.store == 'fs':
         store = FilesystemTileStore(tile_layout)
     elif options.store == 'lines':
@@ -49,6 +52,13 @@ def main(argv):
         tilestream = BoundingPyramidTileStore(bounds).list()
     else:
         tilestream = store.list()
+    connection = sqlite3.connect(options.output)
+    kwargs = {}
+    mbtiles_tile_store = MBTilesTileStore(connection, commit=False)
+    for key in 'name type version description format'.split():
+        value = getattr(options, key)
+        if value is not None:
+            mbtiles_tile_store.metadata[key] = getattr(options, key)
     tilestream = store.get(tilestream)
     tilestream = mbtiles_tile_store.put(tilestream)
     consume(tilestream, options.limit)
