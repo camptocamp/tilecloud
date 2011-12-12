@@ -2,6 +2,7 @@
 
 from contextlib import contextmanager
 from itertools import imap
+import sqlite3
 import UserDict
 
 from tilecloud import Tile, TileCoord, TileStore
@@ -123,7 +124,7 @@ class Tiles(SQLiteDict):
     SETITEM_SQL = 'INSERT OR REPLACE INTO tiles (zoom_level, tile_column, tile_row, tile_data) VALUES (?, ?, ?, ?)'
 
     def _packitem(self, key, value):
-        return (key.z, key.x, key.y, value)
+        return (key.z, key.x, key.y, sqlite3.Binary(value) if value is not None else None)
 
     def _packkey(self, key):
         return (key.z, key.x, key.y)
