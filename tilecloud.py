@@ -156,12 +156,14 @@ class BoundingPyramid(object):
 
     @classmethod
     def from_string(cls, s):
-        match = re.match(r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):(?:(?P<z2>\d+)/)?(?P<x2>\d+)/(?P<y2>\d+)\Z', s)
+        match = re.match(r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):(?:(?P<z2>\d+)/)?(?P<plusx>\+)?(?P<x2>\d+)/(?P<plusy>\+)?(?P<y2>\d+)\Z', s)
         if not match:
             raise RuntimeError # FIXME
         z1 = int(match.group('z1'))
-        xbounds = Bounds(int(match.group('x1')), int(match.group('x2')))
-        ybounds = Bounds(int(match.group('y1')), int(match.group('y2')))
+        x1, x2 = int(match.group('x1')), int(match.group('x2'))
+        xbounds = Bounds(x1, x1 + x2 if match.group('plusx') else x2)
+        y1, y2 = int(match.group('y1')), int(match.group('y2'))
+        ybounds = Bounds(y1, y1 + y2 if match.group('plusy') else y2)
         result = cls({z1: (xbounds, ybounds)})
         if match.group('z2'):
             z2 = int(match.group('z2'))
