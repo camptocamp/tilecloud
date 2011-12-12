@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-# FIXME handle S3 403/404
 # TODO generate tilecoords from coordinate systems (pyproj)
 # TODO extend BinaryMaskTileStore to support multiple zs
 # TODO PNG optimizer
@@ -8,6 +7,7 @@
 
 from cStringIO import StringIO
 import collections
+import errno
 from gzip import GzipFile
 from itertools import imap, islice
 import logging
@@ -18,6 +18,7 @@ from ssl import SSLError
 import sys
 
 import boto.s3.connection
+import boto.exception
 import PIL.Image
 
 
@@ -314,7 +315,7 @@ class TileStore(object):
 
     def delete(self, tiles):
         """A generator that has the side effect of deleting the specified tiles from the store"""
-        return imap(self.delete_one, tiles)
+        return imap(self.delete_one, (tile for tile in tiles if tile is not None))
 
     def delete_one(self, tile):
         """A function that deletes tile from the store and returns the tile"""
@@ -322,11 +323,11 @@ class TileStore(object):
 
     def get(self, tiles):
         """A generator that returns the specified tiles and their data from the store"""
-        return imap(self.get_one, tiles)
+        return imap(self.get_one, (tile for tile in tiles if tile is not None))
 
     def get_all(self):
         """A generator that returns all the tiles in the store with their data"""
-        return self.imap(self.get_one, self.list())
+        return imap(self.get_one, (tile for tile in self.list() if tile is not None))
 
     def get_one(self, tile):
         """A function that gets the specified tile and its data from the store"""
@@ -338,7 +339,7 @@ class TileStore(object):
 
     def put(self, tiles):
         """A generator that has the side effect of putting the specified tiles in the store"""
-        return imap(self.put_one, tiles)
+        return imap(self.put_one, (tile for tile in tiles if tile is not None))
 
     def put_one(self, tile):
         """A function that puts tile in the store and returns the tile"""
@@ -382,9 +383,15 @@ class FilesystemTileStore(TileStore):
 
     def get_one(self, tile):
         filename = self.tile_layout.filename(tile.tilecoord)
-        with open(filename) as file:
-            tile.data = file.read()
-        return tile
+        try:
+            with open(filename) as file:
+                tile.data = file.read()
+            return tile
+        except IOError as e:
+            if e.errno == errno.ENOENT:
+                return None
+            else:
+                raise
 
     def list(self):
         top = getattr(self.tile_layout, 'prefix', '.')
@@ -522,7 +529,13 @@ class S3TileStore(TileStore):
         key_name = self.tile_layout.filename(tile.tilecoord)
         for bucket in self.s3bucket.boto_is_braindead():
             s3key = bucket.new_key(key_name)
-            return Tile(tile.tilecoord, data=s3key.read(), s3key=s3key)
+            try:
+                return Tile(tile.tilecoord, data=s3key.read(), s3key=s3key)
+            except boto.exception.S3ResponseError as exc:
+                if exc.status == 404:
+                    return None
+                else:
+                    raise
 
     def list(self):
         prefix = getattr(self.tile_layout, 'prefix', '')

@@ -162,7 +162,10 @@ class MBTilesTileStore(TileStore):
             yield tile
 
     def get_one(self, tile):
-        return Tile(tile.tilecoord, data=self.tiles[tile.tilecoord])
+        try:
+            tile = Tile(tile.tilecoord, data=self.tiles[tile.tilecoord])
+        except KeyError:
+            return None
         if self.content_type is not None:
             tile.content_type = self.content_type
         return tile
