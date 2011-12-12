@@ -5,21 +5,21 @@ from optparse import OptionParser
 import sqlite3
 import sys
 
-from mbtiles import MBTilesTileStore
 from tilecloud import BoundingPyramid
-from tilecloud import BoundingPyramidTileStore
-from tilecloud import FilesystemTileStore
-from tilecloud import I3DTileLayout
-from tilecloud import LinesTileStore
-from tilecloud import OSMTileLayout
-from tilecloud import S3TileStore
-from tilecloud import WrappedTileLayout
 from tilecloud import consume
+from tilecloud.layout.i3d import I3DTileLayout
+from tilecloud.layout.osm import OSMTileLayout
+from tilecloud.layout.wrapped import WrappedTileLayout
+from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
+from tilecloud.store.filesystem import FilesystemTileStore
+from tilecloud.store.log import LogTileStore
+from tilecloud.store.mbtiles import MBTilesTileStore
+from tilecloud.store.s3 import S3TileStore
 
 
 def main(argv):
     tile_layouts = {'i3d': I3DTileLayout, 'osm': OSMTileLayout}
-    tile_stores = 'fs lines s3'.split()
+    tile_stores = 'filesystem log s3'.split()
     option_parser = OptionParser()
     option_parser.add_option('--bounds', metavar='Z1/X1/Y1:(Z2/)?X2/Y2')
     option_parser.add_option('--bucket', dest='bucket_name', metavar='BUCKET')
@@ -39,10 +39,10 @@ def main(argv):
     tile_layout = tile_layouts[options.tile_layout]()
     if options.prefix or options.suffix:
         tile_layout = WrappedTileLayout(tile_layout, options.prefix, options.suffix)
-    if options.store == 'fs':
+    if options.store == 'filesystem':
         store = FilesystemTileStore(tile_layout)
-    elif options.store == 'lines':
-        store = LinesTileStore(tile_layout, fileinput.input(args))
+    elif options.store == 'log':
+        store = LogTileStore(tile_layout, fileinput.input(args))
     elif options.store == 's3':
         store = S3TileStore(options.bucket_name, tile_layout)
     else:

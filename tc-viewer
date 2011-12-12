@@ -2,12 +2,11 @@
 
 import bottle
 
-from tilecloud import I3DTileLayout
-from tilecloud import OSMTileLayout
-from tilecloud import S3TileStore
-from tilecloud import Tile
-from tilecloud import TileCoord
-from tilecloud import WrappedTileLayout
+from tilecloud import Tile, TileCoord
+from tilecloud.layout.i3d import I3DTileLayout
+from tilecloud.layout.osm import OSMTileLayout
+from tilecloud.store.s3 import S3TileStore
+from tilecloud.store.wrapped import WrappedTileLayout
 
 
 tile_stores = []

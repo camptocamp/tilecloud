@@ -1,0 +1,253 @@
+#!/usr/bin/env python
+
+# TODO generate tilecoords from coordinate systems (pyproj)
+
+import collections
+from itertools import imap, islice
+import logging
+import re
+
+
+logger = logging.getLogger(__name__)
+
+
+# http://docs.python.org/library/itertools.html
+def consume(iterator, n):
+    "Advance the iterator n-steps ahead. If n is none, consume entirely."
+    # Use functions that consume iterators at C speed.
+    if n is None:
+        # feed the entire iterator into a zero-length deque
+        collections.deque(iterator, maxlen=0)
+    else:
+        # advance to the empty slice starting at position n
+        next(islice(iterator, n, n), None)
+
+
+
+class Bounds(object):
+
+    def __init__(self, start=None, stop=None):
+        self.start = start
+        if stop is None:
+            self.stop = self.start + 1 if start is not None else None
+        else:
+            assert start is not None
+            self.stop = stop
+
+    def __contains__(self, key):
+        if self.start is None:
+            return False
+        else:
+            return self.start <= key < self.stop
+
+    def __len__(self):
+        if self.start is None:
+            return 0
+        else:
+            return self.stop - self.start
+
+    def __iter__(self):
+        if self.start is not None:
+            for i in xrange(self.start, self.stop):
+                yield i
+
+    def __repr__(self):
+        if self.start is None:
+            return '%s(None)' % (self.__class__.__name__,)
+        else:
+            return '%s(%r, %r)' % (self.__class__.__name__, self.start, self.stop)
+
+    def add(self, value):
+        if self.start is None:
+            self.start = value
+            self.stop = value + 1
+        else:
+            self.start = min(self.start, value)
+            self.stop = max(self.stop, value + 1)
+
+    def update(self, other):
+        if self.start is None:
+            self.start = other.start
+            self.stop = other.stop
+        else:
+            self.start = min(self.start, other.start)
+            self.stop = max(self.stop, other.stop)
+
+    def union(self, other):
+        if self and other:
+            return Bounds(min(self.start, other.start), max(self.start, other.start))
+        elif self:
+            return Bounds(self.start, self.stop)
+        elif other:
+            return Bounds(other.start, other.stop)
+        else:
+            return Bounds()
+
+
+class BoundingPyramid(object):
+
+    def __init__(self, bounds=None):
+        self.bounds = bounds or {}
+
+    def __contains__(self, tilecoord):
+        if tilecoord.z not in self.bounds:
+            return False
+        xbounds, ybounds = self.bounds[tilecoord.z]
+        return tilecoord.x in xbounds and tilecoord.y in ybounds
+
+    def __iter__(self):
+        return self.itertopdown()
+
+    def __len__(self):
+        return sum(len(xbounds) * len(ybounds) for xbounds, ybounds in self.bounds.itervalues())
+
+    def add(self, tilecoord):
+        if tilecoord.z in self.bounds:
+            xbounds, ybounds = self.bounds[tilecoord.z]
+            xbounds.add(tilecoord.x)
+            ybounds.add(tilecoord.y)
+        else:
+            self.bounds[tilecoord.z] = (Bounds(tilecoord.x), Bounds(tilecoord.y))
+
+    def filldown(self, bottom, start=None):
+        if start is None:
+            start = max(self.bounds)
+        for z in xrange(start, bottom):
+            xbounds, ybounds = self.bounds[z]
+            self.add(TileCoord(z + 1, xbounds.start * 2, ybounds.start * 2))
+            self.add(TileCoord(z + 1, xbounds.stop * 2, ybounds.stop * 2))
+
+    def fillup(self, top=0):
+        for z in xrange(max(self.bounds), top, -1):
+            xbounds, ybounds = self.bounds[z]
+            self.add(TileCoord(z - 1, xbounds.start // 2, ybounds.start // 2))
+            self.add(TileCoord(z - 1, xbounds.stop // 2, ybounds.stop // 2))
+
+    def iterbottomup(self):
+        for z in reversed(sorted(self.bounds.keys())):
+            for tilecoord in self.ziter(z):
+                yield tilecoord
+
+    def itertopdown(self):
+        for z in sorted(self.bounds.keys()):
+            for tilecoord in self.ziter(z):
+                yield tilecoord
+
+    def ziter(self, z):
+        if z in self.bounds:
+            xbounds, ybounds = self.bounds[z]
+            for x in xbounds:
+                for y in ybounds:
+                    yield TileCoord(z, x, y)
+
+    @classmethod
+    def from_string(cls, s):
+        match = re.match(r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):(?:(?P<z2>\d+)/)?(?P<plusx>\+)?(?P<x2>\d+)/(?P<plusy>\+)?(?P<y2>\d+)\Z', s)
+        if not match:
+            raise RuntimeError # FIXME
+        z1 = int(match.group('z1'))
+        x1, x2 = int(match.group('x1')), int(match.group('x2'))
+        xbounds = Bounds(x1, x1 + x2 if match.group('plusx') else x2)
+        y1, y2 = int(match.group('y1')), int(match.group('y2'))
+        ybounds = Bounds(y1, y1 + y2 if match.group('plusy') else y2)
+        result = cls({z1: (xbounds, ybounds)})
+        if match.group('z2'):
+            z2 = int(match.group('z2'))
+            if z1 < z2:
+                result.filldown(z2)
+            elif z1 > z2:
+                result.fillup(z2)
+        return result
+
+
+
+class TileCoord(object):
+    """A tile coordinate"""
+
+    def __init__(self, z, x, y):
+        self.z = z
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return '%s(%r, %r, %r)' % (self.__class__.__name__, self.z, self.x, self.y)
+
+    def __str__(self):
+        return '%d/%d/%d' % (self.z, self.x, self.y)
+
+    def normalize(self):
+        return (float(self.x) / (1 << self.z), float(self.y) / (1 << self.z))
+
+    @classmethod
+    def from_normalized_coord(cls, z, xy):
+        return cls(z, int(xy[0] * (1 << z)), int(xy[1] * (1 << z)))
+
+
+
+class TileLayout(object):
+    """Maps tile coordinates to filenames and vice versa"""
+
+    def __init__(self, pattern, filename_re):
+        self.pattern = pattern
+        self.filename_re = filename_re
+
+    def filename(self, tilecoord):
+        """Return the filename for the given tile coordinate"""
+        raise NotImplementedError
+
+    def tilecoord(self, filename):
+        """Return the tile coordinate for the given filename"""
+        match = self.filename_re.match(filename)
+        if not match:
+            raise RuntimeError # FIXME
+        return self._tilecoord(match)
+
+    def _tilecoord(self, match):
+        raise NotImplementedError
+
+
+
+class Tile(object):
+    """An actual tile with optional metadata"""
+
+    def __init__(self, tilecoord, **kwargs):
+        self.tilecoord = tilecoord
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+
+class TileStore(object):
+    """A tile store"""
+
+    def delete(self, tiles):
+        """A generator that has the side effect of deleting the specified tiles from the store"""
+        return imap(self.delete_one, (tile for tile in tiles if tile is not None))
+
+    def delete_one(self, tile):
+        """A function that deletes tile from the store and returns the tile"""
+        raise NotImplementedError
+
+    def get(self, tiles):
+        """A generator that returns the specified tiles and their data from the store"""
+        return imap(self.get_one, (tile for tile in tiles if tile is not None))
+
+    def get_all(self):
+        """A generator that returns all the tiles in the store with their data"""
+        return imap(self.get_one, (tile for tile in self.list() if tile is not None))
+
+    def get_one(self, tile):
+        """A function that gets the specified tile and its data from the store"""
+        raise NotImplementedError
+
+    def list(self):
+        """A generator that returns the tiles in the store without necessarily retrieving their data"""
+        raise NotImplementedError
+
+    def put(self, tiles):
+        """A generator that has the side effect of putting the specified tiles in the store"""
+        return imap(self.put_one, (tile for tile in tiles if tile is not None))
+
+    def put_one(self, tile):
+        """A function that puts tile in the store and returns the tile"""
+        raise NotImplementedError

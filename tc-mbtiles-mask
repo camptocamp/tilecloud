@@ -5,10 +5,10 @@ from optparse import OptionParser
 import sqlite3
 import sys
 
-from mbtiles import MBTilesTileStore
-from tilecloud import MaskTileStore
-from tilecloud import BoundingPyramidTileStore
 from tilecloud import consume
+from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
+from tilecloud.store.mask import MaskTileStore
+from tilecloud.store.mbtiles import MBTilesTileStore
 
 
 def main(argv):

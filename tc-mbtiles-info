@@ -7,7 +7,7 @@ import sqlite3
 import sys
 
 from tilecloud import BoundingPyramid
-import mbtiles
+from tilecloud.store.mbtiles import Metadata, Tiles
 
 
 def main(argv):
@@ -19,11 +19,11 @@ def main(argv):
         assert os.path.exists(arg)
         connection = sqlite3.connect(arg)
         if options.metadata:
-            metadata = mbtiles.Metadata(connection)
+            metadata = Metadata(connection)
             for key, value in metadata.iteritems():
                 print '%s: %s' % (key, value)
         if options.tiles:
-            tiles = mbtiles.Tiles(connection)
+            tiles = Tiles(connection)
             if options.tiles == 'count':
                 print len(tiles)
             elif options.tiles == 'bounding-pyramid':
