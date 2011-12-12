@@ -613,10 +613,13 @@ class ImageFormatConverter(object):
             assert False
 
     def __call__(self, tile):
-        assert hasattr(tile, 'data')
-        string_io = StringIO()
-        PIL.Image.open(StringIO(tile.data)).save(string_io, self.format, **self.kwargs)
-        return Tile(tile.tilecoord, data=string_io.getvalue(), content_type=self.content_type)
+        if not hasattr(tile, 'content_type') or tile.content_type != self.content_type:
+            assert hasattr(tile, 'data')
+            string_io = StringIO()
+            PIL.Image.open(StringIO(tile.data)).save(string_io, self.format, **self.kwargs)
+            tile.content_type = self.content_type
+            tile.data = string_io.getvalue()
+        return tile
 
 
 
