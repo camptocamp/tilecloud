@@ -5,7 +5,7 @@ import mimetypes
 import sqlite3
 import UserDict
 
-from tilecloud import Tile, TileCoord, TileStore
+from tilecloud import Bounds, BoundingPyramid, Tile, TileCoord, TileStore
 
 
 
@@ -128,6 +128,8 @@ class Tiles(SQLiteDict):
 class MBTilesTileStore(TileStore):
     """A MBTiles tile store"""
 
+    BOUNDING_PYRAMID_SQL = 'SELECT zoom_level, MIN(tile_column), MAX(tile_column) + 1, MIN(tile_row), MAX(tile_row) + 1 FROM tiles GROUP BY zoom_level ORDER BY zoom_level'
+
     def __init__(self, connection, commit=True, **kwargs):
         self.connection = connection
         self.metadata = Metadata(self.connection, commit, **kwargs)
@@ -136,6 +138,12 @@ class MBTilesTileStore(TileStore):
         else:
             self.content_type = None
         self.tiles = Tiles(self.connection, commit)
+
+    def get_bounding_pyramid(self):
+        bounds = {}
+        for z, xstart, xstop, ystart, ystop in query(self.connection, self.BOUNDING_PYRAMID_SQL):
+            bounds[z] = (Bounds(xstart, xstop), Bounds(ystart, ystop))
+        return BoundingPyramid(bounds)
 
     def delete_one(self, tile):
         del self.tiles[tile.tilecoord]
