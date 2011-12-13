@@ -17,6 +17,7 @@ TileStores
 ----------
 
 * Thumbnail
+* Debug tilestore generating images with tile coordinates
 * Extend MaskTileStore to support BoundingPyramids
 * Check y-order in MBTilesStileStore
 * Add periodic commit to MBTilesStileStore
