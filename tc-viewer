@@ -70,11 +70,16 @@ def openlayers(filename):
     return bottle.static_file(filename, root='./submodules/openlayers')
 
 
-@bottle.route('/')
+@bottle.route('/openlayers')
 @bottle.view('openlayers')
 def index():
-    debug = bottle.request.get('debug') is not None
-    return dict(debug=debug, names=map(itemgetter(0), tile_stores))
+    return dict(debug=bottle.request.GET.get('debug'), names=map(itemgetter(0), tile_stores))
+
+
+@bottle.route('/')
+@bottle.view('index')
+def index():
+    return dict(debug=bottle.request.GET.get('debug'))
 
 
 if __name__ == '__main__':
