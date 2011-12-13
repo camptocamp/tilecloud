@@ -225,6 +225,10 @@ class Tile(object):
 class TileStore(object):
     """A tile store"""
 
+    def count(self):
+        """Returns the total number of tiles in the store"""
+        return reduce(lambda x, _: x + 1, (tile for tile in self.list() if tile is not None), 0)
+
     def delete(self, tiles):
         """A generator that has the side effect of deleting the specified tiles from the store"""
         return imap(self.delete_one, (tile for tile in tiles if tile is not None))
