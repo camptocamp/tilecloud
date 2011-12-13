@@ -17,7 +17,10 @@ Viewer
 TileStores
 ----------
 
-* Thumbnail
+* ThumbnailTileStore
+* WMSTileStore
+* HTTPTileStore
+* TileJSONTileStore (https://github.com/mapbox/TileJSON)
 * Debug tilestore generating images with tile coordinates
 * Extend MaskTileStore to support BoundingPyramids
 * Check y-order in MBTilesStileStore
