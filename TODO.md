@@ -1,7 +1,6 @@
 Core
 ----
 
-* Add Makefile
 * Add TileStore.content_type
 * Generate BoundingPyramid from coordinates (pyproj)
 
@@ -21,7 +20,6 @@ TileStores
 * TileJSONTileStore (https://github.com/mapbox/TileJSON)
 * Debug tilestore generating images with tile coordinates
 * Extend MaskTileStore to support BoundingPyramids
-* Check y-order in MBTilesStileStore
 * Add periodic commit to MBTilesStileStore
 * Add periodic save to MaskTileStore
 
