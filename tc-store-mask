@@ -2,29 +2,32 @@
 
 from itertools import chain
 from optparse import OptionParser
-import sqlite3
 import sys
 
-from tilecloud import consume
+from tilecloud import BoundingPyramid, TileStore, consume
 from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 from tilecloud.store.mask import MaskTileStore
-from tilecloud.store.mbtiles import MBTilesTileStore
 
 
 def main(argv):
     option_parser = OptionParser()
+    option_parser.add_option('--bounds', metavar='BOUNDS')
     option_parser.add_option('--limit', metavar='LIMIT', type=int)
     option_parser.add_option('--output', metavar='FILENAME')
     option_parser.add_option('-z', metavar='Z', type=int)
     options, args = option_parser.parse_args(argv[1:])
     assert options.output
     assert options.z
-    mbtiles_tile_stores = [MBTilesTileStore(sqlite3.connect(arg)) for arg in args]
-    bounding_pyramid_tile_store = BoundingPyramidTileStore()
-    tilestream = chain.from_iterable(mbtiles_tile_store.list() for mbtiles_tile_store in mbtiles_tile_stores)
-    tilestream = bounding_pyramid_tile_store.put(tilestream)
-    consume(tilestream, options.limit)
-    mask_tile_store = MaskTileStore(options.z, bounding_pyramid_tile_store.bounding_pyramid.bounds[options.z])
+    mbtiles_tile_stores = [TileStore.load(arg) for arg in args]
+    if options.bounds:
+        bounding_pyramid = BoundingPyramid.from_string(options.bounds)
+    else:
+        bounding_pyramid_tile_store = BoundingPyramidTileStore()
+        tilestream = chain.from_iterable(mbtiles_tile_store.list() for mbtiles_tile_store in mbtiles_tile_stores)
+        tilestream = bounding_pyramid_tile_store.put(tilestream)
+        consume(tilestream, options.limit)
+        bounding_pyramid = bounding_pyramid_tile_store.get_bounding_pyramid()
+    mask_tile_store = MaskTileStore(options.z, bounding_pyramid.zget(options.z))
     tilestream = chain.from_iterable(mbtiles_tile_store.list() for mbtiles_tile_store in mbtiles_tile_stores)
     tilestream = mask_tile_store.put(tilestream)
     consume(tilestream, options.limit)
