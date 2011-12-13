@@ -71,7 +71,7 @@ def openlayers(filename):
 
 
 @bottle.route('/')
-@bottle.view('index')
+@bottle.view('openlayers')
 def index():
     debug = bottle.request.get('debug') is not None
     return dict(debug=debug, names=map(itemgetter(0), tile_stores))
