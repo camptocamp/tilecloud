@@ -54,7 +54,6 @@ def main(argv):
     else:
         tilestream = store.get_all()
     connection = sqlite3.connect(options.output)
-    kwargs = {}
     mbtiles_tile_store = MBTilesTileStore(connection, commit=False)
     for key in 'name type version description format'.split():
         value = getattr(options, key)
