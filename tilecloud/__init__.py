@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import collections
-from itertools import imap, islice
+from itertools import ifilter, imap, islice
 import logging
 import os.path
 import re
@@ -227,11 +227,11 @@ class TileStore(object):
 
     def count(self):
         """Returns the total number of tiles in the store"""
-        return reduce(lambda x, _: x + 1, (tile for tile in self.list() if tile is not None), 0)
+        return reduce(lambda x, _: x + 1, ifilter(None, self.list()), 0)
 
     def delete(self, tiles):
         """A generator that has the side effect of deleting the specified tiles from the store"""
-        return imap(self.delete_one, (tile for tile in tiles if tile is not None))
+        return imap(self.delete_one, ifilter(None, tiles))
 
     def delete_one(self, tile):
         """A function that deletes tile from the store and returns the tile"""
@@ -239,11 +239,11 @@ class TileStore(object):
 
     def get(self, tiles):
         """A generator that returns the specified tiles and their data from the store"""
-        return imap(self.get_one, (tile for tile in tiles if tile is not None))
+        return imap(self.get_one, ifilter(None, tiles))
 
     def get_all(self):
         """A generator that returns all the tiles in the store with their data"""
-        return imap(self.get_one, (tile for tile in self.list() if tile is not None))
+        return imap(self.get_one, ifilter(None, self.list()))
 
     def get_bounding_pyramid(self):
         """Returns the bounding pyramid that encloses all tiles in the store"""
@@ -261,7 +261,7 @@ class TileStore(object):
 
     def put(self, tiles):
         """A generator that has the side effect of putting the specified tiles in the store"""
-        return imap(self.put_one, (tile for tile in tiles if tile is not None))
+        return imap(self.put_one, ifilter(None, tiles))
 
     def put_one(self, tile):
         """A function that puts tile in the store and returns the tile"""
