@@ -253,4 +253,12 @@ class TileStore(object):
 
     @classmethod
     def load(cls, filename):
-        return getattr(__import__(re.sub(r'/', '.', os.path.normpath(os.path.splitext(filename)[0]))), 'tile_store')
+        root, ext = os.path.splitext(filename)
+        if ext == '.py':
+            return getattr(__import__(re.sub(r'/', '.', os.path.normpath(root))), 'tile_store')
+        elif ext == '.mbtiles':
+            import sqlite3
+            from tilecloud.store.mbtiles import MBTilesTileStore
+            return MBTilesTileStore(sqlite3.connect(filename))
+        else:
+            raise RuntimeError # FIXME

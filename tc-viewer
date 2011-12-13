@@ -10,24 +10,12 @@ import bottle
 import cairo
 
 from tilecloud import Tile, TileCoord, TileStore
-from tilecloud.store.mbtiles import MBTilesTileStore
 
 
 INSET = 4
 
 
-tile_stores = []
-for arg in sys.argv[1:]:
-    assert os.path.exists(arg)
-    root, ext = os.path.splitext(arg)
-    key = os.path.basename(root)
-    if ext == '.mbtiles':
-        value = MBTilesTileStore(sqlite3.connect(arg))
-    elif ext == '.py':
-        value = TileStore.load(arg)
-    else:
-        assert False # FIXME
-    tile_stores.append((key, value))
+tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in sys.argv[1:]]
 
 
 @bottle.route('/t/<index:int>/<z:int>/<x:int>/<y:int>')
