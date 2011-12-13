@@ -1,6 +1,3 @@
-# TODO extend MaskTileStore to support multiple zs
-# TODO periodically flush MaskTileStore
-
 import PIL.Image
 
 from tilecloud import Tile, TileCoord, TileStore

@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-# TODO generate tilecoords from coordinate systems (pyproj)
-
 import collections
 from itertools import imap, islice
 import logging

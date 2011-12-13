@@ -1,5 +1,3 @@
-# TODO PNG optimizer
-
 from cStringIO import StringIO
 
 import PIL.Image
