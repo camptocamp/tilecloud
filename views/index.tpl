@@ -31,7 +31,7 @@
 				sphericalMercator: true
 			}));
 %end
-%if len(names) > 0:
+%if len(names) > 1:
 			map.addControl(new OpenLayers.Control.LayerSwitcher());
 %end
 			map.addControl(new OpenLayers.Control.MousePosition());
