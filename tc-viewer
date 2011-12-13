@@ -60,7 +60,7 @@ def tile(index, z, x, y):
 
 @bottle.route('/openlayers/<filename:path>')
 def openlayers(filename):
-    return bottle.static_file(filename, root='./openlayers')
+    return bottle.static_file(filename, root='./submodules/openlayers')
 
 
 @bottle.route('/')
