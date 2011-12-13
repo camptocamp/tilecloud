@@ -3,7 +3,6 @@
 from cStringIO import StringIO
 from operator import itemgetter
 import os.path
-import sqlite3
 import sys
 
 import bottle
