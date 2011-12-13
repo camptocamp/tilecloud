@@ -4,7 +4,6 @@ Core
 * Add Makefile
 * Add TileStore.content_type
 * Generate BoundingPyramid from coordinates (pyproj)
-* Raise proper exceptions when TileLayout cannot convert
 
 Viewer
 ------
