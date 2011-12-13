@@ -110,16 +110,18 @@ class Tiles(SQLiteDict):
     SETITEM_SQL = 'INSERT OR REPLACE INTO tiles (zoom_level, tile_column, tile_row, tile_data) VALUES (?, ?, ?, ?)'
 
     def _packitem(self, key, value):
-        return (key.z, key.x, key.y, sqlite3.Binary(value) if value is not None else None)
+        return (key.z, key.x, (1 << key.z) - key.y - 1, sqlite3.Binary(value) if value is not None else None)
 
     def _packkey(self, key):
-        return (key.z, key.x, key.y)
+        return (key.z, key.x, (1 << key.z) - key.y - 1)
 
     def _unpackitem(self, row):
-        return (TileCoord(row[0], row[1], row[2]), row[3])
+        z, x, y, data = row
+        return (TileCoord(z, x, (1 << z) - y - 1), data)
     
     def _unpackkey(self, row):
-        return TileCoord(row[0], row[1], row[2])
+        z, x, y = row
+        return TileCoord(z, x, (1 << z) - y - 1)
 
 
 
