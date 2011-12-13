@@ -2,6 +2,7 @@
 
 from cStringIO import StringIO
 from operator import itemgetter
+from optparse import OptionParser
 import os.path
 import sys
 
@@ -14,7 +15,17 @@ from tilecloud import Tile, TileCoord, TileStore
 INSET = 4
 
 
-tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in sys.argv[1:]]
+option_parser = OptionParser()
+option_parser.add_option('--debug', action='store_true', default=False)
+option_parser.add_option('--host', default='127.0.0.1', metavar='HOST')
+option_parser.add_option('--port', default=8080, metavar='PORT', type=int)
+option_parser.add_option('--quiet', action='store_true', default=False)
+options, args = option_parser.parse_args(sys.argv[1:])
+
+if options.debug:
+    bottle.DEBUG = True
+
+tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 
 
 @bottle.route('/t/<index:int>/<z:int>/<x:int>/<y:int>')
@@ -60,4 +71,4 @@ def index():
 
 if __name__ == '__main__':
     bottle.DEBUG = True
-    bottle.run(reloader=True)
+    bottle.run(host=options.host, port=options.port, reloader=options.debug, quiet=options.quiet)
