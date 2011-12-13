@@ -27,7 +27,7 @@
 				div: "map"
 			});
 %for index, name in enumerate(names):
-			map.addLayer(new OpenLayers.Layer.XYZ('{{name}}', '/t/{{index}}/${z}/${x}/${y}', {
+			map.addLayer(new OpenLayers.Layer.XYZ('{{name}}', '/data/image/{{index}}/tiles/${z}/${x}/${y}', {
 				sphericalMercator: true
 			}));
 %end

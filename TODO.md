@@ -10,7 +10,6 @@ Viewer
 
 * Generate semi-transparent TileCoord tiles
 * Use single tile for 404
-* Generate OpenWebGlobe viewer
 * Generate KML layer
 
 TileStores
