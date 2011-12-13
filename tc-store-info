@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+
+from optparse import OptionParser
+import sys
+
+from tilecloud import TileStore
+
+
+def main(argv):
+    option_parser = OptionParser()
+    option_parser.add_option('-r', '--relative', action='store_true')
+    option_parser.add_option('-t', '--tiles', choices=('bounding-pyramid', 'count', 'list'))
+    options, args = option_parser.parse_args(argv[1:])
+    for arg in args:
+        tile_store = TileStore.load(arg)
+        if options.tiles == 'bounding-pyramid':
+            bounding_pyramid = tile_store.get_bounding_pyramid()
+            for z in sorted(bounding_pyramid.zs()):
+                xbounds, ybounds = bounding_pyramid.zget(z)
+                if options.relative:
+                    print '%d/%d/%d:%+d/%+d' % (z, xbounds.start, ybounds.start, xbounds.stop - xbounds.start, ybounds.stop - ybounds.start)
+                else:
+                    print '%d/%d/%d:%d/%d' % (z, xbounds.start, ybounds.start, xbounds.stop, ybounds.stop)
+        elif options.tiles == 'count':
+            print tile_store.count()
+        elif options.tiles == 'list':
+            for tile in tile_store.list():
+                print tile.tilecoord
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
