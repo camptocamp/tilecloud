@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from cStringIO import StringIO
+import mimetypes
 from operator import itemgetter
 from optparse import OptionParser
 import os.path
@@ -67,7 +68,7 @@ def openwebglobe_layersettings(index):
     name, tile_store = tile_stores[index]
     maxlod = 20 # FIXME maybe get from TileStore
     format = 'jpg' # FIXME
-    if hasattr(tile_store, 'content_type'):
+    if hasattr(tile_store, 'content_type') and tile_store.content_type is not None:
         ext = mimetypes.guess_extension(tile_store.content_type)
         if ext is not None and ext.startswith('.'):
             format = ext[1:]
