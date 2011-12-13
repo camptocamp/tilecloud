@@ -1,3 +1,5 @@
+# FIXME this still builds too much
+
 all: submodules example-data
 
 example-data: \
@@ -20,29 +22,31 @@ mapbox.world-bank-borders-en.mbtiles:
 
 .PHONY: submodules
 submodules: \
+	boto \
+	bottle.py \
 	submodules/WebViewer/compiled/owg-optimized.js \
-	submodules/boto/boto \
-	submodules/bottle/bottle.py \
 	submodules/openlayers/build/OpenLayers.js
+
+boto: submodules/boto
+	ln -fs $</boto $@
+
+submodules/boto: .gitmodules
+	git submodule update submodules/boto
+
+bottle.py: submodules/bottle
+	ln -fs $</bottle.py $@
+
+submodules/bottle: .gitmodules
+	git submodule update submodules/bottle
 
 submodules/WebViewer/compiled/owg-optimized.js: submodules/WebViewer
 	( cd submodules/WebViewer/scripts && make )
 
-submodules/WebViewer: git-submodule-init .gitmodules
+submodules/WebViewer: .gitmodules
 	git submodule update submodules/WebViewer
-
-submodules/boto/boto: git-submodule-init .gitmodules
-	git submodule update submodules/boto
-
-submodules/bottle/bottle.py: git-submodule-init .gitmodules
-	git submodule update submodules/bottle
 
 submodules/openlayers/build/OpenLayers.js: submodules/openlayers
 	( cd submodules/openlayers/build && ./build.py )
 
-submodules/openlayers: git-submodule-init .gitmodules
+submodules/openlayers: .gitmodules
 	git submodule update submodules/openlayers
-
-.PHONY: git-submodule-init
-git-submodule-init:
-	git submodule init
