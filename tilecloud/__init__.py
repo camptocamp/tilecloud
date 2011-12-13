@@ -3,6 +3,7 @@
 import collections
 from itertools import imap, islice
 import logging
+import os.path
 import re
 
 
@@ -249,3 +250,7 @@ class TileStore(object):
     def put_one(self, tile):
         """A function that puts tile in the store and returns the tile"""
         raise NotImplementedError
+
+    @classmethod
+    def load(cls, filename):
+        return getattr(__import__(re.sub(r'/', '.', os.path.normpath(os.path.splitext(filename)[0]))), 'tile_store')

@@ -1,7 +1,6 @@
 Core
 ----
 
-* TileStore file (.py)
 * Add TileStore.get_bounding_pyramid
 * Generate BoundingPyramid from coordinates (pyproj)
 * Raise proper exceptions when TileLayout cannot convert
