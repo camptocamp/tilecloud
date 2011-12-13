@@ -25,35 +25,34 @@ if options.debug:
 tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 
 
-def emptytile(tile, inset=4):
+def emptytile(tilecoord, inset=4):
     image_surface = cairo.ImageSurface(cairo.FORMAT_RGB24, 256, 256)
     context = cairo.Context(image_surface)
     context.set_source_rgb(1, 1, 1)
     context.paint()
-    context.rectangle(0.5 + INSET, 0.5 + INSET, 256 - 2 * INSET, 256 - 2 * INSET)
+    context.rectangle(0.5 + inset, 0.5 + inset, 256 - 2 * inset, 256 - 2 * inset)
     context.set_source_rgb(0, 0, 0)
     context.set_line_width(1)
     context.stroke()
-    text = '%d/%d/%d' % (z, x, y)
+    text = str(tilecoord)
     extents = context.text_extents(text)
     context.move_to(128.0 - extents[2] / 2.0, 128 - extents[3] / 2.0)
     context.show_text(text)
     context.fill()
     string_io = StringIO()
     image_surface.write_to_png(string_io)
-    tile.content_type = 'image/png'
-    tile.data = string_io.getvalue()
-    return tile
+    return Tile(tilecoord, content_type='image/png', data=string_io.getvalue())
 
 
-@bottle.route('/data/image/<index:int>/tiles/<z:int>/<x:int>/<y:int><ext>')
+@bottle.route('/data/image/<index:int>/tiles/<z:int>/<x:int>/<y:int><ext:re:.*>')
 def tile(index, z, x, y, ext):
     # FIXME check ext
     if len(tile_stores) < index:
         bottle.abort(404)
-    tile = tile_stores[index][1].get_one(Tile(TileCoord(z, x, y)))
+    tilecoord = TileCoord(z, x, y)
+    tile = tile_stores[index][1].get_one(Tile(tilecoord))
     if tile is None:
-        tile = emptytile(tile)
+        tile = emptytile(tilecoord)
     if hasattr(tile, 'content_type'):
         bottle.response.set_header('Content-Type', tile.content_type)
     if hasattr(tile, 'content_encoding'):
