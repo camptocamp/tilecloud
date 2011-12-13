@@ -3,6 +3,7 @@
 import collections
 from itertools import ifilter, imap, islice
 import logging
+from operator import attrgetter
 import os.path
 import re
 
@@ -250,9 +251,7 @@ class TileStore(object):
 
     def get_bounding_pyramid(self):
         """Returns the bounding pyramid that encloses all tiles in the store"""
-        bounding_pyramid = BoundingPyramid()
-        consume((bounding_pyramid.add(tile.tilecoord) for tile in self.list() if tile is not None), None)
-        return bounding_pyramid
+        return reduce(BoundingPyramid.add, imap(attrgetter('tilecoord'), ifilter(None, self.list())), BoundingPyramid())
 
     def get_one(self, tile):
         """A function that gets the specified tile and its data from the store"""
