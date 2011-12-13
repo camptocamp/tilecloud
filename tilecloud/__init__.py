@@ -63,6 +63,7 @@ class Bounds(object):
         else:
             self.start = min(self.start, value)
             self.stop = max(self.stop, value + 1)
+        return self
 
     def update(self, other):
         if self.start is None:
@@ -71,6 +72,7 @@ class Bounds(object):
         else:
             self.start = min(self.start, other.start)
             self.stop = max(self.stop, other.stop)
+        return self
 
     def union(self, other):
         if self and other:
@@ -107,6 +109,7 @@ class BoundingPyramid(object):
             ybounds.add(tilecoord.y)
         else:
             self.bounds[tilecoord.z] = (Bounds(tilecoord.x), Bounds(tilecoord.y))
+        return self
 
     def filldown(self, bottom, start=None):
         if start is None:
