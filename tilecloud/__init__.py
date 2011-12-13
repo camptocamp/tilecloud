@@ -235,6 +235,12 @@ class TileStore(object):
         """A generator that returns all the tiles in the store with their data"""
         return imap(self.get_one, (tile for tile in self.list() if tile is not None))
 
+    def get_bounding_pyramid(self):
+        """Returns the bounding pyramid that encloses all tiles in the store"""
+        bounding_pyramid = BoundingPyramid()
+        consume((bounding_pyramid.add(tile.tilecoord) for tile in self.list() if tile is not None), None)
+        return bounding_pyramid
+
     def get_one(self, tile):
         """A function that gets the specified tile and its data from the store"""
         raise NotImplementedError

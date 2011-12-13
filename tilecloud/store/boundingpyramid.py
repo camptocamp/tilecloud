@@ -8,6 +8,9 @@ class BoundingPyramidTileStore(TileStore):
     def __init__(self, bounding_pyramid=None):
         self.bounding_pyramid = bounding_pyramid or BoundingPyramid()
 
+    def get_bounding_pyramid(self):
+        return self.bounding_pyramid
+
     def list(self):
         for tilecoord in self.bounding_pyramid:
             yield Tile(tilecoord)

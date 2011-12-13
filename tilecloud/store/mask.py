@@ -1,6 +1,6 @@
 import PIL.Image
 
-from tilecloud import Tile, TileCoord, TileStore
+from tilecloud import BoundingPyramid, Tile, TileCoord, TileStore
 
 
 class MaskTileStore(TileStore):
@@ -26,6 +26,9 @@ class MaskTileStore(TileStore):
             if 0 <= x < self.width and 0 <= y < self.height:
                 self.pixels[x, y] = 0
         return tile
+
+    def get_bounding_pyramid(self):
+        return BoundingPyramid({self.z: (self.xbounds, self.ybounds)})
 
     def list(self):
         for x in xrange(0, self.width):

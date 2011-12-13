@@ -3,7 +3,6 @@ Core
 
 * Add Makefile
 * Add TileStore.content_type
-* Add TileStore.get_bounding_pyramid
 * Generate BoundingPyramid from coordinates (pyproj)
 * Raise proper exceptions when TileLayout cannot convert
 
