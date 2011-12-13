@@ -58,6 +58,11 @@ def tile(index, z, x, y):
     return tile.data
 
 
+@bottle.route('/openlayers/build/<dir:re:img|theme>/<filename:path>')
+def openlayers(dir, filename):
+    return bottle.static_file(filename, root='./submodules/openlayers/%s/' % (dir,))
+
+
 @bottle.route('/openlayers/<filename:path>')
 def openlayers(filename):
     return bottle.static_file(filename, root='./submodules/openlayers')
@@ -66,7 +71,8 @@ def openlayers(filename):
 @bottle.route('/')
 @bottle.view('index')
 def index():
-    return dict(names=map(itemgetter(0), tile_stores))
+    debug = bottle.request.get('debug') is not None
+    return dict(debug=debug, names=map(itemgetter(0), tile_stores))
 
 
 if __name__ == '__main__':
