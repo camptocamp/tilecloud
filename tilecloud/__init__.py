@@ -132,12 +132,18 @@ class BoundingPyramid(object):
             for tilecoord in self.ziter(z):
                 yield tilecoord
 
+    def zget(self, z):
+        return self.bounds[z]
+
     def ziter(self, z):
         if z in self.bounds:
             xbounds, ybounds = self.bounds[z]
             for x in xbounds:
                 for y in ybounds:
                     yield TileCoord(z, x, y)
+
+    def zs(self):
+        return self.bounds.keys()
 
     @classmethod
     def from_string(cls, s):
