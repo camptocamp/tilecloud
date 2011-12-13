@@ -129,6 +129,7 @@ class MBTilesTileStore(TileStore):
     """A MBTiles tile store"""
 
     BOUNDING_PYRAMID_SQL = 'SELECT zoom_level, MIN(tile_column), MAX(tile_column) + 1, MIN(tile_row), MAX(tile_row) + 1 FROM tiles GROUP BY zoom_level ORDER BY zoom_level'
+    SET_METADATA_ZOOMS_SQL = 'SELECT MIN(zoom_level), MAX(zoom_level) FROM tiles'
 
     def __init__(self, connection, commit=True, **kwargs):
         self.connection = connection
@@ -171,3 +172,8 @@ class MBTilesTileStore(TileStore):
     def put_one(self, tile):
         self.tiles[tile.tilecoord] = getattr(tile, 'data', None)
         return tile
+
+    def set_metadata_zooms(self):
+        for minzoom, maxzoom in query(self.connection, self.SET_METADATA_ZOOMS_SQL):
+            self.metadata['minzoom'] = minzoom
+            self.metadata['maxzoom'] = maxzoom
