@@ -21,12 +21,12 @@
 			var map = new OpenLayers.Map({
 				div: "map"
 			});
-%for index, layer in enumerate(layers):
-			map.addLayer(new OpenLayers.Layer.XYZ('{{layer['name']}}', '/t/{{index}}/${z}/${x}/${y}', {
+%for index, name in enumerate(names):
+			map.addLayer(new OpenLayers.Layer.XYZ('{{name}}', '/t/{{index}}/${z}/${x}/${y}', {
 				sphericalMercator: true
 			}));
 %end
-%if len(layers) > 0:
+%if len(names) > 0:
 			map.addControl(new OpenLayers.Control.LayerSwitcher());
 %end
 			map.addControl(new OpenLayers.Control.MousePosition());

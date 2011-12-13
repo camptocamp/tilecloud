@@ -1,28 +1,40 @@
 #!/usr/bin/env python
 
 from cStringIO import StringIO
+from operator import itemgetter
+import os.path
+import sqlite3
+import sys
 
 import bottle
 import cairo
 
-from tilecloud import Tile, TileCoord
-from tilecloud.layout.i3d import I3DTileLayout
-from tilecloud.layout.osm import OSMTileLayout
-from tilecloud.layout.wrapped import WrappedTileLayout
-from tilecloud.store.s3 import S3TileStore
+from tilecloud import Tile, TileCoord, TileStore
+from tilecloud.store.mbtiles import MBTilesTileStore
 
 
 INSET = 4
 
 
 tile_stores = []
+for arg in sys.argv[1:]:
+    assert os.path.exists(arg)
+    root, ext = os.path.splitext(arg)
+    key = os.path.basename(root)
+    if ext == '.mbtiles':
+        value = MBTilesTileStore(sqlite3.connect(arg))
+    elif ext == '.py':
+        value = TileStore.load(arg)
+    else:
+        assert False # FIXME
+    tile_stores.append((key, value))
 
 
 @bottle.route('/t/<index:int>/<z:int>/<x:int>/<y:int>')
 def tile(index, z, x, y):
     if len(tile_stores) < index:
         bottle.abort(404)
-    tile = tile_stores[index].get_one(Tile(TileCoord(z, x, y)))
+    tile = tile_stores[index][1].get_one(Tile(TileCoord(z, x, y)))
     if tile is None:
         image_surface = cairo.ImageSurface(cairo.FORMAT_RGB24, 256, 256)
         context = cairo.Context(image_surface)
@@ -56,15 +68,7 @@ def openlayers(filename):
 @bottle.route('/')
 @bottle.view('index')
 def index():
-    layers = []
-    for tile_store in tile_stores:
-        layer = {'name': None}
-        if hasattr(tile_store, 'name'):
-            layer['name'] = tile_store.name
-        elif hasattr(tile_store, 'metadata'):
-            layer['name'] = tile_store.metadata.get('name', )
-        layers.append(layer)
-    return dict(layers=layers)
+    return dict(names=map(itemgetter(0), tile_stores))
 
 
 if __name__ == '__main__':
