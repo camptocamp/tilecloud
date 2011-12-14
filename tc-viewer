@@ -55,7 +55,7 @@ def tile(index, z, x, y, ext):
     if tile is None:
         tile = emptytile(tilecoord)
     if hasattr(tile, 'content_type'):
-        bottle.response.set_header('Content-Type', tile.content_type)
+        bottle.response.content_type = tile.content_type
     if hasattr(tile, 'content_encoding'):
         bottle.response.set_header('Content-Encoding', tile.content_encoding)
     return tile.data
