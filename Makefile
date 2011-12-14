@@ -20,6 +20,11 @@ mapbox.geography-class.mbtiles:
 mapbox.world-bank-borders-en.mbtiles:
 	curl http://a.tiles.mapbox.com/v3/$@ > $@
 
+.PHONY: pyflakes
+pyflakes:
+	find tilecloud -name \*.py | xargs pyflakes
+	pyflakes tc-*
+
 .PHONY: submodules
 submodules: \
 	boto \
