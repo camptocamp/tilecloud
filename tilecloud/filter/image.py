@@ -26,3 +26,20 @@ class ImageFormatConverter(object):
             tile.content_type = self.content_type
             tile.data = string_io.getvalue()
         return tile
+
+
+
+class PILImageFilter(object):
+
+    def __init__(self, filter, **kwargs):
+        self.filter = filter
+        self.kwargs = kwargs
+
+    def __call__(self, tile):
+        if hasattr(tile, 'data'):
+            image = PIL.Image.open(StringIO(tile.data))
+            image = image.filter(self.filter)
+            string_io = StringIO()
+            image.save(string_io, FORMAT_BY_CONTENT_TYPE[tile.content_type], **self.kwargs)
+            tile.data = string_io.getvalue()
+        return tile
