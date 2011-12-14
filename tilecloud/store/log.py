@@ -7,7 +7,8 @@ from tilecloud import Tile, TileStore
 class LogTileStore(TileStore):
     """Generates all tile coordinates matching the specified layout from lines"""
 
-    def __init__(self, tile_layout, lines=None):
+    def __init__(self, tile_layout, lines=None, **kwargs):
+        TileStore.__init__(self, **kwargs)
         self.tile_layout = tile_layout
         self.lines = lines
 

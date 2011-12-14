@@ -6,7 +6,8 @@ from tilecloud import TileStore
 
 class URLTileStore(TileStore):
 
-    def __init__(self, tile_layouts, headers=None):
+    def __init__(self, tile_layouts, headers=None, **kwargs):
+        TileStore.__init__(self, **kwargs)
         self.tile_layouts = tile_layouts
         self.headers = headers or {}
 

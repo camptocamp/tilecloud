@@ -9,7 +9,8 @@ from tilecloud import Tile, TileStore
 class FilesystemTileStore(TileStore):
     """Tiles stored in a filesystem"""
 
-    def __init__(self, tile_layout):
+    def __init__(self, tile_layout, **kwargs):
+        TileStore.__init__(self, **kwargs)
         self.tile_layout = tile_layout
 
     def delete_one(self, tile):

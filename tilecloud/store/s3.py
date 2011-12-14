@@ -46,7 +46,8 @@ class S3Bucket(object):
 class S3TileStore(TileStore):
     """Tiles stored in Amazon S3"""
 
-    def __init__(self, bucket_name, tile_layout, bucket=None, dry_run=False, s3connection=None, s3connection_factory=boto.s3.connection.S3Connection):
+    def __init__(self, bucket_name, tile_layout, bucket=None, dry_run=False, s3connection=None, s3connection_factory=boto.s3.connection.S3Connection, **kwargs):
+        TileStore.__init__(self, **kwargs)
         self.dry_run = dry_run
         self.s3bucket = S3Bucket(bucket_name, bucket=bucket, s3connection=s3connection, s3connection_factory=s3connection_factory)
         self.tile_layout = tile_layout

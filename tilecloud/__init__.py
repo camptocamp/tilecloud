@@ -235,6 +235,11 @@ class Tile(object):
 class TileStore(object):
     """A tile store"""
 
+    def __init__(self, content_type=None, **kwargs):
+        self.content_type = content_type
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
     def count(self):
         """Returns the total number of tiles in the store"""
         return reduce(lambda x, _: x + 1, ifilter(None, self.list()), 0)

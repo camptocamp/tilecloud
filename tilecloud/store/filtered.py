@@ -4,7 +4,8 @@ from tilecloud import TileStore
 
 class FilteredTileStore(TileStore):
 
-    def __init__(self, tile_store, filters):
+    def __init__(self, tile_store, filters, **kwargs):
+        TileStore.__init__(self, **kwargs)
         self.tile_store = tile_store
         self.filters = filters
 

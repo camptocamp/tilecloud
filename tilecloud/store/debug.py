@@ -8,7 +8,8 @@ from tilecloud import TileStore
 
 class DebugTileStore(TileStore):
 
-    def __init__(self, color=(0, 0, 0), transparent=True):
+    def __init__(self, color=(0, 0, 0), transparent=True, **kwargs):
+        TileStore.__init__(self, content_type='image/png', **kwargs)
         self.color = color
         self.inverse_color = tuple(1.0 - x for x in color)
         self.transparent = transparent

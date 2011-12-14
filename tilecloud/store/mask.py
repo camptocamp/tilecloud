@@ -6,7 +6,8 @@ from tilecloud import BoundingPyramid, Tile, TileCoord, TileStore
 class MaskTileStore(TileStore):
     """A black and white image representing present and absent tiles"""
 
-    def __init__(self, z, slices, file=None):
+    def __init__(self, z, slices, file=None, **kwargs):
+        TileStore.__init__(self, **kwargs)
         self.z = z
         self.xbounds, self.ybounds = slices
         self.width = self.xbounds.stop - self.xbounds.start
