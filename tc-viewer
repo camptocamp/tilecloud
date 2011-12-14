@@ -6,7 +6,7 @@ import sys
 
 import bottle
 
-from tilecloud import Tile, TileCoord, TileStore
+from tilecloud import Bounds, BoundingPyramid, Tile, TileCoord, TileStore
 from tilecloud.filter.contenttype import ContentTypeAdder
 
 
@@ -46,13 +46,19 @@ def openwebglobe_layersettings(index):
     if len(tile_stores) < index:
         bottle.abort(404)
     name, tile_store = tile_stores[index]
-    maxlod = 20 # FIXME maybe get from TileStore
-    format = 'jpg' # FIXME
-    if hasattr(tile_store, 'content_type') and tile_store.content_type is not None:
-        ext = mimetypes.guess_extension(tile_store.content_type)
-        if ext is not None and ext.startswith('.'):
-            format = ext[1:]
-    return dict(name=name, maxlod=maxlod, extent=[0, 0, 1 << maxlod, 1 << maxlod], type='image', format=format)
+    bounding_pyramid = getattr(tile_store, 'bounding_pyramid', BoundingPyramid({20: (Bounds(0, 1 << 20), Bounds(0, 1 << 20))}))
+    maxlod = max(bounding_pyramid.zs())
+    xbounds, ybounds = bounding_pyramid.zget(maxlod)
+    extent = [xbounds.start, ybounds.start, xbounds.stop, ybounds.stop]
+    content_type = getattr(tile_store, 'content_type', 'image/jpeg')
+    if content_type == 'application/json':
+        return dict(extent=extent, maxlod=maxlod, name=name, type='elevation')
+    elif content_type == 'image/jpeg' or tile_store.content_type is None:
+        return dict(extent=extent, format='jpg', maxlod=maxlod, name=name, type='image')
+    elif content_type == 'image/png':
+        return dict(extent=extent, format='png', maxlod=maxlod, name=name, type='image')
+    else:
+        assert False
 
 
 @bottle.route('/openlayers/build/<dir:re:img|theme>/<filename:path>')

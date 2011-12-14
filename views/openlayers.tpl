@@ -28,9 +28,11 @@
 				allOverlays: true
 			});
 %for index, (name, tile_store) in enumerate(tile_stores):
+%if tile_store.content_type is None or tile_store.content_type.startswith('image/'):
 			map.addLayer(new OpenLayers.Layer.XYZ('{{name}}', '/data/image/{{index}}/tiles/${z}/${x}/${y}', {
 				sphericalMercator: true
 			}));
+%end
 %end
 %if len(tile_stores) > 1:
 			map.addControl(new OpenLayers.Control.LayerSwitcher());

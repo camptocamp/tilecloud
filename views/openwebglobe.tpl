@@ -22,6 +22,13 @@
 			var context = ogCreateContextFromCanvas('canvas', true);
 			var globe = ogCreateGlobe(context);
 %for index, (name, tile_store) in enumerate(tile_stores):
+%if tile_store.content_type == 'application/json':
+			ogAddElevationLayer(globe, {
+				url: ['/data/image'],
+				layer: '{{index}}',
+				service: 'owg'
+			});
+%else:
 			ogAddImageLayer(globe, {
 				url: ['/data/image'],
 				layer: '{{index}}',
