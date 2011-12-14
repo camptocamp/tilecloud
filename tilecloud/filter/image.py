@@ -4,18 +4,19 @@ import PIL.Image
 
 
 
+FORMAT_BY_CONTENT_TYPE = {
+        'image/jpeg': 'JPEG',
+        'image/png': 'PNG'}
+
+
+
 class ImageFormatConverter(object):
     """A class that converts a tile into the desired format"""
 
     def __init__(self, content_type, **kwargs):
         self.content_type = content_type
         self.kwargs = kwargs
-        if self.content_type == 'image/jpeg':
-            self.format = 'JPEG'
-        elif content_type == 'image/png':
-            self.format = 'PNG'
-        else:
-            assert False
+        self.format = FORMAT_BY_CONTENT_TYPE[content_type]
 
     def __call__(self, tile):
         if not hasattr(tile, 'content_type') or tile.content_type != self.content_type:
