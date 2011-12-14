@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from cStringIO import StringIO
 import mimetypes
 from operator import itemgetter
 from optparse import OptionParser
@@ -8,7 +7,6 @@ import os.path
 import sys
 
 import bottle
-import cairo
 
 from tilecloud import Tile, TileCoord, TileStore
 from tilecloud.filter.contenttype import ContentTypeAdder
@@ -28,34 +26,14 @@ tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 content_type_adder = ContentTypeAdder()
 
 
-def emptytile(tilecoord, inset=4):
-    image_surface = cairo.ImageSurface(cairo.FORMAT_RGB24, 256, 256)
-    context = cairo.Context(image_surface)
-    context.set_source_rgb(1, 1, 1)
-    context.paint()
-    context.rectangle(0.5 + inset, 0.5 + inset, 256 - 2 * inset, 256 - 2 * inset)
-    context.set_source_rgb(0, 0, 0)
-    context.set_line_width(1)
-    context.stroke()
-    text = str(tilecoord)
-    extents = context.text_extents(text)
-    context.move_to(128.0 - extents[2] / 2.0, 128 - extents[3] / 2.0)
-    context.show_text(text)
-    context.fill()
-    string_io = StringIO()
-    image_surface.write_to_png(string_io)
-    return Tile(tilecoord, content_type='image/png', data=string_io.getvalue())
-
-
 @bottle.route('/data/image/<index:int>/tiles/<z:int>/<x:int>/<y:int><ext:re:.*>')
 def tile(index, z, x, y, ext):
     # FIXME check ext
     if len(tile_stores) < index:
         bottle.abort(404)
-    tilecoord = TileCoord(z, x, y)
-    tile = tile_stores[index][1].get_one(Tile(tilecoord))
+    tile = tile_stores[index][1].get_one(Tile(TileCoord(z, x, y)))
     if tile is None:
-        tile = emptytile(tilecoord)
+        bottle.abort(404)
     tile = content_type_adder(tile)
     if hasattr(tile, 'content_type'):
         bottle.response.content_type = tile.content_type
