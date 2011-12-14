@@ -178,6 +178,9 @@ class TileCoord(object):
         self.x = x
         self.y = y
 
+    def __hash__(self):
+        return (self.x << self.z) ^ self.y
+
     def __repr__(self):
         return '%s(%r, %r, %r)' % (self.__class__.__name__, self.z, self.x, self.y)
 
