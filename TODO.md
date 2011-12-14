@@ -1,7 +1,6 @@
 Core
 ----
 
-* Add TileStore.content_type
 * Generate BoundingPyramid from coordinates (pyproj)
 
 Viewer

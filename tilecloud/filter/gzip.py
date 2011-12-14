@@ -10,7 +10,8 @@ class GzipCompressor(object):
         self.compresslevel = compresslevel
 
     def __call__(self, tile):
-        assert hasattr(tile, 'data')
+        assert tile.data is not None
+        assert tile.content_encoding is None
         string_io = StringIO()
         gzip_file = GzipFile(compresslevel=self.compresslevel, fileobj=string_io, mode='w')
         gzip_file.write(tile.data)

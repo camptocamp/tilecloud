@@ -46,13 +46,11 @@ class FilesystemTileStore(TileStore):
                     yield Tile(tilecoord, path=path)
 
     def put_one(self, tile):
+        assert tile.data is not None
         filename = self.tile_layout.filename(tile.tilecoord)
         dirname = os.path.dirname(filename)
         if not os.path.exists(dirname):
             os.makedirs(dirname)
         with open(filename, 'w') as file:
-            if hasattr(tile, 'data'):
-                file.write(tile.data)
-            else:
-                assert False
+            file.write(tile.data)
         return tile

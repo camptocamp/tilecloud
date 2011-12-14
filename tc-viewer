@@ -35,9 +35,9 @@ def tile(index, z, x, y, ext):
     if tile is None:
         bottle.abort(404)
     tile = content_type_adder(tile)
-    if hasattr(tile, 'content_type'):
+    if tile.content_type is not None:
         bottle.response.content_type = tile.content_type
-    if hasattr(tile, 'content_encoding'):
+    if tile.content_encoding is not None:
         bottle.response.set_header('Content-Encoding', tile.content_encoding)
     bottle.response.content_length = len(tile.data)
     return tile.data

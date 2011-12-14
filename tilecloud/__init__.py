@@ -222,8 +222,11 @@ class TileLayout(object):
 class Tile(object):
     """An actual tile with optional metadata"""
 
-    def __init__(self, tilecoord, **kwargs):
+    def __init__(self, tilecoord, content_encoding=None, content_type=None, data=None, **kwargs):
         self.tilecoord = tilecoord
+        self.content_encoding = content_encoding
+        self.content_type = content_type
+        self.data = data
         for key, value in kwargs.items():
             setattr(self, key, value)
 

@@ -85,18 +85,16 @@ class S3TileStore(TileStore):
                 break
 
     def put_one(self, tile):
+        assert tile.data is not None
         key_name = self.tile_layout.filename(tile.tilecoord)
         for bucket in self.s3bucket.boto_is_braindead():
             s3key = bucket.new_key(key_name)
             headers = {}
-            if hasattr(tile, 'content_encoding'):
+            if tile.content_encoding is not None:
                 headers['Content-Encoding'] = tile.content_encoding
-            if hasattr(tile, 'content_type'):
+            if tile.content_type is not None:
                 headers['Content-Type'] = tile.content_type
-            if hasattr(tile, 'data'):
-                if not self.dry_run:
-                    s3key.set_contents_from_string(tile.data, headers)
-            else:
-                assert False
+            if not self.dry_run:
+                s3key.set_contents_from_string(tile.data, headers)
             return tile
 
