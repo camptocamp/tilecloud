@@ -1,6 +1,10 @@
 /*.py
+/bin
 /boto
 /bottle.py
+/distribute-*.tar.gz
+/include
+/lib
 *.jpg
 *.log
 *.mbtiles
