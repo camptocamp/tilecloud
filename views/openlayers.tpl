@@ -27,12 +27,12 @@
 				div: "map",
 				allOverlays: true
 			});
-%for index, name in enumerate(names):
+%for index, (name, tile_store) in enumerate(tile_stores):
 			map.addLayer(new OpenLayers.Layer.XYZ('{{name}}', '/data/image/{{index}}/tiles/${z}/${x}/${y}', {
 				sphericalMercator: true
 			}));
 %end
-%if len(names) > 1:
+%if len(tile_stores) > 1:
 			map.addControl(new OpenLayers.Control.LayerSwitcher());
 %end
 			map.addControl(new OpenLayers.Control.MousePosition());

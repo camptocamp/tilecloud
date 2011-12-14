@@ -21,12 +21,13 @@
 			ogSetArtworkDirectory('/openwebglobe/art/');
 			var context = ogCreateContextFromCanvas('canvas', true);
 			var globe = ogCreateGlobe(context);
-%for index, name in enumerate(names):
+%for index, (name, tile_store) in enumerate(tile_stores):
 			ogAddImageLayer(globe, {
 				url: ['/data/image'],
 				layer: '{{index}}',
 				service: 'owg'
 			});
+%end
 %end
 %if quality:
 			var scene = ogGetScene(context);
