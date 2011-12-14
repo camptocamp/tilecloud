@@ -8,7 +8,9 @@ class ContentTypeAdder(object):
         if self.content_type is None and tile.content_encoding is None:
             assert tile.data is not None
             data = str(tile.data)
-            if data.startswith('\x89PNG\x0d\x0a\x1a\x0a'):
+            if data.startswith('{'):
+                tile.content_type = 'application/json'
+            elif data.startswith('\x89PNG\x0d\x0a\x1a\x0a'):
                 tile.content_type = 'image/png'
             elif data.startswith('\xff\xd8'):
                 tile.content_type = 'image/jpeg'
