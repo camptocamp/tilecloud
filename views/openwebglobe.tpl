@@ -28,6 +28,11 @@
 				service: 'owg'
 			});
 %end
+%if quality:
+			var scene = ogGetScene(context);
+			var world = ogGetWorld(scene);
+			ogSetRenderQuality(world, {{quality}});
+%end
 		</script>
 	</body>
 </html>

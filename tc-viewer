@@ -81,7 +81,8 @@ def openwebglobe_static(dir, filename):
 @bottle.route('/openwebglobe')
 @bottle.view('openwebglobe')
 def openwebglobe():
-    return dict(debug=bottle.request.GET.get('debug'), names=map(itemgetter(0), tile_stores))
+    quality = float(bottle.request.GET.get('q')) if 'q' in bottle.request.GET else None
+    return dict(debug=bottle.request.GET.get('debug'), names=map(itemgetter(0), tile_stores), quality=quality)
 
 
 @bottle.route('/')
