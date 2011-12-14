@@ -9,9 +9,11 @@ import sys
 
 import bottle
 import cairo
+import PIL.ImageFilter
 
 from tilecloud import Tile, TileCoord, TileStore
 from tilecloud.filter.contenttype import ContentTypeAdder
+from tilecloud.filter.image import PILImageFilters
 
 
 option_parser = OptionParser()
@@ -26,6 +28,7 @@ if options.debug:
 
 tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 content_type_adder = ContentTypeAdder()
+blur = PILImageFilters(PIL.ImageFilter.BLUR)
 
 
 def emptytile(tilecoord, inset=4):
@@ -57,6 +60,7 @@ def tile(index, z, x, y, ext):
     if tile is None:
         tile = emptytile(tilecoord)
     tile = content_type_adder(tile)
+    tile = blur(tile)
     if hasattr(tile, 'content_type'):
         bottle.response.content_type = tile.content_type
     if hasattr(tile, 'content_encoding'):
