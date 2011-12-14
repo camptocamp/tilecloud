@@ -92,5 +92,4 @@ def index():
 
 
 if __name__ == '__main__':
-    bottle.DEBUG = True
     bottle.run(host=options.host, port=options.port, reloader=options.debug, quiet=options.quiet)
