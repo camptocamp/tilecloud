@@ -22,3 +22,11 @@ class GzipCompressor(object):
 
 
 
+class GzipDecompressor(object):
+
+    def __call__(self, tile):
+        assert tile.data is not None
+        if tile.content_encoding == 'gzip':
+            tile.content_encoding = None
+            tile.data = GzipFile(fileobj=StringIO(tile.data)).read()
+        return tile
