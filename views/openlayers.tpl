@@ -24,7 +24,8 @@
 		</div>
 		<script type="text/javascript">
 			var map = new OpenLayers.Map({
-				div: "map"
+				div: "map",
+				allOverlays: true
 			});
 %for index, name in enumerate(names):
 			map.addLayer(new OpenLayers.Layer.XYZ('{{name}}', '/data/image/{{index}}/tiles/${z}/${x}/${y}', {
