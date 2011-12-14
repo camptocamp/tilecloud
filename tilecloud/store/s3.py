@@ -64,7 +64,10 @@ class S3TileStore(TileStore):
         for bucket in self.s3bucket.boto_is_braindead():
             s3key = bucket.new_key(key_name)
             try:
-                return Tile(tile.tilecoord, data=s3key.read(), s3key=s3key)
+                tile.data = s3key.read()
+                tile.content_encoding = s3key.content_encoding
+                tile.content_type = s3key.content_type
+                return tile
             except boto.exception.S3ResponseError as exc:
                 if exc.status == 404:
                     return None
