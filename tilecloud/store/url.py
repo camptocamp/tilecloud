@@ -1,4 +1,4 @@
-from urllib2 import Request, urlopen
+from urllib2 import HTTPError, Request, urlopen
 
 from tilecloud import TileStore
 
@@ -14,11 +14,17 @@ class URLTileStore(TileStore):
         tile_layout = self.tile_layouts[hash(tile.tilecoord) % len(self.tile_layouts)]
         url = tile_layout.filename(tile.tilecoord)
         request = Request(url, headers=self.headers)
-        response = urlopen(url)
-        info = response.info()
-        if 'Content-Encoding' in info:
-            tile.content_encoding = info['Content-Encoding']
-        if 'Content-Type' in info:
-            tile.content_type = info['Content-Type']
-        tile.data = response.read()
-        return tile
+        try:
+            response = urlopen(url)
+            info = response.info()
+            if 'Content-Encoding' in info:
+                tile.content_encoding = info['Content-Encoding']
+            if 'Content-Type' in info:
+                tile.content_type = info['Content-Type']
+            tile.data = response.read()
+            return tile
+        except HTTPError as exc:
+            if exc.code == 404:
+                return None
+            else:
+                raise
