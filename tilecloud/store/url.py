@@ -15,7 +15,7 @@ class URLTileStore(TileStore):
         url = tile_layout.filename(tile.tilecoord)
         request = Request(url, headers=self.headers)
         try:
-            response = urlopen(url)
+            response = urlopen(request)
             info = response.info()
             if 'Content-Encoding' in info:
                 tile.content_encoding = info['Content-Encoding']
