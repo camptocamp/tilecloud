@@ -135,10 +135,8 @@ class MBTilesTileStore(TileStore):
     def __init__(self, connection, commit=True, **kwargs):
         self.connection = connection
         self.metadata = Metadata(self.connection, commit, **kwargs)
-        if 'format' in self.metadata:
+        if 'format' in self.metadata and self.content_type is None:
             self.content_type = mimetypes.types_map.get('.' + self.metadata['format'], None)
-        else:
-            self.content_type = None
         self.tiles = Tiles(self.connection, commit)
 
     def count(self):
