@@ -168,6 +168,12 @@ class BoundingPyramid(object):
                 result.fillup(z2)
         return result
 
+    @classmethod
+    def full(cls, zmin=None, zmax=None):
+        assert zmax is not None
+        zs = (zmax,) if zmin is None else xrange(zmin, zmax + 1)
+        return cls(dict((z, (Bounds(0, 1 << z), Bounds(0, 1 << z))) for z in zs))
+
 
 
 class TileCoord(object):
