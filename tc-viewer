@@ -64,19 +64,20 @@ def openwebglobe_layersettings(index):
 @bottle.route('/openlayers')
 @bottle.view('openlayers')
 def openlayers():
-    return dict(debug=bottle.request.GET.get('debug'), tile_stores=tile_stores)
+    return dict(tile_stores=tile_stores)
+
 
 @bottle.route('/leaflet')
 @bottle.view('leaflet')
 def leaflet():
-    return dict(debug=bottle.request.GET.get('debug'), tile_stores=tile_stores)
+    return dict(tile_stores=tile_stores)
 
 
 @bottle.route('/openwebglobe')
 @bottle.view('openwebglobe')
 def openwebglobe():
     quality = float(bottle.request.GET.get('q')) if 'q' in bottle.request.GET else None
-    return dict(debug=bottle.request.GET.get('debug'), quality=quality, tile_stores=tile_stores)
+    return dict(quality=quality, tile_stores=tile_stores)
 
 
 @bottle.route('/')
