@@ -40,7 +40,6 @@
 %if len(tile_stores) > 1:
 			map.addControl(new OpenLayers.Control.LayerSwitcher());
 %end
-			map.addControl(new OpenLayers.Control.MousePosition());
 			map.zoomToMaxExtent();
 		</script>
 	</body>
