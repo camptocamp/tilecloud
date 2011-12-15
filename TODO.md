@@ -15,7 +15,6 @@ TileStores
 
 * ThumbnailTileStore
 * WMSTileStore
-* TileJSONTileStore (https://github.com/mapbox/TileJSON)
 * Add WorldWindTileStore (http://worldwindcentral.com/wiki/TileService)
 * Add TMSTileStore (http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification)
 * Extend MaskTileStore to support BoundingPyramids
