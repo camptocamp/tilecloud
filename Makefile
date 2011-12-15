@@ -28,8 +28,7 @@ pyflakes:
 .PHONY: submodules
 submodules: \
 	boto \
-	bottle.py \
-	submodules/openlayers/build/OpenLayers.js
+	bottle.py
 
 boto: submodules/boto
 	ln -fs $</boto $@
@@ -42,9 +41,3 @@ bottle.py: submodules/bottle
 
 submodules/bottle: .gitmodules
 	git submodule update submodules/bottle
-
-submodules/openlayers/build/OpenLayers.js: submodules/openlayers
-	( cd submodules/openlayers/build && ./build.py )
-
-submodules/openlayers: .gitmodules
-	git submodule update submodules/openlayers

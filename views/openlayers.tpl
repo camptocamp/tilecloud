@@ -3,13 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-%if debug:
-		<link rel="stylesheet" href="/openlayers/theme/default/style.css" type="text/css">
-		<script type="text/javascript" src="/openlayers/lib/OpenLayers.js"></script>
-%else:
-		<script type="text/javascript" src="/openlayers/build/OpenLayers.js"></script>
-%end
-
+		<script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
 		<style type="text/css">
 			html, body, #map {
 				margin: 0;

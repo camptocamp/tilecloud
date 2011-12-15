@@ -1,6 +1,3 @@
-[submodule "submodules/openlayers"]
-	path = submodules/openlayers
-	url = https://github.com/openlayers/openlayers.git
 [submodule "submodules/bottle"]
 	path = submodules/bottle
 	url = https://github.com/defnull/bottle.git
