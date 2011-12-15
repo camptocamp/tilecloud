@@ -24,7 +24,7 @@
 %if tile_store.content_type is None or tile_store.content_type.startswith('image/'):
                         layer_names['{{name}}'] = new L.TileLayer('/data/image/{{index}}/tiles/{z}/{x}/{y}', {
 %if getattr(tile_store, 'attribution', None):
-                            attribution: '{{!tile_store.attribution}}',
+                            attribution: '{{!tile_store.attribution}}'
 %end
                         });
                         map.addLayer(layer_names['{{name}}']);
