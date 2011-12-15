@@ -29,7 +29,6 @@ pyflakes:
 submodules: \
 	boto \
 	bottle.py \
-	submodules/WebViewer/compiled/owg-optimized.js \
 	submodules/openlayers/build/OpenLayers.js
 
 boto: submodules/boto
@@ -43,12 +42,6 @@ bottle.py: submodules/bottle
 
 submodules/bottle: .gitmodules
 	git submodule update submodules/bottle
-
-submodules/WebViewer/compiled/owg-optimized.js: submodules/WebViewer
-	( cd submodules/WebViewer/scripts && make )
-
-submodules/WebViewer: .gitmodules
-	git submodule update submodules/WebViewer
 
 submodules/openlayers/build/OpenLayers.js: submodules/openlayers
 	( cd submodules/openlayers/build && ./build.py )

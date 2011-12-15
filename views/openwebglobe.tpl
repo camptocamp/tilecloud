@@ -3,13 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-%if debug:
-		<script type="text/javascript" src="/openwebglobe/external/closure-library/closure/goog/base.js"></script>
-		<script type="text/javascript" src="/openwebglobe/compiled/deps.js"></script>
-		<script type="text/javascript">goog.require('owg.OpenWebGlobe');</script>
-%else:
-		<script type="text/javascript" src="/openwebglobe/compiled/owg-optimized.js"></script>
-%end
+		<script type="text/javascript" src="http://www.openwebglobe.org/beta/externals/openwebglobe_0.7.3.js"></script>
 		<title>TileCloud</title>
 	</head>
 	<body>
@@ -18,7 +12,7 @@
 			</canvas>
 		</div>
 		<script type="text/javascript">
-			ogSetArtworkDirectory('/openwebglobe/art/');
+			ogSetArtworkDirectory('http://www.openwebglobe.org/art/');
 			var context = ogCreateContextFromCanvas('canvas', true);
 			var globe = ogCreateGlobe(context);
 %for index, (name, tile_store) in enumerate(tile_stores):

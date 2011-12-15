@@ -7,6 +7,3 @@
 [submodule "submodules/boto"]
 	path = submodules/boto
 	url = https://github.com/boto/boto.git
-[submodule "submodules/WebViewer"]
-	path = submodules/WebViewer
-	url = https://github.com/OpenWebGlobe/WebViewer.git
