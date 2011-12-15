@@ -4,7 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 		<script type="text/javascript" src="http://www.openwebglobe.org/beta/externals/openwebglobe_0.7.3.js"></script>
-		<title>TileCloud</title>
+		<title>OpenWebGlobe - TileCloud</title>
 	</head>
 	<body>
 		<div style="width: 100%; height: 100%;">
