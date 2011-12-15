@@ -61,16 +61,6 @@ def openwebglobe_layersettings(index):
         assert False
 
 
-@bottle.route('/openlayers/build/<dir:re:img|theme>/<filename:path>')
-def openlayers_build_static(dir, filename):
-    return bottle.static_file(filename, root='./submodules/openlayers/%s/' % (dir,))
-
-
-@bottle.route('/openlayers/<filename:path>')
-def openlayers_static(filename):
-    return bottle.static_file(filename, root='./submodules/openlayers')
-
-
 @bottle.route('/openlayers')
 @bottle.view('openlayers')
 def openlayers():
@@ -80,11 +70,6 @@ def openlayers():
 @bottle.view('leaflet')
 def leaflet():
     return dict(debug=bottle.request.GET.get('debug'), tile_stores=tile_stores)
-
-
-@bottle.route('/openwebglobe/<dir:re:art|compiled|external|source>/<filename:path>')
-def openwebglobe_static(dir, filename):
-    return bottle.static_file(filename, root='./submodules/WebViewer/%s/' % (dir,))
 
 
 @bottle.route('/openwebglobe')
