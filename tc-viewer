@@ -76,6 +76,11 @@ def openlayers_static(filename):
 def openlayers():
     return dict(debug=bottle.request.GET.get('debug'), tile_stores=tile_stores)
 
+@bottle.route('/leaflet')
+@bottle.view('leaflet')
+def leaflet():
+    return dict(debug=bottle.request.GET.get('debug'), tile_stores=tile_stores)
+
 
 @bottle.route('/openwebglobe/<dir:re:art|compiled|external|source>/<filename:path>')
 def openwebglobe_static(dir, filename):
