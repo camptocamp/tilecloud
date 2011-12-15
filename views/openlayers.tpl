@@ -30,6 +30,9 @@
 %for index, (name, tile_store) in enumerate(tile_stores):
 %if tile_store.content_type is None or tile_store.content_type.startswith('image/'):
 			map.addLayer(new OpenLayers.Layer.XYZ('{{name}}', '/data/image/{{index}}/tiles/${z}/${x}/${y}', {
+%if getattr(tile_store, 'attribution', None):
+				attribution: '{{!tile_store.attribution}}',
+%end
 				sphericalMercator: true
 			}));
 %end
