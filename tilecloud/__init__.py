@@ -150,6 +150,10 @@ class BoundingPyramid(object):
         return self.bounds.keys()
 
     @classmethod
+    def from_spherical_mercator(cls, zmin, zmax, xmin, xmax, ymin, ymax):
+        raise NotImplementedError # FIXME
+
+    @classmethod
     def from_string(cls, s):
         match = re.match(r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):(?:(?P<z2>\d+)/)?(?P<plusx>\+)?(?P<x2>\d+)/(?P<plusy>\+)?(?P<y2>\d+)\Z', s)
         if not match:
