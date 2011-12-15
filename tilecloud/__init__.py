@@ -291,13 +291,13 @@ class TileStore(object):
         raise NotImplementedError
 
     @classmethod
-    def load(cls, filename):
-        root, ext = os.path.splitext(filename)
-        if ext == '.py':
-            return getattr(__import__(re.sub(r'/', '.', os.path.normpath(root))), 'tile_store')
-        elif ext == '.mbtiles':
+    def load(cls, name):
+        root, ext = os.path.splitext(name)
+        if ext == '.mbtiles':
             import sqlite3
             from tilecloud.store.mbtiles import MBTilesTileStore
-            return MBTilesTileStore(sqlite3.connect(filename))
-        else:
-            raise ValueError, 'invalid literal for %s.load(): %r' %  (cls.__name__, filename)
+            return MBTilesTileStore(sqlite3.connect(name))
+        module = __import__(name)
+        components = name.split('.')
+        module = reduce(lambda module, attr: getattr(module, attr), components[1:], module)
+        return getattr(module, 'tile_store')
