@@ -133,12 +133,12 @@ class MBTilesTileStore(TileStore):
     SET_METADATA_ZOOMS_SQL = 'SELECT MIN(zoom_level), MAX(zoom_level) FROM tiles'
 
     def __init__(self, connection, commit=True, **kwargs):
-        TileStore.__init__(self, **kwargs)
         self.connection = connection
         self.metadata = Metadata(self.connection, commit)
-        if 'format' in self.metadata and self.content_type is None:
-            self.content_type = mimetypes.types_map.get('.' + self.metadata['format'], None)
         self.tiles = Tiles(self.connection, commit)
+        if 'content_type' not in kwargs and 'format' in self.metadata:
+            kwargs['content_type'] = mimetypes.types_map.get('.' + self.metadata['format'], None)
+        TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile):
         if self.bounding_pyramid is not None:
