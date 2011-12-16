@@ -2,6 +2,10 @@
 
 all: submodules example-data
 
+.PHONY: clean
+clean:
+	find tilecloud tiles -name \*.pyc | xargs rm -f
+
 example-data: \
 	mapbox.haiti-terrain-grey.mbtiles \
 	mapbox.control-room.mbtiles \
