@@ -22,7 +22,7 @@ mapbox.world-bank-borders-en.mbtiles:
 
 .PHONY: pyflakes
 pyflakes:
-	find tilecloud -name \*.py | xargs pyflakes
+	find tilecloud tiles -name \*.py | xargs pyflakes
 	pyflakes tc-*
 
 .PHONY: submodules
