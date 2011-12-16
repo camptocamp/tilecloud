@@ -1,14 +1,7 @@
-Core
-----
-
-* Generate BoundingPyramid from coordinates (pyproj)
-
 Viewer
 ------
 
-* Generate semi-transparent TileCoord tiles
 * Generate KML layer
-* Add OpenWebGlobe elevation layers
 
 TileStores
 ----------
