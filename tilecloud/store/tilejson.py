@@ -4,6 +4,7 @@ import json
 import mimetypes
 import os.path
 import re
+from urllib2 import urlopen
 from urlparse import urlparse
 
 from tilecloud import BoundingPyramid
@@ -40,3 +41,7 @@ class TileJSONTileStore(URLTileStore):
         templates = [re.sub(r'\{([xyz])\}', lambda m: '%%(%s)d' % m.group(1), url) for url in urls]
         tile_layouts = map(TemplateTileLayout, templates)
         URLTileStore.__init__(self, tile_layouts, **kwargs)
+
+    @classmethod
+    def from_url(cls, url):
+        return cls(urlopen(url).read())
