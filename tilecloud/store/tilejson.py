@@ -18,8 +18,6 @@ class TileJSONTileStore(URLTileStore):
         # FIXME schema
         # FIXME version 1.0.0 support
         d = json.loads(tile_json)
-        assert 'tilejson' in d
-        assert d['tilejson'] == '2.0.0'
         assert 'tiles' in d
         assert isinstance(d['tiles'], list)
         assert len(d['tiles']) > 0
