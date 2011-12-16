@@ -26,8 +26,8 @@ class TileJSONTileStore(URLTileStore):
         if 'bounding_pyramid' not in kwargs:
             zmin, zmax = d.get('minzoom', 0), d.get('maxzoom', 22)
             if 'bounds' in d:
-                xmin, ymin, xmax, ymax = d['bounds']
-                bounding_pyramid = BoundingPyramid.from_spherical_mercator(zmin, zmax, xmin, xmax, ymin, ymax)
+                lonmin, latmin, lonmax, latmax = d['bounds']
+                bounding_pyramid = BoundingPyramid.from_wgs84(zmin, zmax, lonmin, lonmax, latmin, latmax)
             else:
                 bounding_pyramid = BoundingPyramid.full(zmin, zmax)
             kwargs['bounding_pyramid'] = bounding_pyramid
