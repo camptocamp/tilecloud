@@ -5,10 +5,17 @@ from itertools import ifilter, imap, islice
 import logging
 from operator import attrgetter
 import os.path
+import pyproj
 import re
 
 
 logger = logging.getLogger(__name__)
+
+
+SPHERICAL_MERCATOR = pyproj.Proj(init='epsg:3857')
+SPHERICAL_MERCATOR_ORIGIN = 20037508.34
+WGS84 = pyproj.Proj(init='epsg:4326')
+
 
 
 # http://docs.python.org/library/itertools.html
@@ -150,8 +157,14 @@ class BoundingPyramid(object):
         return self.bounds.keys()
 
     @classmethod
-    def from_spherical_mercator(cls, zmin, zmax, xmin, xmax, ymin, ymax):
-        raise NotImplementedError # FIXME
+    def from_wgs84(cls, zmin, zmax, lonmin, lonmax, latmin, latmax):
+        bounds = {}
+        for z in xrange(zmin, zmax + 1):
+            tilecoords = [TileCoord.from_wgs84(z, lon, lat) for lon in (lonmin, lonmax) for lat in (latmin, latmax)]
+            xs = [tilecoord.x for tilecoord in tilecoords]
+            ys = [tilecoord.y for tilecoord in tilecoords]
+            bounds[z] = (Bounds(min(xs), max(x + 1 for x in xs)), Bounds(min(ys), max(y + 1 for y in ys)))
+        return cls(bounds)
 
     @classmethod
     def from_string(cls, s):
@@ -203,6 +216,12 @@ class TileCoord(object):
     @classmethod
     def from_normalized_coord(cls, z, xy):
         return cls(z, int(xy[0] * (1 << z)), int(xy[1] * (1 << z)))
+
+    @classmethod
+    def from_wgs84(cls, z, lon, lat, f=int):
+        x, y = pyproj.transform(WGS84, SPHERICAL_MERCATOR, lon, lat)
+        d = (1 << z - 1) / SPHERICAL_MERCATOR_ORIGIN
+        return cls(z, int(d * (x + SPHERICAL_MERCATOR_ORIGIN)), int(d * (SPHERICAL_MERCATOR_ORIGIN - y)))
 
 
 
