@@ -12,6 +12,9 @@ class URLTileStore(TileStore):
         self.headers = headers or {}
 
     def get_one(self, tile):
+        if self.bounding_pyramid is not None:
+            if tile.tilecoord not in self.bounding_pyramid:
+                return None
         tile_layout = self.tile_layouts[hash(tile.tilecoord) % len(self.tile_layouts)]
         url = tile_layout.filename(tile.tilecoord)
         request = Request(url, headers=self.headers)

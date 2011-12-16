@@ -264,10 +264,17 @@ class Tile(object):
 class TileStore(object):
     """A tile store"""
 
-    def __init__(self, content_type=None, **kwargs):
+    def __init__(self, bounding_pyramid=None, content_type=None, **kwargs):
+        self.bounding_pyramid = bounding_pyramid
         self.content_type = content_type
         for key, value in kwargs.items():
             setattr(self, key, value)
+
+    def __contains__(self, tile):
+        if self.bounding_pyramid is None:
+            return True
+        else:
+            return tile.tilecoord in self.bounding_pyramid
 
     def count(self):
         """Returns the total number of tiles in the store"""
@@ -292,6 +299,10 @@ class TileStore(object):
     def get_bounding_pyramid(self):
         """Returns the bounding pyramid that encloses all tiles in the store"""
         return reduce(BoundingPyramid.add, imap(attrgetter('tilecoord'), ifilter(None, self.list())), BoundingPyramid())
+
+    def get_cheap_bounding_pyramid(self):
+        """Returns a bounding pyramid that is cheap to calculate, or None if it is not possible to calculate a bounding pyramid cheaply"""
+        return None
 
     def get_one(self, tile):
         """A function that gets the specified tile and its data from the store"""

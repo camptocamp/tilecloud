@@ -14,7 +14,11 @@ def main(argv):
     for arg in args:
         tile_store = TileStore.load(arg)
         if options.tiles == 'bounding-pyramid':
-            bounding_pyramid = tile_store.get_bounding_pyramid()
+            bounding_pyramid = tile_store.bounding_pyramid
+            if bounding_pyramid is None:
+                bounding_pyramid = tile_store.get_cheap_bounding_pyramid()
+            if bounding_pyramid is None:
+                bounding_pyramid = tile.get_bounding_pyramid()
             for z in sorted(bounding_pyramid.zs()):
                 xbounds, ybounds = bounding_pyramid.zget(z)
                 if options.relative:

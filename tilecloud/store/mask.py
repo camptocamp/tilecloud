@@ -6,12 +6,14 @@ from tilecloud import BoundingPyramid, Tile, TileCoord, TileStore
 class MaskTileStore(TileStore):
     """A black and white image representing present and absent tiles"""
 
-    def __init__(self, z, slices, file=None, **kwargs):
+    def __init__(self, z, bounds, file=None, **kwargs):
         TileStore.__init__(self, **kwargs)
         self.z = z
-        self.xbounds, self.ybounds = slices
+        self.xbounds, self.ybounds = bounds
         self.width = self.xbounds.stop - self.xbounds.start
         self.height = self.ybounds.stop - self.ybounds.start
+        if 'bounding_pyramid' not in kwargs:
+            self.bounding_pyramid = BoundingPyramid({self.z: (self.xbounds, self.ybounds)})
         if file:
             self.image = PIL.Image.open(file)
             assert self.image.mode == '1'
@@ -27,9 +29,6 @@ class MaskTileStore(TileStore):
             if 0 <= x < self.width and 0 <= y < self.height:
                 self.pixels[x, y] = 0
         return tile
-
-    def get_bounding_pyramid(self):
-        return BoundingPyramid({self.z: (self.xbounds, self.ybounds)})
 
     def list(self):
         for x in xrange(0, self.width):

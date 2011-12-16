@@ -140,14 +140,14 @@ class MBTilesTileStore(TileStore):
             self.content_type = mimetypes.types_map.get('.' + self.metadata['format'], None)
         self.tiles = Tiles(self.connection, commit)
 
+    def __contains__(self, tile):
+        if self.bounding_pyramid is not None:
+            if tile.tilecoord not in self.bounding_pyramid:
+                return False
+        return tile.tilecoord in self.tiles
+
     def count(self):
         return query(self.connection, self.COUNT_SQL).next()[0]
-
-    def get_bounding_pyramid(self):
-        bounds = {}
-        for z, xstart, xstop, ystart, ystop in query(self.connection, self.BOUNDING_PYRAMID_SQL):
-            bounds[z] = (Bounds(xstart, xstop), Bounds(ystart, ystop))
-        return BoundingPyramid(bounds)
 
     def delete_one(self, tile):
         del self.tiles[tile.tilecoord]
@@ -160,7 +160,16 @@ class MBTilesTileStore(TileStore):
                 tile.content_type = self.content_type
             yield tile
 
+    def get_cheap_bounding_pyramid(self):
+        bounds = {}
+        for z, xstart, xstop, ystart, ystop in query(self.connection, self.BOUNDING_PYRAMID_SQL):
+            bounds[z] = (Bounds(xstart, xstop), Bounds(ystart, ystop))
+        return BoundingPyramid(bounds)
+
     def get_one(self, tile):
+        if self.bounding_pyramid is not None:
+            if tile.tilecoord not in self.bounding_pyramid:
+                return None
         try:
             tile = Tile(tile.tilecoord, data=self.tiles[tile.tilecoord])
         except KeyError:

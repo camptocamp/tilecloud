@@ -46,7 +46,11 @@ def openwebglobe_layersettings(index):
     if len(tile_stores) < index:
         bottle.abort(404)
     name, tile_store = tile_stores[index]
-    bounding_pyramid = getattr(tile_store, 'bounding_pyramid', BoundingPyramid({20: (Bounds(0, 1 << 20), Bounds(0, 1 << 20))}))
+    bounding_pyramid = tile_store.bounding_pyramid
+    if bounding_pyramid is None:
+        bounding_pyramid = tile_store.get_cheap_bounding_pyramid()
+    if bounding_pyramid is None:
+        bounding_pyramid = BoundingPyramid({20: (Bounds(0, 1 << 20), Bounds(0, 1 << 20))})
     maxlod = max(bounding_pyramid.zs())
     xbounds, ybounds = bounding_pyramid.zget(maxlod)
     extent = [xbounds.start, ybounds.start, xbounds.stop, ybounds.stop]

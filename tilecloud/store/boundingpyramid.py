@@ -9,7 +9,7 @@ class BoundingPyramidTileStore(TileStore):
         TileStore.__init__(self, **kwargs)
         self.bounding_pyramid = bounding_pyramid or BoundingPyramid()
 
-    def get_bounding_pyramid(self):
+    def get_cheap_bounding_pyramid(self):
         return self.bounding_pyramid
 
     def list(self):
