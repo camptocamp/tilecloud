@@ -30,18 +30,11 @@ pyflakes:
 	pyflakes tc-*
 
 .PHONY: submodules
-submodules: \
-	boto \
-	bottle.py
-
-boto: submodules/boto
-	ln -fs $</boto $@
-
-submodules/boto: .gitmodules
-	git submodule update submodules/boto
+submodules: bottle.py
 
 bottle.py: submodules/bottle
 	ln -fs $</bottle.py $@
 
 submodules/bottle: .gitmodules
 	git submodule update submodules/bottle
+	git submodule init

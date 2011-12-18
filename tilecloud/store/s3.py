@@ -1,10 +1,8 @@
 import logging
 from ssl import SSLError
 
-import boto.s3.connection
-import boto.exception
-
 from tilecloud import Tile, TileStore
+from tilecloud.lib.s3 import S3Connection, S3Error
 
 
 
@@ -12,93 +10,56 @@ logger = logging.getLogger(__name__)
 
 
 
-class S3Bucket(object):
-    """Provides a more robust wrapper around braindead boto's boto.s3.Bucket"""
-
-    def __init__(self, name, bucket=None, s3connection=None, s3connection_factory=boto.s3.connection.S3Connection):
-        self.name = name
-        self.s3connection_factory = s3connection_factory
-        self.bucket = bucket
-        self.s3connection = s3connection
-
-    def boto_is_braindead(self):
-        """Keeps yielding buckets until one doesn't raise an SSLError"""
-        while True:
-            try:
-                if not self.bucket:
-                    if not self.s3connection:
-                        assert callable(self.s3connection_factory)
-                        self.s3connection = self.s3connection_factory()
-                    assert self.name
-                    self.bucket = self.s3connection.get_bucket(self.name)
-                yield self.bucket
-                break
-            except SSLError as exc:
-                logger.warning(exc)
-                if callable(self.s3connection_factory) and self.name:
-                    self.s3connection = None
-                    self.bucket = None
-                else:
-                    raise
-
-
 
 class S3TileStore(TileStore):
     """Tiles stored in Amazon S3"""
 
-    def __init__(self, bucket_name, tile_layout, bucket=None, dry_run=False, s3connection=None, s3connection_factory=boto.s3.connection.S3Connection, **kwargs):
-        TileStore.__init__(self, **kwargs)
-        self.dry_run = dry_run
-        self.s3bucket = S3Bucket(bucket_name, bucket=bucket, s3connection=s3connection, s3connection_factory=s3connection_factory)
+    def __init__(self, bucket, tile_layout, dry_run=False, **kwargs):
+        self.s3bucket = S3Connection().bucket(bucket)
         self.tile_layout = tile_layout
+        self.dry_run = dry_run
+        TileStore.__init__(self, **kwargs)
 
     def delete_one(self, tile):
         key_name = self.tile_layout.filename(tile.tilecoord)
-        for bucket in self.s3bucket.boto_is_braindead():
-            if not self.dry_run:
-                bucket.delete_key(key_name)
-            return tile
+        if not self.dry_run:
+            self.s3bucket.delete(key_name)
+        return tile
 
     def get_one(self, tile):
         key_name = self.tile_layout.filename(tile.tilecoord)
-        for bucket in self.s3bucket.boto_is_braindead():
-            s3key = bucket.new_key(key_name)
-            try:
-                tile.data = s3key.read()
-                tile.content_encoding = s3key.content_encoding
-                tile.content_type = s3key.content_type
-                return tile
-            except boto.exception.S3ResponseError as exc:
-                if exc.status == 404:
-                    return None
-                else:
-                    raise
+        try:
+            s3key = self.s3bucket.get(key_name)
+            tile.data = s3key.body
+            if 'Content-Encoding' in s3key:
+                tile.content_encoding = s3key['Content-Encoding']
+            else:
+                tile.content_encoding = None
+            if 'Content-Type' in s3key:
+                tile.content_type = s3key['Content-Type']
+            else:
+                tile.content_type = None
+            return tile
+        except S3Error as exc:
+            if exc.response.status == 404:
+                return None
+            else:
+                raise
 
     def list(self):
         prefix = getattr(self.tile_layout, 'prefix', '')
-        marker = ''
-        while True:
-            for bucket in self.s3bucket.boto_is_braindead():
-                s3keys = bucket.get_all_keys(prefix=prefix, marker=marker)
-                break
-            for s3key in s3keys:
-                yield Tile(self.tile_layout.tilecoord(s3key.name), s3key=s3key)
-            if s3keys.is_truncated:
-                marker = s3key.name
-            else:
-                break
+        for s3key in self.s3bucket.list_objects(prefix=prefix):
+            yield Tile(self.tile_layout.tilecoord(s3key.name), s3key=s3key)
 
     def put_one(self, tile):
         assert tile.data is not None
         key_name = self.tile_layout.filename(tile.tilecoord)
-        for bucket in self.s3bucket.boto_is_braindead():
-            s3key = bucket.new_key(key_name)
-            headers = {}
-            if tile.content_encoding is not None:
-                headers['Content-Encoding'] = tile.content_encoding
-            if tile.content_type is not None:
-                headers['Content-Type'] = tile.content_type
-            if not self.dry_run:
-                s3key.set_contents_from_string(tile.data, headers)
-            return tile
-
+        s3key = self.s3bucket.key(key_name)
+        s3key.body = tile.data
+        if tile.content_encoding is not None:
+            s3key['Content-Encoding'] = tile.content_encoding
+        if tile.content_type is not None:
+            s3key['Content-Type'] = tile.content_type
+        if not self.dry_run:
+            s3key.put()
+        return tile
