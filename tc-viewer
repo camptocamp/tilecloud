@@ -15,10 +15,17 @@ option_parser.add_option('--debug', action='store_true', default=False)
 option_parser.add_option('--host', default='127.0.0.1', metavar='HOST')
 option_parser.add_option('--port', default=8080, metavar='PORT', type=int)
 option_parser.add_option('--quiet', action='store_true', default=False)
+option_parser.add_option('--server', metavar='SERVER')
 options, args = option_parser.parse_args(sys.argv[1:])
 
 if options.debug:
     bottle.DEBUG = True
+if options.server is None:
+    try:
+        import tornado.wsgi, tornado.httpserver, tornado.ioloop
+        options.server = 'tornado'
+    except ImportError:
+        options.server = 'wsgiref'
 
 tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 content_type_adder = ContentTypeAdder()
@@ -96,4 +103,4 @@ def index():
 
 
 if __name__ == '__main__':
-    bottle.run(host=options.host, port=options.port, reloader=options.debug, quiet=options.quiet)
+    bottle.run(host=options.host, port=options.port, reloader=options.debug, quiet=options.quiet, server=options.server)
