@@ -84,6 +84,11 @@ def openwebglobe():
     return dict(quality=quality, tile_stores=tile_stores)
 
 
+@bottle.route('/favicon.ico')
+def favicon():
+    return bottle.static_file('favicon.ico', root='static')
+
+
 @bottle.route('/')
 @bottle.view('index')
 def index():
