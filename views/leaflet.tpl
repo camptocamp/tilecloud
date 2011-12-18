@@ -19,14 +19,18 @@
                 </div>
                 <script type="text/javascript">
                         var map = new L.Map('map');
-                        var lnames = {};
+                        var layer_names = {};
 %for index, (name, tile_store) in enumerate(tile_stores):
 %if tile_store.content_type is None or tile_store.content_type.startswith('image/'):
-                        lnames['{{name}}'] = new L.TileLayer('/data/image/{{index}}/tiles/{z}/{x}/{y}');
-                        map.addLayer(lnames['{{name}}']);
+                        layer_names['{{name}}'] = new L.TileLayer('/data/image/{{index}}/tiles/{z}/{x}/{y}', {
+%if getattr(tile_store, 'attribution', None):
+                            attribution: '{{!tile_store.attribution}}'
+%end
+                        });
+                        map.addLayer(layer_names['{{name}}']);
 %end
 %end
-                        var layersControl = new L.Control.Layers({}, lnames);
+                        var layersControl = new L.Control.Layers({}, layer_names);
                         map.addControl(layersControl);
                         map.setView(new L.LatLng(0, 0), 0);
                 </script>
