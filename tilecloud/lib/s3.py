@@ -76,13 +76,12 @@ class S3Error(RuntimeError):
 
     def __init__(self, method, url, body, headers, response):
         self.method = method
-        self.method = method
         self.url = url
         self.body = body
         self.headers = headers
-        self.body = response.read()
         self.response = response
-        self.etree = ElementTree.fromstring(self.body)
+        self.response_body = self.response.read()
+        self.etree = ElementTree.fromstring(self.response_body)
         for key in 'Code Error Message RequestId Resource'.split():
             element = self.etree.find(key)
             setattr(self, key.lower(), None if element is None else element.text)
