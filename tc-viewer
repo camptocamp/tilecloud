@@ -2,6 +2,7 @@
 
 from optparse import OptionParser
 import os.path
+import re
 import sys
 
 import bottle
@@ -12,6 +13,7 @@ from tilecloud.filter.contenttype import ContentTypeAdder
 
 option_parser = OptionParser()
 option_parser.add_option('--debug', action='store_true', default=False)
+option_parser.add_option('--root', metavar='Z/X/Y')
 option_parser.add_option('--host', default='127.0.0.1', metavar='HOST')
 option_parser.add_option('--port', default=8080, metavar='PORT', type=int)
 option_parser.add_option('--quiet', action='store_true', default=False)
@@ -20,6 +22,11 @@ options, args = option_parser.parse_args(sys.argv[1:])
 
 if options.debug:
     bottle.DEBUG = True
+if options.root:
+    match = re.match(r'(\d+)/(\d+)/(\d+)\Z', options.root)
+    root = TileCoord(*map(int, match.groups()))
+else:
+    root = TileCoord(0, 0, 0)
 if options.server is None:
     try:
         import tornado.wsgi, tornado.httpserver, tornado.ioloop
@@ -36,7 +43,7 @@ def tile(index, z, x, y, ext):
     # FIXME check ext
     if len(tile_stores) < index:
         bottle.abort(404)
-    tile = tile_stores[index][1].get_one(Tile(TileCoord(z, x, y)))
+    tile = tile_stores[index][1].get_one(Tile(TileCoord(z + root.z, x + root.x * (1 << z), y + root.y * (1 << z))))
     if tile is None:
         bottle.abort(404)
     tile = content_type_adder(tile)
