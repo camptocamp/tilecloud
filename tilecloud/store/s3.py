@@ -28,14 +28,14 @@ class S3TileStore(TileStore):
     def get_one(self, tile):
         key_name = self.tile_layout.filename(tile.tilecoord)
         try:
-            s3key = self.s3bucket.get(key_name)
-            tile.data = s3key.body
-            if 'Content-Encoding' in s3key:
-                tile.content_encoding = s3key['Content-Encoding']
+            tile.s3key = self.s3bucket.get(key_name)
+            tile.data = tile.s3key.body
+            if 'Content-Encoding' in tile.s3key:
+                tile.content_encoding = tile.s3key['Content-Encoding']
             else:
                 tile.content_encoding = None
-            if 'Content-Type' in s3key:
-                tile.content_type = s3key['Content-Type']
+            if 'Content-Type' in tile.s3key:
+                tile.content_type = tile.s3key['Content-Type']
             else:
                 tile.content_type = None
             return tile
