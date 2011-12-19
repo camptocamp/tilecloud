@@ -52,7 +52,7 @@ def main(argv):
     tilestream = bounding_pyramid_tile_store.list()
     done_tilecoordtuples = set(tile.tilecoord.tuple() for tile in done_tile_store.list())
     tilestream = (tile for tile in tilestream if tile.tilecoord.tuple() not in done_tilecoordtuples)
-    tilestream = multiprocessing.pool(8).imap_unordered(convert_to_jpeg_and_put_if_not_transparent, tilestream)
+    tilestream = multiprocessing.Pool(8).imap_unordered(convert_to_jpeg_and_put_if_not_transparent, tilestream)
     tilestream = imap(Logger(logger, logging.INFO, 'wrote %(tilecoord)s'), tilestream)
     tilestream = done_tile_store.put(tilestream)
     consume(tilestream, None)
