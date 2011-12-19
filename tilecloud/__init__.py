@@ -213,9 +213,16 @@ class TileCoord(object):
     def normalize(self):
         return (float(self.x) / (1 << self.z), float(self.y) / (1 << self.z))
 
+    def tuple(self):
+        return (self.z, self.x, self.y)
+
     @classmethod
     def from_normalized_coord(cls, z, xy):
         return cls(z, int(xy[0] * (1 << z)), int(xy[1] * (1 << z)))
+
+    @classmethod
+    def from_tuple(cls, tpl):
+        return cls(*tpl)
 
     @classmethod
     def from_wgs84(cls, z, lon, lat, f=int):
