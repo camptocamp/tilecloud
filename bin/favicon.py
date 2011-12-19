@@ -1,7 +1,7 @@
 import math
 
 import cairo
-from shapely.geometry import LineString, Point, Polygon
+from shapely.geometry import Point, Polygon
 from shapely.ops import cascaded_union
 
 def box(minx, miny, maxx, maxy):
