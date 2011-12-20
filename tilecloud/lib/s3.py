@@ -3,7 +3,7 @@ from base64 import b64encode
 from datetime import datetime
 import hashlib
 import hmac
-from httplib import HTTPConnection
+import httplib
 from itertools import imap
 import logging
 from operator import itemgetter
@@ -237,7 +237,7 @@ class S3Connection(object):
         while True:
             try:
                 if self.connection is None:
-                    self.connection = HTTPConnection(self.host)
+                    self.connection = httplib.HTTPConnection(self.host)
                 self.connection.request(method, url, body, headers)
                 response = self.connection.getresponse()
                 if response.status not in xrange(200, 300):
