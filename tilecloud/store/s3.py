@@ -1,3 +1,4 @@
+import httplib
 import logging
 
 from tilecloud import Tile, TileStore
@@ -18,6 +19,17 @@ class S3TileStore(TileStore):
         self.tile_layout = tile_layout
         self.dry_run = dry_run
         TileStore.__init__(self, **kwargs)
+
+    def __contains__(self, tile):
+        key_name = self.tile_layout.filename(tile.tilecoord)
+        try:
+            s3key = self.s3bucket.head(key_name)
+            return True
+        except S3Error as exc:
+            if exc.response.status == httplib.NOT_FOUND:
+                return False
+            else:
+                raise
 
     def delete_one(self, tile):
         key_name = self.tile_layout.filename(tile.tilecoord)
@@ -40,7 +52,7 @@ class S3TileStore(TileStore):
                 tile.content_type = None
             return tile
         except S3Error as exc:
-            if exc.response.status == 404:
+            if exc.response.status == httplib.NOT_FOUND:
                 return None
             else:
                 raise

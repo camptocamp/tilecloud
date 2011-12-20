@@ -3,7 +3,7 @@ from base64 import b64encode
 from datetime import datetime
 import hashlib
 import hmac
-from httplib import HTTPConnection
+import httplib
 from itertools import imap
 import logging
 from operator import itemgetter
@@ -81,11 +81,14 @@ class S3Error(RuntimeError):
         self.headers = headers
         self.response = response
         self.response_body = self.response.read()
-        self.etree = ElementTree.fromstring(self.response_body)
-        for key in 'Code Error Message RequestId Resource'.split():
-            element = self.etree.find(key)
-            setattr(self, key.lower(), None if element is None else element.text)
-        RuntimeError.__init__(self, '%s: %s' % (self.code, self.message))
+        if self.response_body:
+            self.etree = ElementTree.fromstring(self.response_body)
+            for key in 'Code Error Message RequestId Resource'.split():
+                element = self.etree.find(key)
+                setattr(self, key.lower(), None if element is None else element.text)
+            RuntimeError.__init__(self, '%s: %s' % (self.code, self.message))
+        else:
+            RuntimeError.__init__(self, '%d %s' % (self.response.status, httplib.responses[self.response.status]))
 
 
 
@@ -237,7 +240,7 @@ class S3Connection(object):
         while True:
             try:
                 if self.connection is None:
-                    self.connection = HTTPConnection(self.host)
+                    self.connection = httplib.HTTPConnection(self.host)
                 self.connection.request(method, url, body, headers)
                 response = self.connection.getresponse()
                 if response.status not in xrange(200, 300):
