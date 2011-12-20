@@ -230,7 +230,7 @@ class TileCoord(object):
             return cls(0, 0, 0)
         x, y = pyproj.transform(WGS84, SPHERICAL_MERCATOR, lon, lat)
         d = (1 << z - 1) / SPHERICAL_MERCATOR_ORIGIN
-        return cls(z, int(d * (x + SPHERICAL_MERCATOR_ORIGIN)), int(d * (SPHERICAL_MERCATOR_ORIGIN - y)))
+        return cls(z, f(d * (x + SPHERICAL_MERCATOR_ORIGIN)), f(d * (SPHERICAL_MERCATOR_ORIGIN - y)))
 
 
 
