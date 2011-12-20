@@ -81,11 +81,14 @@ class S3Error(RuntimeError):
         self.headers = headers
         self.response = response
         self.response_body = self.response.read()
-        self.etree = ElementTree.fromstring(self.response_body)
-        for key in 'Code Error Message RequestId Resource'.split():
-            element = self.etree.find(key)
-            setattr(self, key.lower(), None if element is None else element.text)
-        RuntimeError.__init__(self, '%s: %s' % (self.code, self.message))
+        if self.response_body:
+            self.etree = ElementTree.fromstring(self.response_body)
+            for key in 'Code Error Message RequestId Resource'.split():
+                element = self.etree.find(key)
+                setattr(self, key.lower(), None if element is None else element.text)
+            RuntimeError.__init__(self, '%s: %s' % (self.code, self.message))
+        else:
+            RuntimeError.__init__(self, '%d %s' % (self.response.status, httplib.responses[self.response.status]))
 
 
 
