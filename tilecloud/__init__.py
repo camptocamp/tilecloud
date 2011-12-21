@@ -225,7 +225,7 @@ class TileCoord(object):
         return cls(*tpl)
 
     @classmethod
-    def from_wgs84(cls, z, lon, lat, f=int):
+    def from_wgs84(cls, z, lon, lat):
         if z == 0:
             return cls(0, 0, 0)
         x, y = pyproj.transform(WGS84, SPHERICAL_MERCATOR, lon, lat)
