@@ -4,8 +4,28 @@ from optparse import OptionParser
 import os.path
 import sqlite3
 import sys
+import textwrap
 
 from tilecloud.store.mbtiles import Metadata, Tiles
+
+
+BOUNDING_PYRAMID_SQL = textwrap.dedent('''\
+    SELECT
+        zoom_level,
+        MIN(tile_column),
+        MIN(tile_row),
+        MAX(tile_column),
+        MAX(tile_row),
+        COUNT(zoom_level),
+        (MAX(tile_column) - MIN(tile_column) + 1) *
+         (MAX(tile_row) - MIN(tile_row) + 1)
+    FROM
+        tiles
+    GROUP BY
+        zoom_level
+    ORDER BY
+        zoom_level
+    ''')
 
 
 def main(argv):
@@ -26,7 +46,7 @@ def main(argv):
                 print len(Tiles(connection))
             elif options.tiles == 'bounding-pyramid':
                 cursor = connection.cursor()
-                cursor.execute('SELECT zoom_level, MIN(tile_column), MIN(tile_row), MAX(tile_column), MAX(tile_row), COUNT(zoom_level), (MAX(tile_column) - MIN(tile_column) + 1) * (MAX(tile_row) - MIN(tile_row) + 1) FROM tiles GROUP BY zoom_level ORDER BY zoom_level')
+                cursor.execute(BOUNDING_PYRAMID_SQL)
                 for row in cursor:
                     if row[5] == row[6]:
                         extra = ''
