@@ -297,7 +297,8 @@ class TileStore(object):
         return reduce(lambda x, _: x + 1, ifilter(None, self.list()), 0)
 
     def delete(self, tiles):
-        """A generator that has the side effect of deleting the specified tiles from the store"""
+        """A generator that has the side effect of deleting the specified tiles
+           from the store"""
         return imap(self.delete_one, ifilter(None, tiles))
 
     def delete_one(self, tile):
@@ -305,11 +306,13 @@ class TileStore(object):
         raise NotImplementedError
 
     def get(self, tiles):
-        """A generator that returns the specified tiles and their data from the store"""
+        """A generator that returns the specified tiles and their data from the
+           store"""
         return imap(self.get_one, ifilter(None, tiles))
 
     def get_all(self):
-        """A generator that returns all the tiles in the store with their data"""
+        """A generator that returns all the tiles in the store with their
+           data"""
         return imap(self.get_one, ifilter(None, self.list()))
 
     def get_bounding_pyramid(self):
@@ -320,19 +323,23 @@ class TileStore(object):
                       BoundingPyramid())
 
     def get_cheap_bounding_pyramid(self):
-        """Returns a bounding pyramid that is cheap to calculate, or None if it is not possible to calculate a bounding pyramid cheaply"""
+        """Returns a bounding pyramid that is cheap to calculate, or None if it
+           is not possible to calculate a bounding pyramid cheaply"""
         return None
 
     def get_one(self, tile):
-        """A function that gets the specified tile and its data from the store"""
+        """A function that gets the specified tile and its data from the
+           store"""
         raise NotImplementedError
 
     def list(self):
-        """A generator that returns the tiles in the store without necessarily retrieving their data"""
+        """A generator that returns the tiles in the store without necessarily
+           retrieving their data"""
         raise NotImplementedError
 
     def put(self, tiles):
-        """A generator that has the side effect of putting the specified tiles in the store"""
+        """A generator that has the side effect of putting the specified tiles
+           in the store"""
         return imap(self.put_one, ifilter(None, tiles))
 
     def put_one(self, tile):
