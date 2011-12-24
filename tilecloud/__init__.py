@@ -59,7 +59,8 @@ class Bounds(object):
         if self.start is None:
             return '%s(None)' % (self.__class__.__name__,)
         else:
-            return '%s(%r, %r)' % (self.__class__.__name__, self.start, self.stop)
+            return '%s(%r, %r)' % (self.__class__.__name__,
+                                   self.start, self.stop)
 
     def add(self, value):
         if self.start is None:
@@ -81,7 +82,8 @@ class Bounds(object):
 
     def union(self, other):
         if self and other:
-            return Bounds(min(self.start, other.start), max(self.start, other.start))
+            return Bounds(min(self.start, other.start),
+                          max(self.start, other.start))
         elif self:
             return Bounds(self.start, self.stop)
         elif other:
@@ -105,7 +107,8 @@ class BoundingPyramid(object):
         return self.itertopdown()
 
     def __len__(self):
-        return sum(len(xbounds) * len(ybounds) for xbounds, ybounds in self.bounds.itervalues())
+        return sum(len(xbounds) * len(ybounds)
+                   for xbounds, ybounds in self.bounds.itervalues())
 
     def add(self, tilecoord):
         if tilecoord.z in self.bounds:
@@ -113,7 +116,8 @@ class BoundingPyramid(object):
             xbounds.add(tilecoord.x)
             ybounds.add(tilecoord.y)
         else:
-            self.bounds[tilecoord.z] = (Bounds(tilecoord.x), Bounds(tilecoord.y))
+            self.bounds[tilecoord.z] = (Bounds(tilecoord.x),
+                                        Bounds(tilecoord.y))
         return self
 
     def filldown(self, bottom, start=None):
@@ -157,10 +161,13 @@ class BoundingPyramid(object):
     def from_wgs84(cls, zmin, zmax, lonmin, lonmax, latmin, latmax):
         bounds = {}
         for z in xrange(zmin, zmax + 1):
-            tilecoords = [TileCoord.from_wgs84(z, lon, lat) for lon in (lonmin, lonmax) for lat in (latmin, latmax)]
+            tilecoords = [TileCoord.from_wgs84(z, lon, lat)
+                          for lon in (lonmin, lonmax)
+                          for lat in (latmin, latmax)]
             xs = [tilecoord.x for tilecoord in tilecoords]
             ys = [tilecoord.y for tilecoord in tilecoords]
-            bounds[z] = (Bounds(min(xs), max(x + 1 for x in xs)), Bounds(min(ys), max(y + 1 for y in ys)))
+            bounds[z] = (Bounds(min(xs), max(x + 1 for x in xs)),
+                         Bounds(min(ys), max(y + 1 for y in ys)))
         return cls(bounds)
 
     @classmethod
@@ -186,8 +193,8 @@ class BoundingPyramid(object):
     def full(cls, zmin=None, zmax=None):
         assert zmax is not None
         zs = (zmax,) if zmin is None else xrange(zmin, zmax + 1)
-        return cls(dict((z, (Bounds(0, 1 << z), Bounds(0, 1 << z))) for z in zs))
-
+        return cls(dict((z, (Bounds(0, 1 << z), Bounds(0, 1 << z)))
+                        for z in zs))
 
 
 class TileCoord(object):
@@ -202,7 +209,8 @@ class TileCoord(object):
         return (self.x << self.z) ^ self.y
 
     def __repr__(self):
-        return '%s(%r, %r, %r)' % (self.__class__.__name__, self.z, self.x, self.y)
+        return '%s(%r, %r, %r)' % (self.__class__.__name__,
+                                   self.z, self.x, self.y)
 
     def __str__(self):
         return '%d/%d/%d' % (self.z, self.x, self.y)
@@ -227,8 +235,9 @@ class TileCoord(object):
             return cls(0, 0, 0)
         x, y = pyproj.transform(WGS84, SPHERICAL_MERCATOR, lon, lat)
         d = (1 << z - 1) / SPHERICAL_MERCATOR_ORIGIN
-        return cls(z, int(d * (x + SPHERICAL_MERCATOR_ORIGIN)), int(d * (SPHERICAL_MERCATOR_ORIGIN - y)))
-
+        return cls(z,
+                   int(d * (x + SPHERICAL_MERCATOR_ORIGIN)),
+                   int(d * (SPHERICAL_MERCATOR_ORIGIN - y)))
 
 
 class TileLayout(object):
@@ -256,7 +265,8 @@ class TileLayout(object):
 class Tile(object):
     """An actual tile with optional metadata"""
 
-    def __init__(self, tilecoord, content_encoding=None, content_type=None, data=None, **kwargs):
+    def __init__(self, tilecoord, content_encoding=None, content_type=None,
+                 data=None, **kwargs):
         self.tilecoord = tilecoord
         self.content_encoding = content_encoding
         self.content_type = content_type
@@ -302,7 +312,10 @@ class TileStore(object):
 
     def get_bounding_pyramid(self):
         """Returns the bounding pyramid that encloses all tiles in the store"""
-        return reduce(BoundingPyramid.add, imap(attrgetter('tilecoord'), ifilter(None, self.list())), BoundingPyramid())
+        return reduce(BoundingPyramid.add,
+                      imap(attrgetter('tilecoord'),
+                           ifilter(None, self.list())),
+                      BoundingPyramid())
 
     def get_cheap_bounding_pyramid(self):
         """Returns a bounding pyramid that is cheap to calculate, or None if it is not possible to calculate a bounding pyramid cheaply"""
@@ -333,5 +346,7 @@ class TileStore(object):
             return MBTilesTileStore(sqlite3.connect(name))
         module = __import__(name)
         components = name.split('.')
-        module = reduce(lambda module, attr: getattr(module, attr), components[1:], module)
+        module = reduce(lambda module, attr: getattr(module, attr),
+                        components[1:],
+                        module)
         return getattr(module, 'tile_store')

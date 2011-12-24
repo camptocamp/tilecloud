@@ -14,7 +14,9 @@ class WrappedTileLayout(object):
         self.filename_re = re.compile(''.join((prefix_re, r'(', self.tile_layout.pattern, r')', suffix_re, r'\Z')))
 
     def filename(self, tilecoord):
-        return ''.join((self.prefix, self.tile_layout.filename(tilecoord), self.suffix))
+        return ''.join((self.prefix,
+                        self.tile_layout.filename(tilecoord),
+                        self.suffix))
 
     def tilecoord(self, filename):
         match = self.filename_re.match(filename)

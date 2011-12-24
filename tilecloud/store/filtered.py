@@ -9,4 +9,6 @@ class FilteredTileStore(TileStore):
         self.filters = filters
 
     def get_one(self, tile):
-        return reduce(lambda tile, filter: filter(tile), self.filters, self.tile_store.get_one(tile))
+        return reduce(lambda tile, filter: filter(tile),
+                      self.filters,
+                      self.tile_store.get_one(tile))

@@ -10,4 +10,7 @@ class FindFirstTileStore(TileStore):
         self.tile_stores = tile_stores
 
     def get_one(self, tile):
-        return next(ifilter(None, (store.get_one(tile) for store in self.tile_stores)), None)
+        return next(ifilter(None,
+                            (store.get_one(tile)
+                                for store in self.tile_stores)),
+                    None)

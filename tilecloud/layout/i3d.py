@@ -13,10 +13,12 @@ class I3DTileLayout(TileLayout):
         TileLayout.__init__(self, self.PATTERN, self.RE)
 
     def filename(self, tilecoord):
-        return '/'.join(re.findall(r'[0-3]{1,2}', I3DTileLayout.quadcode_from_tilecoord(tilecoord)))
+        return '/'.join(re.findall(r'[0-3]{1,2}',
+                        I3DTileLayout.quadcode_from_tilecoord(tilecoord)))
 
     def _tilecoord(self, match):
-        return I3DTileLayout.tilecoord_from_quadcode(re.sub(r'/', '', match.group()))
+        return I3DTileLayout.tilecoord_from_quadcode(
+                re.sub(r'/', '', match.group()))
 
     @staticmethod
     def quadcode_from_tilecoord(tilecoord):

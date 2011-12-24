@@ -12,7 +12,9 @@ class GzipCompressor(object):
         assert tile.data is not None
         assert tile.content_encoding is None
         string_io = StringIO()
-        gzip_file = GzipFile(compresslevel=self.compresslevel, fileobj=string_io, mode='w')
+        gzip_file = GzipFile(compresslevel=self.compresslevel,
+                             fileobj=string_io,
+                             mode='w')
         gzip_file.write(tile.data)
         gzip_file.close()
         tile.content_encoding = 'gzip'

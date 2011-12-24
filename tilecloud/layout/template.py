@@ -23,7 +23,8 @@ class TemplateTileLayout(TileLayout):
         TileLayout.__init__(self, pattern, filename_re)
 
     def filename(self, tilecoord):
-        return self.template % dict(z=tilecoord.z, x=tilecoord.x, y=tilecoord.y)
+        return self.template % \
+                dict(z=tilecoord.z, x=tilecoord.x, y=tilecoord.y)
 
     def _tilecoord(self, match):
         return TileCoord(*(int(match.group(s)) for s in 'zxy'))

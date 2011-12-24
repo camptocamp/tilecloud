@@ -20,7 +20,9 @@ class SQLiteDict(UserDict.DictMixin):
         self.update(kwargs)
 
     def __contains__(self, key):
-        return query(self.connection, self.CONTAINS_SQL, self._packkey(key)).fetchone()[0]
+        return query(self.connection,
+                     self.CONTAINS_SQL,
+                     self._packkey(key)).fetchone()[0]
 
     def __delitem__(self, key):
         query(self.connection, self.DELITEM_SQL, self._packkey(key))
@@ -28,7 +30,9 @@ class SQLiteDict(UserDict.DictMixin):
             self.connection.commit()
 
     def __getitem__(self, key):
-        row = query(self.connection, self.GETITEM_SQL, self._packkey(key)).fetchone()
+        row = query(self.connection,
+                    self.GETITEM_SQL,
+                    self._packkey(key)).fetchone()
         if row is None:
             raise KeyError, key
         return self._unpackvalue(row)
@@ -45,10 +49,14 @@ class SQLiteDict(UserDict.DictMixin):
             self.connection.commit()
 
     def iteritems(self):
-        return imap(self._unpackitem, query(self.connection, self.ITERITEMS_SQL))
+        return imap(self._unpackitem,
+                    query(self.connection,
+                    self.ITERITEMS_SQL))
 
     def itervalues(self):
-        return imap(self._unpackvalue, query(self.connection, self.ITERVALUES_SQL))
+        return imap(self._unpackvalue,
+                    query(self.connection,
+                    self.ITERVALUES_SQL))
 
     def keys(self):
         return list(iter(self))

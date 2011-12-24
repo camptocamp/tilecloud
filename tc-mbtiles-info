@@ -11,7 +11,8 @@ from tilecloud.store.mbtiles import Metadata, Tiles
 def main(argv):
     option_parser = OptionParser()
     option_parser.add_option('-m', '--metadata', action='store_true')
-    option_parser.add_option('-t', '--tiles', choices=('bounding-pyramid', 'count', 'list'))
+    option_parser.add_option('-t', '--tiles',
+                             choices=('bounding-pyramid', 'count', 'list'))
     options, args = option_parser.parse_args(argv[1:])
     for arg in args:
         assert os.path.exists(arg)
@@ -28,7 +29,8 @@ def main(argv):
                 cursor.execute('SELECT zoom_level, MIN(tile_column), MIN(tile_row), MAX(tile_column), MAX(tile_row), COUNT(zoom_level), (MAX(tile_column) - MIN(tile_column) + 1) * (MAX(tile_row) - MIN(tile_row) + 1) FROM tiles GROUP BY zoom_level ORDER BY zoom_level')
                 for row in cursor:
                     extra = ' # %+d' % (row[5] - row[6]) if row[5] != row[6] else ''
-                    print '%d/%d/%d:%d/%d%s' % (row[0], row[1], row[2], row[3], row[4], extra)
+                    print '%d/%d/%d:%d/%d%s' % (row[0], row[1], row[2], row[3],
+                                                row[4], extra)
             elif options.tiles == 'list':
                 for key in Tiles(connection):
                     print '%d/%d/%d' % (key.z, key.x, key.y)

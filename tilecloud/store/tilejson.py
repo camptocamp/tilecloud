@@ -27,7 +27,9 @@ class TileJSONTileStore(URLTileStore):
             zmin, zmax = d.get('minzoom', 0), d.get('maxzoom', 22)
             if 'bounds' in d:
                 lonmin, latmin, lonmax, latmax = d['bounds']
-                bounding_pyramid = BoundingPyramid.from_wgs84(zmin, zmax, lonmin, lonmax, latmin, latmax)
+                bounding_pyramid = BoundingPyramid.from_wgs84(zmin, zmax,
+                                                              lonmin, lonmax,
+                                                              latmin, latmax)
             else:
                 bounding_pyramid = BoundingPyramid.full(zmin, zmax)
             kwargs['bounding_pyramid'] = bounding_pyramid
@@ -37,7 +39,8 @@ class TileJSONTileStore(URLTileStore):
             content_types = set(mimetypes.types_map.get(ext) for ext in exts)
             assert len(content_types) == 1
             kwargs['content_type'] = content_types.pop()
-        templates = [re.sub(r'\{([xyz])\}', lambda m: '%%(%s)d' % m.group(1), url) for url in urls]
+        templates = [re.sub(r'\{([xyz])\}', lambda m: '%%(%s)d' % m.group(1), url)
+                     for url in urls]
         tile_layouts = map(TemplateTileLayout, templates)
         URLTileStore.__init__(self, tile_layouts, **kwargs)
 

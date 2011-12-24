@@ -23,14 +23,16 @@ def main(argv):
     option_parser = OptionParser()
     option_parser.add_option('--bounds', metavar='Z1/X1/Y1:(Z2/)?X2/Y2')
     option_parser.add_option('--bucket', dest='bucket_name', metavar='BUCKET')
-    option_parser.add_option('--layout', choices=tile_layouts.keys(), dest='tile_layout')
+    option_parser.add_option('--layout', choices=tile_layouts.keys(),
+                             dest='tile_layout')
     option_parser.add_option('--limit', metavar='LIMIT', type=int)
     option_parser.add_option('--output', default=':memory:', metavar='TILESET')
     option_parser.add_option('--prefix', default='', metavar='STRING')
     option_parser.add_option('--store', choices=tile_stores)
     option_parser.add_option('--suffix', default='', metavar='STRING')
     option_parser.add_option('--name', metavar='NAME')
-    option_parser.add_option('--type', default='baselayer', choices=('baselayer', 'overlay'))
+    option_parser.add_option('--type', default='baselayer',
+                             choices=('baselayer', 'overlay'))
     option_parser.add_option('--version', metavar='VERSION')
     option_parser.add_option('--description', metavar='DESCRIPTION')
     option_parser.add_option('--format', metavar='FORMAT')
@@ -38,7 +40,8 @@ def main(argv):
     assert options.store
     tile_layout = tile_layouts[options.tile_layout]()
     if options.prefix or options.suffix:
-        tile_layout = WrappedTileLayout(tile_layout, options.prefix, options.suffix)
+        tile_layout = WrappedTileLayout(tile_layout, options.prefix,
+                                        options.suffix)
     if options.store == 'filesystem':
         store = FilesystemTileStore(tile_layout)
     elif options.store == 'log':

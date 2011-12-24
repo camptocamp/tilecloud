@@ -34,7 +34,8 @@ class HeaderDict(UserDict.DictMixin):
         if items is None:
             self.items = {}
         elif isinstance(items, dict):
-            self.items = dict((k.lower(), (k, v)) for k, v in items.iteritems())
+            self.items = dict((k.lower(), (k, v))
+                              for k, v in items.iteritems())
         else:
             self.items = dict((k.lower(), (k, v)) for k, v in items)
 
@@ -82,11 +83,13 @@ class S3Error(RuntimeError):
             self.etree = ElementTree.fromstring(self.response_body)
             for key in 'Code Error Message RequestId Resource'.split():
                 element = self.etree.find(key)
-                setattr(self, key.lower(), None if element is None else element.text)
+                setattr(self, key.lower(),
+                        None if element is None else element.text)
             RuntimeError.__init__(self, '%s: %s' % (self.code, self.message))
         else:
-            RuntimeError.__init__(self, '%d %s' % (self.response.status, httplib.responses[self.response.status]))
-
+            RuntimeError.__init__(self,
+                                  '%d %s' % (self.response.status,
+                                             httplib.responses[self.response.status]))
 
 
 class S3Key(object):
@@ -185,7 +188,8 @@ class S3Connection(object):
     CREATION_DATE_PATH = namespacify('CreationDate')
     NAME_PATH = namespacify('Name')
 
-    def __init__(self, host='s3.amazonaws.com', access_key=None, secret_access_key=None):
+    def __init__(self, host='s3.amazonaws.com',
+                 access_key=None, secret_access_key=None):
         self.host = host
         self.access_key = access_key
         if self.access_key is None:
@@ -200,7 +204,9 @@ class S3Connection(object):
         self.connection = None
 
     def bucket(self, bucket_name, **kwargs):
-        connection = S3Connection('.'.join((bucket_name, self.host)), self.access_key, self.secret_access_key)
+        connection = S3Connection('.'.join((bucket_name, self.host)),
+                                           self.access_key,
+                                           self.secret_access_key)
         return S3Bucket(bucket_name, connection, **kwargs)
 
     def buckets(self):
@@ -209,7 +215,9 @@ class S3Connection(object):
         for bucket_element in etree.findall(self.BUCKETS_BUCKET_PATH):
             bucket_name = bucket_element.find(self.NAME_PATH).text
             kwargs = {}
-            kwargs['creation_date'] = parse_timestamp(bucket_element.find(self.CREATION_DATE_PATH).text)
+            kwargs['creation_date'] = \
+                    parse_timestamp(bucket_element.find(
+                        self.CREATION_DATE_PATH).text)
             yield self.bucket(bucket_name, **kwargs)
 
     def delete(self, bucket_name=None, url=None, headers=None):
@@ -227,11 +235,14 @@ class S3Connection(object):
             headers['Content-MD5'] = b64encode(hashlib.md5(body).digest())
         return self.request('PUT', bucket_name, url, body=body, headers=headers)
 
-    def request(self, method, bucket_name=None, url=None, headers=None, body=None, sub_resources=None):
+    def request(self, method, bucket_name=None, url=None, headers=None,
+                body=None, sub_resources=None):
         headers = HeaderDict() if headers is None else headers.copy()
         if 'x-amz-date' not in headers:
-            headers['x-amz-date'] = datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S +0000')
-        headers['Authorization'] = self.sign(method, bucket_name, url, headers, sub_resources)
+            headers['x-amz-date'] = \
+                    datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S +0000')
+        headers['Authorization'] = self.sign(method, bucket_name, url, headers,
+                                             sub_resources)
         while True:
             try:
                 if self.connection is None:
@@ -247,7 +258,8 @@ class S3Connection(object):
                 logger.warn(exc)
                 self.connection = None
 
-    def sign(self, method, bucket_name=None, url=None, headers=None, sub_resources=None):
+    def sign(self, method, bucket_name=None, url=None, headers=None,
+             sub_resources=None):
         headers = HeaderDict() if headers is None else headers.copy()
         string_to_sign = []
         string_to_sign.append('%s\n' % (method,))

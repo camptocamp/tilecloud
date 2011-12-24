@@ -26,12 +26,14 @@ SCALE = (SIZE - 2 * TRANSLATE) / 6.0
 image_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, SIZE, SIZE)
 context = cairo.Context(image_surface)
 context.scale(1, -1)
-context.translate(0, -SIZE)
+context.translate(0, - SIZE)
 for i, coord in enumerate(cloud.exterior.coords):
     if i == 0:
-        context.move_to(SCALE * coord[0] + TRANSLATE, SCALE * coord[1] + 2 * TRANSLATE)
+        context.move_to(SCALE * coord[0] + TRANSLATE,
+                        SCALE * coord[1] + 2 * TRANSLATE)
     else:
-        context.line_to(SCALE * coord[0] + TRANSLATE, SCALE * coord[1] + 2 * TRANSLATE)
+        context.line_to(SCALE * coord[0] + TRANSLATE,
+                        SCALE * coord[1] + 2 * TRANSLATE)
 context.close_path()
 context.set_source_rgb(1, 1, 1)
 context.fill_preserve()

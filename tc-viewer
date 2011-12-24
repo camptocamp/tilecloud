@@ -38,7 +38,8 @@ tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 content_type_adder = ContentTypeAdder()
 
 
-@bottle.route('/data/image/<index:int>/tiles/<z:int>/<x:int>/<y:int><ext:re:.*>')
+@bottle.route('/data/image/<index:int>' +
+              '/tiles/<z:int>/<x:int>/<y:int><ext:re:.*>')
 def tile(index, z, x, y, ext):
     # FIXME check ext
     if len(tile_stores) < index:
@@ -64,7 +65,8 @@ def openwebglobe_layersettings(index):
     if bounding_pyramid is None:
         bounding_pyramid = tile_store.get_cheap_bounding_pyramid()
     if bounding_pyramid is None:
-        bounding_pyramid = BoundingPyramid({20: (Bounds(0, 1 << 20), Bounds(0, 1 << 20))})
+        bounding_pyramid = \
+                BoundingPyramid({20: (Bounds(0, 1 << 20), Bounds(0, 1 << 20))})
     maxlod = max(bounding_pyramid.zs())
     xbounds, ybounds = bounding_pyramid.zget(maxlod)
     extent = [xbounds.start, ybounds.start, xbounds.stop, ybounds.stop]
@@ -72,9 +74,11 @@ def openwebglobe_layersettings(index):
     if content_type == 'application/json':
         return dict(extent=extent, maxlod=maxlod, name=name, type='elevation')
     elif content_type == 'image/jpeg' or tile_store.content_type is None:
-        return dict(extent=extent, format='jpg', maxlod=maxlod, name=name, type='image')
+        return dict(extent=extent, format='jpg', maxlod=maxlod, name=name,
+                    type='image')
     elif content_type == 'image/png':
-        return dict(extent=extent, format='png', maxlod=maxlod, name=name, type='image')
+        return dict(extent=extent, format='png', maxlod=maxlod, name=name,
+                    type='image')
     else:
         assert False
 
@@ -110,4 +114,5 @@ def index():
 
 
 if __name__ == '__main__':
-    bottle.run(host=options.host, port=options.port, reloader=options.debug, quiet=options.quiet, server=options.server)
+    bottle.run(host=options.host, port=options.port, reloader=options.debug,
+               quiet=options.quiet, server=options.server)
