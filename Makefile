@@ -24,6 +24,11 @@ mapbox.geography-class.mbtiles:
 mapbox.world-bank-borders-en.mbtiles:
 	curl http://a.tiles.mapbox.com/v3/$@ > $@
 
+.PHONY: pep8
+pep8:
+	find tilecloud tiles bin -name \*.py | xargs pep8.py
+	pep8.py tc-*
+
 .PHONY: pyflakes
 pyflakes:
 	find tilecloud tiles bin -name \*.py | xargs pyflakes
