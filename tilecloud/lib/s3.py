@@ -23,7 +23,8 @@ def namespacify(s):
 
 
 def parse_timestamp(s):
-    match = re.match(r'(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z\Z', s)
+    match = re.match(r'(\d{4})-(\d{2})-(\d{2})T' +
+                     r'(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z\Z', s)
     return datetime(*map(int, match.groups()))
 
 
