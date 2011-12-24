@@ -29,7 +29,9 @@ else:
     root = TileCoord(0, 0, 0)
 if options.server is None:
     try:
-        import tornado.wsgi, tornado.httpserver, tornado.ioloop
+        import tornado.wsgi
+        import tornado.httpserver
+        import tornado.ioloop
         options.server = 'tornado'
     except ImportError:
         options.server = 'wsgiref'
