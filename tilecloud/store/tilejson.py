@@ -14,6 +14,8 @@ from tilecloud.store.url import URLTileStore
 
 class TileJSONTileStore(URLTileStore):
 
+    KEYS = 'name description version attribution template legend center'.split()
+
     def __init__(self, tile_json, urls_key='tiles', **kwargs):
         # FIXME schema
         # FIXME version 1.0.0 support
@@ -21,7 +23,7 @@ class TileJSONTileStore(URLTileStore):
         assert 'tiles' in d
         assert isinstance(d['tiles'], list)
         assert len(d['tiles']) > 0
-        for key in 'name description version attribution template legend center'.split():
+        for key in self.KEYS:
             kwargs.setdefault(key, d.get(key, None))
         if 'bounding_pyramid' not in kwargs:
             zmin, zmax = d.get('minzoom', 0), d.get('maxzoom', 22)

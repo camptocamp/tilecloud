@@ -10,6 +10,7 @@ from operator import itemgetter
 import os
 import re
 import ssl
+import textutil
 from urlparse import urlparse
 import xml.etree.cElementTree as ElementTree
 
