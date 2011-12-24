@@ -17,8 +17,6 @@ SPHERICAL_MERCATOR_ORIGIN = 20037508.34
 WGS84 = pyproj.Proj(init='epsg:4326')
 
 
-
-# http://docs.python.org/library/itertools.html
 def consume(iterator, n):
     "Advance the iterator n-steps ahead. If n is none, consume entirely."
     # Use functions that consume iterators at C speed.
@@ -28,7 +26,6 @@ def consume(iterator, n):
     else:
         # advance to the empty slice starting at position n
         next(islice(iterator, n, n), None)
-
 
 
 class Bounds(object):
@@ -256,7 +253,6 @@ class TileLayout(object):
         raise NotImplementedError
 
 
-
 class Tile(object):
     """An actual tile with optional metadata"""
 
@@ -267,7 +263,6 @@ class Tile(object):
         self.data = data
         for key, value in kwargs.items():
             setattr(self, key, value)
-
 
 
 class TileStore(object):

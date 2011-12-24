@@ -2,7 +2,6 @@ from cStringIO import StringIO
 from gzip import GzipFile
 
 
-
 class GzipCompressor(object):
     """A class that compresses a tile with gzip"""
 
@@ -19,7 +18,6 @@ class GzipCompressor(object):
         tile.content_encoding = 'gzip'
         tile.data = string_io.getvalue()
         return tile
-
 
 
 class GzipDecompressor(object):

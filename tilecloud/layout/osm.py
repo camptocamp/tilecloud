@@ -3,7 +3,6 @@ import re
 from tilecloud import TileCoord, TileLayout
 
 
-
 class OSMTileLayout(TileLayout):
     """OpenStreetMap tile layout"""
 
@@ -18,4 +17,3 @@ class OSMTileLayout(TileLayout):
 
     def _tilecoord(self, match):
         return TileCoord(*map(int, match.groups()))
-

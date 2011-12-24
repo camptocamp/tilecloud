@@ -3,7 +3,6 @@ import re
 from tilecloud import TileCoord, TileLayout
 
 
-
 class I3DTileLayout(TileLayout):
     """I3D (FHNW/OpenWebGlobe) tile layout"""
 

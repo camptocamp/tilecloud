@@ -4,8 +4,10 @@ import cairo
 from shapely.geometry import Point, Polygon
 from shapely.ops import cascaded_union
 
+
 def box(minx, miny, maxx, maxy):
     return Polygon(((minx, miny), (maxx, miny), (maxx, maxy), (minx, maxy)))
+
 
 GOLDEN_RATIO = (1 + math.sqrt(5)) / 2
 

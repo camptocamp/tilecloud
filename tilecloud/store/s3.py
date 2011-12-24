@@ -5,10 +5,7 @@ from tilecloud import Tile, TileStore
 from tilecloud.lib.s3 import S3Connection, S3Error
 
 
-
 logger = logging.getLogger(__name__)
-
-
 
 
 class S3TileStore(TileStore):

@@ -12,7 +12,6 @@ from tilecloud.layout.template import TemplateTileLayout
 from tilecloud.store.url import URLTileStore
 
 
-
 class TileJSONTileStore(URLTileStore):
 
     def __init__(self, tile_json, urls_key='tiles', **kwargs):

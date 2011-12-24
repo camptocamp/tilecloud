@@ -1,7 +1,6 @@
 from tilecloud import BoundingPyramid, Tile, TileStore
 
 
-
 class BoundingPyramidTileStore(TileStore):
     """All tiles in a bounding box"""
 

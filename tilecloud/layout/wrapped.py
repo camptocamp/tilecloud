@@ -1,7 +1,6 @@
 import re
 
 
-
 class WrappedTileLayout(object):
     """A tile layout with an option prefix and/or suffix"""
 

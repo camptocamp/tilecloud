@@ -3,7 +3,6 @@ import re
 from tilecloud import TileCoord, TileLayout
 
 
-
 class TemplateTileLayout(TileLayout):
 
     def __init__(self, template):

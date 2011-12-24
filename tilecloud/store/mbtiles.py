@@ -7,7 +7,6 @@ from tilecloud import Bounds, BoundingPyramid, Tile, TileCoord, TileStore
 from tilecloud.lib.sqlite3 import SQLiteDict, query
 
 
-
 class Metadata(SQLiteDict):
     """A dict facade for the metadata table"""
 
@@ -20,7 +19,6 @@ class Metadata(SQLiteDict):
     ITERVALUES_SQL = 'SELECT value FROM metadata'
     LEN_SQL = 'SELECT COUNT(*) FROM metadata'
     SETITEM_SQL = 'INSERT OR REPLACE INTO metadata (name, value) VALUES (?, ?)'
-
 
 
 class Tiles(SQLiteDict):
@@ -45,11 +43,10 @@ class Tiles(SQLiteDict):
     def _unpackitem(self, row):
         z, x, y, data = row
         return (TileCoord(z, x, (1 << z) - y - 1), data)
-    
+
     def _unpackkey(self, row):
         z, x, y = row
         return TileCoord(z, x, (1 << z) - y - 1)
-
 
 
 class MBTilesTileStore(TileStore):

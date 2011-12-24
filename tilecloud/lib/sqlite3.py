@@ -2,12 +2,10 @@ import UserDict
 from itertools import imap
 
 
-
 def query(connection, *args):
     cursor = connection.cursor()
     cursor.execute(*args)
     return cursor
-
 
 
 class SQLiteDict(UserDict.DictMixin):

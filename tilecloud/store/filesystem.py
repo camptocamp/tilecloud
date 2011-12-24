@@ -5,7 +5,6 @@ import os.path
 from tilecloud import Tile, TileStore
 
 
-
 class FilesystemTileStore(TileStore):
     """Tiles stored in a filesystem"""
 

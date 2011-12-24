@@ -14,7 +14,6 @@ from urlparse import urlparse
 import xml.etree.cElementTree as ElementTree
 
 
-
 NAMESPACE_REPLACEMENT = r'{http://s3.amazonaws.com/doc/2006-03-01/}\1'
 logger = logging.getLogger(__name__)
 
@@ -26,7 +25,6 @@ def namespacify(s):
 def parse_timestamp(s):
     match = re.match(r'(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z\Z', s)
     return datetime(*map(int, match.groups()))
-
 
 
 class HeaderDict(UserDict.DictMixin):
@@ -69,7 +67,6 @@ class HeaderDict(UserDict.DictMixin):
 
     def copy(self):
         return self.__class__(self.iteritems())
-
 
 
 class S3Error(RuntimeError):
@@ -122,7 +119,6 @@ class S3Key(object):
 
     def put(self):
         return self.bucket.put(self.name, self.headers, self.body)
-
 
 
 class S3Bucket(object):
@@ -179,7 +175,6 @@ class S3Bucket(object):
 
     def put(self, key_name, headers=None, body=None):
         return self.connection.put(self.name, '/' + key_name, headers, body)
-
 
 
 class S3Connection(object):

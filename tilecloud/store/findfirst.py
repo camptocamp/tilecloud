@@ -3,7 +3,6 @@ from itertools import ifilter
 from tilecloud import TileStore
 
 
-
 class FindFirstTileStore(TileStore):
 
     def __init__(self, tile_stores, **kwargs):

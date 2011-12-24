@@ -5,7 +5,6 @@ import cairo
 from tilecloud import TileStore
 
 
-
 class DebugTileStore(TileStore):
 
     def __init__(self, color=(0, 0, 0), transparent=True, **kwargs):

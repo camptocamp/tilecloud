@@ -5,11 +5,9 @@ import PIL.Image
 from tilecloud import Tile
 
 
-
 FORMAT_BY_CONTENT_TYPE = {
         'image/jpeg': 'JPEG',
         'image/png': 'PNG'}
-
 
 
 class ImageFormatConverter(object):
@@ -28,7 +26,6 @@ class ImageFormatConverter(object):
             tile.content_type = self.content_type
             tile.data = string_io.getvalue()
         return tile
-
 
 
 class MergeFilter(object):
@@ -53,7 +50,6 @@ class MergeFilter(object):
         tile.content_type = content_type
         tile.data = string_io.getvalue()
         return tile
-
 
 
 class PILImageFilter(object):

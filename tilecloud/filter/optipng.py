@@ -3,7 +3,6 @@ from subprocess import call
 from tempfile import NamedTemporaryFile
 
 
-
 class OptiPNG(object):
 
     def __init__(self, options, arg0='/usr/bin/optipng'):

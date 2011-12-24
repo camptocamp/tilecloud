@@ -3,7 +3,6 @@ from urllib2 import HTTPError, Request, urlopen
 from tilecloud import TileStore
 
 
-
 class URLTileStore(TileStore):
 
     def __init__(self, tile_layouts, headers=None, **kwargs):
