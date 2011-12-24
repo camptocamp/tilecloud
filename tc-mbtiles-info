@@ -28,7 +28,10 @@ def main(argv):
                 cursor = connection.cursor()
                 cursor.execute('SELECT zoom_level, MIN(tile_column), MIN(tile_row), MAX(tile_column), MAX(tile_row), COUNT(zoom_level), (MAX(tile_column) - MIN(tile_column) + 1) * (MAX(tile_row) - MIN(tile_row) + 1) FROM tiles GROUP BY zoom_level ORDER BY zoom_level')
                 for row in cursor:
-                    extra = ' # %+d' % (row[5] - row[6]) if row[5] != row[6] else ''
+                    if row[5] == row[6]:
+                        extra = ''
+                    else:
+                        extra = ' # %+d' % (row[5] - row[6])
                     print '%d/%d/%d:%d/%d%s' % (row[0], row[1], row[2], row[3],
                                                 row[4], extra)
             elif options.tiles == 'list':

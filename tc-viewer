@@ -98,7 +98,10 @@ def leaflet():
 @bottle.route('/openwebglobe')
 @bottle.view('openwebglobe')
 def openwebglobe():
-    quality = float(bottle.request.GET.get('q')) if 'q' in bottle.request.GET else None
+    if 'q' in bottle.request.GET:
+        quality = float(bottle.request.GET.get('q'))
+    else:
+        quality = None
     return dict(quality=quality, tile_stores=tile_stores)
 
 
