@@ -46,7 +46,11 @@ def tile(index, z, x, y, ext):
     # FIXME check ext
     if len(tile_stores) < index:
         bottle.abort(404)
-    tile = tile_stores[index][1].get_one(Tile(TileCoord(z + root.z, x + root.x * (1 << z), y + root.y * (1 << z))))
+    tilecoord = TileCoord(z + root.z,
+                          x + root.x * (1 << z),
+                          y + root.y * (1 << z))
+    tile = Tile(tilecoord)
+    tile = tile_stores[index][1].get_one(tile)
     if tile is None:
         bottle.abort(404)
     tile = content_type_adder(tile)
