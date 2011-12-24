@@ -174,7 +174,8 @@ class BoundingPyramid(object):
     def from_string(cls, s):
         match = re.match(r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):(?:(?P<z2>\d+)/)?(?P<plusx>\+)?(?P<x2>\d+)/(?P<plusy>\+)?(?P<y2>\d+)\Z', s)
         if not match:
-            raise ValueError, 'invalid literal for %s.from_string(): %r' % (cls.__name__, s)
+            raise ValueError('invalid literal for %s.from_string(): %r' %
+                             (cls.__name__, s))
         z1 = int(match.group('z1'))
         x1, x2 = int(match.group('x1')), int(match.group('x2'))
         xbounds = Bounds(x1, x1 + x2 if match.group('plusx') else x2)
@@ -255,7 +256,8 @@ class TileLayout(object):
         """Return the tile coordinate for the given filename"""
         match = self.filename_re.match(filename)
         if not match:
-            raise ValueError, 'invalid literal for %s.tilecoord(): %r' % (self.__class__.__name__, filename)
+            raise ValueError('invalid literal for %s.tilecoord(): %r' %
+                             (self.__class__.__name__, filename))
         return self._tilecoord(match)
 
     def _tilecoord(self, match):

@@ -34,7 +34,7 @@ class SQLiteDict(UserDict.DictMixin):
                     self.GETITEM_SQL,
                     self._packkey(key)).fetchone()
         if row is None:
-            raise KeyError, key
+            raise KeyError(key)
         return self._unpackvalue(row)
 
     def __iter__(self):
