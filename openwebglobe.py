@@ -47,7 +47,7 @@ def convert_to_jpeg_and_put_if_not_transparent(tile):
 
 def main(argv):
     logging.basicConfig(format='%(asctime)s:%(levelname)s:%(module)s:%(message)s', level=logging.INFO)
-    bounding_pyramid = BoundingPyramid.from_string('17/67407/45436:69714/46944')
+    bounding_pyramid = BoundingPyramid.from_string('19/269628/181744:278856/187776')
     bounding_pyramid_tile_store = BoundingPyramidTileStore(bounding_pyramid)
     tilestream = bounding_pyramid_tile_store.list()
     tilestream = (tile for tile in tilestream if tile not in done_tile_store)
