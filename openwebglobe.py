@@ -22,7 +22,7 @@ else:
 
 from tiles.map3d.png_s3 import tile_store as input_tile_store
 from tiles.map3d.jpg_s3 import tile_store as output_tile_store
-done_tile_store = MBTilesTileStore(sqlite3.connect('map3d.done.mbtiles'))
+done_tile_store = MBTilesTileStore(sqlite3.connect('map3d.done.mbtiles', check_same_thread=False))
 
 
 convert_to_jpeg_quality85 = ImageFormatConverter('image/jpeg', quality=85)
@@ -50,9 +50,8 @@ def main(argv):
     bounding_pyramid = BoundingPyramid.from_string('17/67407/45436:69714/46944')
     bounding_pyramid_tile_store = BoundingPyramidTileStore(bounding_pyramid)
     tilestream = bounding_pyramid_tile_store.list()
-    done_tilecoordtuples = set(tile.tilecoord.tuple() for tile in done_tile_store.list())
-    tilestream = (tile for tile in tilestream if tile.tilecoord.tuple() not in done_tilecoordtuples)
-    tilestream = multiprocessing.Pool(8).imap_unordered(convert_to_jpeg_and_put_if_not_transparent, tilestream)
+    tilestream = (tile for tile in tilestream if tile not in done_tile_store)
+    tilestream = multiprocessing.Pool(6).imap_unordered(convert_to_jpeg_and_put_if_not_transparent, tilestream)
     tilestream = imap(Logger(logger, logging.INFO, 'wrote %(tilecoord)s'), tilestream)
     tilestream = done_tile_store.put(tilestream)
     consume(tilestream, None)
