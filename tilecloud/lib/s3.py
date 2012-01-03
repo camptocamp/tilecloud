@@ -1,6 +1,7 @@
 import UserDict
 from base64 import b64encode
 from datetime import datetime
+import errno
 import hashlib
 import hmac
 import httplib
@@ -9,6 +10,7 @@ import logging
 from operator import itemgetter
 import os
 import re
+import socket
 import ssl
 import textutil
 from urlparse import urlparse
@@ -259,6 +261,12 @@ class S3Connection(object):
             except ssl.SSLError as exc:
                 logger.warn(exc)
                 self.connection = None
+            except IOError as exc:
+                if exc.errno  == errno.ECONNRESET:
+                    logger.warn(exc)
+                    self.connection = None
+                else:
+                    raise
 
     def sign(self, method, bucket_name=None, url=None, headers=None,
              sub_resources=None):
