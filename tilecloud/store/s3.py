@@ -20,7 +20,7 @@ class S3TileStore(TileStore):
     def __contains__(self, tile):
         key_name = self.tile_layout.filename(tile.tilecoord)
         try:
-            s3key = self.s3bucket.head(key_name)
+            self.s3bucket.head(key_name)
             return True
         except S3Error as exc:
             if exc.response.status == httplib.NOT_FOUND:
