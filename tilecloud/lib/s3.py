@@ -10,9 +10,7 @@ import logging
 from operator import itemgetter
 import os
 import re
-import socket
 import ssl
-import textutil
 from urlparse import urlparse
 import xml.etree.cElementTree as ElementTree
 
