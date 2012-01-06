@@ -58,6 +58,7 @@ def tile(index, z, x, y, ext):
         bottle.response.content_type = tile.content_type
     if tile.content_encoding is not None:
         bottle.response.set_header('Content-Encoding', tile.content_encoding)
+    bottle.response.set_header('Access-Control-Allow-Origin', '*')
     bottle.response.content_length = len(tile.data)
     return tile.data
 
