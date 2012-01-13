@@ -1,3 +1,0 @@
-[submodule "submodules/bottle"]
-	path = submodules/bottle
-	url = https://github.com/defnull/bottle.git
