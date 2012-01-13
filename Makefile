@@ -1,6 +1,4 @@
-# FIXME this still builds too much
-
-all: submodules example-data
+all: example-data
 
 .PHONY: clean
 clean:
@@ -33,13 +31,3 @@ pep8:
 pyflakes:
 	find tilecloud tiles bin -name \*.py | xargs pyflakes
 	pyflakes tc-*
-
-.PHONY: submodules
-submodules: bottle.py
-
-bottle.py: submodules/bottle
-	ln -fs $</bottle.py $@
-
-submodules/bottle: .gitmodules
-	git submodule update submodules/bottle
-	git submodule init
