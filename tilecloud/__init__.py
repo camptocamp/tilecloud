@@ -356,6 +356,10 @@ class TileStore(object):
     @classmethod
     def load(cls, name):
         root, ext = os.path.splitext(name)
+        if ext == '.bsddb':
+            import bsddb
+            from tilecloud.store.bsddb import BSDDBTileStore
+            return BSDDBTileStore(bsddb.hashopen(name))
         if ext == '.mbtiles':
             import sqlite3
             from tilecloud.store.mbtiles import MBTilesTileStore
