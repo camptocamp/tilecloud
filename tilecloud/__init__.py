@@ -230,6 +230,10 @@ class TileCoord(object):
         return cls(z, int(xy[0] * (1 << z)), int(xy[1] * (1 << z)))
 
     @classmethod
+    def from_string(cls, s):
+        return cls(*map(int, s.split('/')))
+
+    @classmethod
     def from_tuple(cls, tpl):
         return cls(*tpl)
 
