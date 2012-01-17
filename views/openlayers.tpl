@@ -27,6 +27,7 @@
 %if getattr(tile_store, 'attribution', None):
 				attribution: '{{!tile_store.attribution}}',
 %end
+				numZoomLevels: 32,
 				sphericalMercator: true
 			}));
 %end
