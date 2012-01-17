@@ -22,7 +22,7 @@ TileCloud is a powerful utility for generating, managing, transforming, visualis
 
 * Log files in any format
 
-TileCloud is not limited to imaage tiles, it can also handle other tile data such as [UTFGrid](https://github.com/mapbox/utfgrid-spec), or elevation data in JSON format.
+TileCloud is not limited to image tiles, it can also handle other tile data such as [UTFGrid](https://github.com/mapbox/utfgrid-spec), or elevation data in JSON format.
 
 TileCloud uses Python's generators and iterators to efficiently stream tens of millions of tiles, and can handle multiple tiles in parallel using Python's [multiprocessing](http://docs.python.org/library/multiprocessing.html) library.
 
@@ -32,19 +32,19 @@ Example tasks that TileCloud makes easy include:
 
 * Convert sixty million PNG tiles stored in S3 to JPEG format with different quality settings at different zoom levels.
 
-* Transform image formats and perform arbitrary image transformations on the fly, including PNG optimization
+* Transform image formats and perform arbitrary image transformations on the fly, including PNG optimization.
 
-* Generate semi-transparent tiles with embedded tile coordinates for debugging
+* Generate semi-transparent tiles with embedded tile coordinates for debugging.
 
-* Pack multiple tile layers into a single tile on the server
+* Pack multiple tile layers into a single tile on the server.
 
-* Efficiently calculate bounding boxes and detect missing tiles in existing tile datasets
+* Efficiently calculate bounding boxes and detect missing tiles in existing tile datasets.
 
-* Simulate fast and slow tile servers
+* Simulate fast and slow tile servers.
 
-* Efficiently delete millions of tiles in S3
+* Efficiently delete millions of tiles in S3.
 
-* Read JSON tiles from a tarball, compress them, and upload them
+* Read JSON tiles from a tarball, compress them, and upload them.
 
 
 
