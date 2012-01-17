@@ -1,4 +1,3 @@
-import bsddb
 from itertools import imap
 
 from tilecloud import Tile, TileCoord, TileStore
