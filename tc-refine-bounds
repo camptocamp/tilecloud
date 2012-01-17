@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+from optparse import OptionParser
+import sys
+
+from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
+
+
+def detect_edge(tilestore, z, first, last, other, horizontal, up):
+    while first < last:
+        middle = (first + last) // 2
+        if horizontal:
+            tile = Tile(TileCoord(z, middle, other))
+        else:
+            tile = Tile(TileCoord(z, other, middle))
+        tile_exists = tile in tilestore
+        if up:
+            if tile_exists:
+                last = middle
+            else:
+                first = middle + 1
+        else:
+            if tile_exists:
+                first = middle + 1
+            else:
+                last = middle
+    return last
+
+
+def main(argv):
+    option_parser = OptionParser()
+    option_parser.add_option('-b', '--bounds', metavar='BOUNDING-PYRAMID')
+    option_parser.add_option('-r', '--relative', action='store_true')
+    option_parser.add_option('-s', '--seed', metavar='SEED')
+    option_parser.add_option('-z', '--zoom', metavar='ZOOM', type=int)
+    options, args = option_parser.parse_args(argv[1:])
+    bounding_pyramid = BoundingPyramid.from_string(options.bounds)
+    seed = TileCoord.from_string(options.seed)
+    z = options.zoom
+    for arg in args:
+        tilestore = TileStore.load(arg)
+        xbounds, ybounds = bounding_pyramid.zget(z)
+        assert Tile(seed) in tilestore
+        xstart = detect_edge(tilestore, z, xbounds.start, seed.x, seed.y, True, True)
+        xstop = detect_edge(tilestore, z, seed.x, xbounds.stop, seed.y, True, False)
+        ystart = detect_edge(tilestore, z, ybounds.start, seed.y, seed.x, False, True)
+        ystop = detect_edge(tilestore, z, seed.y, ybounds.stop, seed.x, False, False)
+        if options.relative:
+            print '%d/%d/%d:+%d/+%d' % (z, xstart, ystart, xstop - xstart, ystop - ystart)
+        else:
+            print '%d/%d/%d:%d/%d' % (z, xstart, ystart, xstop, ystop)
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
