@@ -256,6 +256,12 @@ class S3Connection(object):
                 headers = HeaderDict(response.getheaders())
                 body = response.read()
                 return (headers, body)
+            except httplib.BadStatusLine as exc:
+                logger.warn(exc)
+                self.connection = None
+            except httplib.CannotSendRequest as exc:
+                logger.warn(exc)
+                self.connection = None
             except ssl.SSLError as exc:
                 logger.warn(exc)
                 self.connection = None
