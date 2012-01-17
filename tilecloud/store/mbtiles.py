@@ -52,7 +52,7 @@ class Tiles(SQLiteDict):
 class MBTilesTileStore(TileStore):
     """A MBTiles tile store"""
 
-    BOUNDING_PYRAMID_SQL = 'SELECT zoom_level, MIN(tile_column), MAX(tile_column) + 1, MIN(tile_row), MAX(tile_row) + 1 FROM tiles GROUP BY zoom_level ORDER BY zoom_level'
+    BOUNDING_PYRAMID_SQL = 'SELECT zoom_level, MIN(tile_column), MAX(tile_column) + 1, MIN((1 << zoom_level) - tile_row - 1), MAX((1 << zoom_level) - tile_row - 1) + 1 FROM tiles GROUP BY zoom_level ORDER BY zoom_level'
     COUNT_SQL = 'SELECT COUNT(*) FROM tiles'
     SET_METADATA_ZOOMS_SQL = 'SELECT MIN(zoom_level), MAX(zoom_level) FROM tiles'
 
