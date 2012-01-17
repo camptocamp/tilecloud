@@ -35,8 +35,12 @@ def main(argv):
     option_parser.add_option('-z', '--zoom', metavar='ZOOM', type=int)
     options, args = option_parser.parse_args(argv[1:])
     bounding_pyramid = BoundingPyramid.from_string(options.bounds)
-    seed = TileCoord.from_string(options.seed)
     z = options.zoom
+    if options.seed is None:
+        xbounds, ybounds = bounding_pyramid.zget(z)
+        seed = TileCoord(z, (xbounds.start + xbounds.stop) // 2, (ybounds.start + ybounds.stop) // 2)
+    else:
+        seed = TileCoord.from_string(options.seed)
     for arg in args:
         tilestore = TileStore.load(arg)
         xbounds, ybounds = bounding_pyramid.zget(z)
