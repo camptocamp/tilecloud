@@ -77,7 +77,19 @@ Now, display this MBTiles tile set on top of the OpenStreetMap tiles and a debug
 
 You'll need to point your browser at <http://localhost:8080/>, choose your favourite library, and zoom in to Haiti.
 
-TileCloud can do much, much more.
+`tc-info` and `tc-viewer` are utility programs.  Normally you use TileCloud by writing short Python programs that connect the TileCloud's modules to perform the action that you want.
+
+As a first example, run the following:
+
+        PYTHONPATH=. examples/download.py
+
+This will download a few tiles from [OpenStreetMap](http://www.openstreetmap.org/) and save them in a local MBTiles file called `local.mbtiles`.  Look at the source code to `examples/download.py` to see how it works.  If there are problems with the download, just interrupt it with `Ctrl-C` and re-run it: the program will automatically resume where it left off.
+
+Once you have downloaded a few tiles, you can view them directly with `tc-viewer`:
+
+	./tc-viewer --root=4/8/5 local.mbtiles tiles.debug.black
+
+Point your browser at <http://localhost:8080> as usual.  The `--root` option to `tc-viewer` instructs the viewer to start at a defined tile, rather than at 0/0/0, so you don't have to zoom in to find the tiles that you downloaded.
 
 
 
