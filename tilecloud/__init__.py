@@ -174,7 +174,7 @@ class BoundingPyramid(object):
     def from_string(cls, s):
         match = re.match(
                 r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):' +
-                r'(?:(?P<z2>\d+)/)?' +
+                r'(?:(?P<plusz>\+)?(?P<z2>\d+)/)?' +
                 r'(?P<plusx>\+)?(?P<x2>\d+)/(?P<plusy>\+)?(?P<y2>\d+)\Z', s)
         if not match:
             raise ValueError('invalid literal for %s.from_string(): %r' %
@@ -187,6 +187,8 @@ class BoundingPyramid(object):
         result = cls({z1: (xbounds, ybounds)})
         if match.group('z2'):
             z2 = int(match.group('z2'))
+            if match.group('plusz'):
+                z2 += z1
             if z1 < z2:
                 result.filldown(z2)
             elif z1 > z2:
