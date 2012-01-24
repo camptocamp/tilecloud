@@ -65,7 +65,7 @@ For a quick demo, run
 
 and point your browser at <http://localhost:8080/>.  Type `Ctrl-C` to terminate `tc-viewer`.
 
-Next, download [mapbox.haiti-terrain-grey.mbtiles](curl http://a.tiles.mapbox.com/v3/mapbox.haiti-terrain-grey.mbtiles) from [mapbox.com](http://mapbox.com/).  We can quickly find out more about this tile set with the `tc-info` command:
+Next, download [mapbox.haiti-terrain-grey.mbtiles](http://a.tiles.mapbox.com/v3/mapbox.haiti-terrain-grey.mbtiles) from [mapbox.com](http://mapbox.com/).  We can quickly find out more about this tile set with the `tc-info` command:
 
 	./tc-info -t count mapbox.haiti-terrain-grey.mbtiles
 	./tc-info -t bounding-pyramid -r mapbox.haiti-terrain-grey.mbtiles
