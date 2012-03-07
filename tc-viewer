@@ -114,6 +114,12 @@ def modestmaps():
     return dict(tile_stores=tile_stores)
 
 
+@bottle.route('/polymaps')
+@bottle.view('polymaps')
+def polymaps():
+    return dict(tile_stores=tile_stores)
+
+
 @bottle.route('/openwebglobe')
 @bottle.view('openwebglobe')
 def openwebglobe():

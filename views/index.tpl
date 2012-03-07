@@ -9,6 +9,7 @@
 			<li><a href="/googlemaps">Google Maps</a></li>
 			<li><a href="/leaflet">Leaflet</a></li>
 			<li><a href="/modestmaps">Modest Maps</a></li>
+			<li><a href="/polymaps">Polymaps</a></li>
 			<li><a href="/openwebglobe">OpenWebGlobe</a></li>
 		</ul>
 	</body>
