@@ -108,6 +108,12 @@ def leaflet():
     return dict(tile_stores=tile_stores)
 
 
+@bottle.route('/modestmaps')
+@bottle.view('modestmaps')
+def modestmaps():
+    return dict(tile_stores=tile_stores)
+
+
 @bottle.route('/openwebglobe')
 @bottle.view('openwebglobe')
 def openwebglobe():
