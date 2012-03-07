@@ -96,6 +96,12 @@ def openlayers():
     return dict(tile_stores=tile_stores)
 
 
+@bottle.route('/googlemaps')
+@bottle.view('googlemaps')
+def googlemaps():
+    return dict(tile_stores=tile_stores)
+
+
 @bottle.route('/leaflet')
 @bottle.view('leaflet')
 def leaflet():
