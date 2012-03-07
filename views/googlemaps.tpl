@@ -27,7 +27,7 @@
 				},
 				name: '{{index}}',
 				tileSize: new google.maps.Size(256, 256),
-				maxZoom: 19
+				maxZoom: 32
 			}));
 			mapTypeIds.push('{{index}}');
 %end
