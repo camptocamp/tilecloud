@@ -53,41 +53,51 @@ Getting started
 
 TileCloud depends on [Bottle](http://bottlepy.org/), [pyproj](http://code.google.com/p/pyproj/) and [Pycairo](http://cairographics.org/pycairo/).  It's easiest to install them with `pip` in a `virtualenv`:
 
-	virtualenv .
-	. bin/activate
-	pip install bottle pyproj
+	$ virtualenv .
+	$ . bin/activate
+	$ pip install bottle pyproj
 
 Unfortunately, Pycairo does not install with `pip`, so use your system's package manager to install the system package (on Ubuntu it's `python-cairo`).
 
 For a quick demo, run
 
-	./tc-viewer tiles.mapquest_com
+	$ ./tc-viewer tiles.mapquest_com
 
 and point your browser at <http://localhost:8080/>.  Type `Ctrl-C` to terminate `tc-viewer`.
 
-Next, download [mapbox.haiti-terrain-grey.mbtiles](http://a.tiles.mapbox.com/v3/mapbox.haiti-terrain-grey.mbtiles) from [mapbox.com](http://mapbox.com/).  We can quickly find out more about this tile set with the `tc-info` command:
+Next, download an example MBTiles file from [MapBox](http://mapbox.com/), such as [Geography Class](http://tiles.mapbox.com/mapbox/map/geography-class).  We can quickly find out more about this tile set with the `tc-info` command:
 
-	./tc-info -t count mapbox.haiti-terrain-grey.mbtiles
-	./tc-info -t bounding-pyramid -r mapbox.haiti-terrain-grey.mbtiles
-	./tc-info -t completion mapbox.haiti-terrain-grey.mbtiles
+	$ ./tc-info -t count geography-class.mbtiles
+	87381
+
+	$ ./tc-info -t bounding-pyramid -r geography-class.mbtiles
+	0/0/0:+1/+1
+	1/0/0:+2/+2
+	2/0/0:+4/+4
+	3/0/0:+8/+8
+	4/0/0:+16/+16
+	5/0/0:+32/+32
+	6/0/0:+64/+64
+	7/0/0:+128/+128
+	8/0/0:+256/+256
 
 Now, display this MBTiles tile set on top of the OpenStreetMap tiles and a debug tile layer:
 
-	./tc-viewer tiles.openstreetmap_org mapbox.haiti-terrain-grey.mbtiles tiles.debug.black
+	$ ./tc-viewer tiles.openstreetmap_org mapbox.haiti-terrain-grey.mbtiles tiles.debug.black
 
-You'll need to point your browser at <http://localhost:8080/>, choose your favourite library, and zoom in to Haiti.
+You'll need to point your browser at <http://localhost:8080/> and choose your favourite library.
 
 `tc-info` and `tc-viewer` are utility programs.  Normally you use TileCloud by writing short Python programs that connect the TileCloud's modules to perform the action that you want.
 
 As a first example, run the following:
 
-        PYTHONPATH=. examples/download.py
+        $ PYTHONPATH=. examples/download.py
 
 This will download a few tiles from [OpenStreetMap](http://www.openstreetmap.org/) and save them in a local MBTiles file called `local.mbtiles`.  Look at the source code to `examples/download.py` to see how it works.  If there are problems with the download, just interrupt it with `Ctrl-C` and re-run it: the program will automatically resume where it left off.
 
 Once you have downloaded a few tiles, you can view them directly with `tc-viewer`:
 
-	./tc-viewer --root=4/8/5 local.mbtiles tiles.debug.black
+	$ ./tc-viewer --root=4/8/5 local.mbtiles tiles.debug.black
 
 Point your browser at <http://localhost:8080> as usual.  The `--root` option to `tc-viewer` instructs the viewer to start at a defined tile, rather than at 0/0/0, so you don't have to zoom in to find the tiles that you downloaded.
 
