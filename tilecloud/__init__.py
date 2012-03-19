@@ -253,23 +253,12 @@ class TileCoord(object):
 class TileLayout(object):
     """Maps tile coordinates to filenames and vice versa"""
 
-    def __init__(self, pattern, filename_re):
-        self.pattern = pattern
-        self.filename_re = filename_re
-
     def filename(self, tilecoord):
         """Return the filename for the given tile coordinate"""
         raise NotImplementedError
 
     def tilecoord(self, filename):
         """Return the tile coordinate for the given filename"""
-        match = self.filename_re.match(filename)
-        if not match:
-            raise ValueError('invalid literal for %s.tilecoord(): %r' %
-                             (self.__class__.__name__, filename))
-        return self._tilecoord(match)
-
-    def _tilecoord(self, match):
         raise NotImplementedError
 
 

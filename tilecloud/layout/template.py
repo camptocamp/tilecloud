@@ -1,9 +1,10 @@
 import re
 
-from tilecloud import TileCoord, TileLayout
+from tilecloud import TileCoord
+from tilecloud.layout.re_ import RETileLayout
 
 
-class TemplateTileLayout(TileLayout):
+class TemplateTileLayout(RETileLayout):
 
     def __init__(self, template):
         self.template = template
@@ -20,7 +21,7 @@ class TemplateTileLayout(TileLayout):
         filename_patterns.append(postmatch_pattern)
         pattern = ''.join(patterns)
         filename_re = re.compile(''.join(filename_patterns))
-        TileLayout.__init__(self, pattern, filename_re)
+        RETileLayout.__init__(self, pattern, filename_re)
 
     def filename(self, tilecoord):
         return self.template % \

@@ -1,7 +1,9 @@
 import re
 
+from tilecloud import TileLayout
 
-class WrappedTileLayout(object):
+
+class WrappedTileLayout(TileLayout):
     """A tile layout with an option prefix and/or suffix"""
 
     def __init__(self, tile_layout, prefix='', suffix=''):

@@ -1,16 +1,17 @@
 import re
 
-from tilecloud import TileCoord, TileLayout
+from tilecloud import TileCoord
+from tilecloud.layout.re_ import RETileLayout
 
 
-class I3DTileLayout(TileLayout):
+class I3DTileLayout(RETileLayout):
     """I3D (FHNW/OpenWebGlobe) tile layout"""
 
     PATTERN = r'(?:[0-3]{2}/)*[0-3]{1,2}'
     RE = re.compile(PATTERN + r'\Z')
 
     def __init__(self):
-        TileLayout.__init__(self, self.PATTERN, self.RE)
+        RETileLayout.__init__(self, self.PATTERN, self.RE)
 
     def filename(self, tilecoord):
         return '/'.join(re.findall(r'[0-3]{1,2}',

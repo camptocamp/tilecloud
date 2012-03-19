@@ -1,16 +1,17 @@
 import re
 
-from tilecloud import TileCoord, TileLayout
+from tilecloud import TileCoord
+from tilecloud.layout.re_ import RETileLayout
 
 
-class OSMTileLayout(TileLayout):
+class OSMTileLayout(RETileLayout):
     """OpenStreetMap tile layout"""
 
     PATTERN = r'[0-9]+/[0-9]+/[0-9]+'
     RE = re.compile(r'([0-9]+)/([0-9]+)/([0-9]+)\Z')
 
     def __init__(self):
-        TileLayout.__init__(self, self.PATTERN, self.RE)
+        RETileLayout.__init__(self, self.PATTERN, self.RE)
 
     def filename(self, tilecoord):
         return '%d/%d/%d' % (tilecoord.z, tilecoord.x, tilecoord.y)
