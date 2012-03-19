@@ -12,6 +12,8 @@ TileCloud is a powerful utility for generating, managing, transforming, visualis
 
 * HTTP/REST in any layout
 
+* WMTS
+
 * Amazon S3
 
 * [MBTiles](https://github.com/mapbox/mbtiles-spec)
