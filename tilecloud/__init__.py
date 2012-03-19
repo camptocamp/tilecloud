@@ -366,6 +366,10 @@ class TileStore(object):
             import sqlite3
             from tilecloud.store.mbtiles import MBTilesTileStore
             return MBTilesTileStore(sqlite3.connect(name))
+        if ext == '.zip':
+            import zipfile
+            from tilecloud.store.zip import ZipTileStore
+            return ZipTileStore(zipfile.ZipFile(name, 'a'))
         module = __import__(name)
         components = name.split('.')
         module = reduce(lambda module, attr: getattr(module, attr),
