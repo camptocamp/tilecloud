@@ -266,7 +266,7 @@ class S3Connection(object):
                 logger.warn(exc)
                 self.connection = None
             except IOError as exc:
-                if exc.errno  == errno.ECONNRESET:
+                if exc.errno == errno.ECONNRESET:
                     logger.warn(exc)
                     self.connection = None
                 else:
