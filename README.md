@@ -83,7 +83,7 @@ Next, download an example MBTiles file from [MapBox](http://mapbox.com/), such a
 	7/0/0:+128/+128
 	8/0/0:+256/+256
 
-Now, display this MBTiles tile set on top of the OpenStreetMap tiles and a debug tile layer:
+Now, display this MBTiles tile set on top of the [OpenStreetMap](http://www.openstreetmap.org/) tiles and a debug tile layer:
 
 	$ ./tc-viewer tiles.openstreetmap_org geography-class.mbtiles tiles.debug.black
 
