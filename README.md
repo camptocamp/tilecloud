@@ -85,7 +85,7 @@ Next, download an example MBTiles file from [MapBox](http://mapbox.com/), such a
 
 Now, display this MBTiles tile set on top of the OpenStreetMap tiles and a debug tile layer:
 
-	$ ./tc-viewer tiles.openstreetmap_org mapbox.haiti-terrain-grey.mbtiles tiles.debug.black
+	$ ./tc-viewer tiles.openstreetmap_org geography-class.mbtiles tiles.debug.black
 
 You'll need to point your browser at <http://localhost:8080/> and choose your favourite library.
 
