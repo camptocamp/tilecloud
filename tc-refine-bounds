@@ -3,7 +3,7 @@
 from optparse import OptionParser
 import sys
 
-from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
+from tilecloud import BoundingPyramid, Tile, TileCoord, TileStore
 
 
 def detect_edge(tilestore, z, first, last, other, horizontal, up):
