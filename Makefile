@@ -7,10 +7,10 @@ clean:
 
 .PHONY: pep8
 pep8:
-	find tilecloud tiles bin -name \*.py | xargs pep8.py
-	pep8.py tc-*
+	find tilecloud tiles -name \*.py | xargs pep8 --ignore=E501
+	pep8 --ignore=E501 tc-*
 
 .PHONY: pyflakes
 pyflakes:
-	find tilecloud tiles bin -name \*.py | xargs pyflakes
+	find tilecloud tiles -name \*.py | xargs pyflakes
 	pyflakes tc-*
