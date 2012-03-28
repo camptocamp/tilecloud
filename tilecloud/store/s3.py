@@ -57,7 +57,11 @@ class S3TileStore(TileStore):
     def list(self):
         prefix = getattr(self.tile_layout, 'prefix', '')
         for s3key in self.s3bucket.list_objects(prefix=prefix):
-            yield Tile(self.tile_layout.tilecoord(s3key.name), s3key=s3key)
+            try:
+                tilecoord = self.tile_layout.tilecoord(s3key.name)
+            except ValueError:
+                continue
+            yield Tile(tilecoord, s3key=s3key)
 
     def put_one(self, tile):
         assert tile.data is not None
