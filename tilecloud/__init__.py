@@ -346,6 +346,11 @@ class TileStore(object):
 
     @classmethod
     def load(cls, name):
+        if name.startswith('s3://'):
+            from tilecloud.layout.template import TemplateTileLayout
+            from tilecloud.store.s3 import S3TileStore
+            bucket, template = name[5:].split('/', 1)
+            return S3TileStore(bucket, TemplateTileLayout(template))
         root, ext = os.path.splitext(name)
         if ext == '.bsddb':
             import bsddb
