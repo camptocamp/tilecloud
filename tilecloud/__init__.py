@@ -346,6 +346,10 @@ class TileStore(object):
 
     @classmethod
     def load(cls, name):
+        if name.startswith('http://') or name.startswith('https://'):
+            from tilecloud.layout.template import TemplateTileLayout
+            from tilecloud.store.url import URLTileStore
+            return URLTileStore((TemplateTileLayout(name),))
         if name.startswith('s3://'):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.s3 import S3TileStore
