@@ -105,6 +105,27 @@ Point your browser at <http://localhost:8080> as usual.  The `--root` option to 
 
 
 
+Using TileCloud as a cheap-and-cheerful tile server
+===================================================
+
+`tc-viewer` can be used as a lightweight tile server, which can be useful for development, debugging and off-line demos.  The TileStores passed as arguments to `tc-viewer` are available at the URL:
+
+	http://localhost:8080/tiles/{index}/tiles/{z}/{x}/{y}
+
+where `{index}` is the index of the TileStore on the command line (starting from 0 for the first tile store), and `{z}`, `{x}` and `{y}` are the components of the tile coordinate.  The second `tiles` in the URL is present to work around assumptions made by OpenWebGlobe.  This layout is directly usable by most mapping libraries, see the code in `views/*.tpl` for examples.  The host and port can be set with the `--host` and `--port` command line options, respectively.
+
+Note that there is no file extension.  `tc-viewer` will automatically set the correct content type and content encoding headers if it can determine them, and, failing this, most browsers will figure it out for themselves.
+
+For convenience, `tc-viewer` serves everything in the `static` directory under the URL `/static`.  This can be used to serve your favourite mapping library and/or application code directly for testing purposes.
+
+By default, `tc-viewer` will use [Tornado](http://www.tornadoweb.org/) as a web server, if it is available, otherwise it will fall back to [WSGIRef](http://docs.python.org/library/wsgiref.html).  Tornado has reasonably good performance, and is adequate for local development and off-line demos, especially when used with a MBTiles TileStore.  WSGIRef has very poor performance (it handles only one request at a time) and as such can be used as a "slow" tile server, ideal for debugging tile loading code or testing how your web application performs over a slow network connection.  `tc-viewer` is particularly slow when used to proxy tiles being served by a remote server.  You can set the server explicitly with the `--server` option.
+
+`tc-viewer` sets the `Access-Control-Allow-Origin` header to `*` for all the tiles it serves, this allows the tiles to be used as textures for WebGL applications running on different hosts/ports.  For more information, see [Cross-Domain Textures](https://developer.mozilla.org/en/WebGL/Cross-Domain_Textures).
+
+`tc-viewer` is designed as a development tool, and the power that it offers comes at the expense of fragility.  It makes many assumptions - including the benevolence of the user - that make it entirely unsuitable as a generic tile server.  It should only be used in development or demonstration environments.
+
+
+
 Contributing
 ============
 
