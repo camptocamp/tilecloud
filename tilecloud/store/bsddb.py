@@ -10,6 +10,8 @@ class BSDDBTileStore(TileStore):
         TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile):
+        if not TileStore.__contains__(self, tile):
+            return False
         return str(tile.tilecoord) in self.db
 
     def count(self):

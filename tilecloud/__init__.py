@@ -285,7 +285,9 @@ class TileStore(object):
             setattr(self, key, value)
 
     def __contains__(self, tile):
-        if self.bounding_pyramid is None:
+        if tile is None:
+            return False
+        elif self.bounding_pyramid is None:
             return True
         else:
             return tile.tilecoord in self.bounding_pyramid
