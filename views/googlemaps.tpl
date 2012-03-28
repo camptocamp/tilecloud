@@ -23,7 +23,7 @@
 			mapTypes.push(new google.maps.ImageMapType({
 				alt: '{{index}}',
 				getTileUrl: function(coord, zoom) {
-					return '/data/image/{{index}}/tiles/' + zoom + '/' + coord.x + '/' + coord.y;
+					return '/tiles/{{index}}/tiles/' + zoom + '/' + coord.x + '/' + coord.y;
 				},
 				name: '{{index}}',
 				tileSize: new google.maps.Size(256, 256),

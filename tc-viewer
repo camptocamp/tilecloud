@@ -40,8 +40,7 @@ tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 content_type_adder = ContentTypeAdder()
 
 
-@bottle.route('/data/image/<index:int>' +
-              '/tiles/<z:int>/<x:int>/<y:int><ext:re:.*>')
+@bottle.route('/tiles/<index:int>/tiles/<z:int>/<x:int>/<y:int><ext:re:.*>')
 def tile(index, z, x, y, ext):
     # FIXME check ext
     if len(tile_stores) < index:

@@ -20,7 +20,7 @@
 				.container(document.body.appendChild(po.svg('svg')))
 %for index, (name, tile_store) in enumerate(tile_stores):
 %if tile_store.content_type is None or tile_store.content_type.startswith('image/'):
-				.add(po.image().url('/data/image/{{index}}/tiles/{Z}/{X}/{Y}'))
+				.add(po.image().url('/tiles/{{index}}/tiles/{Z}/{X}/{Y}'))
 %end
 %end
 				.add(po.interact());

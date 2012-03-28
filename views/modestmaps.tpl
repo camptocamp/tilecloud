@@ -20,7 +20,7 @@
 			var layers = [];
 %for index, (name, tile_store) in enumerate(tile_stores):
 %if tile_store.content_type is None or tile_store.content_type.startswith('image/'):
-			layers.push(new MM.Layer(new MM.TemplatedMapProvider('/data/image/{{index}}/tiles/{Z}/{X}/{Y}')));
+			layers.push(new MM.Layer(new MM.TemplatedMapProvider('/tiles/{{index}}/tiles/{Z}/{X}/{Y}')));
 %end
 %end
 			var map = new MM.Map('map', layers);
