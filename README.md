@@ -63,7 +63,7 @@ Unfortunately, Pycairo does not install with `pip`, so use your system's package
 
 For a quick demo, run
 
-	$ ./tc-viewer tiles.mapquest_com
+	$ ./tc-viewer --root=3/4/2 'http://gsp2.apple.com/tile?api=1&style=slideshow&layers=default&lang=en_GB&z=%(z)d&x=%(x)d&y=%(y)d&v=9'
 
 and point your browser at <http://localhost:8080/>.  Type `Ctrl-C` to terminate `tc-viewer`.
 
