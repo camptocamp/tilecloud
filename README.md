@@ -105,6 +105,39 @@ Point your browser at <http://localhost:8080> as usual.  The `--root` option to 
 
 
 
+Quick tile generation
+=====================
+
+The `tc-copy` command can be used to copy tiles between different TileStores.  If a TileStore has the side effect of generating tiles, then it functions as a quick tile generation utility.  First, some quick examples.
+
+To convert from one tile format to another, just copy from source to destination.  For example, to convert an MBTiles file in to a ZIP file, just run:
+
+	$ ./tc-copy geography-class.mbtiles geography-class.zip
+
+You can check this worked with `unzip`:
+
+	$ unzip -t geography-class.zip
+
+Equally, `tc-copy` can be used to download multiple tiles:
+
+	$ ./tc-copy --bounding-pyramid 4/0/0:0/16/16 tiles.openstreetmap_org osm-up-to-z4.mbtiles
+
+Here we downloaded zoom levels 0 to 4 of the OpenStreetMap tiles into a local MBTiles file.  The `--bounding-pyramid` option is required because otherwise we would download *all* OpenStreetMap tiles -- which might take some time (and also contravene OpenStreetMap's tile usage policy).  Note that, by default, `tc-copy` won't overwrite tiles if they already exist in the destination.  This means that you can interrupt the above command and restart it, and it will resume where it was interrupted.  If you want to overwrite tiles in the destination then pass the `--overwrite` option to `tc-copy`.
+
+In the same way, `tc-copy` can also be used to upload tiles.  For example, to upload an MBTiles file to S3, just use:
+
+	$ ./tc-copy osm-up-to-z4.mbtiles s3://bucket/prefix/%(z)d/%(x)d/%(y)d.jpg
+
+`bucket` is the name of your S3 bucket.  You'll need to have set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables to have permission to upload to S3.  The rest of the destination (`prefix/%(z)d/%(x)d/%(y)d.jpg`) is a template describing the layout of the tiles in S3.  It's a normal Python format string: `%(x)d` means substitute the tile's `x` coordinate as a decimal integer.
+
+You can pass the same `s3://` URL to `tc-viewer`.  This allows you to visualise your tiles stored in S3 with your favourite mapping library.  For example:
+
+	$ ./tc-viewer s3://bucket/prefix/%(z)d/%(x)d/%(y)d.jpg
+
+Here, `tc-viewer` is acting as a proxy, serving tiles stored in S3 over HTTP, bypassing any caches or access controls (assuming you have the correct credentials, of course).  This allows you to visualize the exact tiles that you've stored.
+
+
+
 A cheap-and-cheerful tile server
 ================================
 
