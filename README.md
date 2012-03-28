@@ -126,6 +126,13 @@ By default, `tc-viewer` will use [Tornado](http://www.tornadoweb.org/) as a web 
 
 
 
+Using TileCloud to compare mapping libraries
+============================================
+
+`tc-viewer` supports most popular web mapping libraries out-of-the box.  This can be very useful for quick, practical comparisons.  If your favourite mapping library is missing, please submit an [issue](https://github.com/twpayne/tilecloud/issues), or, even better, a [pull request](https://github.com/twpayne/tilecloud/pulls).
+
+
+
 Contributing
 ============
 
