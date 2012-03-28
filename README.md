@@ -105,8 +105,8 @@ Point your browser at <http://localhost:8080> as usual.  The `--root` option to 
 
 
 
-Using TileCloud as a cheap-and-cheerful tile server
-===================================================
+A cheap-and-cheerful tile server
+================================
 
 `tc-viewer` can be used as a lightweight tile server, which can be useful for development, debugging and off-line demos.  The TileStores passed as arguments to `tc-viewer` are available at the URL:
 
@@ -126,8 +126,8 @@ By default, `tc-viewer` will use [Tornado](http://www.tornadoweb.org/) as a web 
 
 
 
-Using TileCloud to compare mapping libraries
-============================================
+Comparing mapping libraries
+===========================
 
 `tc-viewer` supports most popular web mapping libraries out-of-the box.  This can be very useful for quick, practical comparisons.  If your favourite mapping library is missing, please submit an [issue](https://github.com/twpayne/tilecloud/issues), or, even better, a [pull request](https://github.com/twpayne/tilecloud/pulls).
 
