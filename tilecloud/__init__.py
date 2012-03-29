@@ -392,6 +392,9 @@ class Tile(object):
         attrs = ''.join(' %s=%r' % (key, self.__dict__[key]) for key in keys)
         return '<Tile%s>' % (attrs,)
 
+    def is_metatile(self):
+        return isinstance(self.tilecoord, MetaTileCoord)
+
 
 class TileStore(object):
     """A tile store"""
