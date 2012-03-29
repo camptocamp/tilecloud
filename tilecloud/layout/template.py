@@ -8,9 +8,12 @@ class TemplateTileLayout(RETileLayout):
 
     def __init__(self, template):
         self.template = template
+        self.prefix = None
         index, patterns, filename_patterns = 0, [], []
         for match in re.finditer(r'%\(([xyz])\)d', self.template):
             prematch_pattern = re.escape(self.template[index:match.start()])
+            if self.prefix is None:
+                self.prefix = self.template[index:match.start()]
             patterns.append(prematch_pattern)
             patterns.append(r'\d+')
             filename_patterns.append(prematch_pattern)
