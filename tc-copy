@@ -16,6 +16,7 @@ def main(argv):
     option_parser = OptionParser()
     option_parser.add_option('-b', '--bounding-pyramid',
                              metavar='BOUNDING-PYRAMID')
+    option_parser.add_option('-m', '--move', action='store_true')
     option_parser.add_option('-o', '--overwrite', action='store_true')
     option_parser.add_option('-v', '--verbose', action='store_true')
     options, args = option_parser.parse_args(argv[1:])
@@ -39,6 +40,8 @@ def main(argv):
             tilestream = (tile for tile in tilestream
                                if tile not in output_tile_store)
         tilestream = output_tile_store.put(tilestream)
+        if options.move:
+            tilestream = input_tile_store.delete(tilestream)
         if options.verbose:
             tilestream = imap(Logger(logger, logging.INFO, '%(tilecoord)s'), tilestream)
         consume(tilestream, None)
