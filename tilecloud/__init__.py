@@ -254,9 +254,9 @@ class MetaTileCoord(object):
     def __str__(self):
         return '%d/%d/%d:+%d/+%d' % (self.z, self.x, self.y, self.n, self.n)
 
-    def bounds(self, resolution=1):
-        return (Bounds(resolution * self.x, resolution * (self.x + self.n)),
-                Bounds(resolution * self.y, resolution * (self.y + self.n)))
+    def bounds(self, resolution=1, buffer=0):
+        return (Bounds(resolution * self.x - buffer, resolution * (self.x + self.n) + buffer),
+                Bounds(resolution * self.y - buffer, resolution * (self.y + self.n) + buffer))
 
 
 class TileCoord(object):
@@ -286,9 +286,9 @@ class TileCoord(object):
         yield TileCoord(self.z + 1, 2 * self.x, 2 * self.y + 1)
         yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y + 1)
 
-    def bounds(self, resolution=1):
-        return (Bounds(resolution * self.x, resolution * (self.x + 1)),
-                Bounds(resolution * self.y, resolution * (self.y + 1)))
+    def bounds(self, resolution=1, buffer=0):
+        return (Bounds(resolution * self.x - buffer, resolution * (self.x + 1) + buffer),
+                Bounds(resolution * self.y - buffer, resolution * (self.y + 1) + buffer))
 
     def metatilecoord(self, n=8):
         return MetaTileCoord(n, self.z, n * (self.x // n), n * (self.y // n))
