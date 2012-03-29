@@ -157,6 +157,18 @@ class BoundingPyramid(object):
             for tilecoord in self.ziter(z):
                 yield tilecoord
 
+    def metatilecoords(self, n=8):
+        for z in sorted(self.bounds.keys()):
+            xbounds, ybounds = self.bounds[z]
+            metatilecoord = TileCoord(z, xbounds.start, ybounds.start).metatilecoord(n)
+            x = metatilecoord.x
+            while x < xbounds.stop:
+                y = metatilecoord.y
+                while y < ybounds.stop:
+                    yield MetaTileCoord(n, z, x, y)
+                    y += n
+                x += n
+
     def zget(self, z):
         """Return the tuple (xbounds, ybounds) at level z"""
         return self.bounds[z]
