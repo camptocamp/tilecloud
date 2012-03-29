@@ -1,18 +1,26 @@
 #!/usr/bin/env python
 
+from itertools import imap
+import logging
 from optparse import OptionParser
+import os.path
 import sys
 
 from tilecloud import BoundingPyramid, TileStore, consume
+from tilecloud.filter.logger import Logger
 from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 
 
 def main(argv):
+    logger = logging.getLogger(os.path.basename(argv[0]))
     option_parser = OptionParser()
     option_parser.add_option('-b', '--bounding-pyramid',
                              metavar='BOUNDING-PYRAMID')
     option_parser.add_option('-o', '--overwrite', action='store_true')
+    option_parser.add_option('-v', '--verbose', action='store_true')
     options, args = option_parser.parse_args(argv[1:])
+    if options.verbose:
+        logging.basicConfig(level=logging.INFO)
     assert len(args) >= 2
     if options.bounding_pyramid:
         bounding_pyramid = \
@@ -31,6 +39,8 @@ def main(argv):
             tilestream = (tile for tile in tilestream
                                if tile not in output_tile_store)
         tilestream = output_tile_store.put(tilestream)
+        if options.verbose:
+            tilestream = imap(Logger(logger, logging.INFO, '%(tilecoord)s'), tilestream)
         consume(tilestream, None)
 
 
