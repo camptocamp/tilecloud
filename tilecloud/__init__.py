@@ -348,6 +348,9 @@ class TileStore(object):
 
     @classmethod
     def load(cls, name):
+        if name == 'null://':
+            from tilecloud.store.null import NullTileStore
+            return NullTileStore()
         if name.startswith('http://') or name.startswith('https://'):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.url import URLTileStore
