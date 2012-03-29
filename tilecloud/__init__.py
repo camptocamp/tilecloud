@@ -38,6 +38,9 @@ class Bounds(object):
             assert start is not None
             self.stop = stop
 
+    def __cmp__(self, other):
+        return cmp(self.start, other.start) or cmp(self.stop, other.stop)
+
     def __contains__(self, key):
         if self.start is None:
             return False
