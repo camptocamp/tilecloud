@@ -214,6 +214,9 @@ class TileCoord(object):
         self.x = x
         self.y = y
 
+    def __cmp__(self, other):
+        return cmp(self.x, other.x) or cmp(self.y, other.y) or cmp(self.z, other.z)
+
     def __hash__(self):
         return (self.x << self.z) ^ self.y
 
