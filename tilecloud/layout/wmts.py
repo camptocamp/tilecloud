@@ -3,7 +3,7 @@ from tilecloud import TileLayout
 
 class WMTSTileLayout(TileLayout):
 
-    def __init__(self, url='', layer=None, style=None, format=None, 
+    def __init__(self, url='', layer=None, style=None, format=None,
                  tile_matrix_set=None, tile_matrix=None,
                  dimensions=(), request_encoding='KVP'):
         self.url = url
@@ -35,7 +35,7 @@ class WMTSTileLayout(TileLayout):
 
         query.extend([
                 ('TileMatrixSet', self.tile_matrix_set),
-                ('TileMatrix', str(self.tile_matrix(tilecoord.z) 
+                ('TileMatrix', str(self.tile_matrix(tilecoord.z)
                         if self.tile_matrix is not None else tilecoord.z)),
                 ('TileRow', str(tilecoord.y)),
                 ('TileCol', str(tilecoord.x))

@@ -11,7 +11,7 @@ class WMSTileLayout(TileLayout):
         self.image_format = image_format
 
     def filename(self, tilecoord):
-        size = str(self.metatile_configuration.tile_size * self.metatile_configuration.size + 
+        size = str(self.metatile_configuration.tile_size * self.metatile_configuration.size +
                 2 * self.metatile_configuration.buffer)
         bbox = self.meta_to_bbox(tilecoord)
         query = (
@@ -34,16 +34,16 @@ class WMSTileLayout(TileLayout):
 
     def meta_to_bbox(self, meta):
         return (
-            self.px_to_unit(meta.x * self.metatile_configuration.tile_size * self.metatile_configuration.size - 
-                    self.metatile_configuration.buffer, 
+            self.px_to_unit(meta.x * self.metatile_configuration.tile_size * self.metatile_configuration.size -
+                    self.metatile_configuration.buffer,
                     meta.z, self.metatile_configuration.max_extent[0]),
-            self.px_to_unit(meta.y * self.metatile_configuration.tile_size * self.metatile_configuration.size - 
-                    self.metatile_configuration.buffer, 
+            self.px_to_unit(meta.y * self.metatile_configuration.tile_size * self.metatile_configuration.size -
+                    self.metatile_configuration.buffer,
                     meta.z, self.metatile_configuration.max_extent[1]),
-            self.px_to_unit((meta.x + 1) * self.metatile_configuration.tile_size * self.metatile_configuration.size + 
-                    self.metatile_configuration.buffer, 
+            self.px_to_unit((meta.x + 1) * self.metatile_configuration.tile_size * self.metatile_configuration.size +
+                    self.metatile_configuration.buffer,
                     meta.z, self.metatile_configuration.max_extent[0]),
-            self.px_to_unit((meta.y + 1) * self.metatile_configuration.tile_size * self.metatile_configuration.size + 
-                    self.metatile_configuration.buffer, 
+            self.px_to_unit((meta.y + 1) * self.metatile_configuration.tile_size * self.metatile_configuration.size +
+                    self.metatile_configuration.buffer,
                     meta.z, self.metatile_configuration.max_extent[1]),
         )

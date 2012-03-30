@@ -26,7 +26,7 @@ wmts_get_capabilities_template = """<?xml version="1.0" encoding="UTF-8"?>
       <Dimension>
         <ows:Identifier>{{layer["dimension_key"]}}</ows:Identifier>
         <Default>{{layer["dimension_default"]}}</Default>
-        {% for value in layers["dimension_values"] %} 
+        {% for value in layers["dimension_values"] %}
         <Value>{{value}}</Value>
         {% endfor %}
       </Dimension>

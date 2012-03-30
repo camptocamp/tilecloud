@@ -1,4 +1,3 @@
-
 class MetaTileConfiguration:
 
     def __init__(self, resolutions, max_extent, tile_size=256, size=8, buffer=0):
