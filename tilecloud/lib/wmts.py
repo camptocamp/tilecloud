@@ -1,7 +1,7 @@
 from math import ceil
-from os.path import dirname, join
 
 from bottle import jinja2_template
+from pyproj import Proj, transform
 
 from tilecloud.lib.wmts_get_capabilities_template import wmts_get_capabilities_template
 
