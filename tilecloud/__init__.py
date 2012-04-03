@@ -178,16 +178,27 @@ class BoundingPyramid(object):
         match = re.match(
                 r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):' +
                 r'(?:(?P<plusz>\+)?(?P<z2>\d+)/)?' +
-                r'(?P<plusx>\+)?(?P<x2>\d+)/(?P<plusy>\+)?(?P<y2>\d+)\Z', s)
+                r'(?:(?P<plusx>\+)?(?P<x2>\d+)|(?P<starx>\*))/' +
+                r'(?:(?P<plusy>\+)?(?P<y2>\d+)|(?P<stary>\*))\Z', s)
         if not match:
             raise ValueError('invalid literal for %s.from_string(): %r' %
                              (cls.__name__, s))
         z1 = int(match.group('z1'))
-        x1, x2 = int(match.group('x1')), int(match.group('x2'))
-        xbounds = Bounds(x1, x1 + x2 if match.group('plusx') else x2)
-        y1, y2 = int(match.group('y1')), int(match.group('y2'))
-        ybounds = Bounds(y1, y1 + y2 if match.group('plusy') else y2)
-        result = cls({z1: (xbounds, ybounds)})
+        x1 = int(match.group('x1'))
+        if match.group('starx'):
+            x2 = 1 << z1
+        elif match.group('plusx'):
+            x2 = x1 + int(match.group('x2'))
+        else:
+            x2 = int(match.group('x2'))
+        y1 = int(match.group('y1'))
+        if match.group('stary'):
+            y2 = 1 << z1
+        elif match.group('plusy'):
+            y2 = y1 + int(match.group('y2'))
+        else:
+            y2 = int(match.group('y2'))
+        result = cls({z1: (Bounds(x1, x2), Bounds(y1, y2))})
         if match.group('z2'):
             z2 = int(match.group('z2'))
             if match.group('plusz'):
