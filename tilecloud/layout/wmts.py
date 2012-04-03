@@ -31,7 +31,7 @@ class WMTSTileLayout(TileLayout):
                 ('Style', self.style),
         ])
 
-        query.extend(self.dimensions);
+        query.extend(self.dimensions)
 
         query.extend([
                 ('TileMatrixSet', self.tile_matrix_set),
