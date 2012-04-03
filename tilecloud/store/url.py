@@ -28,7 +28,7 @@ class URLTileStore(TileStore):
             tile.data = response.read()
             return tile
         except HTTPError as exc:
-            if exc.code == 404:
+            if 400 <= exc.code < 500:
                 return None
             else:
                 raise
