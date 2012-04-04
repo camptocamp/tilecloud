@@ -269,10 +269,6 @@ class MetaTileCoord(object):
     def __str__(self):
         return '%d/%d/%d:+%d/+%d' % (self.z, self.x, self.y, self.n, self.n)
 
-    def bounds(self, resolution=1, buffer=0):
-        return (Bounds(resolution * self.x - buffer, resolution * (self.x + self.n) + buffer),
-                Bounds(resolution * self.y - buffer, resolution * (self.y + self.n) + buffer))
-
 
 class TileCoord(object):
     """A tile coordinate"""
@@ -300,10 +296,6 @@ class TileCoord(object):
         yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y)
         yield TileCoord(self.z + 1, 2 * self.x, 2 * self.y + 1)
         yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y + 1)
-
-    def bounds(self, resolution=1, buffer=0):
-        return (Bounds(resolution * self.x - buffer, resolution * (self.x + 1) + buffer),
-                Bounds(resolution * self.y - buffer, resolution * (self.y + 1) + buffer))
 
     def metatilecoord(self, n=8):
         return MetaTileCoord(n, self.z, n * (self.x // n), n * (self.y // n))
@@ -360,18 +352,20 @@ class Grid(object):
     def bounds(self, tilecoord, buffer=0):
         n = tilecoord.n if isinstance(tilecoord, MetaTileCoord) else 1
         resolution = self.resolutions[tilecoord.z]
-        minx = resolution * tilecoord.x * self.tile_size + self.max_extent[0] - buffer
-        maxx = resolution * (tilecoord.x + n) * self.tile_size + self.max_extent[0] + buffer
-        miny = self.max_extent[2 + self.top] - resolution * tilecoord.y * self.tile_size * self.top + buffer * self.top
-        maxy = self.max_extent[2 + self.top] - resolution * (tilecoord.y + n) * self.tile_size * self.top - buffer * self.top
+        minx = resolution * (tilecoord.x * self.tile_size - buffer) + self.max_extent[0]
+        maxx = resolution * ((tilecoord.x + n) * self.tile_size + buffer) + self.max_extent[0]
+        miny = self.max_extent[2 + self.top] - \
+                resolution * (tilecoord.y * self.tile_size - buffer) * self.top
+        maxy = self.max_extent[2 + self.top] - \
+                resolution * ((tilecoord.y + n) * self.tile_size + buffer) * self.top
         return (Bounds(minx, maxx), Bounds(miny, maxy) if self.top < 0 else Bounds(maxy, miny))
 
-    def tileCoord(self, coord, n=1):
+    def tilecoord(self, coord, n=1):
         """ coord (z, x, y)"""
         resolution = self.resolutions[coord[0]]
-        TileCoord(coord[0],
-                (coord[1] - self.max_extent[0]) / (resolution * self.tile_size * n),
-                (coord[2] + self.max_extent[2 + self.top]) / (resolution * self.tile_size * n * self.top))
+        return TileCoord(coord[0],
+                (coord[1] - self.max_extent[0]) / (resolution * self.tile_size) // n * n,
+                (self.max_extent[2 + self.top] - coord[2]) / (resolution * self.tile_size * self.top) // n * n)
 
 
 class TileLayout(object):
