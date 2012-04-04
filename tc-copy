@@ -7,6 +7,7 @@ import os.path
 import sys
 
 from tilecloud import BoundingPyramid, TileStore, consume
+from tilecloud.filter.consistenthash import EveryNth
 from tilecloud.filter.logger import Logger
 from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 
@@ -16,7 +17,9 @@ def main(argv):
     option_parser = OptionParser()
     option_parser.add_option('-b', '--bounding-pyramid',
                              metavar='BOUNDING-PYRAMID')
+    option_parser.add_option('-i', metavar='I', type=int)
     option_parser.add_option('-m', '--move', action='store_true')
+    option_parser.add_option('-n', metavar='N', type=int)
     option_parser.add_option('-o', '--overwrite', action='store_true')
     option_parser.add_option('-v', '--verbose', action='store_true')
     options, args = option_parser.parse_args(argv[1:])
@@ -33,6 +36,12 @@ def main(argv):
         input_tile_store = TileStore.load(arg)
         if bounding_pyramid:
             tilestream = BoundingPyramidTileStore(bounding_pyramid).list()
+            if options.i is not None and options.n is not None:
+                tilestream = imap(EveryNth(options.n, options.i), tilestream)
+            tilestream = input_tile_store.get(tilestream)
+        elif options.i is not None and options.n is not None:
+            tilestream = input_tile_store.list()
+            tilestream = imap(EveryNth(options.n, options.i), tilestream)
             tilestream = input_tile_store.get(tilestream)
         else:
             tilestream = input_tile_store.get_all()
