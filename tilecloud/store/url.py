@@ -26,9 +26,6 @@ class URLTileStore(TileStore):
             if 'Content-Type' in info:
                 tile.content_type = info['Content-Type']
             tile.data = response.read()
-            return tile
         except HTTPError as exc:
-            if 400 <= exc.code < 500:
-                return None
-            else:
-                raise
+            tile.error = exc
+        return tile
