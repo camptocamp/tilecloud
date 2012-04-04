@@ -288,6 +288,7 @@ class Tile(object):
         self.content_encoding = content_encoding
         self.content_type = content_type
         self.data = data
+        self.error = None
         for key, value in kwargs.items():
             setattr(self, key, value)
 
