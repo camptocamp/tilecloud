@@ -67,10 +67,12 @@ For a quick demo, run
 
 and point your browser at <http://localhost:8080/>.  Type `Ctrl-C` to terminate `tc-viewer`.
 
-Next, download an example MBTiles file from [MapBox](http://mapbox.com/), such as [Geography Class](http://tiles.mapbox.com/mapbox/map/geography-class).  We can quickly find out more about this tile set with the `tc-info` command:
+Next, download an example MBTiles file from [MapBox](http://mapbox.com/), such as [Geography Class](http://tiles.mapbox.com/mapbox/map/geography-class).  We can quickly find out more about this tile set with the `tc-info` command.  For example, to count the number of tiles:
 
 	$ ./tc-info -t count geography-class.mbtiles
 	87381
+
+To calculate the bounding pyramid:
 
 	$ ./tc-info -t bounding-pyramid -r geography-class.mbtiles
 	0/0/0:+1/+1
@@ -82,6 +84,21 @@ Next, download an example MBTiles file from [MapBox](http://mapbox.com/), such a
 	6/0/0:+64/+64
 	7/0/0:+128/+128
 	8/0/0:+256/+256
+
+To check for missing tiles against a bounding pyramid:
+
+	$ ./tc-info -b 0/0/0:8/*/* -t completion geography-class.mbtiles
+	0 1/1 (100%)
+	1 4/4 (100%)
+	2 16/16 (100%)
+	3 64/64 (100%)
+	4 256/256 (100%)
+	5 1024/1024 (100%)
+	6 4096/4096 (100%)
+	7 16384/16384 (100%)
+	8 65536/65536 (100%)
+
+This shows, for each zoom level, the number of tiles at that zoom level, the total number of tiles expected at that zoom level for the specified bounding pyramid (`0/0/0:8/*/*` means all tiles from level 0 to level 8), and a percentage completion.  This can be useful for checking that a tile set is complete.
 
 Now, display this MBTiles tile set on top of the [OpenStreetMap](http://www.openstreetmap.org/) tiles and a debug tile layer:
 
