@@ -66,6 +66,7 @@ class Bounds(object):
                                    self.start, self.stop)
 
     def add(self, value):
+        """Extends self to include value"""
         if self.start is None:
             self.start = value
             self.stop = value + 1
@@ -75,6 +76,7 @@ class Bounds(object):
         return self
 
     def update(self, other):
+        """Merges other into self"""
         if self.start is None:
             self.start = other.start
             self.stop = other.stop
@@ -84,6 +86,7 @@ class Bounds(object):
         return self
 
     def union(self, other):
+        """Returns a new Bounds which is the union of self and other"""
         if self and other:
             return Bounds(min(self.start, other.start),
                           max(self.start, other.start))
@@ -101,19 +104,23 @@ class BoundingPyramid(object):
         self.bounds = bounds or {}
 
     def __contains__(self, tilecoord):
+        """Returns True if tilecoord is in self"""
         if tilecoord.z not in self.bounds:
             return False
         xbounds, ybounds = self.bounds[tilecoord.z]
         return tilecoord.x in xbounds and tilecoord.y in ybounds
 
     def __iter__(self):
+        """Generates every TileCoord in self, in increasing z, x, and y order"""
         return self.itertopdown()
 
     def __len__(self):
+        """Returns the total number of TileCoords in self"""
         return sum(len(xbounds) * len(ybounds)
                    for xbounds, ybounds in self.bounds.itervalues())
 
     def add(self, tilecoord):
+        """Extends self to include tilecoord"""
         if tilecoord.z in self.bounds:
             xbounds, ybounds = self.bounds[tilecoord.z]
             xbounds.add(tilecoord.x)
@@ -148,9 +155,11 @@ class BoundingPyramid(object):
                 yield tilecoord
 
     def zget(self, z):
+        """Return the tuple (xbounds, ybounds) at level z"""
         return self.bounds[z]
 
     def ziter(self, z):
+        """Generates every TileCoord in self at level z"""
         if z in self.bounds:
             xbounds, ybounds = self.bounds[z]
             for x in xbounds:
