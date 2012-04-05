@@ -101,6 +101,12 @@ def googlemaps():
     return dict(tile_stores=tile_stores)
 
 
+@bottle.route('/jquerygeo')
+@bottle.view('jquerygeo')
+def jquerygeo():
+    return dict(tile_stores=tile_stores)
+
+
 @bottle.route('/leaflet')
 @bottle.view('leaflet')
 def leaflet():

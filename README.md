@@ -30,7 +30,7 @@ TileCloud uses Python's generators and iterators to efficiently stream tens of m
 
 Example tasks that TileCloud makes easy include:
 
-* Visualize tiles stored in any TileStore with [OpenLayers](http://www.openlayers.org/), [Google Maps](http://maps.google.com/), [Leaflet](http://leaflet.cloudmade.com/), [Polymaps](http://polymaps.org/), [Modest Maps](http://www.modestmaps.com/), and [OpenWebGlobe](http://www.openwebglobe.org/).
+* Visualize tiles stored in any TileStore with [OpenLayers](http://www.openlayers.org/), [Google Maps](http://maps.google.com/), [jQuery Geo](http://www.jquerygeo.com/), [Leaflet](http://leaflet.cloudmade.com/), [Polymaps](http://polymaps.org/), [Modest Maps](http://www.modestmaps.com/), and [OpenWebGlobe](http://www.openwebglobe.org/).
 
 * Convert sixty million PNG tiles stored in S3 to JPEG format with different quality settings at different zoom levels.
 
