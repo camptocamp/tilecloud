@@ -14,7 +14,7 @@ TileCloud is a powerful utility for generating, managing, transforming, visualis
 
 * WMTS
 
-* Amazon S3
+* Amazon [S3](http://aws.amazon.com/s3/) and [SQS](http://aws.amazon.com/sqs/)
 
 * [MBTiles](https://github.com/mapbox/mbtiles-spec)
 

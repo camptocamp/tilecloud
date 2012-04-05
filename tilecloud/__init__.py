@@ -387,6 +387,16 @@ class TileStore(object):
             from tilecloud.store.s3 import S3TileStore
             bucket, template = name[5:].split('/', 1)
             return S3TileStore(bucket, TemplateTileLayout(template))
+        if name.startswith('sqs://'):
+            from tilecloud.store.sqs import SQSTileStore
+            import boto
+            import boto.sqs
+            from boto.sqs.jsonmessage import JSONMessage
+            region_name, queue_name = name[6:].split('/', 1)
+            connection = boto.sqs.connect_to_region(region_name)
+            queue = connection.create_queue(queue_name)
+            queue.set_message_class(JSONMessage)
+            return SQSTileStore(queue)
         root, ext = os.path.splitext(name)
         if ext == '.bsddb':
             import bsddb
