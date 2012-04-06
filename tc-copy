@@ -83,7 +83,8 @@ def main(argv):
         if benchmark:
             for key in ('get', 'put', 'delete'):
                 if key in benchmark.statisticss:
-                    logger.info('%s: %s' % (key, benchmark.statisticss[key]))
+                    statistics = benchmark.statisticss[key]
+                    logger.info('%s: %s%s' % (key, statistics, ' (%.1f tiles/s)' % (1.0 / statistics.mean,) if statistics.n else ''))
 
 
 if __name__ == '__main__':
