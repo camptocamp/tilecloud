@@ -58,3 +58,4 @@ class ZipTileStore(TileStore):
         zipinfo.date_time = datetime.now().timetuple()[:6]
         zipinfo.external_attr = 0644 << 16
         self.zipfile.writestr(zipinfo, tile.data)
+        return tile
