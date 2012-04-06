@@ -19,8 +19,7 @@ def main(argv):
     logger = logging.getLogger(os.path.basename(argv[0]))
     option_parser = OptionParser()
     option_parser.add_option('--benchmark', action='store_true')
-    option_parser.add_option('-b', '--bounding-pyramid',
-                             metavar='BOUNDING-PYRAMID')
+    option_parser.add_option('-b', '--bounding-pyramid', metavar='BOUNDING-PYRAMID')
     option_parser.add_option('-i', metavar='I', type=int)
     option_parser.add_option('-m', '--move', action='store_true')
     option_parser.add_option('--maximum-consecutive-errors', metavar='N', type=int)
@@ -37,8 +36,7 @@ def main(argv):
         logging.basicConfig(level=logging.WARNING)
     assert len(args) >= 2
     if options.bounding_pyramid:
-        bounding_pyramid = \
-                BoundingPyramid.from_string(options.bounding_pyramid)
+        bounding_pyramid = BoundingPyramid.from_string(options.bounding_pyramid)
     else:
         bounding_pyramid = None
     benchmark = Benchmark() if options.benchmark else None
@@ -52,8 +50,7 @@ def main(argv):
         if options.i is not None and options.n is not None:
             tilestream = imap(EveryNth(options.n, options.i), tilestream)
         if not options.overwrite:
-            tilestream = (tile for tile in tilestream
-                               if tile not in output_tile_store)
+            tilestream = (tile for tile in tilestream if tile not in output_tile_store)
         if options.rate_limit:
             tilestream = imap(RateLimit(options.rate_limit), tilestream)
         if benchmark:
