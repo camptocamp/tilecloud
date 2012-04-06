@@ -21,6 +21,7 @@ def main(argv):
     option_parser.add_option('--benchmark', action='store_true')
     option_parser.add_option('-b', '--bounding-pyramid', metavar='BOUNDING-PYRAMID')
     option_parser.add_option('-i', metavar='I', type=int)
+    option_parser.add_option('--limit', metavar='N', type=int)
     option_parser.add_option('-m', '--move', action='store_true')
     option_parser.add_option('--maximum-consecutive-errors', metavar='N', type=int)
     option_parser.add_option('--maximum-errors', metavar='N', type=int)
@@ -76,7 +77,7 @@ def main(argv):
                     tilestream = imap(benchmark.sample('delete'), tilestream)
             if options.verbose:
                 tilestream = imap(Logger(logger, logging.INFO, '%(tilecoord)s'), tilestream)
-            consume(tilestream, None)
+            consume(tilestream, options.limit)
     finally:
         logging.basicConfig(level=logging.INFO)
         if benchmark:
