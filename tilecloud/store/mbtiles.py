@@ -94,7 +94,7 @@ class MBTilesTileStore(TileStore):
             if tile.tilecoord not in self.bounding_pyramid:
                 return None
         try:
-            tile = Tile(tile.tilecoord, data=self.tiles[tile.tilecoord])
+            tile.data = self.tiles[tile.tilecoord]
         except KeyError:
             return None
         if self.content_type is not None:
