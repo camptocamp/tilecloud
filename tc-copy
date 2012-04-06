@@ -7,6 +7,7 @@ import os.path
 import sys
 
 from tilecloud import BoundingPyramid, TileStore, consume
+from tilecloud.filter.benchmark import Benchmark
 from tilecloud.filter.consistenthash import EveryNth
 from tilecloud.filter.error import DropErrors, LogErrors, MaximumConsecutiveErrors, MaximumErrorRate, MaximumErrors
 from tilecloud.filter.logger import Logger
@@ -17,6 +18,7 @@ from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 def main(argv):
     logger = logging.getLogger(os.path.basename(argv[0]))
     option_parser = OptionParser()
+    option_parser.add_option('--benchmark', action='store_true')
     option_parser.add_option('-b', '--bounding-pyramid',
                              metavar='BOUNDING-PYRAMID')
     option_parser.add_option('-i', metavar='I', type=int)
@@ -39,6 +41,7 @@ def main(argv):
                 BoundingPyramid.from_string(options.bounding_pyramid)
     else:
         bounding_pyramid = None
+    benchmark = Benchmark() if options.benchmark else None
     output_tile_store = TileStore.load(args[-1])
     for arg in args[:-1]:
         input_tile_store = TileStore.load(arg)
@@ -53,7 +56,11 @@ def main(argv):
                                if tile not in output_tile_store)
         if options.rate_limit:
             tilestream = imap(RateLimit(options.rate_limit), tilestream)
+        if benchmark:
+            tilestream = imap(benchmark.sample(), tilestream)
         tilestream = input_tile_store.get(tilestream)
+        if benchmark:
+            tilestream = imap(benchmark.sample('get'), tilestream)
         tilestream = imap(LogErrors(logger, logging.ERROR, '%(tilecoord)s: %(error)s'), tilestream)
         if options.maximum_consecutive_errors:
             tilestream = imap(MaximumConsecutiveErrors(options.maximum_consecutive_errors), tilestream)
@@ -63,11 +70,20 @@ def main(argv):
             tilestream = imap(MaximumErrors(options.maximum_errors), tilestream)
         tilestream = imap(DropErrors(), tilestream)
         tilestream = output_tile_store.put(tilestream)
+        if benchmark:
+            tilestream = imap(benchmark.sample('put'), tilestream)
         if options.move:
             tilestream = input_tile_store.delete(tilestream)
+            if benchmark:
+                tilestream = imap(benchmark.sample('delete'), tilestream)
         if options.verbose:
             tilestream = imap(Logger(logger, logging.INFO, '%(tilecoord)s'), tilestream)
         consume(tilestream, None)
+    logging.basicConfig(level=logging.INFO)
+    if benchmark:
+        for key in ('get', 'put', 'delete'):
+            if key in benchmark.statisticss:
+                logger.info('%s: %s' % (key, benchmark.statisticss[key]))
 
 
 if __name__ == '__main__':
