@@ -4,7 +4,7 @@ import mimetypes
 import sqlite3
 
 from tilecloud import Bounds, BoundingPyramid, Tile, TileCoord, TileStore
-from tilecloud.lib.sqlite3 import SQLiteDict, query
+from tilecloud.lib.sqlite3_ import SQLiteDict, query
 
 
 class Metadata(SQLiteDict):
