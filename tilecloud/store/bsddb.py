@@ -10,7 +10,7 @@ class BSDDBTileStore(TileStore):
         TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile):
-        return str(tile.tilecoord) in self.db
+        return tile and str(tile.tilecoord) in self.db
 
     def count(self):
         return len(self.db)

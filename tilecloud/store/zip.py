@@ -27,6 +27,8 @@ class ZipTileStore(TileStore):
             self.layout = OSMTileLayout()
 
     def __contains__(self, tile):
+        if not tile:
+            return False
         try:
             filename = self.layout.filename(tile.tilecoord)
             self.zipfile.getinfo(filename)

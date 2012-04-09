@@ -65,7 +65,7 @@ class MBTilesTileStore(TileStore):
         TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile):
-        return tile.tilecoord in self.tiles
+        return tile and tile.tilecoord in self.tiles
 
     def count(self):
         return query(self.connection, self.COUNT_SQL).next()[0]

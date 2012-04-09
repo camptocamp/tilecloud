@@ -304,6 +304,9 @@ class Tile(object):
         for key, value in kwargs.iteritems():
             setattr(self, key, value)
 
+    def __nonzero__(self):
+        return self.error is None
+
 
 class TileStore(object):
     """A tile store"""
