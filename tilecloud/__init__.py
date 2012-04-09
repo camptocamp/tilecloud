@@ -110,6 +110,9 @@ class BoundingPyramid(object):
         xbounds, ybounds = self.bounds[tilecoord.z]
         return tilecoord.x in xbounds and tilecoord.y in ybounds
 
+    def __eq__(self, other):
+        return self.bounds == other.bounds
+
     def __iter__(self):
         """Generates every TileCoord in self, in increasing z, x, and y order"""
         return self.itertopdown()
