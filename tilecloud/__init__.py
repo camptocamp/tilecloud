@@ -17,7 +17,7 @@ SPHERICAL_MERCATOR_ORIGIN = 20037508.34
 WGS84 = pyproj.Proj(init='epsg:4326')
 
 
-def consume(iterator, n):
+def consume(iterator, n):  # pragma: no cover
     "Advance the iterator n-steps ahead. If n is none, consume entirely."
     # Use functions that consume iterators at C speed.
     if n is None:
@@ -58,7 +58,7 @@ class Bounds(object):
             for i in xrange(self.start, self.stop):
                 yield i
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         if self.start is None:
             return '%s(None)' % (self.__class__.__name__,)
         else:
@@ -243,7 +243,7 @@ class TileCoord(object):
     def __hash__(self):
         return (self.x << self.z) ^ self.y
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return '%s(%r, %r, %r)' % (self.__class__.__name__,
                                    self.z, self.x, self.y)
 
@@ -377,7 +377,7 @@ class TileStore(object):
         raise NotImplementedError
 
     @classmethod
-    def load(cls, name):
+    def load(cls, name):  # pragma: no cover
         if name == 'null://':
             from tilecloud.store.null import NullTileStore
             return NullTileStore()

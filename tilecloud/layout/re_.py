@@ -14,5 +14,5 @@ class RETileLayout(TileLayout):
                              (self.__class__.__name__, filename))
         return self._tilecoord(match)
 
-    def _tilecoord(self, match):
+    def _tilecoord(self, match):  # pragma: no cover
         raise NotImplementedError
