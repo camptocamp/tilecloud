@@ -90,9 +90,6 @@ class MBTilesTileStore(TileStore):
         return BoundingPyramid(bounds)
 
     def get_one(self, tile):
-        if self.bounding_pyramid is not None:
-            if tile.tilecoord not in self.bounding_pyramid:
-                return None
         try:
             tile.data = self.tiles[tile.tilecoord]
         except KeyError:

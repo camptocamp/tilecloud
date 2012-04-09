@@ -1,4 +1,4 @@
-from tilecloud import BoundingPyramid, Tile, TileStore
+from tilecloud import BoundingPyramid, TileStore
 
 
 class BoundingPyramidTileStore(TileStore):
@@ -10,10 +10,6 @@ class BoundingPyramidTileStore(TileStore):
 
     def get_cheap_bounding_pyramid(self):
         return self.bounding_pyramid
-
-    def list(self):
-        for tilecoord in self.bounding_pyramid:
-            yield Tile(tilecoord)
 
     def put_one(self, tile):
         self.bounding_pyramid.add(tile.tilecoord)

@@ -312,12 +312,10 @@ class TileStore(object):
             setattr(self, key, value)
 
     def __contains__(self, tile):
-        if tile is None:
-            return False
-        elif self.bounding_pyramid is None:
-            return True
-        else:
+        if tile and self.bounding_pyramid:
             return tile.tilecoord in self.bounding_pyramid
+        else:
+            return False
 
     def count(self):
         """Returns the total number of tiles in the store"""
@@ -362,7 +360,9 @@ class TileStore(object):
     def list(self):
         """A generator that returns the tiles in the store without necessarily
            retrieving their data"""
-        raise NotImplementedError
+        if self.bounding_pyramid:
+            for tilecoord in self.bounding_pyramid:
+                yield Tile(tilecoord)
 
     def put(self, tiles):
         """A generator that has the side effect of putting the specified tiles
