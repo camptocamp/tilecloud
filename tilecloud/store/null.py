@@ -13,7 +13,7 @@ class NullTileStore(TileStore):
     def get_one(self, tile):
         return tile
 
-    def list(self, tile):
+    def list(self):
         return ()
 
     def put_one(self, tile):
