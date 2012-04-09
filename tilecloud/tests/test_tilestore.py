@@ -1,6 +1,7 @@
 import unittest
 
-from tilecloud import BoundingPyramid, Tile, TileCoord, TileStore
+from tilecloud import BoundingPyramid, Tile, TileCoord, TileStore, consume
+from tilecloud.store.dict import DictTileStore
 from tilecloud.store.null import NullTileStore
 
 
@@ -48,6 +49,38 @@ class TestTileStore(unittest.TestCase):
     def test_load_s3(self):
         from tilecloud.store.s3 import S3TileStore
         self.assertTrue(isinstance(TileStore.load('s3://bucket/template'), S3TileStore))
+
+
+class TestDictTileStore(unittest.TestCase):
+
+    def test_empty(self):
+        tile_store = DictTileStore()
+        self.assertEqual(tile_store.count(), 0)
+        self.assertEqual(list(tile_store.list()), [])
+
+    def test_one(self):
+        tile_store = DictTileStore()
+        self.assertEqual(tile_store.count(), 0)
+        tilestream = [Tile(TileCoord(1, 0, 0), data='data'), None, Tile(TileCoord(1, 0, 1), error=True)]
+        tilestream = tile_store.put(tilestream)
+        tiles = list(tilestream)
+        self.assertEqual(len(tiles), 1)
+        self.assertEqual(tiles[0].tilecoord, TileCoord(1, 0, 0))
+        self.assertEqual(tiles[0].data, 'data')
+        self.assertTrue(Tile(TileCoord(1, 0, 0)) in tile_store)
+        tilestream = [Tile(TileCoord(1, 0, 0)), Tile(TileCoord(1, 0, 1))]
+        tilestream = tile_store.get(tilestream)
+        consume(tilestream, None)
+        tiles = list(tile_store.get_all())
+        self.assertEqual(len(tiles), 1)
+        self.assertEqual(tiles[0].tilecoord, TileCoord(1, 0, 0))
+        self.assertEqual(tiles[0].data, 'data')
+        tilestream = [Tile(TileCoord(1, 0, 0))]
+        tilestream = tile_store.delete(tilestream)
+        consume(tilestream, None)
+        tiles = list(tile_store.get_all())
+        self.assertEqual(len(tiles), 0)
+        self.assertFalse(Tile(TileCoord(1, 0, 0)) in tile_store)
 
 
 class TestNullTileStore(unittest.TestCase):
