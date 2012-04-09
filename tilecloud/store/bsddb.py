@@ -26,7 +26,9 @@ class BSDDBTileStore(TileStore):
 
     def get_one(self, tile):
         try:
-            return Tile(tile.tilecoord, content_type=self.content_type, data=self.db[str(tile.tilecoord)])
+            tile.content_type = self.content_type
+            tile.data = self.db[str(tile.tilecoord)]
+            return tile
         except KeyError:
             return None
 
