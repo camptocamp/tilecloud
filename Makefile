@@ -14,3 +14,7 @@ pep8:
 pyflakes:
 	find tilecloud tiles -name \*.py | xargs pyflakes
 	pyflakes tc-*
+
+.PHONY: test
+test:
+	python setup.py nosetests
