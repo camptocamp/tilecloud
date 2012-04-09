@@ -1,5 +1,5 @@
 .PHONY: all
-all:
+all: test pep8 pyflakes
 
 .PHONY: clean
 clean:
