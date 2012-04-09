@@ -89,7 +89,7 @@ class Bounds(object):
         """Returns a new Bounds which is the union of self and other"""
         if self and other:
             return Bounds(min(self.start, other.start),
-                          max(self.start, other.start))
+                          max(self.stop, other.stop))
         elif self:
             return Bounds(self.start, self.stop)
         elif other:
