@@ -1,7 +1,12 @@
+/EGG-INFO
 /bin
 /distribute-*.tar.gz
 /include
 /lib
+/man
+/tilecloud.egg-info
+.coverage
+*.egg
 *.jpg
 *.log
 *.mbtiles
