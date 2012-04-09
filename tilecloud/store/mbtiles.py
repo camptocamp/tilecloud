@@ -65,8 +65,6 @@ class MBTilesTileStore(TileStore):
         TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile):
-        if not TileStore.__contains__(self, tile):
-            return False
         return tile.tilecoord in self.tiles
 
     def count(self):

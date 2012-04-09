@@ -18,8 +18,6 @@ class S3TileStore(TileStore):
         TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile):
-        if not TileStore.__contains__(self, tile):
-            return False
         key_name = self.tile_layout.filename(tile.tilecoord)
         try:
             self.s3bucket.head(key_name)
