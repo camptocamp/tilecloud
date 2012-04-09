@@ -145,7 +145,7 @@ class BoundingPyramid(object):
         for z in xrange(max(self.bounds), top, -1):
             xbounds, ybounds = self.bounds[z]
             self.add(TileCoord(z - 1, xbounds.start // 2, ybounds.start // 2))
-            self.add(TileCoord(z - 1, xbounds.stop // 2 - 1, ybounds.stop // 2 - 1))
+            self.add(TileCoord(z - 1, max(xbounds.stop // 2 - 1, 0), max(ybounds.stop // 2 - 1, 0)))
 
     def iterbottomup(self):
         for z in reversed(sorted(self.bounds.keys())):
