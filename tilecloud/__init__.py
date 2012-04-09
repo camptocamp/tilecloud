@@ -298,7 +298,7 @@ class Tile(object):
         self.content_type = content_type
         self.data = data
         self.error = None
-        for key, value in kwargs.items():
+        for key, value in kwargs.iteritems():
             setattr(self, key, value)
 
 
@@ -308,7 +308,7 @@ class TileStore(object):
     def __init__(self, bounding_pyramid=None, content_type=None, **kwargs):
         self.bounding_pyramid = bounding_pyramid
         self.content_type = content_type
-        for key, value in kwargs.items():
+        for key, value in kwargs.iteritems():
             setattr(self, key, value)
 
     def __contains__(self, tile):
