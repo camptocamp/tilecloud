@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+from glob import glob
 import os
 
 version = '0.1'
@@ -38,6 +39,7 @@ setup(
         setup_requires=setup_requires,
         tests_require=tests_require,
         test_suite='tilecloud.tests',
+        scripts=glob('tc-*'),
         entry_points="""
         # -*- Entry points: -*-
         """,
