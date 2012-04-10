@@ -16,7 +16,7 @@ setup_requires = [
         'nose',
         ]
 
-tests_require = install_requires = [
+tests_require = install_requires + [
         'coverage',
         ]
 
