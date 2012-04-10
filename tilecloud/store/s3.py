@@ -22,7 +22,7 @@ class S3TileStore(TileStore):
             return False
         key_name = self.tile_layout.filename(tile.tilecoord)
         try:
-            self.s3bucket.head(key_name)
+            self.s3bucket.get(key_name)  # FIXME should use head
             return True
         except S3Error as exc:
             if exc.response.status == httplib.NOT_FOUND:
