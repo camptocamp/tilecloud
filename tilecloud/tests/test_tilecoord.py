@@ -24,12 +24,12 @@ class TestTileCoord(unittest.TestCase):
     def test_str(self):
         self.assertEqual(str(TileCoord(1, 2, 3)), '1/2/3')
 
+    def test_children(self):
+        tc = TileCoord(1, 2, 3)
+        self.assertEqual(sorted(tc.children()), [TileCoord(2, 4, 6), TileCoord(2, 4, 7), TileCoord(2, 5, 6), TileCoord(2, 5, 7)])
+
     def test_normalize(self):
         self.assertEqual(TileCoord(2, 2, 2).normalize(), (0.5, 0.5))
-
-    def test_subdivide(self):
-        tc = TileCoord(1, 2, 3)
-        self.assertEqual(sorted(tc.subdivide()), [TileCoord(2, 4, 6), TileCoord(2, 4, 7), TileCoord(2, 5, 6), TileCoord(2, 5, 7)])
 
     def test_tuple(self):
         self.assertEqual(TileCoord(1, 2, 3).tuple(), (1, 2, 3))

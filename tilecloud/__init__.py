@@ -250,14 +250,14 @@ class TileCoord(object):
     def __str__(self):
         return '%d/%d/%d' % (self.z, self.x, self.y)
 
-    def normalize(self):
-        return (float(self.x) / (1 << self.z), float(self.y) / (1 << self.z))
-
-    def subdivide(self):
+    def children(self):
         yield TileCoord(self.z + 1, 2 * self.x, 2 * self.y)
         yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y)
         yield TileCoord(self.z + 1, 2 * self.x, 2 * self.y + 1)
         yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y + 1)
+
+    def normalize(self):
+        return (float(self.x) / (1 << self.z), float(self.y) / (1 << self.z))
 
     def tuple(self):
         return (self.z, self.x, self.y)

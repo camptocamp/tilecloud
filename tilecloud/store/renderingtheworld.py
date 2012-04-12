@@ -23,6 +23,6 @@ class RenderingTheWorldTileStore(TileStore):
 
     def put_one(self, tile):
         if self.subdivide(tile):
-            for tilecoord in tile.tilecoord.subdivide():
+            for tilecoord in tile.tilecoord.children():
                 self.queue.append(Tile(tilecoord))
         return tile
