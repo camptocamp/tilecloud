@@ -19,7 +19,7 @@ class DictTileStore(TileStore):
 
     def get_one(self, tile):
         if tile and tile.tilecoord in self.tiles:
-            tile.data = self.tiles[tile.tilecoord]
+            tile.__dict__.update(self.tiles[tile.tilecoord])
             return tile
         else:
             return None
@@ -30,5 +30,5 @@ class DictTileStore(TileStore):
 
     def put_one(self, tile):
         if tile:
-            self.tiles[tile.tilecoord] = tile.data
+            self.tiles[tile.tilecoord] = tile.__dict__
         return tile
