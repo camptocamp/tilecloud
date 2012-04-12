@@ -28,11 +28,16 @@ TileCloud uses Python's generators and iterators to efficiently stream tens of
 millions of tiles, and can handle multiple tiles in parallel using Python's
 `multiprocessing <http://docs.python.org/library/multiprocessing.html>`_ library.
 
+TileCloud includes command lines, and Python APIs for use in specific commands
+or libraries.
+
+Contents:
+
 .. toctree::
    :maxdepth: 1
 
-   tilecloud.store
-   tilecloud.filter
+   command
+   api
 
 
 Indices and tables
