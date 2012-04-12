@@ -253,6 +253,12 @@ class TileCoord(object):
     def normalize(self):
         return (float(self.x) / (1 << self.z), float(self.y) / (1 << self.z))
 
+    def subdivide(self):
+        yield TileCoord(self.z + 1, 2 * self.x, 2 * self.y)
+        yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y)
+        yield TileCoord(self.z + 1, 2 * self.x, 2 * self.y + 1)
+        yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y + 1)
+
     def tuple(self):
         return (self.z, self.x, self.y)
 
