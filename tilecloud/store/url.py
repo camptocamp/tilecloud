@@ -1,6 +1,10 @@
+import logging
 from urllib2 import HTTPError, Request, urlopen
 
 from tilecloud import TileStore
+
+
+logger = logging.getLogger(__name__)
 
 
 class URLTileStore(TileStore):
@@ -19,6 +23,7 @@ class URLTileStore(TileStore):
         url = tile_layout.filename(tile.tilecoord)
         request = Request(url, headers=self.headers)
         try:
+            logger.debug('GET %s' % (url,))
             response = urlopen(request)
             info = response.info()
             if 'Content-Encoding' in info:
