@@ -15,9 +15,3 @@ class TestTile(unittest.TestCase):
     def test_init_kwargs(self):
         tile = Tile(TileCoord(0, 0, 0), kwarg=None)
         self.assertEqual(tile.kwarg, None)
-
-    def test_nonzero(self):
-        tile = Tile(TileCoord(0, 0, 0))
-        self.assertTrue(tile)
-        tile.error = True
-        self.assertFalse(tile)
