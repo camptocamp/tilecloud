@@ -33,6 +33,7 @@ if options.server is None:
         import tornado.httpserver
         import tornado.ioloop
         options.server = 'tornado'
+        id(tornado)  # Suppress pyflakes warning 'tornado' imported but unused
     except ImportError:
         options.server = 'wsgiref'
 
