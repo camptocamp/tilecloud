@@ -110,7 +110,7 @@ You'll need to point your browser at <http://localhost:8080/> and choose your fa
 
 As a first example, run the following:
 
-        $ PYTHONPATH=. examples/download.py
+	$ PYTHONPATH=. examples/download.py
 
 This will download a few tiles from [OpenStreetMap](http://www.openstreetmap.org/) and save them in a local MBTiles file called `local.mbtiles`.  Look at the source code to `examples/download.py` to see how it works.  If there are problems with the download, just interrupt it with `Ctrl-C` and re-run it: the program will automatically resume where it left off.
 
