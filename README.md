@@ -221,6 +221,14 @@ Contributing
 
 Please report bugs and feature requests using the [GitHub issue tracker](https://github.com/twpayne/tilecloud/issues).
 
+TileCloud comes with unit tests in the `tilecloud/tests` directory.  You can run these with the command:
+
+	$ make test
+
+This is equivalent to:
+
+	$ python setup.py nosetests
+
 For pull requests, it is very much appreciated if your code passes [pep8](http://pypi.python.org/pypi/pep8) and [pyflakes](http://pypi.python.org/pypi/pyflakes) without warnings, with the exception of pep8 warning "E501 line too long", which is allowed.  You can run pep8 and pyflakes on the codebase with the command:
 
 	$ make pep8 pyflakes
