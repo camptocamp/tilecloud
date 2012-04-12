@@ -155,6 +155,39 @@ Here, `tc-viewer` is acting as a proxy, serving tiles stored in S3 over HTTP, by
 
 
 
+Rendering the World
+===================
+
+At [FOSS4G-NA](http://foss4g-na.org/), [MapBox](http://mapbox.com/) presented an excellent strategy for [rendering the world](http://mapbox.com/blog/rendering-the-world/).  TileCloud supports the subdivision strategy.  To run the demo, execute:
+
+	$ python examples/renderingtheworld.py
+
+This will generate tiles from a WMTS tile server and save them in a local MBTiles tiles.  When the above command is complete, you can see the bounding pyramid of the generated tiles:
+
+	$ ./tc-info -t bounding-pyramid -r medford_buildings.mbtiles
+	0/0/0:+1/+1
+	1/0/0:+1/+1
+	2/0/1:+1/+1
+	3/1/2:+1/+1
+	4/2/5:+1/+1
+	5/5/11:+1/+1
+	6/10/23:+1/+1
+	7/20/47:+1/+1
+	8/40/94:+2/+2
+	9/80/189:+2/+1
+	10/162/378:+1/+2
+	11/324/757:+2/+2
+	12/649/1514:+3/+3
+	13/1299/3028:+4/+5
+	14/2598/6057:+7/+8
+	15/5196/12114:+13/+15
+
+You can look at these tiles (which show buildings in Medford, OR) with the command:
+
+	./tc-viewer --root=7/20/47 tiles.openstreetmap_org medford_buildings.mbtiles
+
+
+
 A cheap-and-cheerful tile server
 ================================
 
