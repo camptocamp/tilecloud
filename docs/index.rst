@@ -6,11 +6,13 @@
 Welcome to TileCloud's documentation!
 =====================================
 
-Contents:
+TileCloud is...
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
+   tilecloud.store
+   tilecloud.filter
 
 
 Indices and tables
