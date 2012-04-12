@@ -1,5 +1,4 @@
 from collections import deque
-import logging
 
 from tilecloud import Tile, TileStore
 
