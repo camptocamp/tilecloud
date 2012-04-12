@@ -1,7 +1,7 @@
 TileCloud
 =========
 
-One tile to rule them all
+A powerful utility for generating, managing, transforming, and visualizing map tiles in multiple formats.
 
 
 
