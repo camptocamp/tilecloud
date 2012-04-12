@@ -310,6 +310,8 @@ class Tile(object):
         for key, value in kwargs.iteritems():
             setattr(self, key, value)
 
+    def __cmp__(self, other):
+        return cmp(self.tilecoord, other.tilecoord)
 
 
 class TileStore(object):
