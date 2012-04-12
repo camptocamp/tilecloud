@@ -1,9 +1,14 @@
 .PHONY: all
-all: test pep8 pyflakes
+all: test pep8 pyflakes docs
 
 .PHONY: clean
 clean:
 	find tilecloud tiles -name \*.pyc | xargs rm -f
+	make -C docs clean
+
+.PHONY: docs
+docs:
+	make -C docs html
 
 .PHONY: pep8
 pep8:
