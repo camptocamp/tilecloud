@@ -14,7 +14,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(os.path.basename(sys.argv[0]))
 
 
-
 def main(argv):
     # Create our input and output TileStores
     input_tile_store = TileStore.load('tiles.openstreetmap_org')
