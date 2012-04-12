@@ -259,6 +259,12 @@ class TileCoord(object):
     def normalize(self):
         return (float(self.x) / (1 << self.z), float(self.y) / (1 << self.z))
 
+    def parent(self):
+        if self.z == 0:
+            return None
+        else:
+            return TileCoord(self.z - 1, int(self.x // 2), int(self.y // 2))
+
     def tuple(self):
         return (self.z, self.x, self.y)
 

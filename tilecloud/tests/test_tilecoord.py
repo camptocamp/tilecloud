@@ -31,6 +31,12 @@ class TestTileCoord(unittest.TestCase):
     def test_normalize(self):
         self.assertEqual(TileCoord(2, 2, 2).normalize(), (0.5, 0.5))
 
+    def test_parent(self):
+        self.assertEqual(TileCoord(5, 11, 21).parent(), TileCoord(4, 5, 10))
+
+    def test_parent_root(self):
+        self.assertEqual(TileCoord(0, 0, 0).parent(), None)
+
     def test_tuple(self):
         self.assertEqual(TileCoord(1, 2, 3).tuple(), (1, 2, 3))
 
