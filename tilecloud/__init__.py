@@ -313,6 +313,11 @@ class Tile(object):
     def __cmp__(self, other):
         return cmp(self.tilecoord, other.tilecoord)
 
+    def __repr__(self):  # pragma: no cover
+        keys = sorted(self.__dict__.keys())
+        attrs = ''.join(' %s=%r' % (key, self.__dict__[key]) for key in keys)
+        return '<Tile%s>' % (attrs,)
+
 
 class TileStore(object):
     """A tile store"""
