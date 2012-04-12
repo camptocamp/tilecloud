@@ -406,7 +406,6 @@ class TileStore(object):
             return S3TileStore(bucket, TemplateTileLayout(template))
         if name.startswith('sqs://'):
             from tilecloud.store.sqs import SQSTileStore
-            import boto
             import boto.sqs
             from boto.sqs.jsonmessage import JSONMessage
             region_name, queue_name = name[6:].split('/', 1)
