@@ -11,6 +11,12 @@ Filter Reference API
 .. automodule:: tilecloud.filter.error
    :members:
 
+Image filters
+~~~~~~~~~~~~~
+
+.. automodule:: tilecloud.filter.image
+  :members:
+
 GZIP filters
 ~~~~~~~~~~~~
 

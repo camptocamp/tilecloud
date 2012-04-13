@@ -1,3 +1,7 @@
+"""
+This module includes filters doing manipulations on the tile image. It
+requires the PIL lib.
+"""
 from cStringIO import StringIO
 
 import PIL.Image
@@ -11,7 +15,16 @@ FORMAT_BY_CONTENT_TYPE = {
 
 
 class ImageFormatConverter(object):
-    """A class that converts a tile into the desired format"""
+    """
+    Create a filter that converts a tile into the desired format.
+
+    :param content_type:
+        The content type representing the format to convert the tile image
+        to.
+
+    :param kwargs:
+        Extra arguments passed to ``PIL`` when opening the tile image.
+    """
 
     def __init__(self, content_type, **kwargs):
         self.content_type = content_type
@@ -30,6 +43,19 @@ class ImageFormatConverter(object):
 
 
 class MergeFilter(object):
+    """
+    Create a filter that merges the tile with tiles of the same
+    coordinates.
+
+    :param tile_stores:
+        A collection of :class:`TileStore` objects from which tiles to
+        merge with the currently handled tile are read.
+
+    :param content_type:
+        The content type to set in the tile. If ``None`` the content
+        type of the first tile found in the stream is used for every
+        other tile. Default is ``None``.
+    """
 
     def __init__(self, tile_stores, content_type=None, **kwargs):
         self.tile_stores = list(tile_stores)
@@ -55,6 +81,16 @@ class MergeFilter(object):
 
 
 class PILImageFilter(object):
+    """
+    Create a filter to filter the tile image (with the PIL ``filter``
+    function).
+
+    :param filter:
+        The filter to pass to the PIL ``filter`` function.
+
+    :param kwargs:
+        Extra params passed to the PIL ``save`` function.
+    """
 
     def __init__(self, filter, **kwargs):
         self.filter = filter
