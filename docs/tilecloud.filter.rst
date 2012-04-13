@@ -11,5 +11,10 @@ Filter Reference API
 .. automodule:: tilecloud.filter.error
    :members:
 
+GZIP filters
+~~~~~~~~~~~~
+
+.. automodule:: tilecloud.filter.gzip_
+   :members:
 .. automodule:: tilecloud.filter.contenttype
    :members:
