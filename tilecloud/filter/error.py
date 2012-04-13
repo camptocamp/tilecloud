@@ -1,8 +1,3 @@
-"""
-This module includes factories for creating filters dealing with tiles
-with errors.
-"""
-
 from tilecloud.filter.logger import Logger
 
 
