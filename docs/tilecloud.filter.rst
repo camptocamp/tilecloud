@@ -10,3 +10,6 @@ Filter Reference API
 
 .. automodule:: tilecloud.filter.error
    :members:
+
+.. automodule:: tilecloud.filter.contenttype
+   :members:
