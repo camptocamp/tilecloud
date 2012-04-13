@@ -1,3 +1,6 @@
+"""
+This module includes filters for dealing with errors in tiles.
+"""
 from tilecloud.filter.logger import Logger
 
 
@@ -73,7 +76,7 @@ class MaximumErrorRate(object):
        exception is raised.
     :param min_tiles:
        The minimum number of received tiles before a :class:`TooManyErrors`
-       exception can be raised. Defaults to 0.
+       exception can be raised. Defaults to 8.
     """
 
     def __init__(self, max_error_rate, min_tiles=8):
