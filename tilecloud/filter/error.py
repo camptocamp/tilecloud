@@ -1,12 +1,16 @@
+"""
+This module includes factories for creating filters dealing with tiles
+with errors.
+"""
+
 from tilecloud.filter.logger import Logger
 
 
-class TooManyErrors(RuntimeError):
-    pass
-
-
 class CollectErrors(object):
-    """Save tiles with errors in an attribute called errors"""
+    """
+    Create a filter for collecting tiles with errors in an attribute
+    called ``errors``.
+    """
 
     def __init__(self):
         self.errors = []
@@ -18,7 +22,9 @@ class CollectErrors(object):
 
 
 class DropErrors(object):
-    """Drop all tiles with errors"""
+    """
+    Create a filter for dropping all tiles with errors.
+    """
 
     def __call__(self, tile):
         if not tile or tile.error:
@@ -28,7 +34,9 @@ class DropErrors(object):
 
 
 class LogErrors(Logger):
-    """Log all tiles with errors"""
+    """
+    Create a filter for logging all tiles with errors.
+    """
 
     def __call__(self, tile):
         if tile and tile.error:
@@ -37,7 +45,14 @@ class LogErrors(Logger):
 
 
 class MaximumConsecutiveErrors(object):
-    """Raise a TooManyErrors exception when there are max_consecutive_errors consecutive errors"""
+    """
+    Create a filter that raises a :class:`TooManyErrors` exception
+    when there are ``max_consecutive_errors`` consecutive errors.
+
+    :param max_consecutive_errors:
+        The max number of permitted consecutive errors. Once
+        exceeded a :class:`TooManyErrors` exception is raised.
+    """
 
     def __init__(self, max_consecutive_errors):
         self.max_consecutive_errors = max_consecutive_errors
@@ -54,7 +69,17 @@ class MaximumConsecutiveErrors(object):
 
 
 class MaximumErrorRate(object):
-    """Raise a TooManyErrors exception when the total error rate exceeds max_error_rate"""
+    """
+    Create a filter that raises a :class:`TooManyErrors` exception
+    when the total error rate exceeds ``max_error_rate``.
+
+    :param max_error_rate:
+       The maximum error rate. Once exceeded a :class:`TooManyErrors`
+       exception is raised.
+    :param min_tiles:
+       The minimum number of received tiles before a :class:`TooManyErrors`
+       exception can be raised. Defaults to 0.
+    """
 
     def __init__(self, max_error_rate, min_tiles=8):
         self.max_error_rate = max_error_rate
@@ -72,7 +97,14 @@ class MaximumErrorRate(object):
 
 
 class MaximumErrors(object):
-    """Raise a TooManyErrors exception when a number of errors is reached"""
+    """
+    Create a filter that raises a :class:`TooManyErrors` exception when
+    a number of errors is reached.
+
+    :param max_errors:
+        The maximum number of errors. Once exceeded a :class:`TooManyErrors`
+        exception is raised.
+    """
 
     def __init__(self, max_errors):
         self.max_errors = max_errors
@@ -84,3 +116,8 @@ class MaximumErrors(object):
             if self.error_count >= self.max_errors:
                 raise TooManyErrors
         return tile
+
+
+class TooManyErrors(RuntimeError):
+    """TooManyErrors exception class."""
+    pass
