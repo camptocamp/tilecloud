@@ -18,3 +18,7 @@ GZIP filters
    :members:
 .. automodule:: tilecloud.filter.contenttype
    :members:
+
+.. automodule:: tilecloud.filter.consistenthash
+   :members:
+
