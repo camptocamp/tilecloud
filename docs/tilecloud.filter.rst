@@ -1,9 +1,9 @@
 Filters
 =======
 
-Filters are callables. They receive a tile as their first argument and return
-a tile. They can act on the tile they receive. They may return ``None`` to drop
-the tile.
+Filters are callables. They receive a tile (:class:`tilecloud.Tile` object) as
+their first argument and return a tile. They can act on the tile they receive.
+They may return ``None`` to drop the tile.
 
 To filter a time stream use the ``itertools.imap`` function. For example::
 
