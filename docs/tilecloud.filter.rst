@@ -44,3 +44,5 @@ Other filters
 .. automodule:: tilecloud.filter.consistenthash
    :members:
 
+.. automodule:: tilecloud.filter.inboundingpyramid
+   :members:
