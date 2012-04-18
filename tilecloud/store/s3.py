@@ -70,17 +70,16 @@ class S3TileStore(TileStore):
 
     def put_one(self, tile):
         assert tile.data is not None
-        try:
-            key_name = self.tile_layout.filename(tile.tilecoord)
-            s3key = self.s3bucket.key(key_name)
-            s3key.body = tile.data
-            if tile.content_encoding is not None:
-                s3key['Content-Encoding'] = tile.content_encoding
-            if tile.content_type is not None:
-                s3key['Content-Type'] = tile.content_type
-            if not self.dry_run:
-                    s3key.put()
-        except S3Error as exc:
-            tile.error = exc
-
+        key_name = self.tile_layout.filename(tile.tilecoord)
+        s3key = self.s3bucket.key(key_name)
+        s3key.body = tile.data
+        if tile.content_encoding is not None:
+            s3key['Content-Encoding'] = tile.content_encoding
+        if tile.content_type is not None:
+            s3key['Content-Type'] = tile.content_type
+        if not self.dry_run:
+            try:
+                s3key.put()
+            except S3Error as exc:
+                tile.error = exc
         return tile
