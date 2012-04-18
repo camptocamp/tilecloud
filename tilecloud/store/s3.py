@@ -31,9 +31,12 @@ class S3TileStore(TileStore):
                 raise
 
     def delete_one(self, tile):
-        key_name = self.tile_layout.filename(tile.tilecoord)
-        if not self.dry_run:
-            self.s3bucket.delete(key_name)
+        try:
+            key_name = self.tile_layout.filename(tile.tilecoord)
+            if not self.dry_run:
+                self.s3bucket.delete(key_name)
+        except S3Error as exc:
+            tile.error = exc
         return tile
 
     def get_one(self, tile):
@@ -49,12 +52,12 @@ class S3TileStore(TileStore):
                 tile.content_type = tile.s3key['Content-Type']
             else:
                 tile.content_type = None
-            return tile
         except S3Error as exc:
             if exc.response.status == httplib.NOT_FOUND:
                 return None
             else:
-                raise
+                tile.error = exc
+        return tile
 
     def list(self):
         prefix = getattr(self.tile_layout, 'prefix', '')
@@ -67,13 +70,17 @@ class S3TileStore(TileStore):
 
     def put_one(self, tile):
         assert tile.data is not None
-        key_name = self.tile_layout.filename(tile.tilecoord)
-        s3key = self.s3bucket.key(key_name)
-        s3key.body = tile.data
-        if tile.content_encoding is not None:
-            s3key['Content-Encoding'] = tile.content_encoding
-        if tile.content_type is not None:
-            s3key['Content-Type'] = tile.content_type
-        if not self.dry_run:
-            s3key.put()
+        try:
+            key_name = self.tile_layout.filename(tile.tilecoord)
+            s3key = self.s3bucket.key(key_name)
+            s3key.body = tile.data
+            if tile.content_encoding is not None:
+                s3key['Content-Encoding'] = tile.content_encoding
+            if tile.content_type is not None:
+                s3key['Content-Type'] = tile.content_type
+            if not self.dry_run:
+                    s3key.put()
+        except S3Error as exc:
+            tile.error = exc
+
         return tile

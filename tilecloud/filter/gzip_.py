@@ -3,7 +3,13 @@ from gzip import GzipFile
 
 
 class GzipCompressor(object):
-    """A class that compresses a tile with gzip"""
+    """
+    Create a filter that compresses a tile with gzip.
+
+    :param compresslevel:
+        The compression level. Default is 9.
+
+    """
 
     def __init__(self, compresslevel=9):
         self.compresslevel = compresslevel
@@ -23,6 +29,9 @@ class GzipCompressor(object):
 
 
 class GzipDecompressor(object):
+    """
+    Create a filter that decompresses a tile with gzip.
+    """
 
     def __call__(self, tile):
         assert tile.data is not None
