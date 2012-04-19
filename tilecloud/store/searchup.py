@@ -1,4 +1,4 @@
-from tilecloud import TileStore
+from tilecloud import Tile, TileStore
 
 
 class SearchUpTileStore(TileStore):
@@ -7,8 +7,17 @@ class SearchUpTileStore(TileStore):
         self.tile_store = tile_store
 
     def get_one(self, tile):
-        while tile:
-            if tile in self.tile_store:
+        if not tile:
+            return None
+        test_tile = Tile(tile.tilecoord)
+        while test_tile.tilecoord:
+            if test_tile in self.tile_store:
+                tmp_tilecoord = tile.tilecoord
+                tile.tilecoord = test_tile.tilecoord
+                tile = self.tile_store.get_one(tile)
+                if tile:
+                    tile.tilecoord = tmp_tilecoord
                 return tile
-            tile = tile.parent()
+            else:
+                test_tile.tilecoord = test_tile.tilecoord.parent()
         return None
