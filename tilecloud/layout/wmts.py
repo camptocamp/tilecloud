@@ -37,7 +37,7 @@ class WMTSTileLayout(TileLayout):
                 ('TileMatrixSet', self.tile_matrix_set),
                 ('TileMatrix', str(self.tile_matrix(tilecoord.z))),
                 ('TileRow', str(tilecoord.y)),
-                ('TileCol', str(tilecoord.x))
+                ('TileCol', str(tilecoord.x)),
         ])
         if self.request_encoding == 'KVP':
             return self.url + '?' + '&'.join('='.join(p) for p in query)

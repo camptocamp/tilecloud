@@ -3,17 +3,18 @@ from tilecloud import TileLayout
 
 class WMSTileLayout(TileLayout):
 
-    def __init__(self, url, layers, srid, image_format, metatile_configuration):
-        self.metatile_configuration = metatile_configuration
+    def __init__(self, url, layers, srid, image_format, grid, buffer=0):
+        self.grid = grid
         self.url = url
         self.layers = layers
         self.srid = srid
         self.image_format = image_format
+        self.buffer = buffer
 
     def filename(self, tilecoord):
-        size = str(self.metatile_configuration.tile_size * self.metatile_configuration.size +
-                2 * self.metatile_configuration.buffer)
-        bbox = self.meta_to_bbox(tilecoord)
+        bbox = self.grid.bounds(tilecoord, self.buffer)
+        width = (bbox[0].stop - bbox[0].start) / self.grid.resolutions[tilecoord.z]
+        height = (bbox[1].stop - bbox[1].start) / self.grid.resolutions[tilecoord.z]
         query = (
                 ('LAYERS', self.layers),
                 ('FORMAT', 'image/png' if self.image_format == 'png' else 'image/jpeg'),
@@ -22,28 +23,9 @@ class WMSTileLayout(TileLayout):
                 ('VERSION', '1.1.1'),
                 ('REQUEST', 'GetMap'),
                 ('STYLES', ''),
-                ('SRS', 'EPSG:' + str(self.srid)),
-                ('BBOX', ','.join([str(b) for b in bbox])),
-                ('WIDTH', size),
-                ('HEIGHT', size),
+                ('SRS', 'EPSG:%i' % self.srid),
+                ('BBOX', '%f,%f,%f,%f' % (bbox[0].start, bbox[1].start, bbox[0].stop, bbox[1].stop)),
+                ('WIDTH', '%i' % round(width)),
+                ('HEIGHT', '%i' % round(height)),
         )
         return self.url + '?' + '&'.join('='.join(p) for p in query)
-
-    def px_to_unit(self, px, zoom, origin):
-        return px * self.metatile_configuration.resolutions[zoom] + origin
-
-    def meta_to_bbox(self, meta):
-        return (
-            self.px_to_unit(meta.x * self.metatile_configuration.tile_size * self.metatile_configuration.size -
-                    self.metatile_configuration.buffer,
-                    meta.z, self.metatile_configuration.max_extent[0]),
-            self.px_to_unit(meta.y * self.metatile_configuration.tile_size * self.metatile_configuration.size -
-                    self.metatile_configuration.buffer,
-                    meta.z, self.metatile_configuration.max_extent[1]),
-            self.px_to_unit((meta.x + 1) * self.metatile_configuration.tile_size * self.metatile_configuration.size +
-                    self.metatile_configuration.buffer,
-                    meta.z, self.metatile_configuration.max_extent[0]),
-            self.px_to_unit((meta.y + 1) * self.metatile_configuration.tile_size * self.metatile_configuration.size +
-                    self.metatile_configuration.buffer,
-                    meta.z, self.metatile_configuration.max_extent[1]),
-        )
