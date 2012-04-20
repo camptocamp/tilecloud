@@ -291,23 +291,11 @@ class TileCoord(object):
     def __str__(self):
         return '%d/%d/%d' % (self.z, self.x, self.y)
 
-    def children(self):
-        yield TileCoord(self.z + 1, 2 * self.x, 2 * self.y)
-        yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y)
-        yield TileCoord(self.z + 1, 2 * self.x, 2 * self.y + 1)
-        yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y + 1)
-
     def metatilecoord(self, n=8):
         return MetaTileCoord(n, self.z, n * (self.x // n), n * (self.y // n))
 
     def normalize(self):
         return (float(self.x) / (1 << self.z), float(self.y) / (1 << self.z))
-
-    def parent(self):
-        if self.z == 0:
-            return None
-        else:
-            return TileCoord(self.z - 1, int(self.x // 2), int(self.y // 2))
 
     def tuple(self):
         return (self.z, self.x, self.y)
