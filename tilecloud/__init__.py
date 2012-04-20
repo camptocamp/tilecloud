@@ -380,6 +380,26 @@ class TileLayout(object):
         raise NotImplementedError
 
 
+class TileStructure(object):
+    """Lays out tiles at multiple zoom levels"""
+
+    def extent(self, tilecoord):
+        """Returns the extent of the tile at tilecoord"""
+        raise NotImplementedError
+
+    def children(self, tilecoord):
+        """Generates all the children of tilecoord"""
+        raise NotImplementedError
+
+    def parent(self, tilecoord):
+        """Returns the parent of tilecoord"""
+        raise NotImplementedError
+
+    def roots(self):
+        raise NotImplementedError
+        """Generates all the root tiles"""
+
+
 class Tile(object):
     """An actual tile with optional metadata"""
 
