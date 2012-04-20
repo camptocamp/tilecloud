@@ -42,7 +42,7 @@ class Statistics(object):
 
 class Statsd(object):
 
-    def __init__(self, prefix='tilecloud-', host='127.0.0.1', port=8125):
+    def __init__(self, prefix='tilecloud.', host='127.0.0.1', port=8125):
         self.prefix = prefix
         self.host = host
         self.port = port
