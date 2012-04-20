@@ -157,6 +157,18 @@ class BoundingPyramid(object):
             for tilecoord in self.ziter(z):
                 yield tilecoord
 
+    def metatilecoords(self, n=8):
+        for z in sorted(self.bounds.keys()):
+            xbounds, ybounds = self.bounds[z]
+            metatilecoord = TileCoord(z, xbounds.start, ybounds.start).metatilecoord(n)
+            x = metatilecoord.x
+            while x < xbounds.stop:
+                y = metatilecoord.y
+                while y < ybounds.stop:
+                    yield MetaTileCoord(n, z, x, y)
+                    y += n
+                x += n
+
     def zget(self, z):
         """Return the tuple (xbounds, ybounds) at level z"""
         return self.bounds[z]
@@ -229,6 +241,35 @@ class BoundingPyramid(object):
                         for z in zs))
 
 
+class MetaTileCoord(object):
+    """A metatile containing n * n tile coordinates"""
+
+    def __init__(self, n, z, x, y):
+        self.n = n
+        self.z = z
+        self.x = x
+        self.y = y
+
+    def __cmp__(self, other):
+        return cmp(self.n, other.n) or cmp(self.z, other.z) or cmp(self.x, other.x) or cmp(self.y, other.y)
+
+    def __hash__(self):
+        return ((self.x // self.n) << self.z) ^ (self.y // self.n)
+
+    def __iter__(self):
+        """Yield each TileCoord"""
+        for i in xrange(0, self.n):
+            for j in xrange(0, self.n):
+                yield TileCoord(self.z, self.x + i, self.y + j)
+
+    def __repr__(self):
+        return '%s(%r, %r, %r, %r)' % (self.__class__.__name__,
+                                       self.n, self.z, self.x, self.y)
+
+    def __str__(self):
+        return '%d/%d/%d:+%d/+%d' % (self.z, self.x, self.y, self.n, self.n)
+
+
 class TileCoord(object):
     """A tile coordinate"""
 
@@ -255,6 +296,9 @@ class TileCoord(object):
         yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y)
         yield TileCoord(self.z + 1, 2 * self.x, 2 * self.y + 1)
         yield TileCoord(self.z + 1, 2 * self.x + 1, 2 * self.y + 1)
+
+    def metatilecoord(self, n=8):
+        return MetaTileCoord(n, self.z, n * (self.x // n), n * (self.y // n))
 
     def normalize(self):
         return (float(self.x) / (1 << self.z), float(self.y) / (1 << self.z))
@@ -291,6 +335,39 @@ class TileCoord(object):
                    int(d * (SPHERICAL_MERCATOR_ORIGIN - y)))
 
 
+class Grid(object):
+    """Calculate the bounds of a TileCoord"""
+    def __init__(self, resolutions, max_extent, tile_size=256, top=-1):
+        """
+        resolutions: list of resolutions
+        max_extent: list of 4 element for the extent (minx, miny, maxx, maxy)
+        tile_size: size of tiles
+        top: 1 to use topleft corner, -1 to use bottomleft corner
+        """
+        self.resolutions = resolutions
+        self.max_extent = max_extent
+        self.tile_size = tile_size
+        self.top = top
+
+    def bounds(self, tilecoord, buffer=0):
+        n = tilecoord.n if isinstance(tilecoord, MetaTileCoord) else 1
+        resolution = self.resolutions[tilecoord.z]
+        minx = resolution * (tilecoord.x * self.tile_size - buffer) + self.max_extent[0]
+        maxx = resolution * ((tilecoord.x + n) * self.tile_size + buffer) + self.max_extent[0]
+        miny = self.max_extent[2 + self.top] - \
+                resolution * (tilecoord.y * self.tile_size - buffer) * self.top
+        maxy = self.max_extent[2 + self.top] - \
+                resolution * ((tilecoord.y + n) * self.tile_size + buffer) * self.top
+        return (Bounds(minx, maxx), Bounds(miny, maxy) if self.top < 0 else Bounds(maxy, miny))
+
+    def tilecoord(self, coord, n=1):
+        """ coord (z, x, y)"""
+        resolution = self.resolutions[coord[0]]
+        return TileCoord(coord[0],
+                (coord[1] - self.max_extent[0]) / (resolution * self.tile_size) // n * n,
+                (self.max_extent[2 + self.top] - coord[2]) / (resolution * self.tile_size * self.top) // n * n)
+
+
 class TileLayout(object):
     """Maps tile coordinates to filenames and vice versa"""
 
@@ -323,6 +400,9 @@ class Tile(object):
         keys = sorted(self.__dict__.keys())
         attrs = ''.join(' %s=%r' % (key, self.__dict__[key]) for key in keys)
         return '<Tile%s>' % (attrs,)
+
+    def is_metatile(self):
+        return isinstance(self.tilecoord, MetaTileCoord)
 
 
 class TileStore(object):
