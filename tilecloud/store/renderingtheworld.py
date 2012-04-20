@@ -6,12 +6,12 @@ from tilecloud import Tile, TileStore
 class RenderingTheWorldTileStore(TileStore):
     """http://mapbox.com/blog/rendering-the-world/"""
 
-    def __init__(self, subdivide, queue=None, seed=None):
+    def __init__(self, subdivide, queue=None, seeds=()):
         self.subdivide = subdivide
         self.queue = queue
         if self.queue is None:
             self.queue = deque()
-        if seed is not None:
+        for seed in seeds:
             self.queue.append(seed)
 
     def list(self):

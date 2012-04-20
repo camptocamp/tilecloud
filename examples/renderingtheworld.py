@@ -28,7 +28,7 @@ def subdivide(tile):
 def main(argv):
     # Create our RenderingTheWorld tile store that will manage the queue and subdivision.
     # We pass it the function that decides whether a tile should be subdivided, and an initial tile.
-    rendering_the_world_tile_store = RenderingTheWorldTileStore(subdivide, seed=Tile(TileCoord(0, 0, 0)))
+    rendering_the_world_tile_store = RenderingTheWorldTileStore(subdivide, seeds=(Tile(TileCoord(0, 0, 0)),))
     # Start the tilestream by getting a list of all tiles to be generated.
     tilestream = rendering_the_world_tile_store.list()
     tilestream = imap(Logger(logger, logging.INFO, 'get %(tilecoord)s'), tilestream)
