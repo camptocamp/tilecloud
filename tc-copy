@@ -8,7 +8,7 @@ import random
 import sys
 
 from tilecloud import BoundingPyramid, TileStore, consume
-from tilecloud.filter.benchmark import Benchmark
+from tilecloud.filter.benchmark import Benchmark, Statsd, StatsdCountErrors, StatsdCountTiles
 from tilecloud.filter.consistenthash import EveryNth
 from tilecloud.filter.error import DropErrors, LogErrors, MaximumConsecutiveErrors, MaximumErrorRate, MaximumErrors
 from tilecloud.filter.logger import Logger
@@ -32,6 +32,10 @@ def main(argv):
     option_parser.add_option('-o', '--overwrite', action='store_true')
     option_parser.add_option('-r', '--rate-limit', metavar='HZ', type=float)
     option_parser.add_option('--randomize', action='store_true')
+    option_parser.add_option('--statsd', action='store_true')
+    option_parser.add_option('--statsd-host', default='127.0.0.1', metavar='HOST')
+    option_parser.add_option('--statsd-port', default=8125, metavar='PORT', type=int)
+    option_parser.add_option('--statsd-prefix', default='tc-copy-', metavar='PREFIX')
     option_parser.add_option('-v', '--verbose', action='store_true')
     options, args = option_parser.parse_args(argv[1:])
     if options.verbose:
@@ -43,7 +47,11 @@ def main(argv):
         bounding_pyramid = BoundingPyramid.from_string(options.bounding_pyramid)
     else:
         bounding_pyramid = None
-    benchmark = Benchmark() if options.benchmark else None
+    if options.statsd:
+        statsd = Statsd(options.statsd_prefix, options.statsd_host, options.statsd_port)
+    else:
+        statsd = None
+    benchmark = Benchmark(statsd=statsd) if options.benchmark else None
     if options.generate:
         generate = map(TileStore.load, options.generate)
     else:
@@ -75,6 +83,8 @@ def main(argv):
                 if options.benchmark:
                     tilestream = imap(benchmark.sample('generate-%d' % (i,)), tilestream)
             tilestream = imap(LogErrors(logger, logging.ERROR, '%(tilecoord)s: %(error)s'), tilestream)
+            if statsd:
+                tilestream = imap(StatsdCountErrors(statsd), tilestream)
             if options.maximum_consecutive_errors:
                 tilestream = imap(MaximumConsecutiveErrors(options.maximum_consecutive_errors), tilestream)
             if options.maximum_error_rate:
@@ -91,6 +101,8 @@ def main(argv):
                     tilestream = imap(benchmark.sample('delete'), tilestream)
             if options.verbose:
                 tilestream = imap(Logger(logger, logging.INFO, '%(tilecoord)s'), tilestream)
+            if statsd:
+                tilestream = imap(StatsdCountTiles(statsd), tilestream)
             consume(tilestream, options.limit)
     finally:
         logging.basicConfig(level=logging.INFO)

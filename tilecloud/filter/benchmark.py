@@ -1,4 +1,5 @@
 import math
+import socket
 import time
 
 
@@ -39,10 +40,23 @@ class Statistics(object):
         return math.sqrt(self.variance)
 
 
+class Statsd(object):
+
+    def __init__(self, prefix='tilecloud-', host='127.0.0.1', port=8125):
+        self.prefix = prefix
+        self.host = host
+        self.port = port
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def send(self, message):
+        self.socket.sendto(self.prefix + message, (self.host, self.port))
+
+
 class Benchmark(object):
 
-    def __init__(self, attr='benchmark'):
+    def __init__(self, attr='benchmark', statsd=None):
         self.attr = attr
+        self.statsd = statsd
         self.statisticss = {}
 
     def sample(self, key=None):
@@ -60,9 +74,34 @@ class Benchmark(object):
                 if hasattr(tile, self.attr):
                     times = getattr(tile, self.attr)
                     times.append(time.time())
+                    delta_t = times[-1] - times[-2]
                     if statistics:
-                        statistics.add(times[-1] - times[-2])
+                        statistics.add(delta_t)
+                    if self.statsd:
+                        self.statsd.send('%s:%.3f|ms' % (key, delta_t))
                 else:
                     setattr(tile, self.attr, [time.time()])
             return tile
         return callback
+
+
+class StatsdCountTiles(object):
+
+    def __init__(self, statsd):
+        self.statsd = statsd
+
+    def __call__(self, tile):
+        if tile:
+            self.statsd.send('tiles:1|c')
+        return tile
+
+
+class StatsdCountErrors(object):
+
+    def __init__(self, statsd):
+        self.statsd = statsd
+
+    def __call__(self, tile):
+        if tile and tile.error:
+            self.statsd.send('errors:1|c')
+        return tile
