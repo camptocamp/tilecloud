@@ -12,6 +12,7 @@ from tilecloud.filter.contenttype import ContentTypeAdder
 
 
 option_parser = OptionParser()
+option_parser.add_option('--cache', action='store_true')
 option_parser.add_option('--debug', action='store_true', default=False)
 option_parser.add_option('--root', metavar='Z/X/Y')
 option_parser.add_option('--host', default='127.0.0.1', metavar='HOST')
@@ -37,6 +38,7 @@ if options.server is None:
     except ImportError:
         options.server = 'wsgiref'
 
+cache = {} if options.cache else None
 tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 content_type_adder = ContentTypeAdder()
 
@@ -49,8 +51,13 @@ def tile(index, z, x, y, ext):
     tilecoord = TileCoord(z + root.z,
                           x + root.x * (1 << z),
                           y + root.y * (1 << z))
-    tile = Tile(tilecoord)
-    tile = tile_stores[index][1].get_one(tile)
+    if cache is not None and (index, z, x, y) in cache:
+        tile = cache[(index, z, x, y)]
+    else:
+        tile = Tile(tilecoord)
+        tile = tile_stores[index][1].get_one(tile)
+        if cache is not None:
+            cache[(index, z, x, y)] = tile
     if tile is None:
         bottle.abort(404)
     tile = content_type_adder(tile)
