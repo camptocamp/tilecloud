@@ -33,7 +33,7 @@ setup(
         author_email='twpayne@gmail.com',
         url='http://github.com/twpayne/tilecloud',
         license='BSD',
-        packages=find_packages(exclude=['tiles']),
+        packages=find_packages(exclude=['tiles', 'tilecloud.tests']),
         zip_safe=True,
         install_requires=install_requires,
         setup_requires=setup_requires,
