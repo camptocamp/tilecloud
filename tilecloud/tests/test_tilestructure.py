@@ -1,9 +1,21 @@
 from collections import defaultdict
 import unittest
 
-from tilecloud import TileCoord
+from tilecloud import TileCoord, TileStructure
 from tilecloud.structure.free import FreeTileStructure
 from tilecloud.structure.quad import QuadTileStructure
+
+
+class TestTileStructure(unittest.TestCase):
+
+    def setUp(self):
+        self.ts = TileStructure()
+
+    def test_tilestructure(self):
+        self.assertRaises(NotImplementedError, self.ts.extent, None)
+        self.assertRaises(NotImplementedError, self.ts.children, None)
+        self.assertRaises(NotImplementedError, self.ts.parent, None)
+        self.assertRaises(NotImplementedError, self.ts.roots)
 
 
 class TestFreeTileStructure(unittest.TestCase):
