@@ -1,4 +1,3 @@
-from collections import defaultdict
 import unittest
 
 from tilecloud import TileCoord, TileStructure
