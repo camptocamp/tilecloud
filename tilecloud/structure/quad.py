@@ -3,8 +3,8 @@ from tilecloud import TileCoord, TileStructure
 
 class QuadTileStructure(TileStructure):
 
-    def __init__(self, max_extent=None, max_zoom=None):
-        self.max_extent = max_extent
+    def __init__(self, max_extent=None, tile_size=None, max_zoom=None):
+        TileStructure.__init__(self, max_extent=max_extent, tile_size=tile_size)
         self.max_zoom = max_zoom
 
     def children(self, tilecoord):

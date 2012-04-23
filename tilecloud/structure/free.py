@@ -3,11 +3,11 @@ from tilecloud import TileCoord, TileStructure
 
 class FreeTileStructure(TileStructure):
 
-    def __init__(self, resolutions, max_extent=None, scale=1):
+    def __init__(self, resolutions, max_extent=None, tile_size=None, scale=1):
+        TileStructure.__init__(self, max_extent=max_extent, tile_size=tile_size)
         assert list(resolutions) == sorted(resolutions, reverse=True)
         assert all(isinstance(r, int) for r in resolutions)
         self.resolutions = resolutions
-        self.max_extent = max_extent
         self.scale = scale
         self.parent_zs = []
         self.child_zs = []

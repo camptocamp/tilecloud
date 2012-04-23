@@ -39,7 +39,7 @@ class TestFreeTileStructure(unittest.TestCase):
 class TestFreeQuadTileStructureEquivalence(unittest.TestCase):
 
     def setUp(self):
-        self.fts = FreeTileStructure([8, 4, 2, 1])
+        self.fts = FreeTileStructure([8, 4, 2, 1], tile_size=0.125)
         self.qts = QuadTileStructure(max_zoom=3)
 
     def test_children(self):

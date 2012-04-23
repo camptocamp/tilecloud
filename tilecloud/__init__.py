@@ -371,6 +371,10 @@ class TileLayout(object):
 class TileStructure(object):
     """Lays out tiles at multiple zoom levels"""
 
+    def __init__(self, max_extent=None, tile_size=None):
+        self.max_extent = max_extent or (0.0, 0.0, 1.0, 1.0)
+        self.tile_size = tile_size or 256
+
     def extent(self, tilecoord):
         """Returns the extent of the tile at tilecoord"""
         raise NotImplementedError
