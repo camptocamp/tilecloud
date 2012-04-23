@@ -1,4 +1,3 @@
-import sys
 from cStringIO import StringIO
 from math import ceil
 
