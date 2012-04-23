@@ -7,7 +7,6 @@ class FreeTileStructure(TileStructure):
         assert list(resolutions) == sorted(resolutions, reverse=True)
         self.resolutions = resolutions
         self.max_extent = max_extent
-        self.root_zs = []
         self.parent_zs = []
         self.child_zs = []
         for i, resolution in enumerate(self.resolutions):
@@ -17,7 +16,6 @@ class FreeTileStructure(TileStructure):
                     self.child_zs[parent].append(i)
                     break
             else:
-                self.root_zs.append(i)
                 self.parent_zs.append(None)
             self.child_zs.append([])
 
@@ -40,13 +38,14 @@ class FreeTileStructure(TileStructure):
             return TileCoord(parent_z, int(tilecoord.x // factor), int(tilecoord.y // factor))
 
     def roots(self):
-        for root_z in self.root_zs:
-            x, s = 0, 0
-            while s < self.resolutions[0]:
-                y, t = 0, 0
-                while t < self.resolutions[0]:
-                    yield TileCoord(root_z, x, y)
-                    y += 1
-                    t += self.resolutions[root_z]
-                x += 1
-                s += self.resolutions[root_z]
+        for z, parent_z in enumerate(self.parent_zs):
+            if parent_z is None:
+                x, s = 0, 0
+                while s < self.resolutions[0]:
+                    y, t = 0, 0
+                    while t < self.resolutions[0]:
+                        yield TileCoord(z, x, y)
+                        y += 1
+                        t += self.resolutions[z]
+                    x += 1
+                    s += self.resolutions[z]
