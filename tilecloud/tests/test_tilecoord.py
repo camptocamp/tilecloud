@@ -24,14 +24,8 @@ class TestTileCoord(unittest.TestCase):
     def test_str(self):
         self.assertEqual(str(TileCoord(1, 2, 3)), '1/2/3')
 
-    def test_normalize(self):
-        self.assertEqual(TileCoord(2, 2, 2).normalize(), (0.5, 0.5))
-
     def test_tuple(self):
         self.assertEqual(TileCoord(1, 2, 3).tuple(), (1, 2, 3))
-
-    def test_from_normalized_coord(self):
-        self.assertEqual(TileCoord.from_normalized_coord(2, (0.5, 0.5)), TileCoord(2, 2, 2))
 
     def test_from_string(self):
         self.assertEqual(TileCoord.from_string('1/2/3'), TileCoord(1, 2, 3))

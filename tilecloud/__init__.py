@@ -294,15 +294,8 @@ class TileCoord(object):
     def metatilecoord(self, n=8):
         return MetaTileCoord(n, self.z, n * (self.x // n), n * (self.y // n))
 
-    def normalize(self):
-        return (float(self.x) / (1 << self.z), float(self.y) / (1 << self.z))
-
     def tuple(self):
         return (self.z, self.x, self.y)
-
-    @classmethod
-    def from_normalized_coord(cls, z, xy):
-        return cls(z, int(xy[0] * (1 << z)), int(xy[1] * (1 << z)))
 
     @classmethod
     def from_string(cls, s):
