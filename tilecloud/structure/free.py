@@ -5,6 +5,7 @@ class FreeTileStructure(TileStructure):
 
     def __init__(self, resolutions, max_extent=None):
         assert list(resolutions) == sorted(resolutions, reverse=True)
+        assert all(isinstance(r, int) for r in resolutions)
         self.resolutions = resolutions
         self.max_extent = max_extent
         self.parent_zs = []
