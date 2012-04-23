@@ -384,8 +384,8 @@ class TileStructure(object):
         raise NotImplementedError
 
     def roots(self):
-        raise NotImplementedError
         """Generates all the root tiles"""
+        raise NotImplementedError
 
 
 class Tile(object):
