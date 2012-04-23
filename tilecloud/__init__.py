@@ -375,7 +375,7 @@ class TileStructure(object):
         self.max_extent = max_extent or (0.0, 0.0, 1.0, 1.0)
         self.tile_size = tile_size or 256
 
-    def extent(self, tilecoord):
+    def extent(self, tilecoord, border=0):
         """Returns the extent of the tile at tilecoord"""
         raise NotImplementedError
 
@@ -389,6 +389,10 @@ class TileStructure(object):
 
     def roots(self):
         """Generates all the root tiles"""
+        raise NotImplementedError
+
+    def tilecoord(self, z, x, y):
+        """Returns the TileCoord for location (x, y) at level z"""
         raise NotImplementedError
 
 

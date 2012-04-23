@@ -1,4 +1,4 @@
-from tilecloud import TileCoord, TileStructure
+from tilecloud import MetaTileCoord, TileCoord, TileStructure
 
 
 class FreeTileStructure(TileStructure):
@@ -31,6 +31,14 @@ class FreeTileStructure(TileStructure):
                         y = factor * tilecoord.y + j
                         yield TileCoord(child_z, x, y)
 
+    def extent(self, tilecoord, border=0):
+        n = tilecoord.n if isinstance(tilecoord, MetaTileCoord) else 1
+        minx = self.max_extent[0] + (self.tile_size * tilecoord.x - border) * self.resolutions[tilecoord.z]
+        miny = self.max_extent[1] + (self.tile_size * tilecoord.y - border) * self.resolutions[tilecoord.z]
+        maxx = self.max_extent[0] + (self.tile_size * (tilecoord.x + n) + border) * self.resolutions[tilecoord.z]
+        maxy = self.max_extent[1] + (self.tile_size * (tilecoord.y + n) + border) * self.resolutions[tilecoord.z]
+        return (minx, miny, maxx, maxy)
+
     def parent(self, tilecoord):
         parent_z = self.parent_zs[tilecoord.z]
         if parent_z is None:
@@ -51,3 +59,8 @@ class FreeTileStructure(TileStructure):
                         t += self.resolutions[z]
                     x += 1
                     s += self.resolutions[z]
+
+    def tilecoord(self, z, x, y):
+        return TileCoord(z,
+                         int((x - self.max_extent[0]) / (self.resolutions[z] * self.tile_size)),
+                         int((y - self.max_extent[1]) / (self.resolutions[z] * self.tile_size)))
