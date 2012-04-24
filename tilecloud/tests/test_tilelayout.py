@@ -162,6 +162,52 @@ class TestWMSTileLayout(unittest.TestCase):
         self.assertEqual(bbox[2], 420000.01)
         self.assertEqual(bbox[3], 350000.0)
 
+    def test_metatile(self):
+        layout = WMSTileLayout(url='http://example.com/folder',
+                layers='l1,l2', srid=1000, format='image/png', tilestructure=self.tilestructure)
+        result = urlparse(layout.filename(MetaTileCoord(2, 1, 0, 0)))
+        self.assertEqual(result.netloc, 'example.com')
+        self.assertEqual(result.path, '/folder')
+        query = parse_qs(result.query)
+        self.assertEqual(query['LAYERS'], ['l1,l2'])
+        self.assertEqual(query['FORMAT'], ['image/png'])
+        self.assertEqual(query['TRANSPARENT'], ['TRUE'])
+        self.assertEqual(query['SERVICE'], ['WMS'])
+        self.assertEqual(query['VERSION'], ['1.1.1'])
+        self.assertEqual(query['REQUEST'], ['GetMap'])
+        self.assertEqual(query['SRS'], ['EPSG:1000'])
+        self.assertEqual(query['WIDTH'], ['200'])
+        self.assertEqual(query['HEIGHT'], ['200'])
+        bbox = [float(i) for i in query['BBOX'][0].split(',')]
+        self.assertEqual(len(bbox), 4)
+        self.assertEqual(bbox[0], 420000.0)
+        self.assertEqual(bbox[1], 340000.0)
+        self.assertEqual(bbox[2], 430000.0)
+        self.assertEqual(bbox[3], 350000.0)
+
+    def test_metatile_border(self):
+        layout = WMSTileLayout(url='http://example.com/folder',
+                layers='l1,l2', srid=1000, format='image/png', tilestructure=self.tilestructure, border=5)
+        result = urlparse(layout.filename(MetaTileCoord(2, 1, 0, 0)))
+        self.assertEqual(result.netloc, 'example.com')
+        self.assertEqual(result.path, '/folder')
+        query = parse_qs(result.query)
+        self.assertEqual(query['LAYERS'], ['l1,l2'])
+        self.assertEqual(query['FORMAT'], ['image/png'])
+        self.assertEqual(query['TRANSPARENT'], ['TRUE'])
+        self.assertEqual(query['SERVICE'], ['WMS'])
+        self.assertEqual(query['VERSION'], ['1.1.1'])
+        self.assertEqual(query['REQUEST'], ['GetMap'])
+        self.assertEqual(query['SRS'], ['EPSG:1000'])
+        self.assertEqual(query['WIDTH'], ['210'])
+        self.assertEqual(query['HEIGHT'], ['210'])
+        bbox = [float(i) for i in query['BBOX'][0].split(',')]
+        self.assertEqual(len(bbox), 4)
+        self.assertEqual(bbox[0], 419750.0)
+        self.assertEqual(bbox[1], 339750.0)
+        self.assertEqual(bbox[2], 430250.0)
+        self.assertEqual(bbox[3], 350250.0)
+
 
 class TestTemplateTileLayout(unittest.TestCase):
 
