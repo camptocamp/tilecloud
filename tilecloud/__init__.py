@@ -262,7 +262,7 @@ class MetaTileCoord(object):
             for j in xrange(0, self.n):
                 yield TileCoord(self.z, self.x + i, self.y + j)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return '%s(%r, %r, %r, %r)' % (self.__class__.__name__,
                                        self.n, self.z, self.x, self.y)
 
