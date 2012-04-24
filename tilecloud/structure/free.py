@@ -41,7 +41,10 @@ class FreeTileStructure(TileStructure):
 
     def flip_y(self, tilecoord):
         n = self.scale * (self.max_extent[3] - self.max_extent[1]) / (self.tile_size * self.resolutions[tilecoord.z])
-        return TileCoord(tilecoord.z, tilecoord.x, n - tilecoord.y - 1)
+        if isinstance(tilecoord, MetaTileCoord):
+            return MetaTileCoord(tilecoord.n, tilecoord.z, tilecoord.x, n - tilecoord.y - tilecoord.n)
+        else:
+            return TileCoord(tilecoord.z, tilecoord.x, n - tilecoord.y - 1)
 
     def parent(self, tilecoord):
         parent_z = self.parent_zs[tilecoord.z]
