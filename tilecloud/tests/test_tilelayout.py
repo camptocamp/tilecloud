@@ -2,12 +2,13 @@ import unittest
 from urlparse import urlparse
 from cgi import parse_qs
 
-from tilecloud import TileCoord, TileLayout, Grid
+from tilecloud import MetaTileCoord, TileCoord, TileLayout
 from tilecloud.layout.osm import OSMTileLayout
 from tilecloud.layout.wmts import WMTSTileLayout
 from tilecloud.layout.wms import WMSTileLayout
 from tilecloud.layout.template import TemplateTileLayout
 from tilecloud.layout.wrapped import WrappedTileLayout
+from tilecloud.structure.free import FreeTileStructure
 
 
 class TestTileLayout(unittest.TestCase):
@@ -60,16 +61,16 @@ class TestWMTSTileLayout(unittest.TestCase):
 
 
 class TestWMSTileLayout(unittest.TestCase):
+
     def setUp(self):
-        self.grid = Grid(
-            resolutions=(100, 50, 0.0001),
+        self.tilestructure = FreeTileStructure(
+            resolutions=(1000000, 500000, 1),
             max_extent=(420000, 30000, 900000, 350000),
-            tile_size=100,
-            top=1)
+            tile_size=100, scale=10000)
 
     def test_png(self):
         layout = WMSTileLayout(url='http://example.com/folder',
-             layers='l1,l2', srid=1000, image_format='png', grid=self.grid)
+                layers='l1,l2', srid=1000, format='image/png', tilestructure=self.tilestructure)
         result = urlparse(layout.filename(TileCoord(0, 0, 0)))
         self.assertEqual(result.netloc, 'example.com')
         self.assertEqual(result.path, '/folder')
@@ -92,7 +93,7 @@ class TestWMSTileLayout(unittest.TestCase):
 
     def test_jpeg(self):
         layout = WMSTileLayout(url='http://example.com/folder',
-                layers='l1,l2', srid=1000, image_format='jpeg', grid=self.grid)
+                layers='l1,l2', srid=1000, format='image/jpeg', tilestructure=self.tilestructure)
         result = urlparse(layout.filename(TileCoord(0, 0, 0)))
         self.assertEqual(result.netloc, 'example.com')
         self.assertEqual(result.path, '/folder')
@@ -113,10 +114,10 @@ class TestWMSTileLayout(unittest.TestCase):
         self.assertEqual(bbox[2], 430000.0)
         self.assertEqual(bbox[3], 350000.0)
 
-    def test_buffer(self):
+    def test_border(self):
         layout = WMSTileLayout(url='http://example.com/folder',
-                layers='l1,l2', srid=1000, image_format='png',
-                grid=self.grid, buffer=10)
+                layers='l1,l2', srid=1000, format='image/png',
+                tilestructure=self.tilestructure, border=10)
         result = urlparse(layout.filename(TileCoord(0, 0, 0)))
         self.assertEqual(result.netloc, 'example.com')
         self.assertEqual(result.path, '/folder')
@@ -139,8 +140,8 @@ class TestWMSTileLayout(unittest.TestCase):
 
     def test_subx_metric(self):
         layout = WMSTileLayout(url='http://example.com/folder',
-                layers='l1,l2', srid=1000, image_format='png',
-                grid=self.grid)
+                layers='l1,l2', srid=1000, format='image/png',
+                tilestructure=self.tilestructure)
         result = urlparse(layout.filename(TileCoord(2, 0, 0)))
         self.assertEqual(result.netloc, 'example.com')
         self.assertEqual(result.path, '/folder')

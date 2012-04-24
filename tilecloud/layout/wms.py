@@ -1,31 +1,33 @@
-from tilecloud import TileLayout
+from tilecloud import MetaTileCoord, TileLayout
 
 
 class WMSTileLayout(TileLayout):
 
-    def __init__(self, url, layers, srid, image_format, grid, buffer=0):
-        self.grid = grid
+    def __init__(self, url, layers, srid, format, tilestructure, border=0):
+        self.tilestructure = tilestructure
         self.url = url
         self.layers = layers
         self.srid = srid
-        self.image_format = image_format
-        self.buffer = buffer
+        self.format = format
+        self.border = border
 
     def filename(self, tilecoord):
-        bbox = self.grid.bounds(tilecoord, self.buffer)
-        width = (bbox[0].stop - bbox[0].start) / self.grid.resolutions[tilecoord.z]
-        height = (bbox[1].stop - bbox[1].start) / self.grid.resolutions[tilecoord.z]
+        bbox = self.tilestructure.extent(self.tilestructure.flip_y(tilecoord), self.border)
+        tile_size = self.tilestructure.tile_size
+        if isinstance(tilecoord, MetaTileCoord):
+            tile_size *= tilecoord.n
+        tile_size += 2 * self.border
         query = (
                 ('LAYERS', self.layers),
-                ('FORMAT', 'image/png' if self.image_format == 'png' else 'image/jpeg'),
-                ('TRANSPARENT', 'TRUE' if self.image_format == 'png' else 'FALSE'),
+                ('FORMAT', self.format),
+                ('TRANSPARENT', 'TRUE' if self.format == 'image/png' else 'FALSE'),
                 ('SERVICE', 'WMS'),
                 ('VERSION', '1.1.1'),
                 ('REQUEST', 'GetMap'),
                 ('STYLES', ''),
-                ('SRS', 'EPSG:%i' % self.srid),
-                ('BBOX', '%f,%f,%f,%f' % (bbox[0].start, bbox[1].start, bbox[0].stop, bbox[1].stop)),
-                ('WIDTH', '%i' % round(width)),
-                ('HEIGHT', '%i' % round(height)),
+                ('SRS', 'EPSG:%d' % (self.srid,)),
+                ('BBOX', '%f,%f,%f,%f' % bbox),
+                ('WIDTH', str(tile_size)),
+                ('HEIGHT', str(tile_size)),
         )
         return self.url + '?' + '&'.join('='.join(p) for p in query)
