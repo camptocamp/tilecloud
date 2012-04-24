@@ -63,6 +63,31 @@ class TestFreeTileStructure2(unittest.TestCase):
         self.assertEqual(self.fts.tilecoord(1, 432000, 346000), TileCoord(1, 6, 8))
 
 
+class TestFreeTileStructureWithScale(unittest.TestCase):
+
+    def setUp(self):
+        self.fts = FreeTileStructure(resolutions=(4000, 2000, 1000, 500), max_extent=(420000, 330000, 900000, 350000), tile_size=100, scale=100)
+
+    def test_extent(self):
+        self.assertEqual(self.fts.extent(TileCoord(1, 4, 6)), (428000, 342000, 430000, 344000))
+        self.assertEqual(self.fts.extent(TileCoord(1, 5, 7)), (430000, 344000, 432000, 346000))
+
+    def test_extent_border(self):
+        self.assertEqual(self.fts.extent(TileCoord(1, 4, 6), 5), (427900, 341900, 430100, 344100))
+
+    def test_extent_metatile(self):
+        self.assertEqual(self.fts.extent(MetaTileCoord(2, 1, 4, 6)), (428000, 342000, 432000, 346000))
+
+    def test_extent_metatile_border(self):
+        self.assertEqual(self.fts.extent(MetaTileCoord(2, 1, 4, 6), 5), (427900, 341900, 432100, 346100))
+
+    def test_tilecoord(self):
+        self.assertEqual(self.fts.tilecoord(1, 428000, 342000), TileCoord(1, 4, 6))
+        self.assertEqual(self.fts.tilecoord(1, 430000, 344000), TileCoord(1, 5, 7))
+        self.assertEqual(self.fts.tilecoord(1, 430000, 344000), TileCoord(1, 5, 7))
+        self.assertEqual(self.fts.tilecoord(1, 432000, 346000), TileCoord(1, 6, 8))
+
+
 class TestFreeQuadTileStructureEquivalence(unittest.TestCase):
 
     def setUp(self):

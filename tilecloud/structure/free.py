@@ -8,7 +8,7 @@ class FreeTileStructure(TileStructure):
         assert list(resolutions) == sorted(resolutions, reverse=True)
         assert all(isinstance(r, int) for r in resolutions)
         self.resolutions = resolutions
-        self.scale = scale
+        self.scale = float(scale)
         self.parent_zs = []
         self.child_zs = []
         for i, resolution in enumerate(self.resolutions):
@@ -33,14 +33,14 @@ class FreeTileStructure(TileStructure):
 
     def extent(self, tilecoord, border=0):
         n = tilecoord.n if isinstance(tilecoord, MetaTileCoord) else 1
-        minx = self.max_extent[0] + (self.tile_size * tilecoord.x - border) * self.resolutions[tilecoord.z]
-        miny = self.max_extent[1] + (self.tile_size * tilecoord.y - border) * self.resolutions[tilecoord.z]
-        maxx = self.max_extent[0] + (self.tile_size * (tilecoord.x + n) + border) * self.resolutions[tilecoord.z]
-        maxy = self.max_extent[1] + (self.tile_size * (tilecoord.y + n) + border) * self.resolutions[tilecoord.z]
+        minx = self.max_extent[0] + (self.tile_size * tilecoord.x - border) * self.resolutions[tilecoord.z] / self.scale
+        miny = self.max_extent[1] + (self.tile_size * tilecoord.y - border) * self.resolutions[tilecoord.z] / self.scale
+        maxx = self.max_extent[0] + (self.tile_size * (tilecoord.x + n) + border) * self.resolutions[tilecoord.z] / self.scale
+        maxy = self.max_extent[1] + (self.tile_size * (tilecoord.y + n) + border) * self.resolutions[tilecoord.z] / self.scale
         return (minx, miny, maxx, maxy)
 
     def flip_y(self, tilecoord):
-        n = (self.max_extent[3] - self.max_extent[1]) / (self.tile_size * self.resolutions[tilecoord.z])
+        n = self.scale * (self.max_extent[3] - self.max_extent[1]) / (self.tile_size * self.resolutions[tilecoord.z])
         return TileCoord(tilecoord.z, tilecoord.x, n - tilecoord.y - 1)
 
     def parent(self, tilecoord):
@@ -66,5 +66,5 @@ class FreeTileStructure(TileStructure):
 
     def tilecoord(self, z, x, y):
         return TileCoord(z,
-                         int((x - self.max_extent[0]) / (self.resolutions[z] * self.tile_size)),
-                         int((y - self.max_extent[1]) / (self.resolutions[z] * self.tile_size)))
+                         int(self.scale * (x - self.max_extent[0]) / (self.resolutions[z] * self.tile_size)),
+                         int(self.scale * (y - self.max_extent[1]) / (self.resolutions[z] * self.tile_size)))
