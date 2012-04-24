@@ -1,43 +1,8 @@
 from cStringIO import StringIO
-from math import ceil
 
 from PIL import Image
 
-from tilecloud import TileStore, Tile, MetaTileCoord, Bounds, BoundingPyramid
-
-
-class MetaTileStore(TileStore):
-
-    def __init__(self, grid, meta_size, extent=None, **kwargs):
-        self.grid = grid
-        self.extent = extent
-        self.meta_size = meta_size
-        TileStore.__init__(self, **kwargs)
-
-    def _tile_index_x(self, value, ratio):
-        return (value - self.grid.max_extent[0]) / ratio
-
-    def _tile_index_y(self, value, ratio):
-        return (value - self.grid.max_extent[1]) / ratio
-
-    def list(self):
-        bounds = {}
-        for zoom in range(0, len(self.grid.resolutions)):
-            ratio = float(self.meta_size * self.grid.tile_size * self.grid.resolutions[zoom])
-            if self.extent:
-                x_bounds = Bounds(int(self._tile_index_x(self.extent[0], ratio)),
-                        int(ceil(self._tile_index_x(self.extent[2], ratio))))
-                y_bounds = Bounds(int(self._tile_index_y(self.extent[1], ratio)),
-                        int(ceil(self._tile_index_y(self.extent[3], ratio))))
-            else:
-                x_bounds = Bounds(0, int(ceil(self._tile_index_x(self.grid.max_extent[2], ratio))))
-                y_bounds = Bounds(0, int(ceil(self._tile_index_y(self.grid.max_extent[3], ratio))))
-
-            bounds[zoom] = (x_bounds, y_bounds)
-
-        bounding_pyramid = BoundingPyramid(bounds)
-        for tilecoord in bounding_pyramid:
-            yield Tile(MetaTileCoord(self.meta_size, tilecoord.z, tilecoord.x * self.meta_size, tilecoord.y * self.meta_size))
+from tilecloud import Tile, TileStore
 
 
 class MetaTileToTileStore(TileStore):
