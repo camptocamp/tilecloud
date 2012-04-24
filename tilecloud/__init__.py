@@ -368,16 +368,16 @@ class TileStructure(object):
         self.max_extent = max_extent or (0.0, 0.0, 1.0, 1.0)
         self.tile_size = tile_size or 256
 
+    def children(self, tilecoord):
+        """Generates all the children of tilecoord"""
+        raise NotImplementedError
+
     def extent(self, tilecoord, border=0):
         """Returns the extent of the tile at tilecoord"""
         raise NotImplementedError
 
     def flip_y(self, tilecoord):
         """Flips the y coordinate of tilecoord"""
-        raise NotImplementedError
-
-    def children(self, tilecoord):
-        """Generates all the children of tilecoord"""
         raise NotImplementedError
 
     def parent(self, tilecoord):
