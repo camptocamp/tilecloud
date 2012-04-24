@@ -8,7 +8,7 @@ class FreeTileStructure(TileStructure):
         assert list(resolutions) == sorted(resolutions, reverse=True)
         assert all(isinstance(r, int) for r in resolutions)
         self.resolutions = resolutions
-        self.scale = float(scale)
+        self.scale = 1 if scale is 1 else float(scale)
         self.parent_zs = []
         self.child_zs = []
         for i, resolution in enumerate(self.resolutions):
