@@ -372,6 +372,10 @@ class TileStructure(object):
         """Returns the extent of the tile at tilecoord"""
         raise NotImplementedError
 
+    def flip_y(self, tilecoord):
+        """Flips the y coordinate of tilecoord"""
+        raise NotImplementedError
+
     def children(self, tilecoord):
         """Generates all the children of tilecoord"""
         raise NotImplementedError

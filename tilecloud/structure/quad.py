@@ -23,6 +23,9 @@ class QuadTileStructure(TileStructure):
         maxy = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (tilecoord.y + n + delta) / (1 << tilecoord.z)
         return (minx, miny, maxx, maxy)
 
+    def flip_y(self, tilecoord):
+        return TileCoord(tilecoord.z, tilecoord.x, (1 << tilecoord.z) - tilecoord.y - 1)
+
     def parent(self, tilecoord):
         if tilecoord.z == 0:
             return None
