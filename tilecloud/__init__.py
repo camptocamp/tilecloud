@@ -280,7 +280,7 @@ class TileCoord(object):
         return TileCoord(self.z, n * (self.x // n), n * (self.y // n), n)
 
     def tuple(self):
-        return (self.z, self.x, self.y)
+        return (self.z, self.x, self.y, self.n)
 
     @classmethod
     def from_string(cls, s):

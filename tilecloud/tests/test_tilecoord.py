@@ -42,7 +42,10 @@ class TestTileCoord(unittest.TestCase):
         self.assertEqual('3/4/6:+2/+2', str(TileCoord(3, 4, 6, 2)))
 
     def test_tuple(self):
-        self.assertEqual(TileCoord(1, 2, 3).tuple(), (1, 2, 3))
+        self.assertEqual(TileCoord(1, 2, 3).tuple(), (1, 2, 3, 1))
+
+    def test_tuple_metatile(self):
+        self.assertEqual(TileCoord(1, 2, 3, 2).tuple(), (1, 2, 3, 2))
 
     def test_from_string(self):
         self.assertEqual(TileCoord.from_string('1/2/3'), TileCoord(1, 2, 3))
