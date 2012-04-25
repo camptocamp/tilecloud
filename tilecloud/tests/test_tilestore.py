@@ -13,7 +13,7 @@ class TestTileStore(unittest.TestCase):
         ts = TileStore()
         self.assertEqual(ts.bounding_pyramid, None)
         self.assertEqual(ts.content_type, None)
-        self.assertEqual(ts.count(), 0)
+        self.assertEqual(len(ts), 0)
         self.assertRaises(NotImplementedError, next, ts.delete((Tile(TileCoord(0, 0, 0)),)))
         self.assertRaises(NotImplementedError, ts.delete_one, None)
         self.assertEqual(ts.get_cheap_bounding_pyramid(), None)
@@ -57,12 +57,12 @@ class TestDictTileStore(unittest.TestCase):
 
     def test_empty(self):
         tile_store = DictTileStore()
-        self.assertEqual(tile_store.count(), 0)
+        self.assertEqual(len(tile_store), 0)
         self.assertEqual(list(tile_store.list()), [])
 
     def test_one(self):
         tile_store = DictTileStore()
-        self.assertEqual(tile_store.count(), 0)
+        self.assertEqual(len(tile_store), 0)
         tilestream = [Tile(TileCoord(1, 0, 0), data='data'), None, Tile(TileCoord(1, 0, 1), error=True)]
         tilestream = tile_store.put(tilestream)
         tiles = list(tilestream)
@@ -95,11 +95,11 @@ class TestMBTilesTileStore(unittest.TestCase):
 
     def test_one(self):
         tile_store = MBTilesTileStore(sqlite3.connect(':memory:'), content_type='image/png')
-        self.assertEqual(tile_store.count(), 0)
+        self.assertEqual(len(tile_store), 0)
         tilestream = [Tile(TileCoord(1, 0, 0), data='data'), None, Tile(TileCoord(1, 0, 1), error=True)]
         tilestream = tile_store.put(tilestream)
         tiles = list(tilestream)
-        self.assertEqual(tile_store.count(), 2)
+        self.assertEqual(len(tile_store), 2)
         self.assertEqual(len(tiles), 2)
         self.assertEqual(tiles[0].tilecoord, TileCoord(1, 0, 0))
         self.assertEqual(tiles[0].data, 'data')
@@ -111,7 +111,7 @@ class TestMBTilesTileStore(unittest.TestCase):
         tilestream = tile_store.get(tilestream)
         consume(tilestream, None)
         self.assertEqual(tile_store.get_cheap_bounding_pyramid(), BoundingPyramid({1: (Bounds(0, 1), Bounds(0, 2))}))
-        self.assertEqual(tile_store.count(), 2)
+        self.assertEqual(len(tile_store), 2)
         tiles = list(tile_store.list())
         self.assertEqual(len(tiles), 2)
         tiles = sorted(tile_store.get_all())
@@ -123,7 +123,7 @@ class TestMBTilesTileStore(unittest.TestCase):
         tilestream = [Tile(TileCoord(1, 0, 0))]
         tilestream = tile_store.delete(tilestream)
         consume(tilestream, None)
-        self.assertEqual(tile_store.count(), 1)
+        self.assertEqual(len(tile_store), 1)
         tiles = list(tile_store.get_all())
         self.assertEqual(len(tiles), 1)
         self.assertFalse(Tile(TileCoord(1, 0, 0)) in tile_store)
