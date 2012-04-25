@@ -2,7 +2,7 @@ import unittest
 from urlparse import urlparse
 from cgi import parse_qs
 
-from tilecloud import MetaTileCoord, TileCoord, TileLayout
+from tilecloud import TileCoord, TileLayout
 from tilecloud.layout.osm import OSMTileLayout
 from tilecloud.layout.wmts import WMTSTileLayout
 from tilecloud.layout.wms import WMSTileLayout
@@ -165,7 +165,7 @@ class TestWMSTileLayout(unittest.TestCase):
     def test_metatile(self):
         layout = WMSTileLayout(url='http://example.com/folder',
                 layers='l1,l2', srid=1000, format='image/png', tilestructure=self.tilestructure)
-        result = urlparse(layout.filename(MetaTileCoord(2, 1, 0, 0)))
+        result = urlparse(layout.filename(TileCoord(1, 0, 0, 2)))
         self.assertEqual(result.netloc, 'example.com')
         self.assertEqual(result.path, '/folder')
         query = parse_qs(result.query)
@@ -188,7 +188,7 @@ class TestWMSTileLayout(unittest.TestCase):
     def test_metatile_border(self):
         layout = WMSTileLayout(url='http://example.com/folder',
                 layers='l1,l2', srid=1000, format='image/png', tilestructure=self.tilestructure, border=5)
-        result = urlparse(layout.filename(MetaTileCoord(2, 1, 0, 0)))
+        result = urlparse(layout.filename(TileCoord(1, 0, 0, 2)))
         self.assertEqual(result.netloc, 'example.com')
         self.assertEqual(result.path, '/folder')
         query = parse_qs(result.query)

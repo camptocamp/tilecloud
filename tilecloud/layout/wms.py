@@ -1,4 +1,4 @@
-from tilecloud import MetaTileCoord, TileLayout
+from tilecloud import TileLayout
 
 
 class WMSTileLayout(TileLayout):
@@ -13,10 +13,7 @@ class WMSTileLayout(TileLayout):
 
     def filename(self, tilecoord):
         bbox = self.tilestructure.extent(self.tilestructure.flip_y(tilecoord), self.border)
-        tile_size = self.tilestructure.tile_size
-        if isinstance(tilecoord, MetaTileCoord):
-            tile_size *= tilecoord.n
-        tile_size += 2 * self.border
+        size = tilecoord.n * self.tilestructure.tile_size + 2 * self.border
         query = (
                 ('LAYERS', self.layers),
                 ('FORMAT', self.format),
@@ -27,7 +24,7 @@ class WMSTileLayout(TileLayout):
                 ('STYLES', ''),
                 ('SRS', 'EPSG:%d' % (self.srid,)),
                 ('BBOX', '%f,%f,%f,%f' % bbox),
-                ('WIDTH', str(tile_size)),
-                ('HEIGHT', str(tile_size)),
+                ('WIDTH', str(size)),
+                ('HEIGHT', str(size)),
         )
         return self.url + '?' + '&'.join('='.join(p) for p in query)

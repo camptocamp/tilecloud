@@ -1,4 +1,4 @@
-from tilecloud import MetaTileCoord, TileCoord, TileStructure
+from tilecloud import TileCoord, TileStructure
 
 
 class QuadTileStructure(TileStructure):
@@ -15,12 +15,11 @@ class QuadTileStructure(TileStructure):
             yield TileCoord(tilecoord.z + 1, 2 * tilecoord.x + 1, 2 * tilecoord.y + 1)
 
     def extent(self, tilecoord, border=0):
-        n = tilecoord.n if isinstance(tilecoord, MetaTileCoord) else 1
         delta = float(border) / self.tile_size if border else 0
         minx = self.max_extent[0] + (self.max_extent[2] - self.max_extent[0]) * (tilecoord.x - delta) / (1 << tilecoord.z)
         miny = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (tilecoord.y - delta) / (1 << tilecoord.z)
-        maxx = self.max_extent[0] + (self.max_extent[2] - self.max_extent[0]) * (tilecoord.x + n + delta) / (1 << tilecoord.z)
-        maxy = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (tilecoord.y + n + delta) / (1 << tilecoord.z)
+        maxx = self.max_extent[0] + (self.max_extent[2] - self.max_extent[0]) * (tilecoord.x + tilecoord.n + delta) / (1 << tilecoord.z)
+        maxy = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (tilecoord.y + tilecoord.n + delta) / (1 << tilecoord.z)
         return (minx, miny, maxx, maxy)
 
     def flip_y(self, tilecoord):

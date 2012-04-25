@@ -1,6 +1,6 @@
 import unittest
 
-from tilecloud import BoundingPyramid, Bounds, MetaTileCoord, TileCoord
+from tilecloud import BoundingPyramid, Bounds, TileCoord
 
 
 class TestBoundingPyramid(unittest.TestCase):
@@ -108,9 +108,9 @@ class TestBoundingPyramid(unittest.TestCase):
     def test_metatilecoords(self):
         bp = BoundingPyramid.full(1, 2)
         metatilecoords = bp.metatilecoords(2)
-        self.assertEqual(MetaTileCoord(2, 1, 0, 0), next(metatilecoords))
-        self.assertEqual(MetaTileCoord(2, 2, 0, 0), next(metatilecoords))
-        self.assertEqual(MetaTileCoord(2, 2, 0, 2), next(metatilecoords))
-        self.assertEqual(MetaTileCoord(2, 2, 2, 0), next(metatilecoords))
-        self.assertEqual(MetaTileCoord(2, 2, 2, 2), next(metatilecoords))
+        self.assertEqual(TileCoord(1, 0, 0, 2), next(metatilecoords))
+        self.assertEqual(TileCoord(2, 0, 0, 2), next(metatilecoords))
+        self.assertEqual(TileCoord(2, 0, 2, 2), next(metatilecoords))
+        self.assertEqual(TileCoord(2, 2, 0, 2), next(metatilecoords))
+        self.assertEqual(TileCoord(2, 2, 2, 2), next(metatilecoords))
         self.assertRaises(StopIteration, next, metatilecoords)

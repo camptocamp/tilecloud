@@ -1,6 +1,6 @@
 import unittest
 
-from tilecloud import MetaTileCoord, TileCoord, TileStructure
+from tilecloud import TileCoord, TileStructure
 from tilecloud.structure.free import FreeTileStructure
 from tilecloud.structure.quad import QuadTileStructure
 
@@ -51,10 +51,10 @@ class TestFreeTileStructure2(unittest.TestCase):
         self.assertEqual(self.fts.extent(TileCoord(1, 4, 6), 5), (427900, 341900, 430100, 344100))
 
     def test_extent_metatile(self):
-        self.assertEqual(self.fts.extent(MetaTileCoord(2, 1, 4, 6)), (428000, 342000, 432000, 346000))
+        self.assertEqual(self.fts.extent(TileCoord(1, 4, 6, 2)), (428000, 342000, 432000, 346000))
 
     def test_extent_metatile_border(self):
-        self.assertEqual(self.fts.extent(MetaTileCoord(2, 1, 4, 6), 5), (427900, 341900, 432100, 346100))
+        self.assertEqual(self.fts.extent(TileCoord(1, 4, 6, 2), 5), (427900, 341900, 432100, 346100))
 
     def test_tilecoord(self):
         self.assertEqual(self.fts.tilecoord(1, 428000, 342000), TileCoord(1, 4, 6))
@@ -76,10 +76,10 @@ class TestFreeTileStructureWithScale(unittest.TestCase):
         self.assertEqual(self.fts.extent(TileCoord(1, 4, 6), 5), (427900, 341900, 430100, 344100))
 
     def test_extent_metatile(self):
-        self.assertEqual(self.fts.extent(MetaTileCoord(2, 1, 4, 6)), (428000, 342000, 432000, 346000))
+        self.assertEqual(self.fts.extent(TileCoord(1, 4, 6, 2)), (428000, 342000, 432000, 346000))
 
     def test_extent_metatile_border(self):
-        self.assertEqual(self.fts.extent(MetaTileCoord(2, 1, 4, 6), 5), (427900, 341900, 432100, 346100))
+        self.assertEqual(self.fts.extent(TileCoord(1, 4, 6, 2), 5), (427900, 341900, 432100, 346100))
 
     def test_tilecoord(self):
         self.assertEqual(self.fts.tilecoord(1, 428000, 342000), TileCoord(1, 4, 6))

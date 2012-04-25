@@ -3,7 +3,7 @@ import unittest
 
 from PIL import Image
 
-from tilecloud import MetaTileCoord, Tile, TileCoord
+from tilecloud import Tile, TileCoord
 from tilecloud.store.metatile import MetaTileSplitterTileStore
 
 
@@ -20,7 +20,7 @@ class TestMetaTileSplitterTileStore(unittest.TestCase):
         image.paste((0, 0, 0, 255), (2, 2, 4, 4))
         string_io = StringIO()
         image.save(string_io, 'PNG')
-        tile = Tile(MetaTileCoord(2, 1, 0, 0), data=string_io.getvalue())
+        tile = Tile(TileCoord(1, 0, 0, 2), data=string_io.getvalue())
         tiles = list(self.mtsts.get([tile]))
         self.assertEqual(len(tiles), 4)
         self.assertEqual(tiles[0].tilecoord, TileCoord(1, 0, 0))
@@ -54,7 +54,7 @@ class TestMetaTileSplitterTileStoreWithBorder(unittest.TestCase):
         image.paste((0, 0, 0, 255), (4, 4, 8, 8))
         string_io = StringIO()
         image.save(string_io, 'PNG')
-        tile = Tile(MetaTileCoord(2, 1, 0, 0), data=string_io.getvalue())
+        tile = Tile(TileCoord(1, 0, 0, 2), data=string_io.getvalue())
         tiles = list(self.mtsts.get([tile]))
         self.assertEqual(len(tiles), 4)
         self.assertEqual(tiles[0].tilecoord, TileCoord(1, 0, 0))

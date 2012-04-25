@@ -165,7 +165,7 @@ class BoundingPyramid(object):
             while x < xbounds.stop:
                 y = metatilecoord.y
                 while y < ybounds.stop:
-                    yield MetaTileCoord(n, z, x, y)
+                    yield TileCoord(z, x, y, n)
                     y += n
                 x += n
 
@@ -241,14 +241,14 @@ class BoundingPyramid(object):
                         for z in zs))
 
 
-class MetaTileCoord(object):
-    """A metatile containing n * n tile coordinates"""
+class TileCoord(object):
+    """A tile coordinate"""
 
-    def __init__(self, n, z, x, y):
-        self.n = n
+    def __init__(self, z, x, y, n=1):
         self.z = z
         self.x = x
         self.y = y
+        self.n = n
 
     def __cmp__(self, other):
         return cmp(self.n, other.n) or cmp(self.z, other.z) or cmp(self.x, other.x) or cmp(self.y, other.y)
@@ -263,36 +263,21 @@ class MetaTileCoord(object):
                 yield TileCoord(self.z, self.x + i, self.y + j)
 
     def __repr__(self):  # pragma: no cover
-        return '%s(%r, %r, %r, %r)' % (self.__class__.__name__,
-                                       self.n, self.z, self.x, self.y)
+        if self.n == 1:
+            return '%s(%r, %r, %r)' % (self.__class__.__name__,
+                                       self.z, self.x, self.y)
+        else:
+            return '%s(%r, %r, %r, %r)' % (self.__class__.__name__,
+                                           self.n, self.z, self.x, self.y)
 
     def __str__(self):
-        return '%d/%d/%d:+%d/+%d' % (self.z, self.x, self.y, self.n, self.n)
-
-
-class TileCoord(object):
-    """A tile coordinate"""
-
-    def __init__(self, z, x, y):
-        self.z = z
-        self.x = x
-        self.y = y
-
-    def __cmp__(self, other):
-        return cmp(self.z, other.z) or cmp(self.x, other.x) or cmp(self.y, other.y)
-
-    def __hash__(self):
-        return (self.x << self.z) ^ self.y
-
-    def __repr__(self):  # pragma: no cover
-        return '%s(%r, %r, %r)' % (self.__class__.__name__,
-                                   self.z, self.x, self.y)
-
-    def __str__(self):
-        return '%d/%d/%d' % (self.z, self.x, self.y)
+        if self.n == 1:
+            return '%d/%d/%d' % (self.z, self.x, self.y)
+        else:
+            return '%d/%d/%d:+%d/+%d' % (self.z, self.x, self.y, self.n, self.n)
 
     def metatilecoord(self, n=8):
-        return MetaTileCoord(n, self.z, n * (self.x // n), n * (self.y // n))
+        return TileCoord(self.z, n * (self.x // n), n * (self.y // n), n)
 
     def tuple(self):
         return (self.z, self.x, self.y)
@@ -380,9 +365,6 @@ class Tile(object):
         keys = sorted(self.__dict__.keys())
         attrs = ''.join(' %s=%r' % (key, self.__dict__[key]) for key in keys)
         return '<Tile%s>' % (attrs,)
-
-    def is_metatile(self):
-        return isinstance(self.tilecoord, MetaTileCoord)
 
 
 class TileStore(object):
