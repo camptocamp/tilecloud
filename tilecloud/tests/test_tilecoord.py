@@ -58,10 +58,3 @@ class TestTileCoord(unittest.TestCase):
 
     def test_from_tuple(self):
         self.assertEqual(TileCoord.from_tuple((1, 2, 3)), TileCoord(1, 2, 3))
-
-    def test_from_wgs84(self):
-        self.assertEqual(TileCoord.from_wgs84(0, 0, 0), TileCoord(0, 0, 0))
-        self.assertEqual(TileCoord.from_wgs84(1, -90, 45), TileCoord(1, 0, 0))
-        self.assertEqual(TileCoord.from_wgs84(1, -90, -45), TileCoord(1, 0, 1))
-        self.assertEqual(TileCoord.from_wgs84(1, 90, 45), TileCoord(1, 1, 0))
-        self.assertEqual(TileCoord.from_wgs84(1, 90, -45), TileCoord(1, 1, 1))

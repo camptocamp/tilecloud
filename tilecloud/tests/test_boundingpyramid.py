@@ -63,10 +63,6 @@ class TestBoundingPyramid(unittest.TestCase):
         bp.fillup(0)
         self.assertEqual(sorted(bp.zs()), [0, 1, 2])
 
-    def test_from_wgs84(self):
-        bp = BoundingPyramid.from_wgs84(1, 2, 0, 30, 15, 35)
-        self.assertEqual(list(bp), [TileCoord(1, 1, 0), TileCoord(2, 2, 1)])
-
     def test_from_string_star(self):
         bp = BoundingPyramid.from_string('0/0/0:2/*/*')
         self.assertEqual(bp.zget(0), (Bounds(0, 1), Bounds(0, 1)))
