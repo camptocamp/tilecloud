@@ -12,7 +12,7 @@ class WMSTileLayout(TileLayout):
         self.border = border
 
     def filename(self, tilecoord):
-        bbox = self.tilestructure.extent(self.tilestructure.flip_y(tilecoord), self.border)
+        bbox = self.tilestructure.extent(tilecoord, self.border)
         size = tilecoord.n * self.tilestructure.tile_size + 2 * self.border
         query = (
                 ('LAYERS', self.layers),

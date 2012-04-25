@@ -13,7 +13,6 @@ class TestTileStructure(unittest.TestCase):
     def test_tilestructure(self):
         self.assertRaises(NotImplementedError, self.ts.extent, None)
         self.assertRaises(NotImplementedError, self.ts.children, None)
-        self.assertRaises(NotImplementedError, self.ts.flip_y, None)
         self.assertRaises(NotImplementedError, self.ts.parent, None)
         self.assertRaises(NotImplementedError, self.ts.roots)
         self.assertRaises(NotImplementedError, self.ts.tilecoord, None, None, None)
@@ -88,6 +87,19 @@ class TestFreeTileStructureWithScale(unittest.TestCase):
         self.assertEqual(self.fts.tilecoord(1, 432000, 346000), TileCoord(1, 6, 8))
 
 
+class TestFreeTileStructureFlipY(unittest.TestCase):
+
+    def setUp(self):
+        self.ftsn = FreeTileStructure(resolutions=(8, 4, 2, 1), tile_size=0.125)
+        self.ftsf = FreeTileStructure(resolutions=(8, 4, 2, 1), tile_size=0.125, flip_y=True)
+
+    def test_flip_y(self):
+        self.assertEqual(self.ftsn.extent(TileCoord(2, 0, 0)), self.ftsf.extent(TileCoord(2, 0, 3)))
+        self.assertEqual(self.ftsn.extent(TileCoord(2, 1, 1)), self.ftsf.extent(TileCoord(2, 1, 2)))
+        self.assertEqual(self.ftsn.extent(TileCoord(2, 2, 2)), self.ftsf.extent(TileCoord(2, 2, 1)))
+        self.assertEqual(self.ftsn.extent(TileCoord(2, 3, 3)), self.ftsf.extent(TileCoord(2, 3, 0)))
+
+
 class TestFreeQuadTileStructureEquivalence(unittest.TestCase):
 
     def setUp(self):
@@ -108,13 +120,6 @@ class TestFreeQuadTileStructureEquivalence(unittest.TestCase):
                 for y in xrange(0, 1 << z):
                     tilecoord = TileCoord(z, x, y)
                     self.assertEqual(self.fts.extent(tilecoord), self.qts.extent(tilecoord))
-
-    def test_flip_y(self):
-        for z in xrange(0, 4):
-            for x in xrange(0, 1 << z):
-                for y in xrange(0, 1 << z):
-                    tilecoord = TileCoord(z, x, y)
-                    self.assertEqual(self.fts.flip_y(tilecoord), self.qts.flip_y(tilecoord))
 
     def test_parent(self):
         tc = TileCoord(3, 3, 5)
@@ -150,12 +155,6 @@ class TestQuadTileStructure(unittest.TestCase):
         self.assertEqual(self.qts.extent(TileCoord(2, 2, 2)), (1.0, 2.0, 1.5, 2.5))
         self.assertEqual(self.qts.extent(TileCoord(2, 3, 3)), (1.5, 2.5, 2.0, 3.0))
 
-    def test_flip_y(self):
-        self.assertEqual(self.qts.flip_y(TileCoord(2, 1, 0)), TileCoord(2, 1, 3))
-        self.assertEqual(self.qts.flip_y(TileCoord(2, 1, 1)), TileCoord(2, 1, 2))
-        self.assertEqual(self.qts.flip_y(TileCoord(2, 1, 2)), TileCoord(2, 1, 1))
-        self.assertEqual(self.qts.flip_y(TileCoord(2, 1, 3)), TileCoord(2, 1, 0))
-
     def test_parent(self):
         self.assertEqual(self.qts.parent(TileCoord(5, 11, 21)), TileCoord(4, 5, 10))
 
@@ -172,3 +171,16 @@ class TestQuadTileStructure(unittest.TestCase):
                     tilecoord = TileCoord(z, x, y)
                     minx, miny, maxx, maxy = self.qts.extent(tilecoord)
                     self.assertEqual(self.qts.tilecoord(z, minx, miny), tilecoord)
+
+
+class TestQuadTileStructureFlipY(unittest.TestCase):
+
+    def setUp(self):
+        self.qtsn = QuadTileStructure()
+        self.qtsf = QuadTileStructure(flip_y=True)
+
+    def test_flip_y(self):
+        self.assertEqual(self.qtsn.extent(TileCoord(2, 0, 0)), self.qtsf.extent(TileCoord(2, 0, 3)))
+        self.assertEqual(self.qtsn.extent(TileCoord(2, 1, 1)), self.qtsf.extent(TileCoord(2, 1, 2)))
+        self.assertEqual(self.qtsn.extent(TileCoord(2, 2, 2)), self.qtsf.extent(TileCoord(2, 2, 1)))
+        self.assertEqual(self.qtsn.extent(TileCoord(2, 3, 3)), self.qtsf.extent(TileCoord(2, 3, 0)))

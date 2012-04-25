@@ -3,8 +3,8 @@ from tilecloud import TileCoord, TileStructure
 
 class FreeTileStructure(TileStructure):
 
-    def __init__(self, resolutions, max_extent=None, tile_size=None, scale=1):
-        TileStructure.__init__(self, max_extent=max_extent, tile_size=tile_size)
+    def __init__(self, resolutions, max_extent=None, tile_size=None, scale=1, flip_y=False):
+        TileStructure.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         assert list(resolutions) == sorted(resolutions, reverse=True)
         assert all(isinstance(r, int) for r in resolutions)
         self.resolutions = resolutions
@@ -32,15 +32,16 @@ class FreeTileStructure(TileStructure):
                         yield TileCoord(child_z, x, y)
 
     def extent(self, tilecoord, border=0):
+        if self.flip_y:
+            n = self.scale * (self.max_extent[3] - self.max_extent[1]) / (self.tile_size * self.resolutions[tilecoord.z])
+            y = n - tilecoord.y - tilecoord.n
+        else:
+            y = tilecoord.y
         minx = self.max_extent[0] + (self.tile_size * tilecoord.x - border) * self.resolutions[tilecoord.z] / self.scale
-        miny = self.max_extent[1] + (self.tile_size * tilecoord.y - border) * self.resolutions[tilecoord.z] / self.scale
+        miny = self.max_extent[1] + (self.tile_size * y - border) * self.resolutions[tilecoord.z] / self.scale
         maxx = self.max_extent[0] + (self.tile_size * (tilecoord.x + tilecoord.n) + border) * self.resolutions[tilecoord.z] / self.scale
-        maxy = self.max_extent[1] + (self.tile_size * (tilecoord.y + tilecoord.n) + border) * self.resolutions[tilecoord.z] / self.scale
+        maxy = self.max_extent[1] + (self.tile_size * (y + tilecoord.n) + border) * self.resolutions[tilecoord.z] / self.scale
         return (minx, miny, maxx, maxy)
-
-    def flip_y(self, tilecoord):
-        n = self.scale * (self.max_extent[3] - self.max_extent[1]) / (self.tile_size * self.resolutions[tilecoord.z])
-        return TileCoord(tilecoord.z, tilecoord.x, n - tilecoord.y - tilecoord.n, tilecoord.n)
 
     def parent(self, tilecoord):
         parent_z = self.parent_zs[tilecoord.z]

@@ -3,8 +3,8 @@ from tilecloud import TileCoord, TileStructure
 
 class QuadTileStructure(TileStructure):
 
-    def __init__(self, max_extent=None, tile_size=None, max_zoom=None):
-        TileStructure.__init__(self, max_extent=max_extent, tile_size=tile_size)
+    def __init__(self, max_extent=None, tile_size=None, max_zoom=None, flip_y=False):
+        TileStructure.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         self.max_zoom = max_zoom
 
     def children(self, tilecoord):
@@ -15,15 +15,16 @@ class QuadTileStructure(TileStructure):
             yield TileCoord(tilecoord.z + 1, 2 * tilecoord.x + 1, 2 * tilecoord.y + 1)
 
     def extent(self, tilecoord, border=0):
+        if self.flip_y:
+            y = (1 << tilecoord.z) - tilecoord.y - tilecoord.n
+        else:
+            y = tilecoord.y
         delta = float(border) / self.tile_size if border else 0
         minx = self.max_extent[0] + (self.max_extent[2] - self.max_extent[0]) * (tilecoord.x - delta) / (1 << tilecoord.z)
-        miny = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (tilecoord.y - delta) / (1 << tilecoord.z)
+        miny = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (y - delta) / (1 << tilecoord.z)
         maxx = self.max_extent[0] + (self.max_extent[2] - self.max_extent[0]) * (tilecoord.x + tilecoord.n + delta) / (1 << tilecoord.z)
-        maxy = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (tilecoord.y + tilecoord.n + delta) / (1 << tilecoord.z)
+        maxy = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (y + tilecoord.n + delta) / (1 << tilecoord.z)
         return (minx, miny, maxx, maxy)
-
-    def flip_y(self, tilecoord):
-        return TileCoord(tilecoord.z, tilecoord.x, (1 << tilecoord.z) - tilecoord.y - 1)
 
     def parent(self, tilecoord):
         if tilecoord.z == 0:

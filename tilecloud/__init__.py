@@ -291,9 +291,10 @@ class TileLayout(object):
 class TileStructure(object):
     """Lays out tiles at multiple zoom levels"""
 
-    def __init__(self, max_extent=None, tile_size=None):
+    def __init__(self, max_extent=None, tile_size=None, flip_y=False):
         self.max_extent = max_extent or (0.0, 0.0, 1.0, 1.0)
         self.tile_size = tile_size or 256
+        self.flip_y = flip_y
 
     def children(self, tilecoord):
         """Generates all the children of tilecoord"""
@@ -301,10 +302,6 @@ class TileStructure(object):
 
     def extent(self, tilecoord, border=0):
         """Returns the extent of the tile at tilecoord"""
-        raise NotImplementedError
-
-    def flip_y(self, tilecoord):
-        """Flips the y coordinate of tilecoord"""
         raise NotImplementedError
 
     def parent(self, tilecoord):
