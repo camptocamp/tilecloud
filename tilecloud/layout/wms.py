@@ -3,11 +3,11 @@ from tilecloud import TileLayout
 
 class WMSTileLayout(TileLayout):
 
-    def __init__(self, url, layers, srid, format, tilestructure, border=0):
+    def __init__(self, url, layers, srs, format, tilestructure, border=0):
         self.tilestructure = tilestructure
         self.url = url
         self.layers = layers
-        self.srid = srid
+        self.srs = srs
         self.format = format
         self.border = border
 
@@ -22,7 +22,7 @@ class WMSTileLayout(TileLayout):
                 ('VERSION', '1.1.1'),
                 ('REQUEST', 'GetMap'),
                 ('STYLES', ''),
-                ('SRS', 'EPSG:%d' % (self.srid,)),
+                ('SRS', self.srs),
                 ('BBOX', '%f,%f,%f,%f' % bbox),
                 ('WIDTH', str(size)),
                 ('HEIGHT', str(size)),
