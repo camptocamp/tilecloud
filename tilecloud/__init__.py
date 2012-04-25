@@ -420,7 +420,7 @@ class TileStore(object):
         else:
             return False
 
-    def count(self):
+    def __len__(self):
         """Returns the total number of tiles in the store"""
         return reduce(lambda x, _: x + 1, ifilter(None, self.list()), 0)
 

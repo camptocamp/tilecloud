@@ -10,7 +10,7 @@ class DictTileStore(TileStore):
     def __contains__(self, tile):
         return tile and tile.tilecoord in self.tiles
 
-    def count(self):
+    def __len__(self):
         return len(self.tiles)
 
     def delete_one(self, tile):

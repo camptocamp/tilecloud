@@ -49,7 +49,7 @@ def main(argv):
                 print '%d %d/%d (%d%%)' % (z, numerator, denominator,
                                            100 * numerator / denominator)
         elif options.tiles == 'count':
-            print tile_store.count()
+            print len(tile_store)
         elif options.tiles == 'estimate-completion':
             bounding_pyramid = \
                     BoundingPyramid.from_string(options.bounding_pyramid)
