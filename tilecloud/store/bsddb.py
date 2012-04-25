@@ -12,7 +12,7 @@ class BSDDBTileStore(TileStore):
     def __contains__(self, tile):
         return tile and str(tile.tilecoord) in self.db
 
-    def count(self):
+    def __len__(self):
         return len(self.db)
 
     def delete_one(self, tile):
