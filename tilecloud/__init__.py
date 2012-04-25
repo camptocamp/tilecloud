@@ -284,7 +284,11 @@ class TileCoord(object):
 
     @classmethod
     def from_string(cls, s):
-        return cls(*map(int, s.split('/')))
+        m = re.match(r'(\d+)/(\d+)/(\d+)(?::\+(\d+)/\+\4)?\Z', s)
+        if not m:
+            raise ValueError('invalid literal for %s.from_string: %r' % (cls.__name__, s))
+        x, y, z, n = m.groups()
+        return cls(int(x), int(y), int(z), int(n) if n else 1)
 
     @classmethod
     def from_tuple(cls, tpl):

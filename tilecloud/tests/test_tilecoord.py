@@ -41,6 +41,9 @@ class TestTileCoord(unittest.TestCase):
     def test_str_metatile(self):
         self.assertEqual('3/4/6:+2/+2', str(TileCoord(3, 4, 6, 2)))
 
+    def test_str_metatile_error(self):
+        self.assertRaises(ValueError, TileCoord.from_string, '3/4/6:+2/+3')
+
     def test_tuple(self):
         self.assertEqual(TileCoord(1, 2, 3).tuple(), (1, 2, 3, 1))
 
@@ -49,6 +52,9 @@ class TestTileCoord(unittest.TestCase):
 
     def test_from_string(self):
         self.assertEqual(TileCoord.from_string('1/2/3'), TileCoord(1, 2, 3))
+
+    def test_from_string_metatile(self):
+        self.assertEqual(TileCoord.from_string('1/2/3:+2/+2'), TileCoord(1, 2, 3, 2))
 
     def test_from_tuple(self):
         self.assertEqual(TileCoord.from_tuple((1, 2, 3)), TileCoord(1, 2, 3))
