@@ -25,9 +25,12 @@ setup(
         version=version,
         description='Tools for managing tiles',
         classifiers=[
+            'Development Status :: 4 - Beta',
+            'Environment :: Console',
             'Intended Audience :: Developers',
             'License :: OSI Approved :: BSD License',
             'Programming Language :: Python',
+            'Topic :: Scientific/Engineering :: GIS',
         ],
         author='Tom Payne',
         author_email='twpayne@gmail.com',
