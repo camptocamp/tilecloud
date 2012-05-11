@@ -26,12 +26,12 @@ def main(argv):
     else:
         bounding_pyramid = None
     for arg in args:
-        tile_store = TileStore.load(arg)
+        tilestore = TileStore.load(arg)
         if bounding_pyramid:
             tilestream = BoundingPyramidTileStore(bounding_pyramid).list()
         else:
-            tilestream = tile_store.list()
-        tilestream = tile_store.delete(tilestream)
+            tilestream = tilestore.list()
+        tilestream = tilestore.delete(tilestream)
         if options.verbose:
             tilestream = imap(Logger(logger, logging.INFO, '%(tilecoord)s'), tilestream)
         consume(tilestream, None)

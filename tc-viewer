@@ -39,14 +39,14 @@ if options.server is None:
         options.server = 'wsgiref'
 
 cache = {} if options.cache else None
-tile_stores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
+tilestores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 content_type_adder = ContentTypeAdder()
 
 
 @bottle.route('/tiles/<index:int>/tiles/<z:int>/<x:int>/<y:int><ext:re:.*>')
 def tile(index, z, x, y, ext):
     # FIXME check ext
-    if len(tile_stores) < index:
+    if len(tilestores) < index:
         bottle.abort(404)
     tilecoord = TileCoord(z + root.z,
                           x + root.x * (1 << z),
@@ -55,7 +55,7 @@ def tile(index, z, x, y, ext):
         tile = cache[(index, z, x, y)]
     else:
         tile = Tile(tilecoord)
-        tile = tile_stores[index][1].get_one(tile)
+        tile = tilestores[index][1].get_one(tile)
         if cache is not None:
             cache[(index, z, x, y)] = tile
     if tile is None:
@@ -72,22 +72,22 @@ def tile(index, z, x, y, ext):
 
 @bottle.route('/data/image/<index:int>/layersettings.json')
 def openwebglobe_layersettings(index):
-    if len(tile_stores) < index:
+    if len(tilestores) < index:
         bottle.abort(404)
-    name, tile_store = tile_stores[index]
-    bounding_pyramid = tile_store.bounding_pyramid
+    name, tilestore = tilestores[index]
+    bounding_pyramid = tilestore.bounding_pyramid
     if bounding_pyramid is None:
-        bounding_pyramid = tile_store.get_cheap_bounding_pyramid()
+        bounding_pyramid = tilestore.get_cheap_bounding_pyramid()
     if bounding_pyramid is None:
         bounding_pyramid = \
                 BoundingPyramid({20: (Bounds(0, 1 << 20), Bounds(0, 1 << 20))})
     maxlod = max(bounding_pyramid.zs())
     xbounds, ybounds = bounding_pyramid.zget(maxlod)
     extent = [xbounds.start, ybounds.start, xbounds.stop, ybounds.stop]
-    content_type = getattr(tile_store, 'content_type', 'image/jpeg')
+    content_type = getattr(tilestore, 'content_type', 'image/jpeg')
     if content_type == 'application/json':
         return dict(extent=extent, maxlod=maxlod, name=name, type='elevation')
-    elif content_type == 'image/jpeg' or tile_store.content_type is None:
+    elif content_type == 'image/jpeg' or tilestore.content_type is None:
         return dict(extent=extent, format='jpg', maxlod=maxlod, name=name,
                     type='image')
     elif content_type == 'image/png':
@@ -100,37 +100,37 @@ def openwebglobe_layersettings(index):
 @bottle.route('/openlayers')
 @bottle.view('openlayers')
 def openlayers():
-    return dict(tile_stores=tile_stores)
+    return dict(tilestores=tilestores)
 
 
 @bottle.route('/googlemaps')
 @bottle.view('googlemaps')
 def googlemaps():
-    return dict(tile_stores=tile_stores)
+    return dict(tilestores=tilestores)
 
 
 @bottle.route('/jquerygeo')
 @bottle.view('jquerygeo')
 def jquerygeo():
-    return dict(tile_stores=tile_stores)
+    return dict(tilestores=tilestores)
 
 
 @bottle.route('/leaflet')
 @bottle.view('leaflet')
 def leaflet():
-    return dict(tile_stores=tile_stores)
+    return dict(tilestores=tilestores)
 
 
 @bottle.route('/modestmaps')
 @bottle.view('modestmaps')
 def modestmaps():
-    return dict(tile_stores=tile_stores)
+    return dict(tilestores=tilestores)
 
 
 @bottle.route('/polymaps')
 @bottle.view('polymaps')
 def polymaps():
-    return dict(tile_stores=tile_stores)
+    return dict(tilestores=tilestores)
 
 
 @bottle.route('/openwebglobe')
@@ -140,7 +140,7 @@ def openwebglobe():
         quality = float(bottle.request.GET.get('q'))
     else:
         quality = None
-    return dict(quality=quality, tile_stores=tile_stores)
+    return dict(quality=quality, tilestores=tilestores)
 
 
 @bottle.route('/favicon.ico')

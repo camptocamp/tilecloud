@@ -19,7 +19,7 @@ from tilecloud.store.s3 import S3TileStore
 
 def main(argv):
     tile_layouts = {'i3d': I3DTileLayout, 'osm': OSMTileLayout}
-    tile_stores = 'filesystem log s3'.split()
+    tilestores = 'filesystem log s3'.split()
     option_parser = OptionParser()
     option_parser.add_option('--bounds', metavar='Z1/X1/Y1:(Z2/)?X2/Y2')
     option_parser.add_option('--bucket', dest='bucket_name', metavar='BUCKET')
@@ -28,7 +28,7 @@ def main(argv):
     option_parser.add_option('--limit', metavar='LIMIT', type=int)
     option_parser.add_option('--output', default=':memory:', metavar='TILESET')
     option_parser.add_option('--prefix', default='', metavar='STRING')
-    option_parser.add_option('--store', choices=tile_stores)
+    option_parser.add_option('--store', choices=tilestores)
     option_parser.add_option('--suffix', default='', metavar='STRING')
     option_parser.add_option('--name', metavar='NAME')
     option_parser.add_option('--type', default='baselayer',
@@ -57,12 +57,12 @@ def main(argv):
     else:
         tilestream = store.get_all()
     connection = sqlite3.connect(options.output)
-    mbtiles_tile_store = MBTilesTileStore(connection, commit=False)
+    mbtiles_tilestore = MBTilesTileStore(connection, commit=False)
     for key in 'name type version description format'.split():
         value = getattr(options, key)
         if value is not None:
-            mbtiles_tile_store.metadata[key] = getattr(options, key)
-    tilestream = mbtiles_tile_store.put(tilestream)
+            mbtiles_tilestore.metadata[key] = getattr(options, key)
+    tilestream = mbtiles_tilestore.put(tilestream)
     consume(tilestream, options.limit)
     connection.commit()
 

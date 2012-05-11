@@ -19,13 +19,13 @@ def main(argv):
                                       'count', 'estimate-completion', 'list'))
     options, args = option_parser.parse_args(argv[1:])
     for arg in args:
-        tile_store = TileStore.load(arg)
+        tilestore = TileStore.load(arg)
         if options.tiles == 'bounding-pyramid':
-            bounding_pyramid = tile_store.bounding_pyramid
+            bounding_pyramid = tilestore.bounding_pyramid
             if bounding_pyramid is None:
-                bounding_pyramid = tile_store.get_cheap_bounding_pyramid()
+                bounding_pyramid = tilestore.get_cheap_bounding_pyramid()
             if bounding_pyramid is None:
-                bounding_pyramid = tile_store.get_bounding_pyramid()
+                bounding_pyramid = tilestore.get_bounding_pyramid()
             for z in sorted(bounding_pyramid.zs()):
                 xbounds, ybounds = bounding_pyramid.zget(z)
                 if options.relative:
@@ -40,7 +40,7 @@ def main(argv):
             bounding_pyramid = \
                     BoundingPyramid.from_string(options.bounding_pyramid)
             completed = defaultdict(set)
-            for tilecoord in imap(attrgetter('tilecoord'), tile_store.list()):
+            for tilecoord in imap(attrgetter('tilecoord'), tilestore.list()):
                 completed[tilecoord.z].add((tilecoord.x, tilecoord.y))
             for z in bounding_pyramid.zs():
                 numerator = len(completed[z])
@@ -49,15 +49,15 @@ def main(argv):
                 print '%d %d/%d (%d%%)' % (z, numerator, denominator,
                                            100 * numerator / denominator)
         elif options.tiles == 'count':
-            print len(tile_store)
+            print len(tilestore)
         elif options.tiles == 'estimate-completion':
             bounding_pyramid = \
                     BoundingPyramid.from_string(options.bounding_pyramid)
-            tile_store_bounding_pyramid = \
-                    tile_store.get_cheap_bounding_pyramid()
+            tilestore_bounding_pyramid = \
+                    tilestore.get_cheap_bounding_pyramid()
             for z in bounding_pyramid.zs():
                 try:
-                    nxbounds, nybounds = tile_store_bounding_pyramid.zget(z)
+                    nxbounds, nybounds = tilestore_bounding_pyramid.zget(z)
                     numerator = len(nxbounds) * len(nybounds)
                 except IndexError:
                     numerator = 0
@@ -66,7 +66,7 @@ def main(argv):
                 print '%d %d/%d (%d%%)' % (z, numerator, denominator,
                                            100 * numerator / denominator)
         elif options.tiles == 'list':
-            for tile in tile_store.list():
+            for tile in tilestore.list():
                 print tile.tilecoord
 
 

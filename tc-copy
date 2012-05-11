@@ -57,25 +57,25 @@ def main(argv):
     else:
         generate = ()
     try:
-        output_tile_store = TileStore.load(args[-1])
+        output_tilestore = TileStore.load(args[-1])
         for arg in args[:-1]:
-            input_tile_store = TileStore.load(arg)
+            input_tilestore = TileStore.load(arg)
             if bounding_pyramid:
                 tilestream = BoundingPyramidTileStore(bounding_pyramid).list()
             else:
-                tilestream = input_tile_store.list()
+                tilestream = input_tilestore.list()
             if options.i is not None and options.n is not None:
                 tilestream = imap(EveryNth(options.n, options.i), tilestream)
             if options.randomize:
                 tilestream = list(tilestream)
                 random.shuffle(tilestream)
             if not options.overwrite:
-                tilestream = (tile for tile in tilestream if tile not in output_tile_store)
+                tilestream = (tile for tile in tilestream if tile not in output_tilestore)
             if options.rate_limit:
                 tilestream = imap(RateLimit(options.rate_limit), tilestream)
             if benchmark:
                 tilestream = imap(benchmark.sample(), tilestream)
-            tilestream = input_tile_store.get(tilestream)
+            tilestream = input_tilestore.get(tilestream)
             if benchmark:
                 tilestream = imap(benchmark.sample('get'), tilestream)
             for i, g in enumerate(generate):
@@ -92,11 +92,11 @@ def main(argv):
             if options.maximum_errors:
                 tilestream = imap(MaximumErrors(options.maximum_errors), tilestream)
             tilestream = imap(DropErrors(), tilestream)
-            tilestream = output_tile_store.put(tilestream)
+            tilestream = output_tilestore.put(tilestream)
             if benchmark:
                 tilestream = imap(benchmark.sample('put'), tilestream)
             if options.move:
-                tilestream = input_tile_store.delete(tilestream)
+                tilestream = input_tilestore.delete(tilestream)
                 if benchmark:
                     tilestream = imap(benchmark.sample('delete'), tilestream)
             if options.verbose:

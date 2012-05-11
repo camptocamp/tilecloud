@@ -18,21 +18,21 @@ def main(argv):
     options, args = option_parser.parse_args(argv[1:])
     assert options.output
     assert options.z
-    tile_stores = map(TileStore.load, args)
+    tilestores = map(TileStore.load, args)
     if options.bounds:
         bounding_pyramid = BoundingPyramid.from_string(options.bounds)
     else:
-        bounding_pyramid_tile_store = BoundingPyramidTileStore()
-        tilestream = chain.from_iterable(ts.list() for ts in tile_stores)
-        tilestream = bounding_pyramid_tile_store.put(tilestream)
+        bounding_pyramid_tilestore = BoundingPyramidTileStore()
+        tilestream = chain.from_iterable(ts.list() for ts in tilestores)
+        tilestream = bounding_pyramid_tilestore.put(tilestream)
         consume(tilestream, options.limit)
-        bounding_pyramid = bounding_pyramid_tile_store.get_bounding_pyramid()
-    mask_tile_store = MaskTileStore(options.z,
+        bounding_pyramid = bounding_pyramid_tilestore.get_bounding_pyramid()
+    mask_tilestore = MaskTileStore(options.z,
                                     bounding_pyramid.zget(options.z))
-    tilestream = chain.from_iterable(ts.list() for ts in tile_stores)
-    tilestream = mask_tile_store.put(tilestream)
+    tilestream = chain.from_iterable(ts.list() for ts in tilestores)
+    tilestream = mask_tilestore.put(tilestream)
     consume(tilestream, options.limit)
-    mask_tile_store.save(options.output, 'PNG')
+    mask_tilestore.save(options.output, 'PNG')
 
 
 if __name__ == '__main__':

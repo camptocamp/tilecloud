@@ -454,4 +454,4 @@ class TileStore(object):
         module = reduce(lambda module, attr: getattr(module, attr),
                         components[1:],
                         module)
-        return getattr(module, 'tile_store')
+        return getattr(module, 'tilestore')

@@ -47,7 +47,7 @@ class MergeFilter(object):
     Create a filter that merges the tile with tiles of the same
     coordinates.
 
-    :param tile_stores:
+    :param tilestores:
         A collection of :class:`TileStore` objects from which tiles to
         merge with the currently handled tile are read.
 
@@ -57,15 +57,15 @@ class MergeFilter(object):
         other tile. Default is ``None``.
     """
 
-    def __init__(self, tile_stores, content_type=None, **kwargs):
-        self.tile_stores = list(tile_stores)
+    def __init__(self, tilestores, content_type=None, **kwargs):
+        self.tilestores = list(tilestores)
         self.content_type = content_type
         self.kwargs = kwargs
 
     def __call__(self, tile):
         image = PIL.Image.open(StringIO(tile.data))
-        for tile_store in self.tile_stores:
-            t = tile_store.get_one(Tile(tile.tilecoord))
+        for tilestore in self.tilestores:
+            t = tilestore.get_one(Tile(tile.tilecoord))
             if t is not None:
                 image2 = PIL.Image.open(StringIO(t.data))
                 image.paste(image2, None, image2)
