@@ -43,8 +43,8 @@ class TileJSONTileStore(URLTileStore):
             kwargs['content_type'] = content_types.pop()
         templates = [re.sub(r'\{([xyz])\}', lambda m: '%%(%s)d' % m.group(1), url)
                      for url in urls]
-        tile_layouts = map(TemplateTileLayout, templates)
-        URLTileStore.__init__(self, tile_layouts, **kwargs)
+        tilelayouts = map(TemplateTileLayout, templates)
+        URLTileStore.__init__(self, tilelayouts, **kwargs)
 
     @classmethod
     def from_url(cls, url):

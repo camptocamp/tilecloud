@@ -18,13 +18,13 @@ from tilecloud.store.s3 import S3TileStore
 
 
 def main(argv):
-    tile_layouts = {'i3d': I3DTileLayout, 'osm': OSMTileLayout}
+    tilelayouts = {'i3d': I3DTileLayout, 'osm': OSMTileLayout}
     tilestores = 'filesystem log s3'.split()
     option_parser = OptionParser()
     option_parser.add_option('--bounds', metavar='Z1/X1/Y1:(Z2/)?X2/Y2')
     option_parser.add_option('--bucket', dest='bucket_name', metavar='BUCKET')
-    option_parser.add_option('--layout', choices=tile_layouts.keys(),
-                             dest='tile_layout')
+    option_parser.add_option('--layout', choices=tilelayouts.keys(),
+                             dest='tilelayout')
     option_parser.add_option('--limit', metavar='LIMIT', type=int)
     option_parser.add_option('--output', default=':memory:', metavar='TILESET')
     option_parser.add_option('--prefix', default='', metavar='STRING')
@@ -38,16 +38,16 @@ def main(argv):
     option_parser.add_option('--format', metavar='FORMAT')
     options, args = option_parser.parse_args(argv[1:])
     assert options.store
-    tile_layout = tile_layouts[options.tile_layout]()
+    tilelayout = tilelayouts[options.tilelayout]()
     if options.prefix or options.suffix:
-        tile_layout = WrappedTileLayout(tile_layout, options.prefix,
+        tilelayout = WrappedTileLayout(tilelayout, options.prefix,
                                         options.suffix)
     if options.store == 'filesystem':
-        store = FilesystemTileStore(tile_layout)
+        store = FilesystemTileStore(tilelayout)
     elif options.store == 'log':
-        store = LogTileStore(tile_layout, fileinput.input(args))
+        store = LogTileStore(tilelayout, fileinput.input(args))
     elif options.store == 's3':
-        store = S3TileStore(options.bucket_name, tile_layout)
+        store = S3TileStore(options.bucket_name, tilelayout)
     else:
         assert False
     if options.bounds:

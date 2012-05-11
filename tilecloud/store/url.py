@@ -9,18 +9,18 @@ logger = logging.getLogger(__name__)
 
 class URLTileStore(TileStore):
 
-    def __init__(self, tile_layouts, headers=None, **kwargs):
+    def __init__(self, tilelayouts, headers=None, **kwargs):
         TileStore.__init__(self, **kwargs)
-        self.tile_layouts = tuple(tile_layouts)
+        self.tilelayouts = tuple(tilelayouts)
         self.headers = headers or {}
 
     def get_one(self, tile):
         if self.bounding_pyramid is not None:
             if tile.tilecoord not in self.bounding_pyramid:
                 return None
-        tile_layout = self.tile_layouts[hash(tile.tilecoord) %
-                                        len(self.tile_layouts)]
-        url = tile_layout.filename(tile.tilecoord)
+        tilelayout = self.tilelayouts[hash(tile.tilecoord) %
+                                        len(self.tilelayouts)]
+        url = tilelayout.filename(tile.tilecoord)
         request = Request(url, headers=self.headers)
         try:
             logger.debug('GET %s' % (url,))

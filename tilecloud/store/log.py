@@ -7,9 +7,9 @@ from tilecloud import Tile, TileStore
 class LogTileStore(TileStore):
     """Generates all tile coordinates matching the specified layout from file"""
 
-    def __init__(self, tile_layout, file=None, **kwargs):
+    def __init__(self, tilelayout, file=None, **kwargs):
         TileStore.__init__(self, **kwargs)
-        self.tile_layout = tile_layout
+        self.tilelayout = tilelayout
         self.file = file
 
     def get_one(self, tile):
@@ -18,12 +18,12 @@ class LogTileStore(TileStore):
 
     def list(self):
         # FIXME warn that this consumes file
-        filename_re = re.compile(self.tile_layout.pattern)
+        filename_re = re.compile(self.tilelayout.pattern)
         for line in self.file:
             match = filename_re.search(line)
             if match:
-                yield Tile(self.tile_layout.tilecoord(match.group()), line=line)
+                yield Tile(self.tilelayout.tilecoord(match.group()), line=line)
 
     def put_one(self, tile):
-        self.file.write(self.tile_layout.filename(tile.tilecoord) + '\n')
+        self.file.write(self.tilelayout.filename(tile.tilecoord) + '\n')
         return tile

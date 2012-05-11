@@ -23,14 +23,14 @@ class TestTileLayout(unittest.TestCase):
 class TestOSMTileLayout(unittest.TestCase):
 
     def setUp(self):
-        self.tile_layout = OSMTileLayout()
+        self.tilelayout = OSMTileLayout()
 
     def test_filename(self):
-        self.assertEqual(self.tile_layout.filename(TileCoord(1, 2, 3)), '1/2/3')
+        self.assertEqual(self.tilelayout.filename(TileCoord(1, 2, 3)), '1/2/3')
 
     def test_tilecoord(self):
-        self.assertEqual(self.tile_layout.tilecoord('1/2/3'), TileCoord(1, 2, 3))
-        self.assertRaises(ValueError, self.tile_layout.tilecoord, '1/2/')
+        self.assertEqual(self.tilelayout.tilecoord('1/2/3'), TileCoord(1, 2, 3))
+        self.assertRaises(ValueError, self.tilelayout.tilecoord, '1/2/')
 
 
 class TestWMTSTileLayout(unittest.TestCase):
@@ -212,23 +212,23 @@ class TestWMSTileLayout(unittest.TestCase):
 class TestTemplateTileLayout(unittest.TestCase):
 
     def setUp(self):
-        self.tile_layout = TemplateTileLayout('%(z)d/%(x)d/%(y)d')
+        self.tilelayout = TemplateTileLayout('%(z)d/%(x)d/%(y)d')
 
     def test_filename(self):
-        self.assertEqual(self.tile_layout.filename(TileCoord(1, 2, 3)), '1/2/3')
+        self.assertEqual(self.tilelayout.filename(TileCoord(1, 2, 3)), '1/2/3')
 
     def test_tilecoord(self):
-        self.assertEqual(self.tile_layout.tilecoord('1/2/3'), TileCoord(1, 2, 3))
+        self.assertEqual(self.tilelayout.tilecoord('1/2/3'), TileCoord(1, 2, 3))
 
 
 class TestWrappedTileLayout(unittest.TestCase):
 
     def setUp(self):
-        self.tile_layout = WrappedTileLayout(OSMTileLayout(), 'prefix/', '.suffix')
+        self.tilelayout = WrappedTileLayout(OSMTileLayout(), 'prefix/', '.suffix')
 
     def test_filename(self):
-        self.assertEqual(self.tile_layout.filename(TileCoord(1, 2, 3)), 'prefix/1/2/3.suffix')
+        self.assertEqual(self.tilelayout.filename(TileCoord(1, 2, 3)), 'prefix/1/2/3.suffix')
 
     def test_tilecoord(self):
-        self.assertEqual(self.tile_layout.tilecoord('prefix/1/2/3.suffix'), TileCoord(1, 2, 3))
-        self.assertRaises(ValueError, self.tile_layout.tilecoord, 'prefix//1/2/3.suffix')
+        self.assertEqual(self.tilelayout.tilecoord('prefix/1/2/3.suffix'), TileCoord(1, 2, 3))
+        self.assertRaises(ValueError, self.tilelayout.tilecoord, 'prefix//1/2/3.suffix')
