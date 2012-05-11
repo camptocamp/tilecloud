@@ -5,7 +5,7 @@ import os
 version = '0.1'
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.md')).read()
+README = open(os.path.join(here, 'README.rst')).read()
 
 install_requires = [
         'bottle',
