@@ -42,14 +42,14 @@ class S3TileStore(TileStore):
     def get_one(self, tile):
         key_name = self.tilelayout.filename(tile.tilecoord)
         try:
-            tile.s3key = self.s3bucket.get(key_name)
-            tile.data = tile.s3key.body
-            if 'Content-Encoding' in tile.s3key:
-                tile.content_encoding = tile.s3key['Content-Encoding']
+            tile.s3_key = self.s3bucket.get(key_name)
+            tile.data = tile.s3_key.body
+            if 'Content-Encoding' in tile.s3_key:
+                tile.content_encoding = tile.s3_key['Content-Encoding']
             else:
                 tile.content_encoding = None
-            if 'Content-Type' in tile.s3key:
-                tile.content_type = tile.s3key['Content-Type']
+            if 'Content-Type' in tile.s3_key:
+                tile.content_type = tile.s3_key['Content-Type']
             else:
                 tile.content_type = None
         except S3Error as exc:
@@ -61,25 +61,25 @@ class S3TileStore(TileStore):
 
     def list(self):
         prefix = getattr(self.tilelayout, 'prefix', '')
-        for s3key in self.s3bucket.list_objects(prefix=prefix):
+        for s3_key in self.s3bucket.list_objects(prefix=prefix):
             try:
-                tilecoord = self.tilelayout.tilecoord(s3key.name)
+                tilecoord = self.tilelayout.tilecoord(s3_key.name)
             except ValueError:
                 continue
-            yield Tile(tilecoord, s3key=s3key)
+            yield Tile(tilecoord, s3_key=s3_key)
 
     def put_one(self, tile):
         assert tile.data is not None
         key_name = self.tilelayout.filename(tile.tilecoord)
-        s3key = self.s3bucket.key(key_name)
-        s3key.body = tile.data
+        s3_key = self.s3bucket.key(key_name)
+        s3_key.body = tile.data
         if tile.content_encoding is not None:
-            s3key['Content-Encoding'] = tile.content_encoding
+            s3_key['Content-Encoding'] = tile.content_encoding
         if tile.content_type is not None:
-            s3key['Content-Type'] = tile.content_type
+            s3_key['Content-Type'] = tile.content_type
         if not self.dry_run:
             try:
-                s3key.put()
+                s3_key.put()
             except S3Error as exc:
                 tile.error = exc
         return tile
