@@ -418,6 +418,10 @@ class TileStore(object):
         if name.startswith('bounds://'):
             from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
             return BoundingPyramidTileStore(BoundingPyramid.from_string(name[9:]))
+        if name.startswith('file://'):
+            from tilecloud.layout.template import TemplateTileLayout
+            from tilecloud.store.filesystem import FilesystemTileStore
+            return FilesystemTileStore(TemplateTileLayout(name[7:]),)
         if name.startswith('http://') or name.startswith('https://'):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.url import URLTileStore
