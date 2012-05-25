@@ -3,6 +3,7 @@ from cStringIO import StringIO
 from PIL import Image
 
 from tilecloud import Tile, TileStore
+from tilecloud.lib.PIL import FORMAT_BY_CONTENT_TYPE
 
 
 class MetaTileSplitterTileStore(TileStore):
@@ -21,5 +22,5 @@ class MetaTileSplitterTileStore(TileStore):
                 y = self.border + (tilecoord.y - metatile.tilecoord.y) * self.tile_size
                 image = metaimage.crop((x, y, x + self.tile_size, y + self.tile_size))
                 string_io = StringIO()
-                image.save(string_io, self.format)
+                image.save(string_io, FORMAT_BY_CONTENT_TYPE[self.format])
                 yield Tile(tilecoord, data=string_io.getvalue())
