@@ -1,45 +1,28 @@
 from cStringIO import StringIO
 
-import cairo
+import PIL.Image
+import PIL.ImageDraw
+import PIL.ImageFont
 
 from tilecloud import TileStore
+from tilecloud.lib.PIL import FORMAT_BY_CONTENT_TYPE
 
 
 class DebugTileStore(TileStore):
 
-    def __init__(self, color=(0, 0, 0), transparent=True, **kwargs):
+    def __init__(self, color=(0, 0, 0), **kwargs):
         TileStore.__init__(self, content_type='image/png', **kwargs)
         self.color = color
-        self.inverse_color = tuple(1.0 - x for x in color)
-        self.transparent = transparent
 
     def get_one(self, tile):
-        format = cairo.FORMAT_ARGB32 if self.transparent else cairo.FORMAT_RGB24
-        image_surface = cairo.ImageSurface(format, 256, 256)
-        context = cairo.Context(image_surface)
-        if not self.transparent:
-            context.set_source_rgba(1, 1, 1, 1)
-            context.paint()
-        context.rectangle(0.5, 0.5, 256, 256)
-        if self.transparent:
-            context.set_source_rgb(*self.inverse_color)
-            context.set_line_width(2)
-            context.stroke_preserve()
-        context.set_source_rgb(*self.color)
-        context.set_line_width(1)
-        context.stroke()
+        image = PIL.Image.new('RGBA', (256, 256), (0, 0, 0, 0))
+        draw = PIL.ImageDraw.Draw(image)
+        draw.line([(0, 255), (0, 0), (255, 0)], fill=self.color)
         text = str(tile.tilecoord)
-        extents = context.text_extents(text)
-        context.move_to(128.0 - extents[2] / 2.0, 128 - extents[3] / 2.0)
-        context.text_path(text)
-        if self.transparent:
-            context.set_source_rgb(*self.inverse_color)
-            context.set_line_width(2)
-            context.stroke_preserve()
-        context.set_source_rgb(*self.color)
-        context.fill()
+        font = PIL.ImageFont.load_default()
+        width, height = font.getsize(text)
+        draw.text((127 - width / 2, 127 - height / 2), text, fill=self.color, font=font)
         string_io = StringIO()
-        image_surface.write_to_png(string_io)
-        tile.content_type = 'image/png'
+        image.save(string_io, FORMAT_BY_CONTENT_TYPE[self.content_type])
         tile.data = string_io.getvalue()
         return tile

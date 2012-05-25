@@ -78,8 +78,7 @@ Getting started
 ===============
 
 TileCloud depends on `Bottle <http://bottlepy.org/>`_,
-`pyproj <http://code.google.com/p/pyproj/>`_ and
-`Pycairo <http://cairographics.org/pycairo/>`_. It's easiest to
+`pyproj <http://code.google.com/p/pyproj/>`_. It's easiest to
 install them with ``pip`` in a ``virtualenv``:
 
 ::
@@ -87,10 +86,6 @@ install them with ``pip`` in a ``virtualenv``:
     $ virtualenv .
     $ . bin/activate
     $ pip install bottle pyproj
-
-Unfortunately, Pycairo does not install with ``pip``, so use your
-system's package manager to install the system package (on Ubuntu
-it's ``python-cairo``).
 
 For a quick demo, run
 
