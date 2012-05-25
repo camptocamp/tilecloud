@@ -20,12 +20,12 @@
 		<script>
 			$(function () {
 				var services = [];
-%for index, (name, tile_store) in enumerate(tile_stores):
-%if tile_store.content_type is None or tile_store.content_type.startswith('image/'):
+%for index, (name, tilestore) in enumerate(tilestores):
+%if tilestore.content_type is None or tilestore.content_type.startswith('image/'):
 				services.push({
 					id: "{{name}}",
-%if getattr(tile_store, 'attribution', None):
-					attr: '{{!tile_store.attribution}}',
+%if getattr(tilestore, 'attribution', None):
+					attr: '{{!tilestore.attribution}}',
 %end
 					src: function( view ) {
 						return "/tiles/{{index}}/tiles/" + view.zoom + "/" + view.tile.column + "/" + view.tile.row;

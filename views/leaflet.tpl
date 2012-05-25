@@ -20,11 +20,11 @@
                 <script type="text/javascript">
                         var map = new L.Map('map');
                         var layer_names = {};
-%for index, (name, tile_store) in enumerate(tile_stores):
-%if tile_store.content_type is None or tile_store.content_type.startswith('image/'):
+%for index, (name, tilestore) in enumerate(tilestores):
+%if tilestore.content_type is None or tilestore.content_type.startswith('image/'):
                         layer_names['{{name}}'] = new L.TileLayer('/tiles/{{index}}/tiles/{z}/{x}/{y}', {
-%if getattr(tile_store, 'attribution', None):
-                            attribution: '{{!tile_store.attribution}}'
+%if getattr(tilestore, 'attribution', None):
+                            attribution: '{{!tilestore.attribution}}'
 %end
                         });
                         map.addLayer(layer_names['{{name}}']);

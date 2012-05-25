@@ -15,8 +15,8 @@
 			ogSetArtworkDirectory('http://www.openwebglobe.org/art/');
 			var context = ogCreateContextFromCanvas('canvas', true);
 			var globe = ogCreateGlobe(context);
-%for index, (name, tile_store) in enumerate(tile_stores):
-%if tile_store.content_type == 'application/json':
+%for index, (name, tilestore) in enumerate(tilestores):
+%if tilestore.content_type == 'application/json':
 			ogAddElevationLayer(globe, {
 				url: ['/tiles'],
 				layer: '{{index}}',

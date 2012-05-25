@@ -18,8 +18,8 @@
 		</div>
 		<script type="text/javascript">
 			var mapTypes = [], mapTypeIds = [];
-%for index, (name, tile_store) in enumerate(tile_stores):
-%if tile_store.content_type is None or tile_store.content_type.startswith('image/'):
+%for index, (name, tilestore) in enumerate(tilestores):
+%if tilestore.content_type is None or tilestore.content_type.startswith('image/'):
 			mapTypes.push(new google.maps.ImageMapType({
 				alt: '{{index}}',
 				getTileUrl: function(coord, zoom) {
@@ -40,8 +40,8 @@
 				mapTypeId: mapTypeIds[0],
 				zoom: 0
 			});
-%for index, (name, tile_store) in enumerate(tile_stores):
-%if tile_store.content_type is None or tile_store.content_type.startswith('image/'):
+%for index, (name, tilestore) in enumerate(tilestores):
+%if tilestore.content_type is None or tilestore.content_type.startswith('image/'):
 			map.mapTypes.set(mapTypeIds[{{index}}], mapTypes[{{index}}]);
 %end
 %end
