@@ -1,3 +1,5 @@
+from urllib import urlencode
+
 from tilecloud import TileLayout
 
 
@@ -14,17 +16,15 @@ class WMSTileLayout(TileLayout):
     def filename(self, tilecoord):
         bbox = self.tilestructure.extent(tilecoord, self.border)
         size = tilecoord.n * self.tilestructure.tile_size + 2 * self.border
-        query = (
-                ('LAYERS', self.layers),
-                ('FORMAT', self.format),
-                ('TRANSPARENT', 'TRUE' if self.format == 'image/png' else 'FALSE'),
-                ('SERVICE', 'WMS'),
-                ('VERSION', '1.1.1'),
-                ('REQUEST', 'GetMap'),
-                ('STYLES', ''),
-                ('SRS', self.srs),
-                ('BBOX', '%f,%f,%f,%f' % bbox),
-                ('WIDTH', str(size)),
-                ('HEIGHT', str(size)),
-        )
-        return self.url + '?' + '&'.join('='.join(p) for p in query)
+        return self.url + '?' + urlencode({
+                'LAYERS': self.layers,
+                'FORMAT': self.format,
+                'TRANSPARENT': 'TRUE' if self.format == 'image/png' else 'FALSE',
+                'SERVICE': 'WMS',
+                'VERSION': '1.1.1',
+                'REQUEST': 'GetMap',
+                'STYLES': '',
+                'SRS': self.srs,
+                'BBOX': '%f,%f,%f,%f' % bbox,
+                'WIDTH': size,
+                'HEIGHT': size})
