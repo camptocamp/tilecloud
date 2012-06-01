@@ -149,6 +149,12 @@ class TestMBTilesTileStore(unittest.TestCase):
         tilestore2 = MBTilesTileStore(connection)
         self.assertEqual(tilestore2.content_type, 'image/png')
 
+    def test_empty(self):
+        connection = sqlite3.connect(':memory:')
+        tilestore = MBTilesTileStore(connection)
+        self.assertEqual(len(tilestore), 0)
+        self.assertEqual(tilestore.get_one(Tile(TileCoord(0, 0, 0))), None)
+
 
 class TestNullTileStore(unittest.TestCase):
 
