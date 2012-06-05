@@ -1,4 +1,4 @@
-from tilecloud import TileCoord, TileGrid
+from tilecloud import Bounds, TileCoord, TileGrid
 
 
 class QuadTileGrid(TileGrid):
@@ -25,6 +25,17 @@ class QuadTileGrid(TileGrid):
         maxx = self.max_extent[0] + (self.max_extent[2] - self.max_extent[0]) * (tilecoord.x + tilecoord.n + delta) / (1 << tilecoord.z)
         maxy = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (y + tilecoord.n + delta) / (1 << tilecoord.z)
         return (minx, miny, maxx, maxy)
+
+    def fill_down(self, z, bounds):
+        xbounds, ybounds = bounds
+        return (Bounds(2 * xbounds.start, 2 * xbounds.stop),
+                Bounds(2 * ybounds.start, 2 * ybounds.stop))
+
+    def fill_up(self, z, bounds):
+        assert z > 0
+        xbounds, ybounds = bounds
+        return (Bounds(xbounds.start // 2, max(xbounds.stop // 2, 1)),
+                Bounds(ybounds.start // 2, max(ybounds.stop // 2, 1)))
 
     def parent(self, tilecoord):
         if tilecoord.z == 0:

@@ -25,42 +25,42 @@ class TestBoundingPyramid(unittest.TestCase):
         self.assertFalse(TileCoord(1, 1, 1) in bp)
         self.assertEqual(list(bp), [TileCoord(1, 0, 0)])
 
-    def test_filldown(self):
+    def test_fill_down(self):
         bp = BoundingPyramid()
         bp.add(TileCoord(1, 1, 0))
-        bp.filldown(3)
+        bp.fill_down(3)
         self.assertEqual(bp.zget(2), (Bounds(2, 4), Bounds(0, 2)))
         self.assertEqual(bp.zget(3), (Bounds(4, 8), Bounds(0, 4)))
 
-    def test_fillup(self):
+    def test_fill_up(self):
         bp = BoundingPyramid()
         bp.add(TileCoord(2, 1, 3))
-        bp.fillup(0)
+        bp.fill_up(0)
         self.assertEqual(bp.zget(1), (Bounds(0, 1), Bounds(1, 2)))
         self.assertEqual(bp.zget(0), (Bounds(0, 1), Bounds(0, 1)))
 
     def test_iterbottomup(self):
         bp = BoundingPyramid()
         bp.add(TileCoord(2, 1, 3))
-        bp.fillup(0)
+        bp.fill_up(0)
         self.assertEqual(list(bp.iterbottomup()), [TileCoord(2, 1, 3), TileCoord(1, 0, 1), TileCoord(0, 0, 0)])
 
     def test_itertopdown(self):
         bp = BoundingPyramid()
         bp.add(TileCoord(2, 1, 3))
-        bp.fillup(0)
+        bp.fill_up(0)
         self.assertEqual(list(bp.itertopdown()), [TileCoord(0, 0, 0), TileCoord(1, 0, 1), TileCoord(2, 1, 3)])
 
     def test_ziter(self):
         bp = BoundingPyramid()
         bp.add(TileCoord(2, 1, 3))
-        bp.fillup(0)
+        bp.fill_up(0)
         self.assertEqual(list(bp.ziter(1)), [TileCoord(1, 0, 1)])
 
     def test_zs(self):
         bp = BoundingPyramid()
         bp.add(TileCoord(2, 1, 3))
-        bp.fillup(0)
+        bp.fill_up(0)
         self.assertEqual(sorted(bp.zs()), [0, 1, 2])
 
     def test_from_string_star(self):

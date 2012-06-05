@@ -94,8 +94,12 @@ class Bounds(object):
 
 class BoundingPyramid(object):
 
-    def __init__(self, bounds=None):
+    def __init__(self, bounds=None, tilegrid=None):
         self.bounds = bounds or {}
+        self.tilegrid = tilegrid
+        if self.tilegrid is None:
+            from tilecloud.grid.google import GoogleTileGrid
+            self.tilegrid = GoogleTileGrid
 
     def __contains__(self, tilecoord):
         """Returns True if tilecoord is in self"""
@@ -105,7 +109,7 @@ class BoundingPyramid(object):
         return tilecoord.x in xbounds and tilecoord.y in ybounds
 
     def __eq__(self, other):
-        return self.bounds == other.bounds
+        return self.tilegrid == other.tilegrid and self.bounds == other.bounds
 
     def __iter__(self):
         """Generates every TileCoord in self, in increasing z, x, and y order"""
@@ -127,19 +131,22 @@ class BoundingPyramid(object):
                                         Bounds(tilecoord.y))
         return self
 
-    def filldown(self, bottom, start=None):
+    def add_bounds(self, z, bounds):
+        if z in self.bounds:
+            self.bounds[z][0].update(bounds[0])
+            self.bounds[z][1].update(bounds[1])
+        else:
+            self.bounds[z] = bounds
+
+    def fill_down(self, bottom, start=None):
         if start is None:
             start = max(self.bounds)
         for z in xrange(start, bottom):
-            xbounds, ybounds = self.bounds[z]
-            self.add(TileCoord(z + 1, xbounds.start * 2, ybounds.start * 2))
-            self.add(TileCoord(z + 1, xbounds.stop * 2 - 1, ybounds.stop * 2 - 1))
+            self.add_bounds(z + 1, self.tilegrid.fill_down(z, self.bounds[z]))
 
-    def fillup(self, top=0):
+    def fill_up(self, top=0):
         for z in xrange(max(self.bounds), top, -1):
-            xbounds, ybounds = self.bounds[z]
-            self.add(TileCoord(z - 1, xbounds.start // 2, ybounds.start // 2))
-            self.add(TileCoord(z - 1, max(xbounds.stop // 2 - 1, 0), max(ybounds.stop // 2 - 1, 0)))
+            self.add_bounds(z - 1, self.tilegrid.fill_up(z, self.bounds[z]))
 
     def iterbottomup(self):
         for z in reversed(sorted(self.bounds.keys())):
@@ -209,9 +216,9 @@ class BoundingPyramid(object):
             if match.group('plusz'):
                 z2 += z1
             if z1 < z2:
-                result.filldown(z2)
+                result.fill_down(z2)
             elif z1 > z2:
-                result.fillup(z2)
+                result.fill_up(z2)
         return result
 
     @classmethod
@@ -302,6 +309,12 @@ class TileGrid(object):
 
     def extent(self, tilecoord, border=0):
         """Returns the extent of the tile at tilecoord"""
+        raise NotImplementedError
+
+    def fill_down(self, bounds):
+        raise NotImplementedError
+
+    def fill_up(self, bounds):
         raise NotImplementedError
 
     def parent(self, tilecoord):
