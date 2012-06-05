@@ -15,10 +15,9 @@ class QuadTileGrid(TileGrid):
             yield TileCoord(tilecoord.z + 1, 2 * tilecoord.x + 1, 2 * tilecoord.y + 1)
 
     def extent(self, tilecoord, border=0):
-        if self.flip_y:
-            y = (1 << tilecoord.z) - tilecoord.y - tilecoord.n
-        else:
-            y = tilecoord.y
+        y = tilecoord.y
+        if not self.flip_y:
+            y = (1 << tilecoord.z) - y - tilecoord.n
         delta = float(border) / self.tile_size if border else 0
         minx = self.max_extent[0] + (self.max_extent[2] - self.max_extent[0]) * (tilecoord.x - delta) / (1 << tilecoord.z)
         miny = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (y - delta) / (1 << tilecoord.z)
@@ -47,6 +46,8 @@ class QuadTileGrid(TileGrid):
         yield TileCoord(0, 0, 0)
 
     def tilecoord(self, z, x, y):
-        return TileCoord(z,
-                         int((x - self.max_extent[0]) * (1 << z) / (self.max_extent[2] - self.max_extent[0])),
-                         int((y - self.max_extent[1]) * (1 << z) / (self.max_extent[3] - self.max_extent[1])))
+        tilecoord_x = int((x - self.max_extent[0]) * (1 << z) / (self.max_extent[2] - self.max_extent[0]))
+        tilecoord_y = int((y - self.max_extent[1]) * (1 << z) / (self.max_extent[3] - self.max_extent[1]))
+        if not self.flip_y:
+            tilecoord_y = (1 << z) - tilecoord_y - 1
+        return TileCoord(z, tilecoord_x, tilecoord_y)

@@ -43,17 +43,17 @@ class TestFreeTileGrid2(unittest.TestCase):
         self.ftg = FreeTileGrid(resolutions=(40, 20, 10, 5), max_extent=(420000, 330000, 900000, 350000), tile_size=100)
 
     def test_extent(self):
-        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6)), (428000, 342000, 430000, 344000))
-        self.assertEqual(self.ftg.extent(TileCoord(1, 5, 7)), (430000, 344000, 432000, 346000))
+        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6)), (428000, 336000, 430000, 338000))
+        self.assertEqual(self.ftg.extent(TileCoord(1, 5, 7)), (430000, 334000, 432000, 336000))
 
     def test_extent_border(self):
-        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6), 5), (427900, 341900, 430100, 344100))
+        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6), 5), (427900, 335900, 430100, 338100))
 
     def test_extent_metatile(self):
-        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6, 2)), (428000, 342000, 432000, 346000))
+        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6, 2)), (428000, 334000, 432000, 338000))
 
     def test_extent_metatile_border(self):
-        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6, 2), 5), (427900, 341900, 432100, 346100))
+        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6, 2), 5), (427900, 333900, 432100, 338100))
 
     def test_tilecoord(self):
         self.assertEqual(self.ftg.tilecoord(1, 428000, 342000), TileCoord(1, 4, 6))
@@ -68,17 +68,17 @@ class TestFreeTileGridWithScale(unittest.TestCase):
         self.ftg = FreeTileGrid(resolutions=(4000, 2000, 1000, 500), max_extent=(420000, 330000, 900000, 350000), tile_size=100, scale=100)
 
     def test_extent(self):
-        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6)), (428000, 342000, 430000, 344000))
-        self.assertEqual(self.ftg.extent(TileCoord(1, 5, 7)), (430000, 344000, 432000, 346000))
+        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6)), (428000, 336000, 430000, 338000))
+        self.assertEqual(self.ftg.extent(TileCoord(1, 5, 7)), (430000, 334000, 432000, 336000))
 
     def test_extent_border(self):
-        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6), 5), (427900, 341900, 430100, 344100))
+        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6), 5), (427900, 335900, 430100, 338100))
 
     def test_extent_metatile(self):
-        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6, 2)), (428000, 342000, 432000, 346000))
+        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6, 2)), (428000, 334000, 432000, 338000))
 
     def test_extent_metatile_border(self):
-        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6, 2), 5), (427900, 341900, 432100, 346100))
+        self.assertEqual(self.ftg.extent(TileCoord(1, 4, 6, 2), 5), (427900, 333900, 432100, 338100))
 
     def test_tilecoord(self):
         self.assertEqual(self.ftg.tilecoord(1, 428000, 342000), TileCoord(1, 4, 6))
@@ -144,16 +144,16 @@ class TestQuadTileGrid(unittest.TestCase):
         self.assertEqual(self.qtg.extent(TileCoord(0, 0, 0)), (0.0, 1.0, 2.0, 3.0))
 
     def test_extent_z1(self):
-        self.assertEqual(self.qtg.extent(TileCoord(1, 0, 0)), (0.0, 1.0, 1.0, 2.0))
-        self.assertEqual(self.qtg.extent(TileCoord(1, 0, 1)), (0.0, 2.0, 1.0, 3.0))
-        self.assertEqual(self.qtg.extent(TileCoord(1, 1, 0)), (1.0, 1.0, 2.0, 2.0))
-        self.assertEqual(self.qtg.extent(TileCoord(1, 1, 1)), (1.0, 2.0, 2.0, 3.0))
+        self.assertEqual(self.qtg.extent(TileCoord(1, 0, 0)), (0.0, 2.0, 1.0, 3.0))
+        self.assertEqual(self.qtg.extent(TileCoord(1, 0, 1)), (0.0, 1.0, 1.0, 2.0))
+        self.assertEqual(self.qtg.extent(TileCoord(1, 1, 0)), (1.0, 2.0, 2.0, 3.0))
+        self.assertEqual(self.qtg.extent(TileCoord(1, 1, 1)), (1.0, 1.0, 2.0, 2.0))
 
     def test_extent_z2(self):
-        self.assertEqual(self.qtg.extent(TileCoord(2, 0, 0)), (0.0, 1.0, 0.5, 1.5))
-        self.assertEqual(self.qtg.extent(TileCoord(2, 1, 1)), (0.5, 1.5, 1.0, 2.0))
-        self.assertEqual(self.qtg.extent(TileCoord(2, 2, 2)), (1.0, 2.0, 1.5, 2.5))
-        self.assertEqual(self.qtg.extent(TileCoord(2, 3, 3)), (1.5, 2.5, 2.0, 3.0))
+        self.assertEqual(self.qtg.extent(TileCoord(2, 0, 0)), (0.0, 2.5, 0.5, 3.0))
+        self.assertEqual(self.qtg.extent(TileCoord(2, 1, 1)), (0.5, 2.0, 1.0, 2.5))
+        self.assertEqual(self.qtg.extent(TileCoord(2, 2, 2)), (1.0, 1.5, 1.5, 2.0))
+        self.assertEqual(self.qtg.extent(TileCoord(2, 3, 3)), (1.5, 1.0, 2.0, 1.5))
 
     def test_parent(self):
         self.assertEqual(self.qtg.parent(TileCoord(5, 11, 21)), TileCoord(4, 5, 10))

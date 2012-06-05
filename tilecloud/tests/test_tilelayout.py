@@ -66,7 +66,7 @@ class TestWMSTileLayout(unittest.TestCase):
         self.tilegrid = FreeTileGrid(
             resolutions=(1000000, 500000, 1),
             max_extent=(420000, 30000, 900000, 350000),
-            tile_size=100, scale=10000, flip_y=True)
+            tile_size=100, scale=10000)
 
     def test_png(self):
         layout = WMSTileLayout(url='http://example.com/folder',
