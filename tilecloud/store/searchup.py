@@ -3,9 +3,9 @@ from tilecloud import Tile, TileStore
 
 class SearchUpTileStore(TileStore):
 
-    def __init__(self, tilestore, tile_structure):
+    def __init__(self, tilestore, tilegrid):
         self.tilestore = tilestore
-        self.tile_structure = tile_structure
+        self.tilegrid = tilegrid
 
     def get_one(self, tile):
         if not tile:
@@ -20,5 +20,5 @@ class SearchUpTileStore(TileStore):
                     tile.tilecoord = tmp_tilecoord
                 return tile
             else:
-                test_tile.tilecoord = self.tile_structure.parent(test_tile.tilecoord)
+                test_tile.tilecoord = self.tilegrid.parent(test_tile.tilecoord)
         return None

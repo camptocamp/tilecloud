@@ -1,17 +1,17 @@
 from collections import deque
 
 from tilecloud import Tile, TileStore
-from tilecloud.structure.quad import QuadTileStructure
+from tilecloud.grid.quad import QuadTileGrid
 
 
 class RenderingTheWorldTileStore(TileStore):
     """http://mapbox.com/blog/rendering-the-world/"""
 
-    def __init__(self, subdivide, tilestructure=None, queue=None, seeds=()):
+    def __init__(self, subdivide, tilegrid=None, queue=None, seeds=()):
         self.subdivide = subdivide
-        self.tilestructure = tilestructure
-        if self.tilestructure is None:
-            self.tilestructure = QuadTileStructure()
+        self.tilegrid = tilegrid
+        if self.tilegrid is None:
+            self.tilegrid = QuadTileGrid()
         self.queue = queue
         if self.queue is None:
             self.queue = deque()
@@ -27,6 +27,6 @@ class RenderingTheWorldTileStore(TileStore):
 
     def put_one(self, tile):
         if self.subdivide(tile):
-            for tilecoord in self.tilestructure.children(tile.tilecoord):
+            for tilecoord in self.tilegrid.children(tile.tilecoord):
                 self.queue.append(Tile(tilecoord))
         return tile

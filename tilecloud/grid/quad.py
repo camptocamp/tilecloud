@@ -1,10 +1,10 @@
-from tilecloud import TileCoord, TileStructure
+from tilecloud import TileCoord, TileGrid
 
 
-class QuadTileStructure(TileStructure):
+class QuadTileGrid(TileGrid):
 
     def __init__(self, max_extent=None, tile_size=None, max_zoom=None, flip_y=False):
-        TileStructure.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
+        TileGrid.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         self.max_zoom = max_zoom
 
     def children(self, tilecoord):

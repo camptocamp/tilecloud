@@ -5,8 +5,8 @@ from tilecloud import TileLayout
 
 class WMSTileLayout(TileLayout):
 
-    def __init__(self, url, layers, srs, format, tilestructure, border=0):
-        self.tilestructure = tilestructure
+    def __init__(self, url, layers, srs, format, tilegrid, border=0):
+        self.tilegrid = tilegrid
         self.url = url
         self.layers = layers
         self.srs = srs
@@ -14,8 +14,8 @@ class WMSTileLayout(TileLayout):
         self.border = border
 
     def filename(self, tilecoord):
-        bbox = self.tilestructure.extent(tilecoord, self.border)
-        size = tilecoord.n * self.tilestructure.tile_size + 2 * self.border
+        bbox = self.tilegrid.extent(tilecoord, self.border)
+        size = tilecoord.n * self.tilegrid.tile_size + 2 * self.border
         return self.url + '?' + urlencode({
                 'LAYERS': self.layers,
                 'FORMAT': self.format,

@@ -288,7 +288,7 @@ class TileLayout(object):
         raise NotImplementedError
 
 
-class TileStructure(object):
+class TileGrid(object):
     """Lays out tiles at multiple zoom levels"""
 
     def __init__(self, max_extent=None, tile_size=None, flip_y=False):
