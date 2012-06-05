@@ -39,6 +39,13 @@ class TestBoundingPyramid(unittest.TestCase):
         self.assertEqual(bp.zget(1), (Bounds(0, 1), Bounds(1, 2)))
         self.assertEqual(bp.zget(0), (Bounds(0, 1), Bounds(0, 1)))
 
+    def test_fill_up2(self):
+        bp = BoundingPyramid({1: (Bounds(0, 2), Bounds(1, 2))})
+        bp.add(TileCoord(2, 1, 3))
+        bp.fill_up(0)
+        self.assertEqual(bp.zget(1), (Bounds(0, 2), Bounds(1, 2)))
+        self.assertEqual(bp.zget(0), (Bounds(0, 1), Bounds(0, 1)))
+
     def test_iterbottomup(self):
         bp = BoundingPyramid()
         bp.add(TileCoord(2, 1, 3))
