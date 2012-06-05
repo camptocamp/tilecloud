@@ -7,7 +7,7 @@ from cStringIO import StringIO
 import PIL.Image
 
 from tilecloud import Tile
-from tilecloud.lib.PIL import FORMAT_BY_CONTENT_TYPE
+from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class ImageFormatConverter(object):

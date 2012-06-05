@@ -3,7 +3,7 @@ from cStringIO import StringIO
 from PIL import Image
 
 from tilecloud import Tile, TileStore
-from tilecloud.lib.PIL import FORMAT_BY_CONTENT_TYPE
+from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class MetaTileSplitterTileStore(TileStore):

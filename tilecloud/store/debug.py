@@ -5,7 +5,7 @@ import PIL.ImageDraw
 import PIL.ImageFont
 
 from tilecloud import TileStore
-from tilecloud.lib.PIL import FORMAT_BY_CONTENT_TYPE
+from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class DebugTileStore(TileStore):
