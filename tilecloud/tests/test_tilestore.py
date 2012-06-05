@@ -94,6 +94,7 @@ class TestDictTileStore(unittest.TestCase):
         tilestore = DictTileStore()
         self.assertEqual(tilestore.get_one(Tile(TileCoord(0, 0, 0))), None)
 
+
 class TestMBTilesTileStore(unittest.TestCase):
 
     def test_one(self):
