@@ -235,6 +235,28 @@ class BoundingPyramid(object):
                         for z in zs))
 
 
+class Tile(object):
+    """An actual tile with optional metadata"""
+
+    def __init__(self, tilecoord, content_encoding=None, content_type=None,
+                 data=None, **kwargs):
+        self.tilecoord = tilecoord
+        self.content_encoding = content_encoding
+        self.content_type = content_type
+        self.data = data
+        self.error = None
+        for key, value in kwargs.iteritems():
+            setattr(self, key, value)
+
+    def __cmp__(self, other):
+        return cmp(self.tilecoord, other.tilecoord)
+
+    def __repr__(self):  # pragma: no cover
+        keys = sorted(self.__dict__.keys())
+        attrs = ''.join(' %s=%r' % (key, self.__dict__[key]) for key in keys)
+        return '<Tile%s>' % (attrs,)
+
+
 class TileCoord(object):
     """A tile coordinate"""
 
@@ -289,18 +311,6 @@ class TileCoord(object):
         return cls(*tpl)
 
 
-class TileLayout(object):
-    """Maps tile coordinates to filenames and vice versa"""
-
-    def filename(self, tilecoord):
-        """Return the filename for the given tile coordinate"""
-        raise NotImplementedError
-
-    def tilecoord(self, filename):
-        """Return the tile coordinate for the given filename"""
-        raise NotImplementedError
-
-
 class TileGrid(object):
     """Lays out tiles at multiple zoom levels"""
 
@@ -336,26 +346,16 @@ class TileGrid(object):
         raise NotImplementedError
 
 
-class Tile(object):
-    """An actual tile with optional metadata"""
+class TileLayout(object):
+    """Maps tile coordinates to filenames and vice versa"""
 
-    def __init__(self, tilecoord, content_encoding=None, content_type=None,
-                 data=None, **kwargs):
-        self.tilecoord = tilecoord
-        self.content_encoding = content_encoding
-        self.content_type = content_type
-        self.data = data
-        self.error = None
-        for key, value in kwargs.iteritems():
-            setattr(self, key, value)
+    def filename(self, tilecoord):
+        """Return the filename for the given tile coordinate"""
+        raise NotImplementedError
 
-    def __cmp__(self, other):
-        return cmp(self.tilecoord, other.tilecoord)
-
-    def __repr__(self):  # pragma: no cover
-        keys = sorted(self.__dict__.keys())
-        attrs = ''.join(' %s=%r' % (key, self.__dict__[key]) for key in keys)
-        return '<Tile%s>' % (attrs,)
+    def tilecoord(self, filename):
+        """Return the tile coordinate for the given filename"""
+        raise NotImplementedError
 
 
 class TileStore(object):
