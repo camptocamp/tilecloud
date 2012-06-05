@@ -110,3 +110,18 @@ class TestBoundingPyramid(unittest.TestCase):
         self.assertEqual(TileCoord(2, 2, 0, 2), next(metatilecoords))
         self.assertEqual(TileCoord(2, 2, 2, 2), next(metatilecoords))
         self.assertRaises(StopIteration, next, metatilecoords)
+
+
+class TestGoogleTileGrid(unittest.TestCase):
+
+    def test_fill(self):
+        bp = BoundingPyramid()
+        bp.fill(xrange(0, 8), (572215.4395248143, 5684416.95917649, 1277662.36597472, 6145307.39552287))
+        self.assertEqual(bp.zget(0), (Bounds(0, 1), Bounds(0, 1)))
+        self.assertEqual(bp.zget(1), (Bounds(1, 2), Bounds(0, 1)))
+        self.assertEqual(bp.zget(2), (Bounds(2, 3), Bounds(1, 2)))
+        self.assertEqual(bp.zget(3), (Bounds(4, 5), Bounds(2, 3)))
+        self.assertEqual(bp.zget(4), (Bounds(8, 9), Bounds(5, 6)))
+        self.assertEqual(bp.zget(5), (Bounds(16, 18), Bounds(11, 12)))
+        self.assertEqual(bp.zget(6), (Bounds(32, 35), Bounds(22, 23)))
+        self.assertEqual(bp.zget(7), (Bounds(65, 69), Bounds(44, 46)))
