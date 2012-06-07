@@ -12,8 +12,8 @@ class TestTileGrid(unittest.TestCase):
 
     def test_tilegrid(self):
         self.assertRaises(NotImplementedError, self.tg.extent, None)
-        self.assertRaises(NotImplementedError, self.tg.fill_down, None)
-        self.assertRaises(NotImplementedError, self.tg.fill_up, None)
+        self.assertRaises(NotImplementedError, self.tg.fill_down, None, None)
+        self.assertRaises(NotImplementedError, self.tg.fill_up, None, None)
         self.assertRaises(NotImplementedError, self.tg.children, None)
         self.assertRaises(NotImplementedError, self.tg.parent, None)
         self.assertRaises(NotImplementedError, self.tg.roots)

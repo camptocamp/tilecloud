@@ -327,10 +327,10 @@ class TileGrid(object):
         """Returns the extent of the tile at tilecoord"""
         raise NotImplementedError
 
-    def fill_down(self, bounds):
+    def fill_down(self, z, bounds):
         raise NotImplementedError
 
-    def fill_up(self, bounds):
+    def fill_up(self, z, bounds):
         raise NotImplementedError
 
     def parent(self, tilecoord):
