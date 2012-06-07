@@ -284,7 +284,7 @@ class TileCoord(object):
                                        self.z, self.x, self.y)
         else:
             return '%s(%r, %r, %r, %r)' % (self.__class__.__name__,
-                                           self.n, self.z, self.x, self.y)
+                                           self.z, self.x, self.y, self.n)
 
     def __str__(self):
         if self.n == 1:
