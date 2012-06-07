@@ -1,3 +1,4 @@
+from itertools import islice
 import unittest
 
 from tilecloud import TileCoord, TileGrid
@@ -18,6 +19,7 @@ class TestTileGrid(unittest.TestCase):
         self.assertRaises(NotImplementedError, self.tg.parent, None)
         self.assertRaises(NotImplementedError, self.tg.roots)
         self.assertRaises(NotImplementedError, self.tg.tilecoord, None, None, None)
+        self.assertRaises(NotImplementedError, self.tg.zs)
 
 
 class TestFreeTileGrid(unittest.TestCase):
@@ -37,6 +39,9 @@ class TestFreeTileGrid(unittest.TestCase):
 
     def test_root_zero(self):
         self.assertEquals(self.ftg.parent(TileCoord(0, 0, 0)), None)
+
+    def test_zs(self):
+        self.assertEquals(list(self.ftg.zs()), range(len(self.resolutions)))
 
 
 class TestFreeTileGrid2(unittest.TestCase):
@@ -62,6 +67,9 @@ class TestFreeTileGrid2(unittest.TestCase):
         self.assertEqual(self.ftg.tilecoord(1, 430000, 344000), TileCoord(1, 5, 7))
         self.assertEqual(self.ftg.tilecoord(1, 430000, 344000), TileCoord(1, 5, 7))
         self.assertEqual(self.ftg.tilecoord(1, 432000, 346000), TileCoord(1, 6, 8))
+
+    def test_zs(self):
+        self.assertEqual(list(self.ftg.zs()), [0, 1, 2, 3])
 
 
 class TestFreeTileGridWithScale(unittest.TestCase):
@@ -130,6 +138,9 @@ class TestFreeQuadTileGridEquivalence(unittest.TestCase):
     def test_roots(self):
         self.assertEqual(list(self.ftg.roots()), list(self.qtg.roots()))
 
+    def test_zs(self):
+        self.assertEqual(list(self.ftg.zs()), list(self.qtg.zs()))
+
 
 class TestQuadTileGrid(unittest.TestCase):
 
@@ -173,6 +184,9 @@ class TestQuadTileGrid(unittest.TestCase):
                     tilecoord = TileCoord(z, x, y)
                     minx, miny, maxx, maxy = self.qtg.extent(tilecoord)
                     self.assertEqual(self.qtg.tilecoord(z, minx, miny), tilecoord)
+
+    def test_zs(self):
+        self.assertEqual(list(islice(self.qtg.zs(), 50)), range(50))
 
 
 class TestQuadTileGridFlipY(unittest.TestCase):

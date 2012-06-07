@@ -67,3 +67,6 @@ class FreeTileGrid(TileGrid):
         return TileCoord(z,
                          int(self.scale * (x - self.max_extent[0]) / (self.resolutions[z] * self.tile_size)),
                          int(self.scale * (y - self.max_extent[1]) / (self.resolutions[z] * self.tile_size)))
+
+    def zs(self):
+        return xrange(0, len(self.resolutions))

@@ -345,6 +345,10 @@ class TileGrid(object):
         """Returns the TileCoord for location (x, y) at level z"""
         raise NotImplementedError
 
+    def zs(self):
+        """Generates all zs"""
+        raise NotImplementedError
+
 
 class TileLayout(object):
     """Maps tile coordinates to filenames and vice versa"""

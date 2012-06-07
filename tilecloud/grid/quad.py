@@ -1,3 +1,5 @@
+from itertools import count
+
 from tilecloud import Bounds, TileCoord, TileGrid
 
 
@@ -51,3 +53,9 @@ class QuadTileGrid(TileGrid):
         if not self.flip_y:
             tilecoord_y = (1 << z) - tilecoord_y - 1
         return TileCoord(z, tilecoord_x, tilecoord_y)
+
+    def zs(self):
+        if self.max_zoom:
+            return xrange(0, self.max_zoom + 1)
+        else:
+            return count(0)
