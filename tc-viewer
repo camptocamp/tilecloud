@@ -18,6 +18,8 @@ option_parser.add_option('--root', metavar='Z/X/Y')
 option_parser.add_option('--host', default='127.0.0.1', metavar='HOST')
 option_parser.add_option('--port', default=8080, metavar='PORT', type=int)
 option_parser.add_option('--quiet', action='store_true', default=False)
+option_parser.add_option('--max-extent', metavar='MAX-EXTENT', type=str)
+option_parser.add_option('--resolutions', metavar='RESOLUTIONS', type=str)
 option_parser.add_option('--server', metavar='SERVER')
 options, args = option_parser.parse_args(sys.argv[1:])
 
@@ -39,6 +41,14 @@ if options.server is None:
         options.server = 'wsgiref'
 
 cache = {} if options.cache else None
+if options.max_extent:
+    max_extent = map(int, re.split(r'\s*,\s*', options.max_extent))
+else:
+    max_extent = None
+if options.resolutions:
+    resolutions = map(int, re.split(r'\s*,\s*', options.resolutions))
+else:
+    resolutions = None
 tilestores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 content_type_adder = ContentTypeAdder()
 
@@ -100,7 +110,7 @@ def openwebglobe_layersettings(index):
 @bottle.route('/openlayers')
 @bottle.view('openlayers')
 def openlayers():
-    return dict(tilestores=tilestores)
+    return dict(max_extent=max_extent, resolutions=resolutions, tilestores=tilestores)
 
 
 @bottle.route('/googlemaps')

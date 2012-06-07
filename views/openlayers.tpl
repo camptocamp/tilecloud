@@ -19,6 +19,13 @@
 		<script type="text/javascript">
 			var map = new OpenLayers.Map({
 				div: "map",
+%if max_extent:
+				maxExtent: new OpenLayers.Bounds({{max_extent[0]}}, {{max_extent[1]}}, {{max_extent[2]}}, {{max_extent[3]}}),
+%end
+%if resolutions:
+				resolutions: {{resolutions}},
+				maxResolution: 'auto',
+%end
 				allOverlays: true
 			});
 %for index, (name, tilestore) in enumerate(tilestores):
@@ -27,8 +34,12 @@
 %if getattr(tilestore, 'attribution', None):
 				attribution: '{{!tilestore.attribution}}',
 %end
+%if max_extent or resolutions:
+%pass
+%else:
 				numZoomLevels: 32,
 				sphericalMercator: true
+%end
 			}));
 %end
 %end
