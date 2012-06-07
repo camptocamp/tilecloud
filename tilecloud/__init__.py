@@ -138,8 +138,8 @@ class BoundingPyramid(object):
         else:
             self.bounds[z] = bounds
 
-    def fill(self, zs, extent):
-        minx, miny, maxx, maxy = extent
+    def fill(self, zs, extent=None):
+        minx, miny, maxx, maxy = extent or self.tilegrid.max_extent
         for z in zs:
             self.add(self.tilegrid.tilecoord(z, minx, miny))
             self.add(self.tilegrid.tilecoord(z, maxx, maxy))
