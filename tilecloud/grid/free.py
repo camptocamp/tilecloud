@@ -69,4 +69,4 @@ class FreeTileGrid(TileGrid):
                          int(self.scale * (y - self.max_extent[1]) / (self.resolutions[z] * self.tile_size)))
 
     def zs(self):
-        return xrange(0, len(self.resolutions))
+        return xrange(len(self.resolutions))
