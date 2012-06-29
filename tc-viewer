@@ -80,7 +80,7 @@ def tile(index, z, x, y, ext):
     return tile.data
 
 
-@bottle.route('/data/image/<index:int>/layersettings.json')
+@bottle.route('/tiles/<index:int>/layersettings.json')
 def openwebglobe_layersettings(index):
     if len(tilestores) < index:
         bottle.abort(404)
