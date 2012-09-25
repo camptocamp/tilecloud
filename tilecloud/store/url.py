@@ -1,6 +1,6 @@
+# FIXME: error handling (tile.error)
 import logging
-from urllib2 import HTTPError, Request, urlopen
-
+import requests
 from tilecloud import TileStore
 
 
@@ -12,7 +12,7 @@ class URLTileStore(TileStore):
     def __init__(self, tilelayouts, headers=None, **kwargs):
         TileStore.__init__(self, **kwargs)
         self.tilelayouts = tuple(tilelayouts)
-        self.headers = headers or {}
+        self.session = requests.session(headers=headers)
 
     def get_one(self, tile):
         if self.bounding_pyramid is not None:
@@ -21,16 +21,11 @@ class URLTileStore(TileStore):
         tilelayout = self.tilelayouts[hash(tile.tilecoord) %
                                         len(self.tilelayouts)]
         url = tilelayout.filename(tile.tilecoord)
-        request = Request(url, headers=self.headers)
-        try:
-            logger.debug('GET %s' % (url,))
-            response = urlopen(request)
-            info = response.info()
-            if 'Content-Encoding' in info:
-                tile.content_encoding = info['Content-Encoding']
-            if 'Content-Type' in info:
-                tile.content_type = info['Content-Type']
-            tile.data = response.read()
-        except HTTPError as exc:
-            tile.error = exc
+
+        logger.debug('GET %s' % (url,))
+        response = self.session.get(url)
+
+        tile.content_encoding = response.headers.get('Content-Encoding')
+        tile.content_type = response.headers.get('Content-Type')
+        tile.data = response.content
         return tile
