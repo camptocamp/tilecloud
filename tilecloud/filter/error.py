@@ -57,7 +57,7 @@ class MaximumConsecutiveErrors(object):
         self.consecutive_errors = 0
 
     def __call__(self, tile):
-        if tile.error:
+        if tile and tile.error:
             self.consecutive_errors += 1
             if self.consecutive_errors > self.max_consecutive_errors:
                 raise TooManyErrors
