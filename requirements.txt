@@ -2,5 +2,6 @@ PIL
 bottle
 coverage
 gevent
+grequests
 requests
 pyproj

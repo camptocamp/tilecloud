@@ -10,50 +10,28 @@ from optparse import OptionParser
 import re
 import sys
 
-import gevent
-import gevent.event
+import grequests
 import image_merge
 import bottle
 
-from tilecloud import Tile
 from tilecloud.grid.free import FreeTileGrid
 from tilecloud.layout.template import TemplateTileLayout
-from tilecloud.store.url import URLTileStore
 
 
-option_parser = OptionParser()
-option_parser.add_option('--debug', action='store_true', default=True)
-option_parser.add_option('--host', default='127.0.0.1', metavar='HOST')
-option_parser.add_option('--port', default=8080, metavar='PORT', type=int)
-option_parser.add_option('--preserve-colors', action='store_true', default=False)
-option_parser.add_option('--quiet', action='store_true', default=False)
-option_parser.add_option('--log-filename', metavar='FILENAME')
-option_parser.add_option('--log-format', default='%(asctime)s %(module)s %(message)s', metavar='FORMAT')
-option_parser.add_option('--log-level', default=0, metavar='LEVEL', type=int)
-option_parser.add_option('--verbose', '-v', action='count', dest='log_level')
-options, args = option_parser.parse_args(sys.argv[1:])
-
-logging.basicConfig(filename=options.log_filename, format=options.log_format, level=logging.WARN - 10 * options.log_level)
-
-resolutions = [650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1]  # FIXME check 2.5
-max_extent = (420000, 30000, 900000, 350000)  # FIXME
+scale = 2
+resolutions = [int(scale * x) for x in [650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1]]
+max_extent = (420000, 30000, 900000, 350000)
 tile_size = 256
-tilegrid = FreeTileGrid(resolutions, max_extent, tile_size)
+tilegrid = FreeTileGrid(resolutions, max_extent, tile_size, scale)
 
-tilestores = {}
-template = 'http://{z}/{x}/{y}.png'
-tilestores['SkatinglandRoutenNational'] = URLTileStore((TemplateTileLayout(template),))
+tilelayouts = {}
+tilelayouts['SkatinglandRoutenNational'] = TemplateTileLayout('http://a.tile.openstreetmap.org/%(z)d/%(x)d/%(y)d.png')
+tilelayouts['SkatinglandRoutenRegional'] = TemplateTileLayout('http://b.tile.openstreetmap.org/%(z)d/%(x)d/%(y)d.png')
+tilelayouts['SkatinglandRoutenLokal'] = TemplateTileLayout('http://c.tile.openstreetmap.org/%(z)d/%(x)d/%(y)d.png')
 
-tilecache = defaultdict(dict)  # FIXME use memcache
+options = None
+urlcache = {}  # FIXME use memcache
 imagecache = defaultdict(dict)  # FIXME use memcache
-
-
-def async_get_one(layer, tilestore, tilecoord):
-    def f():
-        tile = tilestore.get_one(Tile(tilecoord))
-        tilecache[layer][tilecoord] = tile
-        return tile
-    return f
 
 
 @bottle.route('/tilecache')
@@ -76,20 +54,31 @@ def tilecache():
             bottle.abort(httplib.BAD_REQUEST)
 
     layers = bottle.request.GET.get('LAYERS')
+    if layers is None:
+        bottle.abort(httplib.BAD_REQUEST)
 
-    m = re.match(r'(\d+),(\d+),(\d+),(\d+)\Z', bottle.request.GET.get('bbox'))
+    bbox = bottle.request.GET.get('bbox')
+    if bbox is None:
+        bottle.abort(httplib.BAD_REQUEST)
+    m = re.match(r'(\d+),(\d+),(\d+),(\d+)\Z', bbox)
     if not m:
         bottle.abort(httplib.BAD_REQUEST)
     bbox = map(int, m.groups())
 
-    m = re.match(r'(\d+)\Z', bottle.request.GET.get('WIDTH'))
+    width = bottle.request.GET.get('WIDTH')
+    if width is None:
+        bottle.abort(httplib.BAD_REQUEST)
+    m = re.match(r'(\d+)\Z', width)
     if not m:
         bottle.abort(httplib.BAD_REQUEST)
     width = int(m.group(1))
     if width != tile_size:
         bottle.abort(httplib.BAD_REQUEST)
 
-    m = re.match(r'(\d+)\Z', bottle.request.GET.get('HEIGHT'))
+    height = bottle.request.GET.get('HEIGHT')
+    if height is None:
+        bottle.abort(httplib.BAD_REQUEST)
+    m = re.match(r'(\d+)\Z', height)
     if not m:
         bottle.abort(httplib.BAD_REQUEST)
     height = int(m.group(1))
@@ -110,17 +99,17 @@ def tilecache():
     if tilecoord in imagecache[layers]:
         image = imagecache[layers][tilecoord]
     else:
-        results = []
+        urls = []
         for layer in layers.split(','):
-            if layer not in tilestores:
-                bottle.about(httplib.BAD_REQUEST)
-            result = gevent.event.AsyncResult()
-            tilestore = tilestores[layer]
-            if tilecoord in tilecache[layer]:
-                result.set(tilecache[layer][tilecoord].data)
-            else:
-                gevent.spawn(async_get_one(layer, tilestore, tilecoord)).link(result)
-        images = [result.get().data for result in results]
+            if layer not in tilelayouts:
+                bottle.abort(httplib.BAD_REQUEST)
+            tilelayout = tilelayouts[layer]
+            urls.append(tilelayout.filename(tilecoord))
+        requests = [grequests.get(url) for url in urls if url not in urlcache]
+        if requests:
+            for response in grequests.imap(requests):
+                urlcache[response.url] = response.content
+        images = [urlcache[url] for url in urls]
         image = image_merge.merge(images, preserve_colors=options.preserve_colors)
         imagecache[layers][tilecoord] = image
 
@@ -130,4 +119,25 @@ def tilecache():
     return image
 
 
-bottle.run(host=options.host, port=options.port, reloader=options.debug, quiet=options.quiet, server='gevent')
+def main(argv):
+
+    global options
+
+    option_parser = OptionParser()
+    option_parser.add_option('--host', default='127.0.0.1', metavar='HOST')
+    option_parser.add_option('--port', default=8080, metavar='PORT', type=int)
+    option_parser.add_option('--preserve-colors', action='store_true', default=False)
+    option_parser.add_option('--quiet', action='store_true', default=False)
+    option_parser.add_option('--log-filename', metavar='FILENAME')
+    option_parser.add_option('--log-format', default='%(asctime)s %(module)s %(message)s', metavar='FORMAT')
+    option_parser.add_option('--log-level', default=0, metavar='LEVEL', type=int)
+    option_parser.add_option('--verbose', '-v', action='count', dest='log_level')
+    options, args = option_parser.parse_args(argv[1:])
+
+    logging.basicConfig(filename=options.log_filename, format=options.log_format, level=logging.WARN - 10 * options.log_level)
+
+    bottle.run(host=options.host, port=options.port, quiet=options.quiet, server='gevent')
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
