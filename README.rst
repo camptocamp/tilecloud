@@ -85,7 +85,7 @@ install them with ``pip`` in a ``virtualenv``:
 
     $ virtualenv .
     $ . bin/activate
-    $ pip install bottle pyproj
+    $ pip install requests bottle pyproj
 
 For a quick demo, run
 
