@@ -1,3 +1,5 @@
+# FIXME port to requests
+
 import UserDict
 from base64 import b64encode
 from datetime import datetime
