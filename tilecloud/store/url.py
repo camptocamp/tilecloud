@@ -23,9 +23,11 @@ class URLTileStore(TileStore):
         url = tilelayout.filename(tile.tilecoord)
 
         logger.debug('GET %s' % (url,))
-        response = self.session.get(url)
-
-        tile.content_encoding = response.headers.get('Content-Encoding')
-        tile.content_type = response.headers.get('Content-Type')
-        tile.data = response.content
+        try:
+            response = self.session.get(url)
+            tile.content_encoding = response.headers.get('Content-Encoding')
+            tile.content_type = response.headers.get('Content-Type')
+            tile.data = response.content
+        except requests.exceptions.RequestException as e:
+            tile.error = e
         return tile
