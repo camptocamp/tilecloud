@@ -77,15 +77,14 @@ Example tasks that TileCloud makes easy include:
 Getting started
 ===============
 
-TileCloud depends on `Bottle <http://bottlepy.org/>`_,
-`pyproj <http://code.google.com/p/pyproj/>`_. It's easiest to
-install them with ``pip`` in a ``virtualenv``:
+TileCloud depends on some Python modules. It's easiest to install them with
+``pip`` in a ``virtualenv``:
 
 ::
 
     $ virtualenv .
     $ . bin/activate
-    $ pip install requests bottle pyproj
+    $ pip install -r requirements.txt
 
 For a quick demo, run
 
