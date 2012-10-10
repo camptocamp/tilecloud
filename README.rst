@@ -24,6 +24,11 @@ TileStores. Existing TileStores include:
 
 -  `TileJSON <https://github.com/mapbox/TileJSON>`_
 
+-  `Mapnik <http://mapnik.org/>`_ (via
+   `mapnik2 <http://pypi.python.org/pypi/mapnik2>`_)
+
+-  `Memcached <http://memcached.org/>`_
+
 -  Local file system
 
 -  Log files in any format
