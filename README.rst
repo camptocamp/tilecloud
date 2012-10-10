@@ -4,6 +4,10 @@ TileCloud
 A powerful utility for generating, managing, transforming, and
 visualizing map tiles in multiple formats.
 
+.. image:: https://secure.travis-ci.org/twpayne/tilecloud.png
+   :alt: Travis CI Status
+   :target: http://travis-ci.org/#!/twpayne/tilecloud
+
 Introduction
 ============
 
