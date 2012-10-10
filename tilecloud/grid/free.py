@@ -1,3 +1,5 @@
+from math import floor
+
 from tilecloud import TileCoord, TileGrid
 
 
@@ -34,7 +36,8 @@ class FreeTileGrid(TileGrid):
     def extent(self, tilecoord, border=0):
         y = tilecoord.y
         if not self.flip_y:
-            n = self.scale * (self.max_extent[3] - self.max_extent[1]) / (self.tile_size * self.resolutions[tilecoord.z])
+            n = self.scale * (self.max_extent[3] - self.max_extent[1]) / \
+                float(self.tile_size * self.resolutions[tilecoord.z])
             y = n - y - tilecoord.n
         minx = self.max_extent[0] + (self.tile_size * tilecoord.x - border) * self.resolutions[tilecoord.z] / self.scale
         miny = self.max_extent[1] + (self.tile_size * y - border) * self.resolutions[tilecoord.z] / self.scale
@@ -64,9 +67,15 @@ class FreeTileGrid(TileGrid):
                     s += self.resolutions[z]
 
     def tilecoord(self, z, x, y):
-        return TileCoord(z,
-                         int(self.scale * (x - self.max_extent[0]) / (self.resolutions[z] * self.tile_size)),
-                         int(self.scale * (y - self.max_extent[1]) / (self.resolutions[z] * self.tile_size)))
+        tx = self.scale * (x - self.max_extent[0]) / (self.resolutions[z] * self.tile_size)
+        ty = self.scale * (y - self.max_extent[1]) / float(self.resolutions[z] * self.tile_size)
+
+        if not self.flip_y:
+            n = self.scale * (self.max_extent[3] - self.max_extent[1]) / \
+                float(self.tile_size * self.resolutions[z])
+            ty = n - ty
+
+        return TileCoord(z, int(floor(tx)), int(floor(ty)))
 
     def zs(self):
         return xrange(len(self.resolutions))
