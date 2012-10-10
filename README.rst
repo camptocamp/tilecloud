@@ -192,6 +192,41 @@ Point your browser at http://localhost:8080 as usual. The
 a defined tile, rather than at 0/0/0, so you don't have to zoom in
 to find the tiles that you downloaded.
 
+Tile coordinates, tile layouts, tile grids and bounding pyramids
+================================================================
+
+TileCloud always represents tile coordinates as strings like ``z/x/y``.
+TileCloud primarily works in tile coordinates, although geographic coordinates
+can be used in some places.
+
+Tile layouts convert tile coordinates to and from strings for use in paths,
+URLs, keys, etc.
+
+Tile grids are used to convert tile coordinates to and from geographic
+coordinates, and to relate tiles with different z values.
+
+Bounding pyramids represent a range of tiles in the x, y and z directions.  The
+format is basically ``minz/minx/miny:maxz/maxx/maxy`` but ``maxz`` is optional
+and ``maxz``, ``maxx`` and ``maxy`` can be prefixed with an ``+`` sign to
+indicate that they are relative to the corresponding ``min`` value.  This is
+probably best demonstrated by a few examples:
+
+``4/10/20:15/25``
+  This corresponds to a range of tiles with z=4, x=10..15 and y=20..25
+
+``4/10/20:+5/+5``
+  This is the same range (z=4, x=10..15, y=20..25) but expressed using relative
+  sizes.
+
+``4/10/20:5/15/20``
+  This is the same range of tiles above, but also includes all the tiles at
+  level z=5 which overlap the above range.  TileCloud uses the tile grid to
+  calculate which tiles from level z=5 to include.
+
+``4/10/20:+1/+5/+5``
+  This represents the range same as the previous example using a relative
+  ``maxz``.
+
 Quick tile generation
 =====================
 
