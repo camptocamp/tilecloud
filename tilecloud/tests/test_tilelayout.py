@@ -4,9 +4,9 @@ from cgi import parse_qs
 
 from tilecloud import TileCoord, TileLayout
 from tilecloud.layout.osm import OSMTileLayout
-from tilecloud.layout.wmts import WMTSTileLayout
-from tilecloud.layout.wms import WMSTileLayout
 from tilecloud.layout.template import TemplateTileLayout
+from tilecloud.layout.wms import WMSTileLayout
+from tilecloud.layout.wmts import WMTSTileLayout
 from tilecloud.layout.wrapped import WrappedTileLayout
 from tilecloud.grid.free import FreeTileGrid
 
