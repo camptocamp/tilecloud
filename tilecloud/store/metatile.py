@@ -1,6 +1,9 @@
 from cStringIO import StringIO
 
-from PIL import Image
+try:
+    from PIL import Image
+except:
+    import Image
 
 from tilecloud import Tile, TileStore
 from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
