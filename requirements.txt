@@ -1,4 +1,6 @@
+PIL
 bottle
+coverage
 requests
 pyproj
 python-memcached
