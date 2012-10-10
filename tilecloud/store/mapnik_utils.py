@@ -10,14 +10,14 @@ except:
 
 class MapnikTileStore(TileStore):
     """
-    Tiles stored to render with Mapnik
+    Tile store that renders tiles with Mapnik
 
     requires mapnik2: http://pypi.python.org/pypi/mapnik2
     """
 
     def __init__(self, tilegrid, mapfile, data_buffer=128, image_buffer=0, output_format='png256', resolution=2, layers_fields={}, **kwargs):
         """
-        Conastructs a MapnikTileStore
+        Constructs a MapnikTileStore
 
         :param tilegrid: the tilegrid.
         :param mapfile: the file used to render the tiles.
