@@ -5,6 +5,7 @@ from cgi import parse_qs
 from tilecloud import TileCoord, TileLayout
 from tilecloud.layout.osm import OSMTileLayout
 from tilecloud.layout.template import TemplateTileLayout
+from tilecloud.layout.tilecache import TileCacheDiskLayout
 from tilecloud.layout.wms import WMSTileLayout
 from tilecloud.layout.wmts import WMTSTileLayout
 from tilecloud.layout.wrapped import WrappedTileLayout
@@ -232,3 +233,15 @@ class TestWrappedTileLayout(unittest.TestCase):
     def test_tilecoord(self):
         self.assertEqual(self.tilelayout.tilecoord('prefix/1/2/3.suffix'), TileCoord(1, 2, 3))
         self.assertRaises(ValueError, self.tilelayout.tilecoord, 'prefix//1/2/3.suffix')
+
+
+class TestTileCacheDiskLayout(unittest.TestCase):
+
+    def setUp(self):
+        self.tilelayout = TileCacheDiskLayout()
+
+    def test_filename(self):
+        self.assertEqual('01/123/456/789/987/654/321', self.tilelayout.filename(TileCoord(1, 123456789, 987654321)))
+
+    def test_tilecoord(self):
+        self.assertEqual(TileCoord(1, 123456789, 987654321), self.tilelayout.tilecoord('01/123/456/789/987/654/321'))
