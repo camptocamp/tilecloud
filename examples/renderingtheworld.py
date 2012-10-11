@@ -35,12 +35,12 @@ def main(argv):
     # Create the tile store that will generate our tiles, in this case it's a demo WMTS server at OpenGeo.
     # Getting tiles from this store will either return the tile as a PNG file, or set an error on the tile if there are no features in this tile.
     generate_tilestore = WMTSTileStore(
-            url='http://v2.suite.opengeo.org/geoserver/gwc/service/wmts/',
-            layer='medford:buildings',
-            style='_null',
-            format='image/png',
-            tile_matrix_set='EPSG:900913',
-            tile_matrix=lambda z: 'EPSG:900913:%d' % (z,))
+        url='http://v2.suite.opengeo.org/geoserver/gwc/service/wmts/',
+        layer='medford:buildings',
+        style='_null',
+        format='image/png',
+        tile_matrix_set='EPSG:900913',
+        tile_matrix=lambda z: 'EPSG:900913:%d' % (z,))
     tilestream = generate_tilestore.get(tilestream)
     tilestream = imap(Logger(logger, logging.INFO, 'got %(tilecoord)s, error=%(error)s'), tilestream)
     # Put the tile back into the RenderingTheWorld tile store.  This check whether the tile should be subdivided, and, if so, adds the tile's children to the list of tiles to be generated.
