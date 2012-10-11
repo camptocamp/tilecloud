@@ -8,7 +8,7 @@ class MemcachedError(RuntimeError):
 
 class MemcachedClient(object):
 
-    VALUE_RE = re.compile(r'VALUE\s+(?P<key>\S+)\s+(?P<flags>\d+)\s+(?P<bytes>\d+)(?:\s+(?P<cas>\d+))?\r\n\Z')
+    VALUE_RE = re.compile(r'VALUE\s+(?P<key>\S+)\s+(?P<flags>\d+)\s+(?P<bytes>\d+)(?:\s+(?P<cas>\d+))?\Z')
 
     def __init__(self, host='localhost', port=11211):
         self.socket = socket.create_connection((host, port))
@@ -17,9 +17,9 @@ class MemcachedClient(object):
     def delete(self, key):
         self.writeline('delete %s' % (key,))
         line = self.readline()
-        if line == 'DELETED\r\n':
+        if line == 'DELETED':
             return True
-        elif line == 'NOT_FOUND\r\n':
+        elif line == 'NOT_FOUND':
             return False
         else:
             raise MemcachedError(line)
@@ -27,7 +27,7 @@ class MemcachedClient(object):
     def get(self, key):
         self.writeline('get %s' % (key,))
         line = self.readline()
-        if line == 'END\r\n':
+        if line == 'END':
             return None, None, None
         m = self.VALUE_RE.match(line)
         if not m:
@@ -37,7 +37,7 @@ class MemcachedClient(object):
         value = self.readvalue(int(m.group('bytes')))
         cas = None if m.group('cas') is None else int(m.group('cas'))
         line = self.readline()
-        if line != 'END\r\n':
+        if line != 'END':
             raise MemcachedError(line)
         return flags, value, cas
 
@@ -45,7 +45,7 @@ class MemcachedClient(object):
         self.writeline('set %s %d %d %d' % (key, flags, exptime, len(value)))
         self.writeline(value)
         line = self.readline()
-        if line != 'STORED\r\n':
+        if line != 'STORED':
             raise MemcachedError(line)
 
     def readvalue(self, n):
@@ -63,7 +63,7 @@ class MemcachedClient(object):
             if index == -1:
                 self.buffer += self.socket.recv(1024)
             else:
-                line = self.buffer[:index + 2]
+                line = self.buffer[:index]
                 self.buffer = self.buffer[index + 2:]
                 return line
 
