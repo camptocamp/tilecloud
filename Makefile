@@ -23,3 +23,7 @@ pyflakes:
 .PHONY: test
 test:
 	python setup.py nosetests
+
+.PHONY: pypi-upload
+pypi-upload: test pep8
+	python setup.py sdist upload
