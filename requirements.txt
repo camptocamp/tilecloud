@@ -3,4 +3,3 @@ bottle
 coverage
 requests
 pyproj
-python-memcached
