@@ -41,14 +41,8 @@ if options.server is None:
         options.server = 'wsgiref'
 
 cache = {} if options.cache else None
-if options.max_extent:
-    max_extent = map(int, re.split(r'\s*,\s*', options.max_extent))
-else:
-    max_extent = None
-if options.resolutions:
-    resolutions = map(int, re.split(r'\s*,\s*', options.resolutions))
-else:
-    resolutions = None
+max_extent = options.max_extent
+resolutions = options.resolutions
 tilestores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
 content_type_adder = ContentTypeAdder()
 

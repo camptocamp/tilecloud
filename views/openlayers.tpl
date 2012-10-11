@@ -20,10 +20,10 @@
 			var map = new OpenLayers.Map({
 				div: "map",
 %if max_extent:
-				maxExtent: new OpenLayers.Bounds({{max_extent[0]}}, {{max_extent[1]}}, {{max_extent[2]}}, {{max_extent[3]}}),
+				maxExtent: new OpenLayers.Bounds({{max_extent}}),
 %end
 %if resolutions:
-				resolutions: {{resolutions}},
+				resolutions: [{{resolutions}}],
 				maxResolution: 'auto',
 %end
 				allOverlays: true
