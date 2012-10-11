@@ -10,24 +10,28 @@ from optparse import OptionParser
 import re
 import sys
 
+import bottle
 import grequests
 import image_merge
-import bottle
+import requests
 
+from tilecloud import Tile
 from tilecloud.grid.free import FreeTileGrid
 from tilecloud.layout.template import TemplateTileLayout
 
 
 scale = 2
-resolutions = [int(scale * x) for x in [650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1]]
+resolutions = [int(scale * x) for x in [4000,3750,3500,3250,3000,2750,2500,2250,2000,1750,1500,1250,1000,750,650,500,250,100,50,20,10,5,2.5,2,1.5,1]]
 max_extent = (420000, 30000, 900000, 350000)
 tile_size = 256
 tilegrid = FreeTileGrid(resolutions, max_extent, tile_size, scale)
 
+session = requests.session()
+
 tilelayouts = {}
-tilelayouts['SkatinglandRoutenNational'] = TemplateTileLayout('http://a.tile.openstreetmap.org/%(z)d/%(x)d/%(y)d.png')
-tilelayouts['SkatinglandRoutenRegional'] = TemplateTileLayout('http://b.tile.openstreetmap.org/%(z)d/%(x)d/%(y)d.png')
-tilelayouts['SkatinglandRoutenLokal'] = TemplateTileLayout('http://c.tile.openstreetmap.org/%(z)d/%(x)d/%(y)d.png')
+tilelayouts['VelolandRoutenNational'] = TemplateTileLayout('http://schweizmobil-test.s3.amazonaws.com/tpayne/VelolandRoutenNational/%(z)d/%(x)d/%(y)d.png')
+tilelayouts['VelolandRoutenRegional'] = TemplateTileLayout('http://schweizmobil-test.s3.amazonaws.com/tpayne/VelolandRoutenRegional/%(z)d/%(x)d/%(y)d.png')
+tilelayouts['VelolandRoutenLokal'] = TemplateTileLayout('http://schweizmobil-test.s3.amazonaws.com/tpayne/VelolandRoutenLokal/%(z)d/%(x)d/%(y)d.png')
 
 options = None
 urlcache = {}  # FIXME use memcache
@@ -88,10 +92,10 @@ def tilecache():
     resolution = (bbox[2] - bbox[0]) / width
     if resolution != (bbox[3] - bbox[1]) / height:
         bottle.abort(httplib.BAD_REQUEST)
-    if resolution not in resolutions:
+    if scale * resolution not in resolutions:
         bottle.abort(httplib.BAD_REQUEST)
 
-    z = resolutions.index(resolution)
+    z = resolutions.index(scale * resolution)
     x = bbox[0]
     y = bbox[1]
     tilecoord = tilegrid.tilecoord(z, x, y)
@@ -105,11 +109,18 @@ def tilecache():
                 bottle.abort(httplib.BAD_REQUEST)
             tilelayout = tilelayouts[layer]
             urls.append(tilelayout.filename(tilecoord))
-        requests = [grequests.get(url) for url in urls if url not in urlcache]
+        requests = [grequests.get(url, session=session) for url in urls if url not in urlcache]
         if requests:
-            for response in grequests.imap(requests):
-                urlcache[response.url] = response.content
-        images = [urlcache[url] for url in urls]
+            for response in grequests.map(requests, size=len(requests)):
+                if response.status_code == 200:
+                    tile = Tile(tilecoord, data=response.content)
+                elif response.status_code == 403:
+                    tile = Tile(tilecoord, error=response.status_code)
+                urlcache[response.url] = tile
+        tiles = [urlcache[url] for url in urls]
+        images = [tile.data for tile in tiles if tile.error is None]
+        if not images:
+            bottle.abort(httplib.NO_CONTENT)
         image = image_merge.merge(images, preserve_colors=options.preserve_colors)
         imagecache[layers][tilecoord] = image
 
