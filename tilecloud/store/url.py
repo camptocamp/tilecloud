@@ -19,7 +19,7 @@ class URLTileStore(TileStore):
             if tile.tilecoord not in self.bounding_pyramid:
                 return None
         tilelayout = self.tilelayouts[hash(tile.tilecoord) %
-                                        len(self.tilelayouts)]
+                                      len(self.tilelayouts)]
         url = tilelayout.filename(tile.tilecoord)
 
         logger.debug('GET %s' % (url,))

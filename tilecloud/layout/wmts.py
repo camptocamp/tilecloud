@@ -20,24 +20,24 @@ class WMTSTileLayout(TileLayout):
         query = []
         if self.request_encoding == 'KVP':
             query.extend([
-                    ('Service', 'WMTS'),
-                    ('Request', 'GetTile'),
-                    ('Format', self.format),
+                ('Service', 'WMTS'),
+                ('Request', 'GetTile'),
+                ('Format', self.format),
             ])
 
         query.extend([
-                ('Version', '1.0.0'),
-                ('Layer', self.layer),
-                ('Style', self.style),
+            ('Version', '1.0.0'),
+            ('Layer', self.layer),
+            ('Style', self.style),
         ])
 
         query.extend(self.dimensions)
 
         query.extend([
-                ('TileMatrixSet', self.tile_matrix_set),
-                ('TileMatrix', str(self.tile_matrix(tilecoord.z))),
-                ('TileRow', str(tilecoord.y)),
-                ('TileCol', str(tilecoord.x)),
+            ('TileMatrixSet', self.tile_matrix_set),
+            ('TileMatrix', str(self.tile_matrix(tilecoord.z))),
+            ('TileRow', str(tilecoord.y)),
+            ('TileCol', str(tilecoord.x)),
         ])
         if self.request_encoding == 'KVP':
             return self.url + '?' + '&'.join('='.join(p) for p in query)

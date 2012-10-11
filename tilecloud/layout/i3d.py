@@ -19,7 +19,7 @@ class I3DTileLayout(RETileLayout):
 
     def _tilecoord(self, match):
         return I3DTileLayout.tilecoord_from_quadcode(
-                re.sub(r'/', '', match.group()))
+            re.sub(r'/', '', match.group()))
 
     @staticmethod
     def quadcode_from_tilecoord(tilecoord):

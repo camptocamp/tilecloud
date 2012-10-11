@@ -32,7 +32,7 @@ class ImageFormatConverter(object):
             assert tile.data is not None
             string_io = StringIO()
             PIL.Image.open(StringIO(tile.data)).save(string_io, self.format,
-                           **self.kwargs)
+                                                     **self.kwargs)
             tile.content_type = self.content_type
             tile.data = string_io.getvalue()
         return tile

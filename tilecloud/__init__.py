@@ -198,10 +198,10 @@ class BoundingPyramid(object):
     @classmethod
     def from_string(cls, s):
         match = re.match(
-                r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):' +
-                r'(?:(?P<plusz>\+)?(?P<z2>\d+)/)?' +
-                r'(?:(?P<plusx>\+)?(?P<x2>\d+)|(?P<starx>\*))/' +
-                r'(?:(?P<plusy>\+)?(?P<y2>\d+)|(?P<stary>\*))\Z', s)
+            r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):' +
+            r'(?:(?P<plusz>\+)?(?P<z2>\d+)/)?' +
+            r'(?:(?P<plusx>\+)?(?P<x2>\d+)|(?P<starx>\*))/' +
+            r'(?:(?P<plusy>\+)?(?P<y2>\d+)|(?P<stary>\*))\Z', s)
         if not match:
             raise ValueError('invalid literal for %s.from_string(): %r' %
                              (cls.__name__, s))

@@ -64,6 +64,9 @@ def get_capabilities(layers, tile_matrix_set, wmts_gettile):
         tiles_size: the sise of the tiles (int)
         yorigin: 'top' if the tiles origin is at top
     """
-    return jinja2_template(wmts_get_capabilities_template,
-            layers=layers, matrix_sets=matrix_sets(tile_matrix_set),
-            wmts_gettile=wmts_gettile, tile_matrix_set=tile_matrix_set['name'])
+    return jinja2_template(
+        wmts_get_capabilities_template,
+        layers=layers,
+        matrix_sets=matrix_sets(tile_matrix_set),
+        wmts_gettile=wmts_gettile,
+        tile_matrix_set=tile_matrix_set['name'])

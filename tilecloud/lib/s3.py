@@ -209,8 +209,8 @@ class S3Connection(object):
 
     def bucket(self, bucket_name, **kwargs):
         connection = S3Connection('.'.join((bucket_name, self.host)),
-                                           self.access_key,
-                                           self.secret_access_key)
+                                  self.access_key,
+                                  self.secret_access_key)
         return S3Bucket(bucket_name, connection, **kwargs)
 
     def buckets(self):
@@ -220,8 +220,8 @@ class S3Connection(object):
             bucket_name = bucket_element.find(self.NAME_PATH).text
             kwargs = {}
             kwargs['creation_date'] = \
-                    parse_timestamp(bucket_element.find(
-                        self.CREATION_DATE_PATH).text)
+                parse_timestamp(bucket_element.find(
+                    self.CREATION_DATE_PATH).text)
             yield self.bucket(bucket_name, **kwargs)
 
     def delete(self, bucket_name=None, url=None, headers=None):
@@ -244,7 +244,7 @@ class S3Connection(object):
         headers = HeaderDict() if headers is None else headers.copy()
         if 'x-amz-date' not in headers:
             headers['x-amz-date'] = \
-                    datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S +0000')
+                datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S +0000')
         headers['Authorization'] = self.sign(method, bucket_name, url, headers,
                                              sub_resources)
         while True:
