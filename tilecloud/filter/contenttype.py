@@ -11,8 +11,7 @@ class ContentTypeAdder(object):
         self.content_type = content_type
 
     def __call__(self, tile):
-        if self.content_type is None and tile.content_encoding is None:
-            assert tile.data is not None
+        if self.content_type is None and tile.content_encoding is None and tile.data is not None:
             data = str(tile.data)
             if data.startswith('{'):
                 tile.content_type = 'application/json'
