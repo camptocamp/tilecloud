@@ -1,4 +1,3 @@
-# FIXME: error handling (tile.error)
 import logging
 import requests
 from tilecloud import TileStore
