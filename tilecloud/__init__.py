@@ -453,6 +453,14 @@ class TileStore(object):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.url import URLTileStore
             return URLTileStore((TemplateTileLayout(name),))
+        if name.startswith('memcached://'):
+            from tilecloud.layout.template import TemplateTileLayout
+            from tilecloud.store.memcached import MemcachedTileStore
+            from tilecloud.lib.memcached import MemcachedClient
+            server, template = name[12:].split('/', 1)
+            host, port = server.split(':', 1)
+            client = MemcachedClient(host, int(port))
+            return MemcachedTileStore(client, TemplateTileLayout(template))
         if name.startswith('s3://'):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.s3 import S3TileStore
