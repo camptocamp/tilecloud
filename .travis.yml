@@ -1,7 +1,7 @@
 before_install:
   - "sudo ln -s /usr/lib/i386-linux-gnu/libz.so /usr/lib/"
 
-install: pip install PIL coverage requests
+install: pip install PIL coverage pep8 requests
 
 language: python
 
@@ -9,4 +9,4 @@ python:
   - "2.7"
   - "2.6"
 
-script: nosetests
+script: make pep8 test
