@@ -51,7 +51,7 @@ class MemcachedClient(object):
     def readvalue(self, n):
         while len(self.buffer) < n + 2:
             self.buffer += self.socket.recv(n + 2 - len(self.buffer))
-        if self.buffer[n:n+2] != '\r\n':
+        if self.buffer[n:n + 2] != '\r\n':
             raise MemcachedError
         result = self.buffer[:n]
         self.buffer = self.buffer[n + 2:]
