@@ -2,6 +2,7 @@ from cStringIO import StringIO
 
 try:
     from PIL import Image
+    Image  # suppress pyflakes warning
 except:
     import Image
 
