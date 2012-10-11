@@ -90,7 +90,7 @@ def openwebglobe_layersettings(index):
         bounding_pyramid = tilestore.get_cheap_bounding_pyramid()
     if bounding_pyramid is None:
         bounding_pyramid = \
-                BoundingPyramid({20: (Bounds(0, 1 << 20), Bounds(0, 1 << 20))})
+            BoundingPyramid({20: (Bounds(0, 1 << 20), Bounds(0, 1 << 20))})
     maxlod = max(bounding_pyramid.zs())
     xbounds, ybounds = bounding_pyramid.zget(maxlod)
     extent = [xbounds.start, ybounds.start, xbounds.stop, ybounds.stop]

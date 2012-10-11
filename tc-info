@@ -38,7 +38,7 @@ def main(argv):
                                               xbounds.stop, ybounds.stop)
         elif options.tiles == 'completion':
             bounding_pyramid = \
-                    BoundingPyramid.from_string(options.bounding_pyramid)
+                BoundingPyramid.from_string(options.bounding_pyramid)
             completed = defaultdict(set)
             for tilecoord in imap(attrgetter('tilecoord'), tilestore.list()):
                 completed[tilecoord.z].add((tilecoord.x, tilecoord.y))
@@ -52,9 +52,9 @@ def main(argv):
             print len(tilestore)
         elif options.tiles == 'estimate-completion':
             bounding_pyramid = \
-                    BoundingPyramid.from_string(options.bounding_pyramid)
+                BoundingPyramid.from_string(options.bounding_pyramid)
             tilestore_bounding_pyramid = \
-                    tilestore.get_cheap_bounding_pyramid()
+                tilestore.get_cheap_bounding_pyramid()
             for z in bounding_pyramid.zs():
                 try:
                     nxbounds, nybounds = tilestore_bounding_pyramid.zget(z)

@@ -22,7 +22,7 @@ def main(argv):
         logging.basicConfig(level=logging.INFO)
     if options.bounding_pyramid:
         bounding_pyramid = \
-                BoundingPyramid.from_string(options.bounding_pyramid)
+            BoundingPyramid.from_string(options.bounding_pyramid)
     else:
         bounding_pyramid = None
     for arg in args:

@@ -41,7 +41,7 @@ def main(argv):
     tilelayout = tilelayouts[options.tilelayout]()
     if options.prefix or options.suffix:
         tilelayout = WrappedTileLayout(tilelayout, options.prefix,
-                                        options.suffix)
+                                       options.suffix)
     if options.store == 'filesystem':
         store = FilesystemTileStore(tilelayout)
     elif options.store == 'log':
