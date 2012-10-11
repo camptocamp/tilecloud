@@ -64,6 +64,8 @@ def tile(index, z, x, y, ext):
             cache[(index, z, x, y)] = tile
     if tile is None:
         bottle.abort(404)
+    if tile.data is None:
+        bottle.abort(204)
     tile = content_type_adder(tile)
     if tile.content_type is not None:
         bottle.response.content_type = tile.content_type
