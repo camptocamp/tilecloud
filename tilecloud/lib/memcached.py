@@ -31,7 +31,7 @@ class MemcachedClient(object):
             return None, None, None
         m = self.VALUE_RE.match(line)
         if not m:
-            raise MemcachedError(repr(line))
+            raise MemcachedError(line)
         assert m.group('key') == key
         flags = int(m.group('flags'))
         value = self.readvalue(int(m.group('bytes')))
