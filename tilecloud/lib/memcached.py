@@ -68,5 +68,4 @@ class MemcachedClient(object):
                 return line
 
     def writeline(self, line):
-        self.socket.send(line)
-        self.socket.send('\r\n')
+        self.socket.send(line + '\r\n')
