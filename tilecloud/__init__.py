@@ -23,8 +23,19 @@ def consume(iterator, n):  # pragma: no cover
 
 
 class Bounds(object):
+    """Uni-dimensional integer bounds"""
 
     def __init__(self, start=None, stop=None):
+        """
+        Construct a :class:`Bounds` object.
+
+        :param start: Start
+        :type start: int or ``None``
+
+        :param stop: Stop
+        :type stop: int or ``None``
+
+        """
         self.start = start
         if stop is None:
             self.stop = self.start + 1 if start is not None else None
@@ -36,12 +47,27 @@ class Bounds(object):
         return cmp(self.start, other.start) or cmp(self.stop, other.stop)
 
     def __contains__(self, key):
+        """
+        Return ``True`` if ``self`` contains ``key``.
+
+        :param key: Key
+        :type key: int
+
+        :rtype: bool
+
+        """
         if self.start is None:
             return False
         else:
             return self.start <= key < self.stop
 
     def __len__(self):
+        """
+        Return the number of unique elements.
+
+        :rtype: int
+
+        """
         if self.start is None:
             return 0
         else:
@@ -244,6 +270,24 @@ class Tile(object):
 
     def __init__(self, tilecoord, content_encoding=None, content_type=None,
                  data=None, **kwargs):
+        """
+        Construct a :class:`Tile`.
+
+        :param tilecoord: Tile coordinate
+        :type tilecoord: :class:`TileCoord`
+
+        :param content_encoding: Content encoding
+        :type content_encoding: string or ``None``
+
+        :param content_type: Content type
+        :type content_type: string or ``None``
+
+        :param data: Data
+        :type data: string or ``None``
+
+        :param kwargs: Extra attributes
+
+        """
         self.tilecoord = tilecoord
         self.content_encoding = content_encoding
         self.content_type = content_type
@@ -253,9 +297,23 @@ class Tile(object):
             setattr(self, key, value)
 
     def __cmp__(self, other):
+        """
+        Compare ``self`` to ``other``.
+
+        :rtype: int
+
+        Tile comparison is done by comparing their coordinates.
+
+        """
         return cmp(self.tilecoord, other.tilecoord)
 
     def __repr__(self):  # pragma: no cover
+        """
+        Return a string representation for debugging.
+
+        :rtype: string
+
+        """
         keys = sorted(self.__dict__.keys())
         attrs = ''.join(' %s=%r' % (key, self.__dict__[key]) for key in keys)
         return '<Tile%s>' % (attrs,)
@@ -265,15 +323,49 @@ class TileCoord(object):
     """A tile coordinate"""
 
     def __init__(self, z, x, y, n=1):
+        """
+        Construct a TileCoord.
+
+        :param z: Zoom level
+        :type z: int
+
+        :param x: X coordinate
+        :type x: int
+
+        :param y: Y coordinate
+        :type y: int
+
+        :param n: Tile size
+        :type n: int
+
+        """
         self.z = z
         self.x = x
         self.y = y
         self.n = n
 
     def __cmp__(self, other):
+        """
+        Compare ``self`` to ``other``.
+
+        :rtype: int
+
+        :class:`TileCoord`s are compared in order of their size and ``z``, ``x`` and
+        ``y`` coordinates.
+
+        """
         return cmp(self.n, other.n) or cmp(self.z, other.z) or cmp(self.x, other.x) or cmp(self.y, other.y)
 
     def __hash__(self):
+        """
+        Return a hash value.
+
+        :rtype: int
+
+        The hash values are unique for all tiles at a given zoom level, but
+        tiles from different zoom levels may have equal hash values.
+
+        """
         return ((self.x // self.n) << self.z) ^ (self.y // self.n)
 
     def __iter__(self):
@@ -283,6 +375,12 @@ class TileCoord(object):
                 yield TileCoord(self.z, self.x + i, self.y + j)
 
     def __repr__(self):  # pragma: no cover
+        """
+        Return a string representation for debugging.
+
+        :rtype: string
+
+        """
         if self.n == 1:
             return '%s(%r, %r, %r)' % (self.__class__.__name__,
                                        self.z, self.x, self.y)
@@ -291,6 +389,12 @@ class TileCoord(object):
                                            self.z, self.x, self.y, self.n)
 
     def __str__(self):
+        """
+        Return a string representation.
+
+        :rtype: string
+
+        """
         if self.n == 1:
             return '%d/%d/%d' % (self.z, self.x, self.y)
         else:
@@ -358,11 +462,27 @@ class TileLayout(object):
     """Maps tile coordinates to filenames and vice versa"""
 
     def filename(self, tilecoord):
-        """Return the filename for the given tile coordinate"""
+        """
+        Return the filename for the given tile coordinate.
+
+        :param tilecoord: Tile coordinate
+        :type tilecoord: :class:`TileCoord`
+
+        :rtype: string
+
+        """
         raise NotImplementedError
 
     def tilecoord(self, filename):
-        """Return the tile coordinate for the given filename"""
+        """
+        Return the tile coordinate for the given filename.
+
+        :param filename: Filename
+        :type filename: string
+
+        :rtype: :class:`TileCoord`
+
+        """
         raise NotImplementedError
 
 
@@ -370,75 +490,194 @@ class TileStore(object):
     """A tile store"""
 
     def __init__(self, bounding_pyramid=None, content_type=None, **kwargs):
+        """
+        Construct a :class:`TileStore`.
+
+        :param bounding_pyramid: Bounding pyramid
+        :type bounding_pyramid: :class:`BoundingPyramid` or ``None``
+
+        :param content_type: Default content type for tiles in this store
+        :type content_type: string or ``None``
+
+        :param kwargs: Extra attributes
+
+        """
         self.bounding_pyramid = bounding_pyramid
         self.content_type = content_type
         for key, value in kwargs.iteritems():
             setattr(self, key, value)
 
     def __contains__(self, tile):
+        """
+        Return true if this store contains ``tile``.
+
+        :param tile: Tile
+        :type tile: :class:`Tile`
+
+        :rtype: bool
+
+        """
         if tile and self.bounding_pyramid:
             return tile.tilecoord in self.bounding_pyramid
         else:
             return False
 
     def __len__(self):
-        """Returns the total number of tiles in the store"""
+        """
+        Returns the total number of tiles in the store.
+
+        :rtype: int
+
+        """
         return reduce(lambda x, _: x + 1, ifilter(None, self.list()), 0)
 
     def delete(self, tiles):
-        """A generator that has the side effect of deleting the specified tiles
-           from the store"""
+        """
+        Delete ``tiles`` from the store.
+
+        :param tiles: Input tilestream
+        :type tiles: iterable
+
+        :rtype: iterator
+
+        """
         return imap(self.delete_one, ifilter(None, tiles))
 
     def delete_one(self, tile):
-        """A function that deletes tile from the store and returns the tile"""
+        """
+        Delete ``tile`` and return ``tile``.
+
+        :param tile: Tile
+        :type tile: :class:`Tile` or ``None``
+
+        :rtype: :class:`Tile` or ``None``
+
+        """
         raise NotImplementedError
 
     def get(self, tiles):
-        """A generator that returns the specified tiles and their data from the
-           store"""
+        """
+        Add data to each of ``tiles``.
+
+        :param tiles: Tilestream
+        :type tiles: iterator
+
+        :rtype: iterator
+
+        """
         return imap(self.get_one, ifilter(None, tiles))
 
     def get_all(self):
-        """A generator that returns all the tiles in the store with their
-           data"""
+        """
+        Generate all the tiles in the store with their data.
+
+        :rtype: iterator
+
+        """
         return imap(self.get_one, ifilter(None, self.list()))
 
     def get_bounding_pyramid(self):
-        """Returns the bounding pyramid that encloses all tiles in the store"""
+        """
+        Returns the bounding pyramid that encloses all tiles in the store.
+
+        :rtype: :class:`BoundingPyramid`
+
+        """
         return reduce(BoundingPyramid.add,
                       imap(attrgetter('tilecoord'),
                            ifilter(None, self.list())),
                       BoundingPyramid())
 
     def get_cheap_bounding_pyramid(self):
-        """Returns a bounding pyramid that is cheap to calculate, or None if it
-           is not possible to calculate a bounding pyramid cheaply"""
+        """
+        Returns a bounding pyramid that is cheap to calculate, or ``None`` if
+        it is not possible to calculate a bounding pyramid cheaply.
+
+        :rtype: :class:`BoundingPyramid` or ``None``
+
+        """
         return None
 
     def get_one(self, tile):
-        """A function that gets the specified tile and its data from the
-           store"""
+        """
+        Add data to ``tile``, or return ``None`` if ``tile`` is not in the store.
+
+        :param tile: Tile
+        :type tile: :class:`Tile` or ``None``
+
+        :rtype: :class:`Tile` or ``None``
+
+        """
         raise NotImplementedError
 
     def list(self):
-        """A generator that returns the tiles in the store without necessarily
-           retrieving their data"""
+        """
+        Generate all the tiles in the store, but without their data.
+
+        :rtype: iterator
+
+        """
         if self.bounding_pyramid:
             for tilecoord in self.bounding_pyramid:
                 yield Tile(tilecoord)
 
     def put(self, tiles):
-        """A generator that has the side effect of putting the specified tiles
-           in the store"""
+        """
+        Store ``tiles`` in the store.
+
+        :param tiles: Tilestream
+        :type tiles: iterator
+
+        :rtype: iterator
+
+        """
         return imap(self.put_one, ifilter(None, tiles))
 
     def put_one(self, tile):
-        """A function that puts tile in the store and returns the tile"""
+        """
+        Store ``tile`` in the store.
+
+        :param tile: Tile
+        :type tile: :class:`Tile` or ``None``
+
+        :rtype: :class:`Tile` or ``None``
+
+        """
         raise NotImplementedError
 
     @classmethod
     def load(cls, name):  # pragma: no cover
+        """
+        Construct a :class:`TileStore` from a name.
+
+        :param name: Name
+        :type name: string
+
+        :rtype: :class:`TileStore`
+
+        The following shortcuts are available:
+
+        bounds://<bounding-pyramid>
+
+        file://<template>
+
+        http://<template> and https://<template>
+
+        memcached://<server>:<port>/<template>
+
+        s3://<bucket>/<template>
+
+        sqs://<region>/<queue>
+
+        <filename>.bsddb
+
+        <filename>.mbtiles
+
+        <filename>.zip
+
+        <module>
+
+        """
         if name == 'null://':
             from tilecloud.store.null import NullTileStore
             return NullTileStore()
