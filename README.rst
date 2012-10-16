@@ -411,6 +411,13 @@ Contributing
 Please report bugs and feature requests using the
 `GitHub issue tracker <https://github.com/twpayne/tilecloud/issues>`_.
 
+If you'd like to contribute to TileCloud, please install the development
+requirements:
+
+::
+
+    $ pip install -r dev-requirements.txt
+
 TileCloud comes with unit tests in the ``tilecloud/tests``
 directory. You can run these with the command:
 

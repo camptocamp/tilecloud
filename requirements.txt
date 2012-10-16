@@ -1,5 +1,4 @@
 PIL
 bottle
-coverage
 requests
 pyproj
