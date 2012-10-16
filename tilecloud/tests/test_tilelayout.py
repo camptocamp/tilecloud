@@ -54,21 +54,19 @@ class TestWMTSTileLayout(unittest.TestCase):
             tile_matrix_set='swissgrid',
             request_encoding='KVP')
         self.rest_nourl = WMTSTileLayout(
-                layer='layer',
-                style='default',
-                format='.png',
-                dimensions=(('DATE', '2011'),),
-                tile_matrix_set='swissgrid',
-                request_encoding='REST',
-        )
+            layer='layer',
+            style='default',
+            format='.png',
+            dimensions=(('DATE', '2011'),),
+            tile_matrix_set='swissgrid',
+            request_encoding='REST')
         self.kvp_nourl = WMTSTileLayout(
-                layer='layer',
-                style='default',
-                format='.png',
-                dimensions=(('DATE', '2011'),),
-                tile_matrix_set='swissgrid',
-                request_encoding='KVP',
-        )
+            layer='layer',
+            style='default',
+            format='.png',
+            dimensions=(('DATE', '2011'),),
+            tile_matrix_set='swissgrid',
+            request_encoding='KVP')
 
     def test_filename(self):
         self.assertEqual(self.rest.filename(TileCoord(1, 2, 3)), 'test/1.0.0/layer/default/2011/swissgrid/1/3/2.png')
