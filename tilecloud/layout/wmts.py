@@ -15,6 +15,12 @@ class WMTSTileLayout(TileLayout):
         self.dimensions = dimensions
         self.request_encoding = request_encoding
 
+        if self.request_encoding == 'KVP':
+            if not self.url or self.url[-1] != '?':
+                self.url += '?'
+        elif self.url and self.url[-1] != '/':
+            self.url += '/'
+
     def filename(self, tilecoord):
         # Careful the order is important for the REST request encoding
         query = []
@@ -40,6 +46,6 @@ class WMTSTileLayout(TileLayout):
             ('TileCol', str(tilecoord.x)),
         ])
         if self.request_encoding == 'KVP':
-            return self.url + '?' + '&'.join('='.join(p) for p in query)
+            return self.url + '&'.join('='.join(p) for p in query)
         else:
-            return self.url + '/' + '/'.join(p[1] for p in query) + self.format
+            return self.url + '/'.join(p[1] for p in query) + self.format
