@@ -10,6 +10,7 @@ import sys
 from tilecloud import BoundingPyramid, TileStore, consume
 from tilecloud.filter.benchmark import Benchmark, Statsd, StatsdCountErrors, StatsdCountTiles
 from tilecloud.filter.consistenthash import EveryNth
+from tilecloud.filter.contenttype import ContentTypeAdder
 from tilecloud.filter.error import DropErrors, LogErrors, MaximumConsecutiveErrors, MaximumErrorRate, MaximumErrors
 from tilecloud.filter.logger import Logger
 from tilecloud.filter.rate import RateLimit
@@ -21,6 +22,7 @@ def main(argv):
     option_parser = OptionParser()
     option_parser.add_option('--benchmark', action='store_true')
     option_parser.add_option('-b', '--bounding-pyramid', metavar='BOUNDING-PYRAMID')
+    option_parser.add_option('--add-content-type', action='store_true')
     option_parser.add_option('-i', metavar='I', type=int)
     option_parser.add_option('-g', '--generate', metavar='TILE-STORE', action='append')
     option_parser.add_option('--limit', metavar='N', type=int)
@@ -92,6 +94,8 @@ def main(argv):
             if options.maximum_errors:
                 tilestream = imap(MaximumErrors(options.maximum_errors), tilestream)
             tilestream = imap(DropErrors(), tilestream)
+            if options.add_content_type:
+                tilestream = imap(ContentTypeAdder(), tilestream)
             tilestream = output_tilestore.put(tilestream)
             if benchmark:
                 tilestream = imap(benchmark.sample('put'), tilestream)
