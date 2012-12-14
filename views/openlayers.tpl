@@ -34,6 +34,7 @@
 %if getattr(tilestore, 'attribution', None):
 				attribution: '{{!tilestore.attribution}}',
 %end
+				transitionEffect: 'resize',
 %if max_extent or resolutions:
 %pass
 %else:
