@@ -172,8 +172,12 @@ class S3Bucket(object):
                 kwargs['etag'] = contents_element.find(self.ETAG_PATH).text
                 kwargs['size'] = int(contents_element.find(self.SIZE_PATH).text)
                 kwargs['storage_class'] = contents_element.find(self.STORAGE_CLASS_PATH).text
-                kwargs['owner_id'] = contents_element.find(self.OWNER_ID_PATH).text
-                kwargs['owner_display_name'] = contents_element.find(self.OWNER_DISPLAY_NAME_PATH).text
+                owner_id = contents_element.find(self.OWNER_ID_PATH)
+                if owner_id:
+                    kwargs['owner_id'] = owner_id.text
+                owner_display_name = contents_element.find(self.OWNER_DISPLAY_NAME_PATH)
+                if owner_display_name:
+                    kwargs['owner_display_name'] = owner_display_name.text
                 yield S3Key(key_name, self, **kwargs)
             if etree.find(self.IS_TRUNCATED_PATH).text == 'true':
                 marker = key_name
