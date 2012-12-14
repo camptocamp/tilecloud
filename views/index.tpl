@@ -12,6 +12,7 @@
 			<li><a href="/modestmaps">Modest Maps</a></li>
 			<li><a href="/polymaps">Polymaps</a></li>
 			<li><a href="/openwebglobe">OpenWebGlobe</a></li>
+			<li><a href="/cesium">Cesium</a></li>
 		</ul>
 	</body>
 </html>

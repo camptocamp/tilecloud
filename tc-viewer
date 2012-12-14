@@ -109,6 +109,12 @@ def openlayers():
     return dict(max_extent=max_extent, resolutions=resolutions, tilestores=tilestores)
 
 
+@bottle.route('/cesium')
+@bottle.view('cesium')
+def cesium():
+    return dict(tilestores=tilestores)
+
+
 @bottle.route('/googlemaps')
 @bottle.view('googlemaps')
 def googlemaps():
