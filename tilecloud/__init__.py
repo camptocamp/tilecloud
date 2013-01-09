@@ -714,6 +714,9 @@ class TileStore(object):
             queue = connection.create_queue(queue_name)
             queue.set_message_class(JSONMessage)
             return SQSTileStore(queue)
+        if name.startswith('veloland://'):
+            from tilecloud.store.tilecache import TileCacheDiskTileStore
+            return TileCacheDiskTileStore('/var/sig/tilecache/veloland/%s/' % (name[11:],), '.png', content_type='image/png')
         root, ext = os.path.splitext(name)
         if ext == '.bsddb':
             import bsddb
