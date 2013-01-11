@@ -11,7 +11,9 @@ class URLTileStore(TileStore):
     def __init__(self, tilelayouts, headers=None, **kwargs):
         TileStore.__init__(self, **kwargs)
         self.tilelayouts = tuple(tilelayouts)
-        self.session = requests.session(headers=headers)
+        self.session = requests.session()
+        if headers is not None:
+            self.session.headers.update(headers)
 
     def get_one(self, tile):
         if self.bounding_pyramid is not None:
