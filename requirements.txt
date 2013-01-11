@@ -1,4 +1,4 @@
 PIL
 bottle
-requests
+requests>=1.0
 pyproj
