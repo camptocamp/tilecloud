@@ -16,7 +16,7 @@ class MapnikTileStore(TileStore):
     requires mapnik2: http://pypi.python.org/pypi/mapnik2
     """
 
-    def __init__(self, tilegrid, mapfile, data_buffer=128, image_buffer=0, output_format='png256', resolution=2, layers_fields={}, **kwargs):
+    def __init__(self, tilegrid, mapfile, data_buffer=128, image_buffer=0, output_format='png256', resolution=2, layers_fields={}, drop_empty_utfgrid=False, **kwargs):
         """
         Constructs a MapnikTileStore
 
@@ -38,6 +38,7 @@ class MapnikTileStore(TileStore):
         self.output_format = output_format
         self.resolution = resolution
         self.layers_fields = layers_fields
+        self.drop_empty_utfgrid = drop_empty_utfgrid
 
         self.mapnik = mapnik.Map(tilegrid.tile_size, tilegrid.tile_size)
         mapnik.load_map(self.mapnik, mapfile, True)
@@ -57,7 +58,10 @@ class MapnikTileStore(TileStore):
                 if l.name in self.layers_fields:
                     mapnik.render_layer(self.mapnik, grid, layer=n, fields=self.layers_fields[l.name])
 
-            tile.data = dumps(grid.encode('utf', resolution=self.resolution))
+            encode = grid.encode('utf', resolution=self.resolution)
+            if self.drop_empty_utfgrid and len(encode['data'].keys()) == 0:
+                return None
+            tile.data = dumps(encode)
         else:
             # Render image with default Agg renderer
             im = mapnik.Image(size, size)
