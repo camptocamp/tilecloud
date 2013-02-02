@@ -34,19 +34,27 @@ class Tiles(SQLiteDict):
     LEN_SQL = 'SELECT COUNT(*) FROM tiles'
     SETITEM_SQL = 'INSERT OR REPLACE INTO tiles (zoom_level, tile_column, tile_row, tile_data) VALUES (?, ?, ?, ?)'
 
+    def __init__(self, tilecoord_in_topleft, *args, **kwargs):
+        self.tilecoord_in_topleft = tilecoord_in_topleft
+        SQLiteDict.__init__(self, *args, **kwargs)
+
     def _packitem(self, key, value):
-        return (key.z, key.x, (1 << key.z) - key.y - 1, sqlite3.Binary(value) if value is not None else None)
+        y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1
+        return (key.z, key.x, y, sqlite3.Binary(value) if value is not None else None)
 
     def _packkey(self, key):
-        return (key.z, key.x, (1 << key.z) - key.y - 1)
+        y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1
+        return (key.z, key.x, y)
 
     def _unpackitem(self, row):
         z, x, y, data = row
-        return (TileCoord(z, x, (1 << z) - y - 1), data)
+        y = y if self.tilecoord_in_topleft else (1 << z) - y - 1
+        return (TileCoord(z, x, y), data)
 
     def _unpackkey(self, row):
         z, x, y = row
-        return TileCoord(z, x, (1 << z) - y - 1)
+        y = y if self.tilecoord_in_topleft else (1 << z) - y - 1
+        return TileCoord(z, x, y)
 
 
 class MBTilesTileStore(TileStore):
@@ -55,10 +63,10 @@ class MBTilesTileStore(TileStore):
     BOUNDING_PYRAMID_SQL = 'SELECT zoom_level, MIN(tile_column), MAX(tile_column) + 1, MIN((1 << zoom_level) - tile_row - 1), MAX((1 << zoom_level) - tile_row - 1) + 1 FROM tiles GROUP BY zoom_level ORDER BY zoom_level'
     SET_METADATA_ZOOMS_SQL = 'SELECT MIN(zoom_level), MAX(zoom_level) FROM tiles'
 
-    def __init__(self, connection, commit=True, **kwargs):
+    def __init__(self, connection, commit=True, tilecoord_in_topleft=False, **kwargs):
         self.connection = connection
         self.metadata = Metadata(self.connection, commit)
-        self.tiles = Tiles(self.connection, commit)
+        self.tiles = Tiles(tilecoord_in_topleft, self.connection, commit)
         if 'content_type' not in kwargs and 'format' in self.metadata:
             kwargs['content_type'] = mimetypes.types_map.get('.' + self.metadata['format'], None)
         TileStore.__init__(self, **kwargs)
