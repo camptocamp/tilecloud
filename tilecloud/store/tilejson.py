@@ -1,4 +1,5 @@
 # FIXME port to requests
+# FIXME rename url1 and url2 to url when pyflakes grows a second brain cell
 # https://github.com/mapbox/TileJSON
 
 import json
@@ -38,12 +39,12 @@ class TileJSONTileStore(URLTileStore):
             kwargs['bounding_pyramid'] = bounding_pyramid
         urls = d[urls_key]
         if 'content_type' not in kwargs:
-            exts = set(os.path.splitext(urlparse(url).path)[1] for url in urls)
+            exts = set(os.path.splitext(urlparse(url1).path)[1] for url1 in urls)
             content_types = set(mimetypes.types_map.get(ext) for ext in exts)
             assert len(content_types) == 1
             kwargs['content_type'] = content_types.pop()
-        templates = [re.sub(r'\{([xyz])\}', lambda m: '%%(%s)d' % m.group(1), url)
-                     for url in urls]
+        templates = [re.sub(r'\{([xyz])\}', lambda m: '%%(%s)d' % m.group(1), url2)
+                     for url2 in urls]
         tilelayouts = map(TemplateTileLayout, templates)
         URLTileStore.__init__(self, tilelayouts, **kwargs)
 
