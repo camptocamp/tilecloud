@@ -7,10 +7,7 @@ version = '0.2'
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 
-install_requires = [
-        'bottle',
-        'pyproj',
-        ]
+install_requires = open(os.path.join(here, 'requirements.txt')).read().splitlines()
 
 setup_requires = [
         'nose',
