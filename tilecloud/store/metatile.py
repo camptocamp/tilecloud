@@ -27,4 +27,4 @@ class MetaTileSplitterTileStore(TileStore):
                 image = metaimage.crop((x, y, x + self.tile_size, y + self.tile_size))
                 string_io = StringIO()
                 image.save(string_io, FORMAT_BY_CONTENT_TYPE[self.format])
-                yield Tile(tilecoord, data=string_io.getvalue())
+                yield Tile(tilecoord, data=string_io.getvalue(), content_type=self.format)
