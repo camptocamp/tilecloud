@@ -70,3 +70,4 @@ class SQSTileStore(TileStore):
             tile.sqs_message = sqs_message
         except SQSError as e:
             tile.error = e
+        return tile
