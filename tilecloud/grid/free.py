@@ -8,7 +8,7 @@ class FreeTileGrid(TileGrid):
     def __init__(self, resolutions, max_extent=None, tile_size=None, scale=1, flip_y=False):
         TileGrid.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         assert list(resolutions) == sorted(resolutions, reverse=True)
-        assert all(isinstance(r, int) for r in resolutions)
+        assert all(isinstance(r, int) or isinstance(r, long) for r in resolutions)
         self.resolutions = resolutions
         self.scale = 1 if scale is 1 else float(scale)
         self.parent_zs = []
