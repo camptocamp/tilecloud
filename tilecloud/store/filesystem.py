@@ -20,14 +20,14 @@ class FilesystemTileStore(TileStore):
 
     def get_all(self):
         for tile in self.list():
-            with open(tile.path) as file:
+            with open(tile.path, 'rb') as file:
                 tile.data = file.read()
             yield tile
 
     def get_one(self, tile):
         filename = self.tilelayout.filename(tile.tilecoord)
         try:
-            with open(filename) as file:
+            with open(filename, 'rb') as file:
                 tile.data = file.read()
             return tile
         except IOError as e:
@@ -51,6 +51,6 @@ class FilesystemTileStore(TileStore):
         dirname = os.path.dirname(filename)
         if not os.path.exists(dirname):
             os.makedirs(dirname)
-        with open(filename, 'w') as file:
+        with open(filename, 'wb') as file:
             file.write(tile.data)
         return tile
