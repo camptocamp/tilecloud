@@ -51,12 +51,12 @@ class SQLiteDict(UserDict.DictMixin):
     def iteritems(self):
         return imap(self._unpackitem,
                     query(self.connection,
-                    self.ITERITEMS_SQL))
+                          self.ITERITEMS_SQL))
 
     def itervalues(self):
         return imap(self._unpackvalue,
                     query(self.connection,
-                    self.ITERVALUES_SQL))
+                          self.ITERVALUES_SQL))
 
     def keys(self):
         return list(iter(self))
