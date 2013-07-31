@@ -16,7 +16,9 @@ class BSDDBTileStore(TileStore):
         return len(self.db)
 
     def delete_one(self, tile):
-        del self.db[str(tile.tilecoord)]
+        key = str(tile.tilecoord)
+        if key in self.db:
+            del self.db[key]
         return tile
 
     def get_all(self):
