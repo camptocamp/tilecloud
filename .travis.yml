@@ -1,6 +1,3 @@
-before_install:
-  - "sudo ln -s /usr/lib/i386-linux-gnu/libz.so /usr/lib/"
-
 install:
   - pip install -r requirements.txt
   - pip install pep8 pyflakes
