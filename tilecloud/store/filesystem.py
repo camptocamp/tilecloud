@@ -29,6 +29,8 @@ class FilesystemTileStore(TileStore):
         try:
             with open(filename, 'rb') as file:
                 tile.data = file.read()
+            if self.content_type is not None:
+                tile.content_type = self.content_type
             return tile
         except IOError as e:
             if e.errno == errno.ENOENT:
