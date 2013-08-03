@@ -26,6 +26,8 @@ class URLTileStore(TileStore):
         logger.debug('GET %s' % (url,))
         try:
             response = self.session.get(url)
+            if response.status_code == 404:
+                return None
             tile.content_encoding = response.headers.get('Content-Encoding')
             tile.content_type = response.headers.get('Content-Type')
             tile.data = response.content
