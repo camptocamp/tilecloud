@@ -250,6 +250,39 @@ class TestWMSTileLayout(unittest.TestCase):
         self.assertEqual(bbox[2], 430250.0)
         self.assertEqual(bbox[3], 350250.0)
 
+    def test_params(self):
+        layout = WMSTileLayout(
+            url='http://example.com/folder',
+            layers='l1,l2',
+            srs='EPSG:1000',
+            format='image/png',
+            tilegrid=self.tilegrid,
+            params={
+                'TRANSPARENT': 'FALSE',
+                'PARAM': 'Value',
+            },
+        )
+        result = urlparse(layout.filename(TileCoord(0, 0, 0)))
+        self.assertEqual(result.netloc, 'example.com')
+        self.assertEqual(result.path, '/folder')
+        query = parse_qs(result.query)
+        self.assertEqual(query['PARAM'], ['Value'])
+        self.assertEqual(query['LAYERS'], ['l1,l2'])
+        self.assertEqual(query['FORMAT'], ['image/png'])
+        self.assertEqual(query['TRANSPARENT'], ['FALSE'])
+        self.assertEqual(query['SERVICE'], ['WMS'])
+        self.assertEqual(query['VERSION'], ['1.1.1'])
+        self.assertEqual(query['REQUEST'], ['GetMap'])
+        self.assertEqual(query['SRS'], ['EPSG:1000'])
+        self.assertEqual(query['WIDTH'], ['100'])
+        self.assertEqual(query['HEIGHT'], ['100'])
+        bbox = [float(i) for i in query['BBOX'][0].split(',')]
+        self.assertEqual(len(bbox), 4)
+        self.assertEqual(bbox[0], 420000.0)
+        self.assertEqual(bbox[1], 340000.0)
+        self.assertEqual(bbox[2], 430000.0)
+        self.assertEqual(bbox[3], 350000.0)
+
 
 class TestTemplateTileLayout(unittest.TestCase):
 
