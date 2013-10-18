@@ -16,7 +16,9 @@ class MapnikTileStore(TileStore):
     requires mapnik2: http://pypi.python.org/pypi/mapnik2
     """
 
-    def __init__(self, tilegrid, mapfile, data_buffer=128, image_buffer=0, output_format='png256', resolution=2, layers_fields={}, drop_empty_utfgrid=False, **kwargs):
+    def __init__(
+            self, tilegrid, mapfile, data_buffer=128, image_buffer=0, output_format='png256', resolution=2,
+            layers_fields={}, drop_empty_utfgrid=False, proj4_literal=None, **kwargs):
         """
         Constructs a MapnikTileStore
 
@@ -43,6 +45,8 @@ class MapnikTileStore(TileStore):
         self.mapnik = mapnik.Map(tilegrid.tile_size, tilegrid.tile_size)
         mapnik.load_map(self.mapnik, mapfile, True)
         self.mapnik.buffer_size = data_buffer
+        if proj4_literal is not None:
+            self.mapnik.srs = proj4_literal
 
     def get_one(self, tile):
         bbox = self.tilegrid.extent(tile.tilecoord, self.buffer)
