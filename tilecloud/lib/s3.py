@@ -2,7 +2,7 @@
 
 import UserDict
 from base64 import b64encode
-from datetime import datetime
+from datetime import datetime, timedelta
 import errno
 import hashlib
 import hmac
@@ -13,6 +13,8 @@ from operator import itemgetter
 import os
 import re
 import ssl
+import json
+import socket
 from urlparse import urlparse
 import xml.etree.cElementTree as ElementTree
 
@@ -197,24 +199,63 @@ class S3Connection(object):
     NAME_PATH = namespacify('Name')
 
     def __init__(self, host='s3.amazonaws.com',
-                 access_key=None, secret_access_key=None):
+                 access_key=None, secret_access_key=None, iam_token=None,
+                 iam_token_expiration=None):
         self.host = host
+        self.iam_token = iam_token
+        self.iam_token_expiration = iam_token_expiration
+        # Auth source 1: params
         self.access_key = access_key
+        self.secret_access_key = secret_access_key
+        # Auth source 2: env vars
         if self.access_key is None:
             self.access_key = os.getenv('AWS_ACCESS_KEY_ID')
-        if self.access_key is None:
-            self.access_key = ''
-        self.secret_access_key = secret_access_key
         if self.secret_access_key is None:
             self.secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+        # Auth source 3: IAM api
+        if self.access_key is None or self.secret_access_key is None:
+            self._refresh_iam_credentials()
+        # No auth info supplied
+        if self.access_key is None:
+            self.access_key = ''
         if self.secret_access_key is None:
             self.secret_access_key = ''
         self.connection = None
 
+    def _refresh_iam_credentials(self):
+        # fetching credentials if we don't have any or they expire in 5 minutes or less
+        if self.iam_token is None \
+                or self.iam_token_expiration > datetime.utcnow() + timedelta(0, 300):
+            # Step 1: fetch the instance role name from metadata API
+            api_connection = httplib.HTTPConnection('169.254.169.254')
+            try:
+                api_connection.request('GET', '/latest/meta-data/iam/security-credentials/')
+            except (httplib.HTTPException, socket.error):
+                return  # Fail silently if metadata API is not available
+            response = api_connection.getresponse()
+            if response.status != 200:
+                return  # The instance isn't associated with a role
+            role = response.read()
+            api_connection.close()
+            # Step 2: fetch the credentials
+            api_connection = httplib.HTTPConnection('169.254.169.254')
+            api_connection.request('GET', '/latest/meta-data/iam/security-credentials/%s' % (role))
+            response = api_connection.getresponse()
+            if response.status != 200:
+                raise RuntimeError('Error while fetching AWS credential from API: %s %s'
+                                   % (response.status, response.reason))
+            credentials = json.loads(response.read())
+            self.access_key = credentials['AccessKeyId'].encode('utf-8')
+            self.secret_access_key = credentials['SecretAccessKey'].encode('utf-8')
+            self.iam_token = credentials['Token'].encode('utf-8')
+            self.iam_token_expiration = parse_timestamp(credentials['Expiration'][:-1] + '.000Z')
+
     def bucket(self, bucket_name, **kwargs):
         connection = S3Connection('.'.join((bucket_name, self.host)),
                                   self.access_key,
-                                  self.secret_access_key)
+                                  self.secret_access_key,
+                                  self.iam_token,
+                                  self.iam_token_expiration)
         return S3Bucket(bucket_name, connection, **kwargs)
 
     def buckets(self):
@@ -249,6 +290,9 @@ class S3Connection(object):
         if 'x-amz-date' not in headers:
             headers['x-amz-date'] = \
                 datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S +0000')
+        if self.iam_token is not None:
+            self._refresh_iam_credentials()
+            headers['x-amz-security-token'] = self.iam_token
         headers['Authorization'] = self.sign(method, bucket_name, url, headers,
                                              sub_resources)
         while True:
