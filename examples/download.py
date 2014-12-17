@@ -25,7 +25,7 @@ def main(argv):
     bounding_pyramid_tilestore = BoundingPyramidTileStore(bounding_pyramid)
     tilestream = bounding_pyramid_tilestore.list()
     # 2. Filter out tiles that already downloaded
-    tilestream = (tile for tile in tilestream if not tile in output_tilestore)
+    tilestream = (tile for tile in tilestream if tile not in output_tilestore)
     # 3. Get the tile from openstreetmap.org
     tilestream = input_tilestore.get(tilestream)
     # 4. Save the tile to local.mbtiles
