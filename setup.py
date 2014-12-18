@@ -9,14 +9,6 @@ README = open(os.path.join(here, 'README.rst')).read()
 
 install_requires = open(os.path.join(here, 'requirements.txt')).read().splitlines()
 
-setup_requires = [
-        'nose',
-        ]
-
-tests_require = install_requires + [
-        'coverage',
-        ]
-
 setup(
         name='tilecloud',
         version=version,
@@ -36,8 +28,6 @@ setup(
         packages=find_packages(exclude=['tiles', 'tilecloud.tests']),
         zip_safe=True,
         install_requires=install_requires,
-        setup_requires=setup_requires,
-        tests_require=tests_require,
         test_suite='tilecloud.tests',
         scripts=glob('tc-*'),
         entry_points="""
