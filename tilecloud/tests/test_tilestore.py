@@ -100,13 +100,13 @@ class TestMBTilesTileStore(unittest.TestCase):
     def test_one(self):
         tilestore = MBTilesTileStore(sqlite3.connect(':memory:'), content_type='image/png')
         self.assertEqual(len(tilestore), 0)
-        tilestream = [Tile(TileCoord(1, 0, 0), data='data'), None, Tile(TileCoord(1, 0, 1), error=True)]
+        tilestream = [Tile(TileCoord(1, 0, 0), data=b'data'), None, Tile(TileCoord(1, 0, 1), error=True)]
         tilestream = tilestore.put(tilestream)
         tiles = list(tilestream)
         self.assertEqual(len(tilestore), 2)
         self.assertEqual(len(tiles), 2)
         self.assertEqual(tiles[0].tilecoord, TileCoord(1, 0, 0))
-        self.assertEqual(tiles[0].data, 'data')
+        self.assertEqual(tiles[0].data, b'data')
         self.assertEqual(tiles[1].tilecoord, TileCoord(1, 0, 1))
         self.assertEqual(tiles[1].error, True)
         self.assertTrue(Tile(TileCoord(1, 0, 0)) in tilestore)
@@ -121,7 +121,7 @@ class TestMBTilesTileStore(unittest.TestCase):
         tiles = sorted(tilestore.get_all())
         self.assertEqual(len(tiles), 2)
         self.assertEqual(tiles[0].tilecoord, TileCoord(1, 0, 0))
-        self.assertEqual(str(tiles[0].data), 'data')
+        self.assertEqual(bytes(tiles[0].data), b'data')
         self.assertEqual(tiles[1].tilecoord, TileCoord(1, 0, 1))
         self.assertEqual(tiles[1].data, None)
         tilestream = [Tile(TileCoord(1, 0, 0))]

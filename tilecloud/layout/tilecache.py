@@ -20,7 +20,7 @@ class TileCacheDiskLayout(RETileLayout):
         return '/'.join((zs, xs[0:3], xs[3:6], xs[6:9], ys[0:3], ys[3:6], ys[6:9]))
 
     def _tilecoord(self, _match):
-        ints = map(int, _match.groups())
+        ints = list(map(int, _match.groups()))
         z = ints[0]
         x = 1000000 * ints[1] + 1000 * ints[2] + ints[3]
         y = 1000000 * ints[4] + 1000 * ints[5] + ints[6]

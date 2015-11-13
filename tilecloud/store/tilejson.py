@@ -7,7 +7,7 @@ import mimetypes
 import os.path
 import re
 from urllib2 import urlopen
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 
 from tilecloud import BoundingPyramid
 from tilecloud.layout.template import TemplateTileLayout

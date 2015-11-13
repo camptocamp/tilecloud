@@ -1,4 +1,4 @@
-from itertools import ifilter
+from six.moves import filter as ifilter
 
 from tilecloud import TileStore
 

@@ -50,9 +50,9 @@ def main(argv):
         ystart = detect_edge(tilestore, z, ybounds.start, seed.y, seed.x, False, True)
         ystop = detect_edge(tilestore, z, seed.y, ybounds.stop, seed.x, False, False)
         if options.relative:
-            print '%d/%d/%d:+%d/+%d' % (z, xstart, ystart, xstop - xstart, ystop - ystart)
+            print('%d/%d/%d:+%d/+%d' % (z, xstart, ystart, xstop - xstart, ystop - ystart))
         else:
-            print '%d/%d/%d:%d/%d' % (z, xstart, ystart, xstop, ystop)
+            print('%d/%d/%d:%d/%d' % (z, xstart, ystart, xstop, ystop))
 
 
 if __name__ == '__main__':

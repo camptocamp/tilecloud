@@ -1,8 +1,8 @@
-from cStringIO import StringIO
 
 import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageFont
+from six.moves import cStringIO as StringIO
 
 from tilecloud import TileStore
 from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE

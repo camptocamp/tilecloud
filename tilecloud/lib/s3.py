@@ -1,13 +1,10 @@
 # FIXME port to requests
 
-import UserDict
 from base64 import b64encode
 from datetime import datetime, timedelta
 import errno
 import hashlib
 import hmac
-import httplib
-from itertools import imap
 import logging
 from operator import itemgetter
 import os
@@ -15,8 +12,15 @@ import re
 import ssl
 import json
 import socket
-from urlparse import urlparse
 import xml.etree.cElementTree as ElementTree
+from six.moves import xrange, http_client as httplib, map as imap
+from six.moves.urllib.parse import urlparse
+from six import itervalues, iteritems
+from sys import version_info
+if version_info[0] > 2:
+    from collections import MutableMapping
+else:
+    from UserDict import DictMixin as MutableMapping
 
 
 NAMESPACE_REPLACEMENT = r'{http://s3.amazonaws.com/doc/2006-03-01/}\1'
@@ -33,7 +37,7 @@ def parse_timestamp(s):
     return datetime(*map(int, match.groups()))
 
 
-class HeaderDict(UserDict.DictMixin):
+class HeaderDict(MutableMapping):
     """A dict for HTTP headers"""
 
     def __init__(self, items=None):
@@ -41,7 +45,7 @@ class HeaderDict(UserDict.DictMixin):
             self.items = {}
         elif isinstance(items, dict):
             self.items = dict((k.lower(), (k, v))
-                              for k, v in items.iteritems())
+                              for k, v in iteritems(items))
         else:
             self.items = dict((k.lower(), (k, v)) for k, v in items)
 
@@ -55,7 +59,7 @@ class HeaderDict(UserDict.DictMixin):
         return self.items[key.lower()][1]
 
     def __iter__(self):
-        return imap(itemgetter(0), self.items.itervalues())
+        return imap(itemgetter(0), itervalues(self.items))
 
     def __len__(self):
         return len(self.items)
@@ -64,10 +68,10 @@ class HeaderDict(UserDict.DictMixin):
         self.items[key.lower()] = (key, value)
 
     def iteritems(self):
-        return self.items.itervalues()
+        return itervalues(self.items)
 
     def itervalues(self):
-        return imap(itemgetter(1), self.items.itervalues())
+        return imap(itemgetter(1), itervalues(self.items))
 
     def keys(self):
         return list(iter(self))

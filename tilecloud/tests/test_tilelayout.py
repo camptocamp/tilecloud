@@ -1,6 +1,6 @@
 import unittest
-from urlparse import urlparse
 from cgi import parse_qs
+from six.moves.urllib.parse import urlparse
 
 from tilecloud import TileCoord, TileLayout
 from tilecloud.layout.osm import OSMTileLayout

@@ -2,9 +2,9 @@
 This module includes filters doing manipulations on the tile image. It
 requires the PIL lib.
 """
-from cStringIO import StringIO
 
 import PIL.Image
+from six.moves import cStringIO as StringIO
 
 from tilecloud import Tile
 from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE

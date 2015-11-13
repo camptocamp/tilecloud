@@ -1,4 +1,5 @@
 from itertools import imap
+from six import iterkeys
 
 from tilecloud import Tile, TileCoord, TileStore
 
@@ -35,7 +36,7 @@ class BSDDBTileStore(TileStore):
             return None
 
     def list(self):
-        return imap(lambda s: Tile(TileCoord.from_string(s)), self.db.iterkeys())
+        return imap(lambda s: Tile(TileCoord.from_string(s)), iterkeys(self.db))
 
     def put_one(self, tile):
         self.db[str(tile.tilecoord)] = getattr(tile, 'data', '')

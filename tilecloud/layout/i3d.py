@@ -1,4 +1,5 @@
 import re
+from six.moves import xrange
 
 from tilecloud import TileCoord
 from tilecloud.layout.re_ import RETileLayout

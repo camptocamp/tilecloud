@@ -38,7 +38,7 @@ wmts_get_capabilities_template = """<?xml version="1.0" encoding="UTF-8"?>
     </Layer>
     {% endfor %}
 
-    {% for key, matrix_set in matrix_sets.iteritems() %}
+    {% for key, matrix_set in iteritems(matrix_sets) %}
     <TileMatrixSet>
       <ows:Identifier>{{key}}</ows:Identifier>
       <ows:SupportedCRS>urn:ogc:def:crs:{{matrix_set["crs"]}}</ows:SupportedCRS>

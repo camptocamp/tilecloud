@@ -1,5 +1,9 @@
-import UserDict
-from itertools import imap
+from six.moves import map as imap
+from sys import version_info
+if version_info[0] == 2:
+    from UserDict import DictMixin
+else:
+    from collections import MutableMapping as DictMixin
 
 
 def query(connection, *args):
@@ -8,7 +12,7 @@ def query(connection, *args):
     return cursor
 
 
-class SQLiteDict(UserDict.DictMixin):
+class SQLiteDict(DictMixin):
     """A dict facade for an SQLite table"""
 
     def __init__(self, connection, commit=True, **kwargs):

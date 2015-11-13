@@ -1,4 +1,6 @@
 from math import floor
+from six.moves import xrange
+from six import integer_types
 
 from tilecloud import TileCoord, TileGrid
 
@@ -8,7 +10,7 @@ class FreeTileGrid(TileGrid):
     def __init__(self, resolutions, max_extent=None, tile_size=None, scale=1, flip_y=False):
         TileGrid.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         assert list(resolutions) == sorted(resolutions, reverse=True)
-        assert all(isinstance(r, int) or isinstance(r, long) for r in resolutions)
+        assert all(isinstance(r, integer_types) for r in resolutions)
         self.resolutions = resolutions
         self.scale = 1 if scale is 1 else float(scale)
         self.parent_zs = []
@@ -27,9 +29,9 @@ class FreeTileGrid(TileGrid):
         if tilecoord.z < len(self.resolutions):
             for child_z in self.child_zs[tilecoord.z]:
                 factor = self.resolutions[tilecoord.z] / self.resolutions[child_z]
-                for i in xrange(0, factor):
+                for i in xrange(0, int(factor)):
                     x = factor * tilecoord.x + i
-                    for j in xrange(0, factor):
+                    for j in xrange(0, int(factor)):
                         y = factor * tilecoord.y + j
                         yield TileCoord(child_z, x, y)
 

@@ -1,5 +1,6 @@
 from itertools import islice
 import unittest
+from six.moves import xrange
 
 from tilecloud import TileCoord, TileGrid
 from tilecloud.grid.free import FreeTileGrid
@@ -41,7 +42,7 @@ class TestFreeTileGrid(unittest.TestCase):
         self.assertEquals(self.ftg.parent(TileCoord(0, 0, 0)), None)
 
     def test_zs(self):
-        self.assertEquals(list(self.ftg.zs()), range(len(self.resolutions)))
+        self.assertEquals(list(self.ftg.zs()), [e for e in range(len(self.resolutions))])
 
 
 class TestFreeTileGrid2(unittest.TestCase):
@@ -233,7 +234,7 @@ class TestQuadTileGrid(unittest.TestCase):
                     self.assertEqual(self.qtg.tilecoord(z, minx, miny), tilecoord)
 
     def test_zs(self):
-        self.assertEqual(list(islice(self.qtg.zs(), 50)), range(50))
+        self.assertEqual(list(islice(self.qtg.zs(), 50)), [e for e in range(50)])
 
 
 class TestQuadTileGridFlipY(unittest.TestCase):
