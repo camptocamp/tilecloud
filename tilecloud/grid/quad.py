@@ -1,4 +1,5 @@
 from itertools import count
+from six.moves import xrange
 
 from tilecloud import Bounds, TileCoord, TileGrid
 

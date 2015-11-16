@@ -1,5 +1,5 @@
-import httplib
 import logging
+from six.moves import http_client as httplib
 
 from tilecloud import Tile, TileStore
 from tilecloud.lib.s3 import S3Connection, S3Error

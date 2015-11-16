@@ -1,11 +1,15 @@
-install:
-  - pip install -r requirements.txt
-  - pip install -r dev-requirements.txt
-
 language: python
 
 python:
-  - "2.7"
-  - "2.6"
+  - 2.7
+  - 3.5
 
-script: make pep8 pyflakes test
+install:
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+  - pip install -r dev-requirements.txt
+
+script:
+  - make pep8
+  - make pyflakes
+  - make test

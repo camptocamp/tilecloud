@@ -1,4 +1,5 @@
 import PIL.Image
+from six.moves import xrange
 
 from tilecloud import BoundingPyramid, Tile, TileCoord, TileStore
 

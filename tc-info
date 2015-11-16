@@ -29,13 +29,13 @@ def main(argv):
             for z in sorted(bounding_pyramid.zs()):
                 xbounds, ybounds = bounding_pyramid.zget(z)
                 if options.relative:
-                    print '%d/%d/%d:%+d/%+d' % (z, xbounds.start,
+                    print('%d/%d/%d:%+d/%+d' % (z, xbounds.start,
                                                 ybounds.start,
                                                 xbounds.stop - xbounds.start,
-                                                ybounds.stop - ybounds.start)
+                                                ybounds.stop - ybounds.start))
                 else:
-                    print '%d/%d/%d:%d/%d' % (z, xbounds.start, ybounds.start,
-                                              xbounds.stop, ybounds.stop)
+                    print('%d/%d/%d:%d/%d' % (z, xbounds.start, ybounds.start,
+                                              xbounds.stop, ybounds.stop))
         elif options.tiles == 'completion':
             bounding_pyramid = \
                 BoundingPyramid.from_string(options.bounding_pyramid)
@@ -46,10 +46,10 @@ def main(argv):
                 numerator = len(completed[z])
                 dxbounds, dybounds = bounding_pyramid.zget(z)
                 denominator = len(dxbounds) * len(dybounds)
-                print '%d %d/%d (%d%%)' % (z, numerator, denominator,
-                                           100 * numerator / denominator)
+                print('%d %d/%d (%d%%)' % (z, numerator, denominator,
+                                           100 * numerator / denominator))
         elif options.tiles == 'count':
-            print len(tilestore)
+            print(len(tilestore))
         elif options.tiles == 'estimate-completion':
             bounding_pyramid = \
                 BoundingPyramid.from_string(options.bounding_pyramid)
@@ -63,11 +63,11 @@ def main(argv):
                     numerator = 0
                 dxbounds, dybounds = bounding_pyramid.zget(z)
                 denominator = len(dxbounds) * len(dybounds)
-                print '%d %d/%d (%d%%)' % (z, numerator, denominator,
-                                           100 * numerator / denominator)
+                print('%d %d/%d (%d%%)' % (z, numerator, denominator,
+                                           100 * numerator / denominator))
         elif options.tiles == 'list':
             for tile in tilestore.list():
-                print tile.tilecoord
+                print(tile.tilecoord)
 
 
 if __name__ == '__main__':

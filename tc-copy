@@ -6,6 +6,7 @@ from optparse import OptionParser
 import os.path
 import random
 import sys
+from six.moves import xrange
 
 from tilecloud import BoundingPyramid, TileStore, consume
 from tilecloud.filter.benchmark import Benchmark, Statsd, StatsdCountErrors, StatsdCountTiles

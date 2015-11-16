@@ -1,3 +1,5 @@
+from six import iterkeys
+
 from tilecloud import Tile, TileStore
 
 
@@ -25,7 +27,7 @@ class DictTileStore(TileStore):
             return None
 
     def list(self):
-        for tilecoord in self.tiles.iterkeys():
+        for tilecoord in iterkeys(self.tiles):
             yield Tile(tilecoord)
 
     def put_one(self, tile):

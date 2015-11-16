@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 
 import collections
-from itertools import ifilter, imap, islice
+from itertools import islice
 import logging
 from operator import attrgetter
 import os.path
 import re
+from sys import version_info
+from six import itervalues, iteritems
+from six.moves import xrange, reduce, filter as ifilter, map as imap
+if version_info[0] > 2:
+    def cmp(a, b):
+        return (a > b) - (a < b)
 
 
 logger = logging.getLogger(__name__)
@@ -45,6 +51,12 @@ class Bounds(object):
 
     def __cmp__(self, other):
         return cmp(self.start, other.start) or cmp(self.stop, other.stop)
+
+    def __lt__(self, other):
+        return [self.start, self.stop] < [other.start, other.stop]
+
+    def __eq__(self, other):
+        return [self.start, self.stop] == [other.start, other.stop]
 
     def __contains__(self, key):
         """
@@ -144,7 +156,7 @@ class BoundingPyramid(object):
     def __len__(self):
         """Returns the total number of TileCoords in self"""
         return sum(len(xbounds) * len(ybounds)
-                   for xbounds, ybounds in self.bounds.itervalues())
+                   for xbounds, ybounds in itervalues(self.bounds))
 
     def add(self, tilecoord):
         """Extends self to include tilecoord"""
@@ -293,7 +305,7 @@ class Tile(object):
         self.content_type = content_type
         self.data = data
         self.error = None
-        for key, value in kwargs.iteritems():
+        for key, value in iteritems(kwargs):
             setattr(self, key, value)
 
     def __cmp__(self, other):
@@ -306,6 +318,12 @@ class Tile(object):
 
         """
         return cmp(self.tilecoord, other.tilecoord)
+
+    def __lt__(self, other):
+        return self.tilecoord < other.tilecoord
+
+    def __eq__(self, other):
+        return self.tilecoord == other.tilecoord
 
     def __repr__(self):  # pragma: no cover
         """
@@ -355,6 +373,12 @@ class TileCoord(object):
 
         """
         return cmp(self.n, other.n) or cmp(self.z, other.z) or cmp(self.x, other.x) or cmp(self.y, other.y)
+
+    def __lt__(self, other):
+        return [self.n, self.z, self.x, self.y] < [other.n, other.z, other.x, other.y]
+
+    def __eq__(self, other):
+        return [self.n, self.z, self.x, self.y] == [other.n, other.z, other.x, other.y]
 
     def __hash__(self):
         """
@@ -504,7 +528,7 @@ class TileStore(object):
         """
         self.bounding_pyramid = bounding_pyramid
         self.content_type = content_type
-        for key, value in kwargs.iteritems():
+        for key, value in iteritems(kwargs):
             setattr(self, key, value)
 
     def __contains__(self, tile):

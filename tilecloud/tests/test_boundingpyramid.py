@@ -1,4 +1,5 @@
 import unittest
+from six.moves import xrange
 
 from tilecloud import BoundingPyramid, Bounds, TileCoord
 

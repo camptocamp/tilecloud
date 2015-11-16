@@ -1,4 +1,4 @@
-from cStringIO import StringIO
+from six import BytesIO as StringIO
 import unittest
 
 from PIL import Image

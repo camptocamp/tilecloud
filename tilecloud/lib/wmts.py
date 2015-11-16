@@ -2,6 +2,7 @@ from math import ceil
 
 from bottle import jinja2_template
 from pyproj import Proj, transform
+from six import iteritems
 
 from tilecloud.lib.wmts_get_capabilities_template import wmts_get_capabilities_template
 
@@ -69,4 +70,5 @@ def get_capabilities(layers, tile_matrix_set, wmts_gettile):
         layers=layers,
         matrix_sets=matrix_sets(tile_matrix_set),
         wmts_gettile=wmts_gettile,
-        tile_matrix_set=tile_matrix_set['name'])
+        tile_matrix_set=tile_matrix_set['name'],
+        iteritems=iteritems)

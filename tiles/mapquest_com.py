@@ -1,3 +1,6 @@
+
+from six.moves import xrange
+
 from tilecloud.layout.template import TemplateTileLayout
 from tilecloud.store.url import URLTileStore
 

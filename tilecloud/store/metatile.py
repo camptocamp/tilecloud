@@ -1,13 +1,18 @@
-from cStringIO import StringIO
+from sys import version_info
+
+from tilecloud import Tile, TileStore
+from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
+
+if version_info[0] == 2:
+    from cStringIO import StringIO
+else:
+    from io import BytesIO as StringIO
 
 try:
     from PIL import Image
     Image  # suppress pyflakes warning
 except:
     import Image
-
-from tilecloud import Tile, TileStore
-from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class MetaTileSplitterTileStore(TileStore):
