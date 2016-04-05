@@ -1,5 +1,5 @@
-from itertools import imap
-from six import iterkeys
+from six.moves import map as imap
+from six import iterkeys, text_type
 
 from tilecloud import Tile, TileCoord, TileStore
 
@@ -17,7 +17,7 @@ class BSDDBTileStore(TileStore):
         return len(self.db)
 
     def delete_one(self, tile):
-        key = str(tile.tilecoord)
+        key = text_type(tile.tilecoord).encode('utf-8')
         if key in self.db:
             del self.db[key]
         return tile
@@ -30,7 +30,7 @@ class BSDDBTileStore(TileStore):
     def get_one(self, tile):
         try:
             tile.content_type = self.content_type
-            tile.data = self.db[str(tile.tilecoord)]
+            tile.data = self.db[text_type(tile.tilecoord).encode('utf-8')]
             return tile
         except KeyError:
             return None
@@ -39,5 +39,5 @@ class BSDDBTileStore(TileStore):
         return imap(lambda s: Tile(TileCoord.from_string(s)), iterkeys(self.db))
 
     def put_one(self, tile):
-        self.db[str(tile.tilecoord)] = getattr(tile, 'data', '')
+        self.db[text_type(tile.tilecoord).encode('utf-8')] = getattr(tile, 'data', '')
         return tile
