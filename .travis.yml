@@ -1,15 +1,27 @@
 language: python
 
 python:
-  - 2.7
-  - 3.5
+- 2.7
+- 3.5
 
 install:
-  - pip install --upgrade pip
-  - pip install -r requirements.txt
-  - pip install -r dev-requirements.txt
+- pip install --upgrade pip
+- pip install -r requirements.txt
+- pip install -r dev-requirements.txt
 
 script:
-  - make pep8
-  - make pyflakes
-  - make test
+- make pep8
+- make pyflakes
+- make test
+
+deploy:
+- provider: pypi
+  user: sbrunner
+  password:
+    secure: fautIIg6a5PRs9/sDzblOjxVcaaa9G5T5mRWv3QkopjG0juu2y/OSJ9NGiQYYt87R2ho/JbgxNx2LVQyHuJdR0/ZECmN2praDyXfP//QFbGMq02yTEWwFWQ2zF24AT+yHvx4vgU4gH3V8B+6xpLslSWu/zN1Ba1pmIWGlmzrOeM=
+  skip_cleanup: true
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
+    python: 2.7
+    condition: "${TRAVIS_TAG} == `python setup.py --version`"
