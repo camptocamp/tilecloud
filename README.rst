@@ -476,5 +476,3 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 OF THE POSSIBILITY OF SUCH DAMAGE.
 
 vim: set filetype=rst spell spelllang=en textwidth=0:
-
-

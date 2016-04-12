@@ -1,0 +1,4 @@
+* text whitespace=trailing-space,tab-in-indent,cr-at-eol,tabwidth=4 eol=lf
+.gitmodules text whitespace=indent-with-non-tab,tabwidth=2
+Makefile text whitespace=indent-with-non-tab,tabwidth=2
+*.rst tex conflict-marker-size=100
