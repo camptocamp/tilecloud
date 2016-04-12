@@ -14,6 +14,11 @@ script:
 - make pyflakes
 - make test
 
+after_success:
+# Report coverage results to coveralls.io
+- pip install coveralls
+- coveralls
+
 deploy:
 - provider: pypi
   user: sbrunner
