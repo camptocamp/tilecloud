@@ -14,9 +14,9 @@ class TileCacheDiskLayout(RETileLayout):
         RETileLayout.__init__(self, self.PATTERN, self.RE)
 
     def filename(self, tilecoord):
-        zs = '%02d' % (tilecoord.z,)
-        xs = '%09d' % (tilecoord.x,)
-        ys = '%09d' % (tilecoord.y,)
+        zs = '{0:02d}'.format(tilecoord.z)
+        xs = '{0:09d}'.format(tilecoord.x)
+        ys = '{0:09d}'.format(tilecoord.y)
         return '/'.join((zs, xs[0:3], xs[3:6], xs[6:9], ys[0:3], ys[3:6], ys[6:9]))
 
     def _tilecoord(self, _match):
