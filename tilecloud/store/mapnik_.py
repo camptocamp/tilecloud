@@ -18,7 +18,7 @@ class MapnikTileStore(TileStore):
 
     def __init__(
             self, tilegrid, mapfile, data_buffer=128, image_buffer=0, output_format='png256', resolution=2,
-            layers_fields={}, drop_empty_utfgrid=False, proj4_literal=None, **kwargs):
+            layers_fields=None, drop_empty_utfgrid=False, proj4_literal=None, **kwargs):
         """
         Constructs a MapnikTileStore
 
@@ -33,6 +33,8 @@ class MapnikTileStore(TileStore):
             default is {}.
         :param **kwargs: for extended class.
         """
+        if layers_fields is None:
+            layers_fields = {}
 
         TileStore.__init__(self, **kwargs)
         self.tilegrid = tilegrid
