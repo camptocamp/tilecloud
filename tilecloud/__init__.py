@@ -94,8 +94,10 @@ class Bounds(object):
         if self.start is None:
             return '{0!s}(None)'.format(self.__class__.__name__)
         else:
-            return '{0!s}({1!r}, {2!r})'.format(self.__class__.__name__,
-                                   self.start, self.stop)
+            return '{0!s}({1!r}, {2!r})'.format(
+                self.__class__.__name__,
+                self.start, self.stop
+            )
 
     def add(self, value):
         """Extends self to include value"""
@@ -405,11 +407,13 @@ class TileCoord(object):
 
         """
         if self.n == 1:
-            return '{0!s}({1!r}, {2!r}, {3!r})'.format(self.__class__.__name__,
-                                       self.z, self.x, self.y)
+            return '{0!s}({1!r}, {2!r}, {3!r})'.format(
+                self.__class__.__name__, self.z, self.x, self.y
+            )
         else:
-            return '{0!s}({1!r}, {2!r}, {3!r}, {4!r})'.format(self.__class__.__name__,
-                                           self.z, self.x, self.y, self.n)
+            return '{0!s}({1!r}, {2!r}, {3!r}, {4!r})'.format(
+                self.__class__.__name__, self.z, self.x, self.y, self.n
+            )
 
     def __str__(self):
         """

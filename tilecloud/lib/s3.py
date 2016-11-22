@@ -97,9 +97,10 @@ class S3Error(RuntimeError):
                         None if element is None else element.text)
             RuntimeError.__init__(self, '{0!s}: {1!s}'.format(self.code, self.message))
         else:
-            RuntimeError.__init__(self,
-                                  '{0:d} {1!s}'.format(self.response.status,
-                                             httplib.responses[self.response.status]))
+            RuntimeError.__init__(self, '{0:d} {1!s}'.format(
+                self.response.status,
+                httplib.responses[self.response.status]
+            ))
 
 
 class S3Key(object):
