@@ -95,10 +95,10 @@ class S3Error(RuntimeError):
                 element = self.etree.find(key)
                 setattr(self, key.lower(),
                         None if element is None else element.text)
-            RuntimeError.__init__(self, '%s: %s' % (self.code, self.message))
+            RuntimeError.__init__(self, '{0!s}: {1!s}'.format(self.code, self.message))
         else:
             RuntimeError.__init__(self,
-                                  '%d %s' % (self.response.status,
+                                  '{0:d} {1!s}'.format(self.response.status,
                                              httplib.responses[self.response.status]))
 
 
@@ -168,7 +168,7 @@ class S3Bucket(object):
 
     def list_objects(self, marker=None, max_keys=None, prefix=None):
         while True:
-            query = '&'.join('%s=%s' % (k, v) for k, v in (('marker', marker), ('max-keys', max_keys), ('prefix', prefix)) if v is not None)
+            query = '&'.join('{0!s}={1!s}'.format(k, v) for k, v in (('marker', marker), ('max-keys', max_keys), ('prefix', prefix)) if v is not None)
             headers, body = self.connection.get(self.name, '/?' + query if query else '/')
             etree = ElementTree.fromstring(body)
             for contents_element in etree.findall(self.CONTENTS_PATH):
@@ -243,11 +243,10 @@ class S3Connection(object):
             api_connection.close()
             # Step 2: fetch the credentials
             api_connection = httplib.HTTPConnection('169.254.169.254')
-            api_connection.request('GET', '/latest/meta-data/iam/security-credentials/%s' % (role))
+            api_connection.request('GET', '/latest/meta-data/iam/security-credentials/{0!s}'.format((role)))
             response = api_connection.getresponse()
             if response.status != 200:
-                raise RuntimeError('Error while fetching AWS credential from API: %s %s'
-                                   % (response.status, response.reason))
+                raise RuntimeError('Error while fetching AWS credential from API: {0!s} {1!s}'.format(response.status, response.reason))
             credentials = json.loads(response.read())
             self.access_key = credentials['AccessKeyId'].encode('utf-8')
             self.secret_access_key = credentials['SecretAccessKey'].encode('utf-8')
@@ -330,17 +329,17 @@ class S3Connection(object):
              sub_resources=None):
         headers = HeaderDict() if headers is None else headers.copy()
         string_to_sign = []
-        string_to_sign.append('%s\n' % (method,))
-        string_to_sign.append('%s\n' % headers.get('content-md5', ('',)))
-        string_to_sign.append('%s\n' % headers.get('content-type', ('',)))
+        string_to_sign.append('{0!s}\n'.format(method))
+        string_to_sign.append('{0!s}\n'.format(headers.get('content-md5', ('',))))
+        string_to_sign.append('{0!s}\n'.format(headers.get('content-type', ('',))))
         if 'x-amz-date' in headers:
             string_to_sign.append('\n')
         else:
-            string_to_sign.append('%s\n' % headers.get('date', ('',)))
+            string_to_sign.append('{0!s}\n'.format(headers.get('date', ('',))))
         for key in sorted(set(imap(str.lower, headers.keys())) - self.SIGN_IGNORE_HEADERS):
-            string_to_sign.append('%s:%s\n' % (key, headers[key]))
+            string_to_sign.append('{0!s}:{1!s}\n'.format(key, headers[key]))
         if bucket_name is not None:
-            string_to_sign.append('/%s' % (bucket_name,))
+            string_to_sign.append('/{0!s}'.format(bucket_name))
         if url is not None:
             string_to_sign.append(urlparse(url).path)
         if sub_resources:
@@ -350,8 +349,8 @@ class S3Connection(object):
                 if value is None:
                     query_param = key
                 else:
-                    query_param = '%s=%s' % (key, value)
+                    query_param = '{0!s}={1!s}'.format(key, value)
                 query_params.append(query_param)
-            string_to_sign.append('?%s' % ('&'.join(query_params),))
+            string_to_sign.append('?{0!s}'.format('&'.join(query_params)))
         signature = hmac.new(self.secret_access_key, ''.join(string_to_sign), hashlib.sha1)
-        return 'AWS %s:%s' % (self.access_key, b64encode(signature.digest()))
+        return 'AWS {0!s}:{1!s}'.format(self.access_key, b64encode(signature.digest()))

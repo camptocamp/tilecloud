@@ -23,7 +23,7 @@ class URLTileStore(TileStore):
                                       len(self.tilelayouts)]
         url = tilelayout.filename(tile.tilecoord)
 
-        logger.info('GET %s' % (url,))
+        logger.info('GET {0!s}'.format(url))
         try:
             response = self.session.get(url)
             if response.status_code == 404:

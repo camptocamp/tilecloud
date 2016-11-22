@@ -40,7 +40,7 @@ def main(argv):
         style='_null',
         format='image/png',
         tile_matrix_set='EPSG:900913',
-        tile_matrix=lambda z: 'EPSG:900913:%d' % (z,))
+        tile_matrix=lambda z: 'EPSG:900913:{0:d}'.format(z))
     tilestream = generate_tilestore.get(tilestream)
     tilestream = imap(Logger(logger, logging.INFO, 'got %(tilecoord)s, error=%(error)s'), tilestream)
     # Put the tile back into the RenderingTheWorld tile store.  This check whether the tile should be subdivided, and, if so, adds the tile's children to the list of tiles to be generated.
