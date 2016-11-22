@@ -5,7 +5,9 @@ from tilecloud import TileLayout
 
 class WMSTileLayout(TileLayout):
 
-    def __init__(self, url, layers, srs, format, tilegrid, border=0, params={}):
+    def __init__(self, url, layers, srs, format, tilegrid, border=0, params=None):
+        if params is None:
+            params = {}
         self.tilegrid = tilegrid
         self.url = url
         self.border = border
