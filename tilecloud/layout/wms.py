@@ -28,7 +28,7 @@ class WMSTileLayout(TileLayout):
         bbox = self.tilegrid.extent(tilecoord, self.border)
         size = tilecoord.n * self.tilegrid.tile_size + 2 * self.border
         params = self.params.copy()
-        params['BBOX'] = '%f,%f,%f,%f' % bbox
+        params['BBOX'] = '{0:f},{1:f},{2:f},{3:f}'.format(*bbox)
         params['WIDTH'] = size
         params['HEIGHT'] = size
         return self.url + '?' + urlencode(params)

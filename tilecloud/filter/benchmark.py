@@ -24,7 +24,7 @@ class Statistics(object):
         result = []
         if self.n:
             result.append('/'.join(self.format % value for value in (self.minimum, self.mean, self.maximum)))
-        result.append('(n=%d)' % (self.n,))
+        result.append('(n={0:d})'.format(self.n))
         return ' '.join(result)
 
     @property
@@ -78,7 +78,7 @@ class Benchmark(object):
                     if statistics:
                         statistics.add(delta_t)
                     if self.statsd:
-                        self.statsd.send('%s:%.3f|ms' % (key, delta_t))
+                        self.statsd.send('{0!s}:{1:.3f}|ms'.format(key, delta_t))
                 else:
                     setattr(tile, self.attr, [time.time()])
             return tile

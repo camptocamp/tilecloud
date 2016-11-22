@@ -41,7 +41,7 @@ def matrix_sets(tile_matrix_set):
             "resolution": resolution,
             # 0.000028 corresponds to 0.28 mm per pixel
             "scale": resolution * METERS_PER_UNIT[units] / 0.00028,
-            "topleft": "%f %f" % (tile_matrix_set['bbox'][0], maxy)
+            "topleft": "{0:f} {1:f}".format(tile_matrix_set['bbox'][0], maxy)
         })
     sets[tile_matrix_set['name']] = matrix_set
 

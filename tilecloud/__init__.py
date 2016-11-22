@@ -92,10 +92,12 @@ class Bounds(object):
 
     def __repr__(self):  # pragma: no cover
         if self.start is None:
-            return '%s(None)' % (self.__class__.__name__,)
+            return '{0!s}(None)'.format(self.__class__.__name__)
         else:
-            return '%s(%r, %r)' % (self.__class__.__name__,
-                                   self.start, self.stop)
+            return '{0!s}({1!r}, {2!r})'.format(
+                self.__class__.__name__,
+                self.start, self.stop
+            )
 
     def add(self, value):
         """Extends self to include value"""
@@ -241,8 +243,7 @@ class BoundingPyramid(object):
             r'(?:(?P<plusx>\+)?(?P<x2>\d+)|(?P<starx>\*))/' +
             r'(?:(?P<plusy>\+)?(?P<y2>\d+)|(?P<stary>\*))\Z', s)
         if not match:
-            raise ValueError('invalid literal for %s.from_string(): %r' %
-                             (cls.__name__, s))
+            raise ValueError('invalid literal for {0!s}.from_string(): {1!r}'.format(cls.__name__, s))
         z1 = int(match.group('z1'))
         x1 = int(match.group('x1'))
         if match.group('starx'):
@@ -333,8 +334,8 @@ class Tile(object):
 
         """
         keys = sorted(self.__dict__.keys())
-        attrs = ''.join(' %s=%r' % (key, self.__dict__[key]) for key in keys)
-        return '<Tile%s>' % (attrs,)
+        attrs = ''.join(' {0!s}={1!r}'.format(key, self.__dict__[key]) for key in keys)
+        return '<Tile{0!s}>'.format(attrs)
 
 
 class TileCoord(object):
@@ -406,11 +407,13 @@ class TileCoord(object):
 
         """
         if self.n == 1:
-            return '%s(%r, %r, %r)' % (self.__class__.__name__,
-                                       self.z, self.x, self.y)
+            return '{0!s}({1!r}, {2!r}, {3!r})'.format(
+                self.__class__.__name__, self.z, self.x, self.y
+            )
         else:
-            return '%s(%r, %r, %r, %r)' % (self.__class__.__name__,
-                                           self.z, self.x, self.y, self.n)
+            return '{0!s}({1!r}, {2!r}, {3!r}, {4!r})'.format(
+                self.__class__.__name__, self.z, self.x, self.y, self.n
+            )
 
     def __str__(self):
         """
@@ -420,9 +423,9 @@ class TileCoord(object):
 
         """
         if self.n == 1:
-            return '%d/%d/%d' % (self.z, self.x, self.y)
+            return '{0:d}/{1:d}/{2:d}'.format(self.z, self.x, self.y)
         else:
-            return '%d/%d/%d:+%d/+%d' % (self.z, self.x, self.y, self.n, self.n)
+            return '{0:d}/{1:d}/{2:d}:+{3:d}/+{4:d}'.format(self.z, self.x, self.y, self.n, self.n)
 
     def metatilecoord(self, n=8):
         return TileCoord(self.z, n * (self.x // n), n * (self.y // n), n)
@@ -434,7 +437,7 @@ class TileCoord(object):
     def from_string(cls, s):
         m = re.match(r'(\d+)/(\d+)/(\d+)(?::\+(\d+)/\+\4)?\Z', s)
         if not m:
-            raise ValueError('invalid literal for %s.from_string: %r' % (cls.__name__, s))
+            raise ValueError('invalid literal for {0!s}.from_string: {1!r}'.format(cls.__name__, s))
         x, y, z, n = m.groups()
         return cls(int(x), int(y), int(z), int(n) if n else 1)
 
