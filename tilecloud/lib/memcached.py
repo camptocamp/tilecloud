@@ -15,7 +15,7 @@ class MemcachedClient(object):
         self.buffer = ''
 
     def delete(self, key):
-        self.writeline('delete %s' % (key,))
+        self.writeline('delete {0!s}'.format(key))
         line = self.readline()
         if line == 'DELETED':
             return True
@@ -25,7 +25,7 @@ class MemcachedClient(object):
             raise MemcachedError(line)
 
     def get(self, key):
-        self.writeline('get %s' % (key,))
+        self.writeline('get {0!s}'.format(key))
         line = self.readline()
         if line == 'END':
             return None, None, None
@@ -42,7 +42,7 @@ class MemcachedClient(object):
         return flags, value, cas
 
     def set(self, key, flags, exptime, value):
-        self.writeline('set %s %d %d %d' % (key, flags, exptime, len(value)))
+        self.writeline('set {0!s} {1:d} {2:d} {3:d}'.format(key, flags, exptime, len(value)))
         self.writeline(value)
         line = self.readline()
         if line != 'STORED':

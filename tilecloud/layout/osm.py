@@ -14,7 +14,7 @@ class OSMTileLayout(RETileLayout):
         RETileLayout.__init__(self, self.PATTERN, self.RE)
 
     def filename(self, tilecoord):
-        return '%d/%d/%d' % (tilecoord.z, tilecoord.x, tilecoord.y)
+        return '{0:d}/{1:d}/{2:d}'.format(tilecoord.z, tilecoord.x, tilecoord.y)
 
     def _tilecoord(self, match):
         return TileCoord(*map(int, match.groups()))
