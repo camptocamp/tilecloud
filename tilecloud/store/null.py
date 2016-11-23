@@ -7,14 +7,18 @@ class NullTileStore(TileStore):
     def __contains__(self, tile):
         return False
 
-    def delete_one(self, tile):
+    @staticmethod
+    def delete_one(tile):
         return tile
 
-    def get_one(self, tile):
+    @staticmethod
+    def get_one(tile):
         return tile
 
-    def list(self):
+    @staticmethod
+    def list():
         return ()
 
-    def put_one(self, tile):
+    @staticmethod
+    def put_one(tile):
         return tile

@@ -13,8 +13,10 @@ class OSMTileLayout(RETileLayout):
     def __init__(self):
         RETileLayout.__init__(self, self.PATTERN, self.RE)
 
-    def filename(self, tilecoord):
+    @staticmethod
+    def filename(tilecoord):
         return '{0:d}/{1:d}/{2:d}'.format(tilecoord.z, tilecoord.x, tilecoord.y)
 
-    def _tilecoord(self, match):
+    @staticmethod
+    def _tilecoord(match):
         return TileCoord(*map(int, match.groups()))

@@ -30,5 +30,6 @@ class TemplateTileLayout(RETileLayout):
         return self.template % \
             dict(z=tilecoord.z, x=tilecoord.x, y=tilecoord.y)
 
-    def _tilecoord(self, match):
+    @staticmethod
+    def _tilecoord(match):
         return TileCoord(*(int(match.group(s)) for s in 'zxy'))

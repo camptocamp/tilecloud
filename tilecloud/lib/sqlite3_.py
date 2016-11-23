@@ -65,7 +65,8 @@ class SQLiteDict(DictMixin):
     def keys(self):
         return list(iter(self))
 
-    def _packitem(self, key, value):
+    @staticmethod
+    def _packitem(key, value):
         return (key, value)
 
     def _packkey(self, key):

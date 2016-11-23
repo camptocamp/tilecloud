@@ -454,33 +454,41 @@ class TileGrid(object):
         self.tile_size = tile_size or 256
         self.flip_y = flip_y
 
-    def children(self, tilecoord):
+    @staticmethod
+    def children(tilecoord):
         """Generates all the children of tilecoord"""
         raise NotImplementedError
 
-    def extent(self, tilecoord, border=0):
+    @staticmethod
+    def extent(tilecoord, border=0):
         """Returns the extent of the tile at tilecoord"""
         raise NotImplementedError
 
-    def fill_down(self, z, bounds):
+    @staticmethod
+    def fill_down(z, bounds):
         raise NotImplementedError
 
-    def fill_up(self, z, bounds):
+    @staticmethod
+    def fill_up(z, bounds):
         raise NotImplementedError
 
-    def parent(self, tilecoord):
+    @staticmethod
+    def parent(tilecoord):
         """Returns the parent of tilecoord"""
         raise NotImplementedError
 
-    def roots(self):
+    @staticmethod
+    def roots():
         """Generates all the root tiles"""
         raise NotImplementedError
 
-    def tilecoord(self, z, x, y):
+    @staticmethod
+    def tilecoord(z, x, y):
         """Returns the TileCoord for location (x, y) at level z"""
         raise NotImplementedError
 
-    def zs(self):
+    @staticmethod
+    def zs():
         """Generates all zs"""
         raise NotImplementedError
 
@@ -488,7 +496,8 @@ class TileGrid(object):
 class TileLayout(object):
     """Maps tile coordinates to filenames and vice versa"""
 
-    def filename(self, tilecoord):
+    @staticmethod
+    def filename(tilecoord):
         """
         Return the filename for the given tile coordinate.
 
@@ -500,7 +509,8 @@ class TileLayout(object):
         """
         raise NotImplementedError
 
-    def tilecoord(self, filename):
+    @staticmethod
+    def tilecoord(filename):
         """
         Return the tile coordinate for the given filename.
 
@@ -570,7 +580,8 @@ class TileStore(object):
         """
         return imap(self.delete_one, ifilter(None, tiles))
 
-    def delete_one(self, tile):
+    @staticmethod
+    def delete_one(tile):
         """
         Delete ``tile`` and return ``tile``.
 
@@ -615,7 +626,8 @@ class TileStore(object):
                            ifilter(None, self.list())),
                       BoundingPyramid())
 
-    def get_cheap_bounding_pyramid(self):
+    @staticmethod
+    def get_cheap_bounding_pyramid():
         """
         Returns a bounding pyramid that is cheap to calculate, or ``None`` if
         it is not possible to calculate a bounding pyramid cheaply.
@@ -625,7 +637,8 @@ class TileStore(object):
         """
         return None
 
-    def get_one(self, tile):
+    @staticmethod
+    def get_one(tile):
         """
         Add data to ``tile``, or return ``None`` if ``tile`` is not in the store.
 
@@ -660,7 +673,8 @@ class TileStore(object):
         """
         return imap(self.put_one, ifilter(None, tiles))
 
-    def put_one(self, tile):
+    @staticmethod
+    def put_one(tile):
         """
         Store ``tile`` in the store.
 

@@ -13,5 +13,6 @@ class RETileLayout(TileLayout):
             raise ValueError('invalid literal for {0!s}.tilecoord(): {1!r}'.format(self.__class__.__name__, filename))
         return self._tilecoord(match)
 
-    def _tilecoord(self, match):  # pragma: no cover
+    @staticmethod
+    def _tilecoord(match):  # pragma: no cover
         raise NotImplementedError

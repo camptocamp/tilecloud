@@ -12,7 +12,8 @@ class LogTileStore(TileStore):
         self.tilelayout = tilelayout
         self.file = file
 
-    def get_one(self, tile):
+    @staticmethod
+    def get_one(tile):
         tile.data = None
         return tile
 
