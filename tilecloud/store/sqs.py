@@ -53,7 +53,8 @@ class SQSTileStore(TileStore):
                 logger.warning(str(e))
                 sqs_message.delete()
 
-    def delete_one(self, tile):
+    @staticmethod
+    def delete_one(tile):
         assert hasattr(tile, 'sqs_message')
         tile.sqs_message.delete()
         delattr(tile, 'sqs_message')

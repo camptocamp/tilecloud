@@ -69,17 +69,22 @@ class SQLiteDict(DictMixin):
     def _packitem(key, value):
         return (key, value)
 
-    def _packkey(self, key):
+    @staticmethod
+    def _packkey(key):
         return (key,)
 
-    def _packvalue(self, value):  # pragma: no cover
+    @staticmethod
+    def _packvalue(value):  # pragma: no cover
         return (value,)
 
-    def _unpackitem(self, row):  # pragma: no cover
+    @staticmethod
+    def _unpackitem(row):  # pragma: no cover
         return row
 
-    def _unpackkey(self, row):
+    @staticmethod
+    def _unpackkey(row):
         return row[0]
 
-    def _unpackvalue(self, row):
+    @staticmethod
+    def _unpackvalue(row):
         return row[0]
