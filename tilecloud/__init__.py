@@ -686,8 +686,8 @@ class TileStore(object):
         """
         raise NotImplementedError
 
-    @classmethod
-    def load(cls, name):  # pragma: no cover
+    @staticmethod
+    def load(name):  # pragma: no cover
         """
         Construct a :class:`TileStore` from a name.
 
