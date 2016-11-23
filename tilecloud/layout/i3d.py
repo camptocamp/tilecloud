@@ -37,8 +37,8 @@ class I3DTileLayout(RETileLayout):
         z, x, y = len(quadcode), 0, 0
         for i, c in enumerate(quadcode):
             mask = 1 << (z - i - 1)
-            if c == '1' or c == '3':
+            if c in ['1', '3']:
                 x |= mask
-            if c == '2' or c == '3':
+            if c in ['2', '3']:
                 y |= mask
         return TileCoord(z, x, y)
