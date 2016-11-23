@@ -28,24 +28,28 @@ class QuadTileGrid(TileGrid):
         maxy = self.max_extent[1] + (self.max_extent[3] - self.max_extent[1]) * (y + tilecoord.n + delta) / (1 << tilecoord.z)
         return (minx, miny, maxx, maxy)
 
-    def fill_down(self, z, bounds):
+    @staticmethod
+    def fill_down(z, bounds):
         xbounds, ybounds = bounds
         return (Bounds(2 * xbounds.start, 2 * xbounds.stop),
                 Bounds(2 * ybounds.start, 2 * ybounds.stop))
 
-    def fill_up(self, z, bounds):
+    @staticmethod
+    def fill_up(z, bounds):
         assert z > 0
         xbounds, ybounds = bounds
         return (Bounds(xbounds.start // 2, max(xbounds.stop // 2, 1)),
                 Bounds(ybounds.start // 2, max(ybounds.stop // 2, 1)))
 
-    def parent(self, tilecoord):
+    @staticmethod
+    def parent(tilecoord):
         if tilecoord.z == 0:
             return None
         else:
             return TileCoord(tilecoord.z - 1, int(tilecoord.x // 2), int(tilecoord.y // 2))
 
-    def roots(self):
+    @staticmethod
+    def roots():
         yield TileCoord(0, 0, 0)
 
     def tilecoord(self, z, x, y):

@@ -14,11 +14,13 @@ class I3DTileLayout(RETileLayout):
     def __init__(self):
         RETileLayout.__init__(self, self.PATTERN, self.RE)
 
-    def filename(self, tilecoord):
+    @staticmethod
+    def filename(tilecoord):
         return '/'.join(re.findall(r'[0-3]{1,2}',
                         I3DTileLayout.quadcode_from_tilecoord(tilecoord)))
 
-    def _tilecoord(self, match):
+    @staticmethod
+    def _tilecoord(match):
         return I3DTileLayout.tilecoord_from_quadcode(
             re.sub(r'/', '', match.group()))
 

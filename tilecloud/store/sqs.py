@@ -28,7 +28,8 @@ class SQSTileStore(TileStore):
     def __contains__(self, tile):
         return False
 
-    def get_one(self, tile):
+    @staticmethod
+    def get_one(tile):
         return tile
 
     def list(self):
