@@ -68,7 +68,7 @@ class MBTilesTileStore(TileStore):
         self.metadata = Metadata(self.connection, commit)
         self.tiles = Tiles(tilecoord_in_topleft, self.connection, commit)
         if 'content_type' not in kwargs and 'format' in self.metadata:
-            kwargs['content_type'] = mimetypes.types_map.get('.' + self.metadata['format'], None)
+            kwargs['content_type'] = mimetypes.types_map.get('.' + self.metadata['format'])
         TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile):

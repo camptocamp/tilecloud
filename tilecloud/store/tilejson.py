@@ -26,7 +26,7 @@ class TileJSONTileStore(URLTileStore):
         assert isinstance(d['tiles'], list)
         assert len(d['tiles']) > 0
         for key in self.KEYS:
-            kwargs.setdefault(key, d.get(key, None))
+            kwargs.setdefault(key, d.get(key))
         if 'bounding_pyramid' not in kwargs:
             zmin, zmax = d.get('minzoom', 0), d.get('maxzoom', 22)
             if 'bounds' in d:
