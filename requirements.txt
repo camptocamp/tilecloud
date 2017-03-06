@@ -1,5 +1,6 @@
-Pillow
+boto3==1.4.4
 bottle
-requests>=1.0
+Pillow
 pyproj
+requests>=1.0
 six
