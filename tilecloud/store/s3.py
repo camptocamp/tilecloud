@@ -1,18 +1,20 @@
+import boto3
+import botocore.config
+import botocore.exceptions
 import logging
-from six.moves import http_client as httplib
 
 from tilecloud import Tile, TileStore
-from tilecloud.lib.s3 import S3Connection, S3Error
-
 
 logger = logging.getLogger(__name__)
+CLIENT_TIMEOUT = 60
 
 
 class S3TileStore(TileStore):
     """Tiles stored in Amazon S3"""
 
-    def __init__(self, bucket, tilelayout, dry_run=False, **kwargs):
-        self.s3bucket = S3Connection().bucket(bucket)
+    def __init__(self, bucket, tilelayout, dry_run=False, s3_host=None, **kwargs):
+        self.client = get_client(s3_host)
+        self.bucket = bucket
         self.tilelayout = tilelayout
         self.dry_run = dry_run
         TileStore.__init__(self, **kwargs)
@@ -22,10 +24,10 @@ class S3TileStore(TileStore):
             return False
         key_name = self.tilelayout.filename(tile.tilecoord)
         try:
-            self.s3bucket.get(key_name)  # FIXME should use head
+            self.client.head_object(Bucket=self.bucket, Key=key_name)
             return True
-        except S3Error as exc:
-            if exc.response.status == httplib.NOT_FOUND:
+        except botocore.exceptions.ClientError as exc:
+            if _get_status(exc) == 404:
                 return False
             else:
                 raise
@@ -34,26 +36,20 @@ class S3TileStore(TileStore):
         try:
             key_name = self.tilelayout.filename(tile.tilecoord)
             if not self.dry_run:
-                self.s3bucket.delete(key_name)
-        except S3Error as exc:
+                self.client.delete_object(Bucket=self.bucket, Key=key_name)
+        except botocore.exceptions.ClientError as exc:
             tile.error = exc
         return tile
 
     def get_one(self, tile):
         key_name = self.tilelayout.filename(tile.tilecoord)
         try:
-            tile.s3_key = self.s3bucket.get(key_name)
-            tile.data = tile.s3_key.body
-            if 'Content-Encoding' in tile.s3_key:
-                tile.content_encoding = tile.s3_key['Content-Encoding']
-            else:
-                tile.content_encoding = None
-            if 'Content-Type' in tile.s3_key:
-                tile.content_type = tile.s3_key['Content-Type']
-            else:
-                tile.content_type = None
-        except S3Error as exc:
-            if exc.response.status == httplib.NOT_FOUND:
+            response = self.client.get_object(Bucket=self.bucket, Key=key_name)
+            tile.data = response['Body'].read()
+            tile.content_encoding = response.get('ContentEncoding')
+            tile.content_type = response.get('ContentType')
+        except botocore.exceptions.ClientError as exc:
+            if _get_status(exc) == 404:
                 return None
             else:
                 tile.error = exc
@@ -61,25 +57,36 @@ class S3TileStore(TileStore):
 
     def list(self):
         prefix = getattr(self.tilelayout, 'prefix', '')
-        for s3_key in self.s3bucket.list_objects(prefix=prefix):
+        for s3_key in self.client.list_objects(Bucket=self.bucket, Prefix=prefix):
             try:
-                tilecoord = self.tilelayout.tilecoord(s3_key.name)
+                tilecoord = self.tilelayout.tilecoord(s3_key['Key'])
             except ValueError:
                 continue
-            yield Tile(tilecoord, s3_key=s3_key)
+            yield Tile(tilecoord)
 
     def put_one(self, tile):
         assert tile.data is not None
         key_name = self.tilelayout.filename(tile.tilecoord)
-        s3_key = self.s3bucket.key(key_name)
-        s3_key.body = tile.data
+        args = {}
         if tile.content_encoding is not None:
-            s3_key['Content-Encoding'] = tile.content_encoding
+            args['ContentEncoding'] = tile.content_encoding
         if tile.content_type is not None:
-            s3_key['Content-Type'] = tile.content_type
+            args['ContentType'] = tile.content_type
         if not self.dry_run:
             try:
-                s3_key.put()
-            except S3Error as exc:
+                self.client.put_object(ACL='public-read', Body=tile.data, Key=key_name, Bucket=self.bucket,
+                                       **args)
+            except botocore.exceptions.ClientError as exc:
                 tile.error = exc
         return tile
+
+
+def _get_status(s3_client_exception):
+    return int(s3_client_exception.response['Error']['Code'])
+
+
+def get_client(s3_host):
+    config = botocore.config.Config(connect_timeout=CLIENT_TIMEOUT, read_timeout=CLIENT_TIMEOUT)
+    session = boto3.session.Session()
+    return session.client('s3', endpoint_url=('https://%s/' % s3_host) if s3_host is not None else None,
+                          config=config)
