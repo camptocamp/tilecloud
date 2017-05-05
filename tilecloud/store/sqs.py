@@ -23,7 +23,7 @@ class SQSTileStore(TileStore):
     def __init__(self, queue, on_empty=maybe_stop, **kwargs):
         TileStore.__init__(self, **kwargs)
         self.queue = queue
-        self.on_empty = maybe_stop
+        self.on_empty = on_empty
 
     def __contains__(self, tile):
         return False
