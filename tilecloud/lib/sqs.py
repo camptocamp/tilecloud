@@ -18,6 +18,10 @@ class SQSDeque(object):
         sqs_message['z'] = tile.tilecoord.z
         sqs_message['x'] = tile.tilecoord.x
         sqs_message['y'] = tile.tilecoord.y
+        sqs_message['metadata'] = tile.metadata
+        if 'sqs_message' in sqs_message['metadata']:
+            del sqs_message['metadata']['sqs_message']
+
         self.queue.write(sqs_message)
 
     def popleft(self):
@@ -27,4 +31,5 @@ class SQSDeque(object):
         z = sqs_message.get('z')
         x = sqs_message.get('x')
         y = sqs_message.get('y')
-        return Tile(TileCoord(z, x, y), sqs_message=sqs_message)
+        metadata = sqs_message.get('metadata', {})
+        return Tile(TileCoord(z, x, y), sqs_message=sqs_message, **metadata)

@@ -46,8 +46,9 @@ class SQSTileStore(TileStore):
                     x = sqs_message.get('x')
                     y = sqs_message.get('y')
                     n = sqs_message.get('n')
+                    metadata = sqs_message.get('metadata', {})
                     # FIXME deserialize other attributes
-                    tile = Tile(TileCoord(z, x, y, n), sqs_message=sqs_message)
+                    tile = Tile(TileCoord(z, x, y, n), sqs_message=sqs_message, **metadata)
                     yield tile
             except SQSDecodeError as e:
                 logger.warning(str(e))
@@ -66,6 +67,10 @@ class SQSTileStore(TileStore):
         sqs_message['x'] = tile.tilecoord.x
         sqs_message['y'] = tile.tilecoord.y
         sqs_message['n'] = tile.tilecoord.n
+        sqs_message['metadata'] = tile.metadata
+        if 'sqs_message' in sqs_message['metadata']:
+            del sqs_message['metadata']['sqs_message']
+
         # FIXME serialize other attributes
         try:
             self.queue.write(sqs_message)
