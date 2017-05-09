@@ -298,6 +298,9 @@ class Tile(object):
         :param data: Data
         :type data: string or ``None``
 
+        :param layer: Layer
+        :type layer: string or ``None``
+
         :param kwargs: Extra attributes
 
         """
@@ -306,6 +309,7 @@ class Tile(object):
         self.content_type = content_type
         self.data = data
         self.error = None
+        self.metadata = kwargs
         for key, value in iteritems(kwargs):
             setattr(self, key, value)
 
