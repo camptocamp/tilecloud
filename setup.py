@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from glob import glob
 import os
 
-version = '0.4.0'
+version = '0.5.0.dev1'
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
