@@ -298,10 +298,8 @@ class Tile(object):
         :param data: Data
         :type data: string or ``None``
 
-        :param layer: Layer
-        :type layer: string or ``None``
-
-        :param kwargs: Extra attributes
+        :param kwargs: The metadata attributes
+        :type kargs: dict or ``None``
 
         """
         self.tilecoord = tilecoord
