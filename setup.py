@@ -2,8 +2,6 @@ from setuptools import setup, find_packages
 from glob import glob
 import os
 
-version = '0.5.0.dev3'
-
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 
@@ -11,7 +9,7 @@ install_requires = open(os.path.join(here, 'requirements.txt')).read().splitline
 
 setup(
     name='tilecloud',
-    version=version,
+    version='0.5.0.dev3',
     description='Tools for managing tiles',
     classifiers=[
         'Development Status :: 4 - Beta',
