@@ -40,7 +40,7 @@ class FilesystemTileStore(TileStore):
 
     def list(self):
         top = getattr(self.tilelayout, 'prefix', '.')
-        for dirpath, dirnames, filenames in os.walk(top):
+        for dirpath, _, filenames in os.walk(top):
             for filename in filenames:
                 path = os.path.join(dirpath, filename)
                 tilecoord = self.tilelayout.tilecoord(path)
