@@ -467,14 +467,6 @@ class TileGrid(object):
         raise NotImplementedError
 
     @staticmethod
-    def fill_down(z, bounds):
-        raise NotImplementedError
-
-    @staticmethod
-    def fill_up(z, bounds):
-        raise NotImplementedError
-
-    @staticmethod
     def parent(tilecoord):
         """Returns the parent of tilecoord"""
         raise NotImplementedError
@@ -492,6 +484,21 @@ class TileGrid(object):
     @staticmethod
     def zs():
         """Generates all zs"""
+        raise NotImplementedError
+
+
+class FillTileGrid(TileGrid):
+    """Lays out tiles at multiple zoom levels"""
+
+    def __init__(self, **kwargs):
+        super(TileGrid, self).__init__(**kwargs)
+
+    @staticmethod
+    def fill_down(z, bounds):
+        raise NotImplementedError
+
+    @staticmethod
+    def fill_up(z, bounds):
         raise NotImplementedError
 
 
