@@ -8,6 +8,7 @@ class RenderingTheWorldTileStore(TileStore):
     """http://mapbox.com/blog/rendering-the-world/"""
 
     def __init__(self, subdivide, tilegrid=None, queue=None, seeds=()):
+        super(self).__init__()
         self.subdivide = subdivide
         self.tilegrid = tilegrid
         if self.tilegrid is None:
