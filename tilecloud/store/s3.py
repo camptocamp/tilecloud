@@ -12,11 +12,12 @@ CLIENT_TIMEOUT = 60
 class S3TileStore(TileStore):
     """Tiles stored in Amazon S3"""
 
-    def __init__(self, bucket, tilelayout, dry_run=False, s3_host=None, **kwargs):
+    def __init__(self, bucket, tilelayout, dry_run=False, s3_host=None, cache_control=None, **kwargs):
         self.client = get_client(s3_host)
         self.bucket = bucket
         self.tilelayout = tilelayout
         self.dry_run = dry_run
+        self.cache_control = cache_control
         TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile):
@@ -72,6 +73,8 @@ class S3TileStore(TileStore):
             args['ContentEncoding'] = tile.content_encoding
         if tile.content_type is not None:
             args['ContentType'] = tile.content_type
+        if self.cache_control is not None:
+            args['CacheControl'] = self.cache_control
         if not self.dry_run:
             try:
                 self.client.put_object(ACL='public-read', Body=tile.data, Key=key_name, Bucket=self.bucket,
