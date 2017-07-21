@@ -2,7 +2,7 @@ from itertools import islice
 import unittest
 from six.moves import xrange
 
-from tilecloud import TileCoord, TileGrid
+from tilecloud import TileCoord, TileGrid, FillTileGrid
 from tilecloud.grid.free import FreeTileGrid
 from tilecloud.grid.quad import QuadTileGrid
 
@@ -14,13 +14,21 @@ class TestTileGrid(unittest.TestCase):
 
     def test_tilegrid(self):
         self.assertRaises(NotImplementedError, self.tg.extent, None)
-        self.assertRaises(NotImplementedError, self.tg.fill_down, None, None)
-        self.assertRaises(NotImplementedError, self.tg.fill_up, None, None)
         self.assertRaises(NotImplementedError, self.tg.children, None)
         self.assertRaises(NotImplementedError, self.tg.parent, None)
         self.assertRaises(NotImplementedError, self.tg.roots)
         self.assertRaises(NotImplementedError, self.tg.tilecoord, None, None, None)
         self.assertRaises(NotImplementedError, self.tg.zs)
+
+
+class TestFillTileGrid(unittest.TestCase):
+
+    def setUp(self):
+        self.tg = FillTileGrid()
+
+    def test_tilegrid(self):
+        self.assertRaises(NotImplementedError, self.tg.fill_down, None, None)
+        self.assertRaises(NotImplementedError, self.tg.fill_up, None, None)
 
 
 class TestFreeTileGrid(unittest.TestCase):

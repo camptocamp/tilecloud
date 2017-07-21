@@ -32,3 +32,7 @@ class WMSTileLayout(TileLayout):
         params['WIDTH'] = size
         params['HEIGHT'] = size
         return self.url + '?' + urlencode(params)
+
+    @staticmethod
+    def tilecoord(filename):
+        raise NotImplementedError
