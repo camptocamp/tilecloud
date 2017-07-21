@@ -761,7 +761,7 @@ class TileStore(object):
             queue = connection.create_queue(queue_name)
             queue.set_message_class(JSONMessage)
             return SQSTileStore(queue)
-        root, ext = os.path.splitext(name)
+        _, ext = os.path.splitext(name)
         if ext == '.bsddb':
             import bsddb
             from tilecloud.store.bsddb import BSDDBTileStore

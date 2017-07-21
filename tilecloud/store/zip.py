@@ -19,7 +19,8 @@ class ZipTileStore(TileStore):
             extension_count = defaultdict(int)
             for name in self.zipfile.namelist():
                 extension_count[os.path.splitext(name)[1]] += 1
-            for extension, count in sorted(extension_count.items(), key=lambda p: tuple(reversed(p)), reverse=True):
+            for extension, _ in sorted(
+                    extension_count.items(), key=lambda p: tuple(reversed(p)), reverse=True):
                 if re.match(r'\.(jpe?g|png)\Z', extension, re.I):
                     self.layout = WrappedTileLayout(OSMTileLayout(), suffix=extension)
                     break

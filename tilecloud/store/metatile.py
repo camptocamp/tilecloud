@@ -11,7 +11,7 @@ else:
 try:
     from PIL import Image
     Image  # suppress pyflakes warning
-except:
+except ImportError:
     import Image
 
 

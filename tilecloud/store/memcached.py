@@ -11,7 +11,7 @@ class MemcachedTileStore(TileStore):
         self.exptime = exptime
 
     def __contains__(self, tile):
-        flags, value, cas = self.client.get(self.tilelayout.filename(tile.tilecoord))
+        flags, _, _ = self.client.get(self.tilelayout.filename(tile.tilecoord))
         return flags is not None
 
     def get_one(self, tile):
