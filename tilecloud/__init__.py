@@ -17,6 +17,10 @@ if version_info[0] > 2:
 logger = logging.getLogger(__name__)
 
 
+class NotAvailableError(Exception):
+    pass
+
+
 def consume(iterator, n):  # pragma: no cover
     "Advance the iterator n-steps ahead. If n is none, consume entirely."
     # Use functions that consume iterators at C speed.
@@ -522,7 +526,7 @@ class TileLayout(object):
         :rtype: :class:`TileCoord`
 
         """
-        raise NotImplementedError
+        raise NotAvailableError
 
 
 class TileStore(object):
@@ -593,7 +597,7 @@ class TileStore(object):
         :rtype: :class:`Tile` or ``None``
 
         """
-        raise NotImplementedError
+        raise NotAvailableError
 
     def get(self, tiles):
         """
@@ -650,7 +654,7 @@ class TileStore(object):
         :rtype: :class:`Tile` or ``None``
 
         """
-        raise NotImplementedError
+        raise NotAvailableError
 
     def list(self):
         """

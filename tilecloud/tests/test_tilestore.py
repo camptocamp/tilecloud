@@ -1,7 +1,7 @@
 import sqlite3
 import unittest
 
-from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore, consume
+from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore, consume, NotAvailableError
 from tilecloud.store.dict import DictTileStore
 from tilecloud.store.mbtiles import MBTilesTileStore
 from tilecloud.store.null import NullTileStore
@@ -14,12 +14,12 @@ class TestTileStore(unittest.TestCase):
         self.assertEqual(ts.bounding_pyramid, None)
         self.assertEqual(ts.content_type, None)
         self.assertEqual(len(ts), 0)
-        self.assertRaises(NotImplementedError, next, ts.delete((Tile(TileCoord(0, 0, 0)),)))
-        self.assertRaises(NotImplementedError, ts.delete_one, None)
+        self.assertRaises(NotAvailableError, next, ts.delete((Tile(TileCoord(0, 0, 0)),)))
+        self.assertRaises(NotAvailableError, ts.delete_one, None)
         self.assertEqual(ts.get_cheap_bounding_pyramid(), None)
-        self.assertRaises(NotImplementedError, next, ts.get((Tile(TileCoord(0, 0, 0)),)))
+        self.assertRaises(NotAvailableError, next, ts.get((Tile(TileCoord(0, 0, 0)),)))
         self.assertEqual(list(ts.get_all()), [])
-        self.assertRaises(NotImplementedError, ts.get_one, None)
+        self.assertRaises(NotAvailableError, ts.get_one, None)
         self.assertEqual(list(ts.list()), [])
         self.assertRaises(NotImplementedError, next, ts.put((Tile(TileCoord(0, 0, 0)),)))
         self.assertRaises(NotImplementedError, ts.put_one, None)

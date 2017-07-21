@@ -2,7 +2,7 @@ import unittest
 from cgi import parse_qs
 from six.moves.urllib.parse import urlparse
 
-from tilecloud import TileCoord, TileLayout
+from tilecloud import TileCoord, TileLayout, NotAvailableError
 from tilecloud.layout.osm import OSMTileLayout
 from tilecloud.layout.template import TemplateTileLayout
 from tilecloud.layout.tilecache import TileCacheDiskLayout
@@ -18,7 +18,7 @@ class TestTileLayout(unittest.TestCase):
         self.assertRaises(NotImplementedError, TileLayout().filename, None)
 
     def test_tilecoord(self):
-        self.assertRaises(NotImplementedError, TileLayout().tilecoord, None)
+        self.assertRaises(NotAvailableError, TileLayout().tilecoord, None)
 
 
 class TestOSMTileLayout(unittest.TestCase):

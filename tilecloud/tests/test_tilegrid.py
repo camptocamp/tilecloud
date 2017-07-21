@@ -30,7 +30,7 @@ class TestFreeTileGrid(unittest.TestCase):
         self.ftg = FreeTileGrid(self.resolutions)
 
     def test_factors(self):
-        for i, resolution in enumerate(self.resolutions):
+        for i in range(len(self.resolutions)):
             for child_z in self.ftg.child_zs[i]:
                 self.assertEquals(self.resolutions[i] % self.resolutions[child_z], 0)
 
@@ -230,7 +230,7 @@ class TestQuadTileGrid(unittest.TestCase):
             for x in xrange(0, 1 << z):
                 for y in xrange(0, 1 << z):
                     tilecoord = TileCoord(z, x, y)
-                    minx, miny, maxx, maxy = self.qtg.extent(tilecoord)
+                    minx, miny, _, _ = self.qtg.extent(tilecoord)
                     self.assertEqual(self.qtg.tilecoord(z, minx, miny), tilecoord)
 
     def test_zs(self):
