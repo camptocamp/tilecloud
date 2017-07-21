@@ -2,7 +2,7 @@ from math import floor
 from six.moves import xrange
 from six import integer_types
 
-from tilecloud import TileCoord, TileGrid
+from tilecloud import TileCoord, TileGrid, NotAvailableError
 
 
 class FreeTileGrid(TileGrid):
@@ -81,3 +81,7 @@ class FreeTileGrid(TileGrid):
 
     def zs(self):
         return xrange(len(self.resolutions))
+
+    @staticmethod
+    def fill_down(z, bounds):
+        raise NotAvailableError
