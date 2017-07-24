@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(os.path.basename(sys.argv[0]))
 
 
-def main(argv):
+def main():
     # Create our input and output TileStores
     input_tilestore = TileStore.load('tiles.openstreetmap_org')
     output_tilestore = TileStore.load('local.mbtiles')
@@ -37,4 +37,4 @@ def main(argv):
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv))
+    sys.exit(main())

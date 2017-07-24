@@ -25,7 +25,7 @@ def subdivide(tile):
     return tile.error is None and tile.tilecoord.z < 15
 
 
-def main(argv):
+def main():
     # Create our RenderingTheWorld tile store that will manage the queue and subdivision.
     # We pass it the function that decides whether a tile should be subdivided, and an initial tile.
     rendering_the_world_tilestore = RenderingTheWorldTileStore(subdivide, seeds=(Tile(TileCoord(0, 0, 0)),))
@@ -58,4 +58,4 @@ def main(argv):
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv))
+    sys.exit(main())
