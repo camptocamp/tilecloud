@@ -23,7 +23,7 @@ setup(
     ],
     author='Tom Payne',
     author_email='twpayne@gmail.com',
-    url='http://github.com/twpayne/tilecloud',
+    url='http://github.com/camptocamp/tilecloud',
     license='BSD',
     packages=find_packages(exclude=['tiles', 'tilecloud.tests']),
     zip_safe=True,

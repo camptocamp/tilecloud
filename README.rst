@@ -401,15 +401,15 @@ Comparing mapping libraries
 ``tc-viewer`` supports most popular web mapping libraries
 out-of-the box. This can be very useful for quick, practical
 comparisons. If your favourite mapping library is missing, please
-submit an `issue <https://github.com/twpayne/tilecloud/issues>`_,
+submit an `issue <https://github.com/camptocamp/tilecloud/issues>`_,
 or, even better, a
-`pull request <https://github.com/twpayne/tilecloud/pulls>`_.
+`pull request <https://github.com/camptocamp/tilecloud/pulls>`_.
 
 Contributing
 ============
 
 Please report bugs and feature requests using the
-`GitHub issue tracker <https://github.com/twpayne/tilecloud/issues>`_.
+`GitHub issue tracker <https://github.com/camptocamp/tilecloud/issues>`_.
 
 If you'd like to contribute to TileCloud, please install the development
 requirements:
