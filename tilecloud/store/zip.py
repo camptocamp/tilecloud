@@ -31,7 +31,7 @@ class ZipTileStore(TileStore):
         if not tile:
             return False
         try:
-            filename = self.layout.filename(tile.tilecoord)
+            filename = self.layout.filename(tile.tilecoord, tile.metadata)
             self.zipfile.getinfo(filename)
             return True
         except KeyError:
@@ -41,7 +41,7 @@ class ZipTileStore(TileStore):
         if hasattr(tile, 'zipinfo'):
             tile.data = self.zipfile.read(tile.zipinfo)
         else:
-            filename = self.layout.filename(tile.tilecoord)
+            filename = self.layout.filename(tile.tilecoord, tile.metadata)
             tile.data = self.zipfile.read(filename)
         return tile
 
@@ -53,7 +53,7 @@ class ZipTileStore(TileStore):
                 pass
 
     def put_one(self, tile):
-        filename = self.layout.filename(tile.tilecoord)
+        filename = self.layout.filename(tile.tilecoord, tile.metadata)
         zipinfo = zipfile.ZipInfo(filename)
         zipinfo.compress_type = getattr(self, 'compress_type', zipfile.ZIP_DEFLATED)
         zipinfo.date_time = datetime.now().timetuple()[:6]

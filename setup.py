@@ -5,7 +5,14 @@ import os
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 
-install_requires = open(os.path.join(here, 'requirements.txt')).read().splitlines()
+install_requires = [
+    'boto3',
+    'bottle',
+    'Pillow',
+    'pyproj',
+    'requests>=1.0',
+    'six',
+]
 
 setup(
     name='tilecloud',

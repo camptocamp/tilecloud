@@ -28,16 +28,15 @@ class MetaTileSplitterTileStore(TileStore):
             metaimage = None if metatile.data is None else Image.open(StringIO(metatile.data))
             for tilecoord in metatile.tilecoord:
                 if metatile.error:
-                    tile = Tile(tilecoord)
-                    tile.metadata = metatile.metadata
-                    tile.error = metatile.error
-                    yield tile
+                    yield Tile(
+                        tilecoord, metadata=metatile.metadata, error=metatile.error, metatile=metatile
+                    )
                     continue
                 if metatile.data is None:
-                    tile = Tile(tilecoord)
-                    tile.metadata = metatile.metadata
-                    tile.error = "Metatile data is None"
-                    yield tile
+                    yield Tile(
+                        tilecoord, metadata=metatile.metadata,
+                        error="Metatile data is None", metatile=metatile
+                    )
                     continue
 
                 x = self.border + (tilecoord.x - metatile.tilecoord.x) * self.tile_size
@@ -46,4 +45,6 @@ class MetaTileSplitterTileStore(TileStore):
                 string_io = StringIO()
                 image.save(string_io, FORMAT_BY_CONTENT_TYPE[self.format])
                 yield Tile(
-                    tilecoord, data=string_io.getvalue(), content_type=self.format, **metatile.metadata)
+                    tilecoord, data=string_io.getvalue(), content_type=self.format,
+                    metadata=metatile.metadata, metatile=metatile
+                )

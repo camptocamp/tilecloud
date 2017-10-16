@@ -21,7 +21,11 @@ class URLTileStore(TileStore):
                 return None
         tilelayout = self.tilelayouts[hash(tile.tilecoord) %
                                       len(self.tilelayouts)]
-        url = tilelayout.filename(tile.tilecoord)
+        try:
+            url = tilelayout.filename(tile.tilecoord, tile.metadata)
+        except Exception as e:
+            tile.error = e
+            return tile
 
         logger.info('GET {0!s}'.format(url))
         try:

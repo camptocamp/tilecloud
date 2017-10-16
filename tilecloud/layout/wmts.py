@@ -5,14 +5,14 @@ class WMTSTileLayout(TileLayout):
 
     def __init__(self, url='', layer=None, style=None, format=None,
                  tile_matrix_set=None, tile_matrix=str,
-                 dimensions=(), request_encoding='KVP'):
+                 dimensions_name=(), request_encoding='KVP'):
         self.url = url
         self.layer = layer
         self.style = style
         self.format = format
         self.tile_matrix_set = tile_matrix_set
         self.tile_matrix = tile_matrix
-        self.dimensions = dimensions
+        self.dimensions_name = dimensions_name
         self.request_encoding = request_encoding
 
         if self.request_encoding == 'KVP':
@@ -21,7 +21,8 @@ class WMTSTileLayout(TileLayout):
         elif self.url and self.url[-1] != '/':
             self.url += '/'
 
-    def filename(self, tilecoord):
+    def filename(self, tilecoord, metadata=None):
+        metadata = {} if metadata is None else metadata
         # Careful the order is important for the REST request encoding
         query = []
         if self.request_encoding == 'KVP':
@@ -37,7 +38,8 @@ class WMTSTileLayout(TileLayout):
             ('Style', self.style),
         ])
 
-        query.extend(self.dimensions)
+        for name in self.dimensions_name:
+            query.append((name, metadata['dimension_' + name]))
 
         query.extend([
             ('TileMatrixSet', self.tile_matrix_set),

@@ -11,11 +11,11 @@ class MemcachedTileStore(TileStore):
         self.exptime = exptime
 
     def __contains__(self, tile):
-        flags, _, _ = self.client.get(self.tilelayout.filename(tile.tilecoord))
+        flags, _, _ = self.client.get(self.tilelayout.filename(tile.tilecoord, tile.metadata))
         return flags is not None
 
     def get_one(self, tile):
-        flags, value, cas = self.client.get(self.tilelayout.filename(tile.tilecoord))
+        flags, value, cas = self.client.get(self.tilelayout.filename(tile.tilecoord, tile.metadata))
         tile.memcached_flags = flags
         tile.data = value
         tile.memcached_cas = cas
@@ -24,9 +24,9 @@ class MemcachedTileStore(TileStore):
     def put_one(self, tile):
         flags = getattr(tile, 'memcached_flags', self.flags)
         exptime = getattr(tile, 'memached_exptime', self.exptime)
-        self.client.set(self.tilelayout.filename(tile.tilecoord), flags, exptime, tile.data)
+        self.client.set(self.tilelayout.filename(tile.tilecoord, tile.metadata), flags, exptime, tile.data)
         return tile
 
     def delete_one(self, tile):
-        self.client.delete(self.tilelayout.filename(tile.tilecoord))
+        self.client.delete(self.tilelayout.filename(tile.tilecoord, tile.metadata))
         return tile

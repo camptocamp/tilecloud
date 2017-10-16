@@ -26,7 +26,7 @@ class TemplateTileLayout(RETileLayout):
         filename_re = re.compile(''.join(filename_patterns))
         RETileLayout.__init__(self, pattern, filename_re)
 
-    def filename(self, tilecoord):
+    def filename(self, tilecoord, metadata=None):
         return self.template % \
             dict(z=tilecoord.z, x=tilecoord.x, y=tilecoord.y)
 
