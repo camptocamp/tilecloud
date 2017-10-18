@@ -340,6 +340,17 @@ class Tile(object):
         attrs = ''.join(' {0!s}={1!r}'.format(key, self.__dict__[key]) for key in keys)
         return '<Tile{0!s}>'.format(attrs)
 
+    @property
+    def formated_metadata(self):
+        return " ".join(["{}={}".format(k, v) for k, v in self.metadata.items()])
+
+    @property
+    def __dict2__(self):
+        result = {}
+        result.update(self.__dict__)
+        result['formated_metadata'] = self.formated_metadata
+        return result
+
 
 class TileCoord(object):
     """A tile coordinate"""
