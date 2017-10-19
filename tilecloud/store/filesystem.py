@@ -31,7 +31,7 @@ class FilesystemTileStore(TileStore):
 
     def get_one(self, tile):
         try:
-            filename = self.tilelayout.filename(tile.tilecoordi, tile.metadata)
+            filename = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         except Exception as e:
             tile.error = e
             return tile
