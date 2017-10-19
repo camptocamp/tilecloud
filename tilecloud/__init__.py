@@ -281,8 +281,9 @@ class BoundingPyramid(object):
 class Tile(object):
     """An actual tile with optional metadata"""
 
-    def __init__(self, tilecoord, content_encoding=None, content_type=None,
-                 data=None, **kwargs):
+    def __init__(
+            self, tilecoord, content_encoding=None, content_type=None,
+            data=None, metadata=None, **kwargs):
         """
         Construct a :class:`Tile`.
 
@@ -307,7 +308,7 @@ class Tile(object):
         self.content_type = content_type
         self.data = data
         self.error = None
-        self.metadata = kwargs
+        self.metadata = metadata if metadata is not None else {}
         for key, value in iteritems(kwargs):
             setattr(self, key, value)
 
@@ -338,6 +339,17 @@ class Tile(object):
         keys = sorted(self.__dict__.keys())
         attrs = ''.join(' {0!s}={1!r}'.format(key, self.__dict__[key]) for key in keys)
         return '<Tile{0!s}>'.format(attrs)
+
+    @property
+    def formated_metadata(self):
+        return " ".join(["{}={}".format(k, v) for k, v in self.metadata.items()])
+
+    @property
+    def __dict2__(self):
+        result = {}
+        result.update(self.__dict__)
+        result['formated_metadata'] = self.formated_metadata
+        return result
 
 
 class TileCoord(object):
@@ -499,7 +511,7 @@ class TileLayout(object):
     """Maps tile coordinates to filenames and vice versa"""
 
     @staticmethod
-    def filename(tilecoord):
+    def filename(tilecoord, metadata=None):
         """
         Return the filename for the given tile coordinate.
 

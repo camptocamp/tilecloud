@@ -10,10 +10,15 @@ class FilesystemTileStore(TileStore):
 
     def __init__(self, tilelayout, **kwargs):
         TileStore.__init__(self, **kwargs)
+        assert tilelayout is not None
         self.tilelayout = tilelayout
 
     def delete_one(self, tile):
-        filename = self.tilelayout.filename(tile.tilecoord)
+        try:
+            filename = self.tilelayout.filename(tile.tilecoord, tile.metadata)
+        except Exception as e:
+            tile.error = e
+            return tile
         if os.path.exists(filename):
             os.remove(filename)
         return tile
@@ -25,7 +30,11 @@ class FilesystemTileStore(TileStore):
             yield tile
 
     def get_one(self, tile):
-        filename = self.tilelayout.filename(tile.tilecoord)
+        try:
+            filename = self.tilelayout.filename(tile.tilecoordi, tile.metadata)
+        except Exception as e:
+            tile.error = e
+            return tile
         try:
             with open(filename, 'rb') as file:
                 tile.data = file.read()
@@ -49,7 +58,11 @@ class FilesystemTileStore(TileStore):
 
     def put_one(self, tile):
         assert tile.data is not None
-        filename = self.tilelayout.filename(tile.tilecoord)
+        try:
+            filename = self.tilelayout.filename(tile.tilecoord, tile.metadata)
+        except Exception as e:
+            tile.error = e
+            return tile
         dirname = os.path.dirname(filename)
         if not os.path.exists(dirname):
             os.makedirs(dirname)

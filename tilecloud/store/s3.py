@@ -23,7 +23,7 @@ class S3TileStore(TileStore):
     def __contains__(self, tile):
         if not tile:
             return False
-        key_name = self.tilelayout.filename(tile.tilecoord)
+        key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         try:
             self.client.head_object(Bucket=self.bucket, Key=key_name)
             return True
@@ -35,7 +35,7 @@ class S3TileStore(TileStore):
 
     def delete_one(self, tile):
         try:
-            key_name = self.tilelayout.filename(tile.tilecoord)
+            key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
             if not self.dry_run:
                 self.client.delete_object(Bucket=self.bucket, Key=key_name)
         except botocore.exceptions.ClientError as exc:
@@ -43,7 +43,7 @@ class S3TileStore(TileStore):
         return tile
 
     def get_one(self, tile):
-        key_name = self.tilelayout.filename(tile.tilecoord)
+        key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         try:
             response = self.client.get_object(Bucket=self.bucket, Key=key_name)
             tile.data = response['Body'].read()
@@ -67,7 +67,7 @@ class S3TileStore(TileStore):
 
     def put_one(self, tile):
         assert tile.data is not None
-        key_name = self.tilelayout.filename(tile.tilecoord)
+        key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         args = {}
         if tile.content_encoding is not None:
             args['ContentEncoding'] = tile.content_encoding

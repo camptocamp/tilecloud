@@ -42,7 +42,7 @@ class TestWMTSTileLayout(unittest.TestCase):
             layer='layer',
             style='default',
             format='.png',
-            dimensions=(('DATE', '2011'),),
+            dimensions_name=('DATE',),
             tile_matrix_set='swissgrid',
             request_encoding='REST')
         self.kvp = WMTSTileLayout(
@@ -50,32 +50,32 @@ class TestWMTSTileLayout(unittest.TestCase):
             layer='layer',
             style='default',
             format='.png',
-            dimensions=(('DATE', '2011'),),
+            dimensions_name=('DATE',),
             tile_matrix_set='swissgrid',
             request_encoding='KVP')
         self.rest_nourl = WMTSTileLayout(
             layer='layer',
             style='default',
             format='.png',
-            dimensions=(('DATE', '2011'),),
+            dimensions_name=('DATE',),
             tile_matrix_set='swissgrid',
             request_encoding='REST')
         self.kvp_nourl = WMTSTileLayout(
             layer='layer',
             style='default',
             format='.png',
-            dimensions=(('DATE', '2011'),),
+            dimensions_name=('DATE',),
             tile_matrix_set='swissgrid',
             request_encoding='KVP')
 
     def test_filename(self):
-        self.assertEqual(self.rest.filename(TileCoord(1, 2, 3)), 'test/1.0.0/layer/default/2011/swissgrid/1/3/2.png')
-        self.assertEqual(self.kvp.filename(TileCoord(1, 2, 3)), 'test?Service=WMTS&Request=GetTile&Format=.png&Version=1.0.0&Layer=layer&Style=default&DATE=2011&TileMatrixSet=swissgrid&TileMatrix=1&TileRow=3&TileCol=2')
+        self.assertEqual(self.rest.filename(TileCoord(1, 2, 3), {'dimension_DATE': '2011'}), 'test/1.0.0/layer/default/2011/swissgrid/1/3/2.png')
+        self.assertEqual(self.kvp.filename(TileCoord(1, 2, 3), {'dimension_DATE': '2011'}), 'test?Service=WMTS&Request=GetTile&Format=.png&Version=1.0.0&Layer=layer&Style=default&DATE=2011&TileMatrixSet=swissgrid&TileMatrix=1&TileRow=3&TileCol=2')
 
     def test_filename_without_url(self):
         # s3 url it shouldn't starts with a /
-        self.assertEqual(self.rest_nourl.filename(TileCoord(1, 2, 3)), '1.0.0/layer/default/2011/swissgrid/1/3/2.png')
-        self.assertEqual(self.kvp_nourl.filename(TileCoord(1, 2, 3)), '?Service=WMTS&Request=GetTile&Format=.png&Version=1.0.0&Layer=layer&Style=default&DATE=2011&TileMatrixSet=swissgrid&TileMatrix=1&TileRow=3&TileCol=2')
+        self.assertEqual(self.rest_nourl.filename(TileCoord(1, 2, 3), {'dimension_DATE': '2011'}), '1.0.0/layer/default/2011/swissgrid/1/3/2.png')
+        self.assertEqual(self.kvp_nourl.filename(TileCoord(1, 2, 3), {'dimension_DATE': '2011'}), '?Service=WMTS&Request=GetTile&Format=.png&Version=1.0.0&Layer=layer&Style=default&DATE=2011&TileMatrixSet=swissgrid&TileMatrix=1&TileRow=3&TileCol=2')
 
 
 class TestWMSTileLayout(unittest.TestCase):

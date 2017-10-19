@@ -24,10 +24,14 @@ class WMSTileLayout(TileLayout):
         for key, value in params.items():
             self.params[key] = value
 
-    def filename(self, tilecoord):
+    def filename(self, tilecoord, metadata=None):
+        metadata = {} if metadata is None else metadata
         bbox = self.tilegrid.extent(tilecoord, self.border)
         size = tilecoord.n * self.tilegrid.tile_size + 2 * self.border
         params = self.params.copy()
+        for k, v in metadata.items():
+            if k.startswith('dimension_'):
+                params[k[len('dimension_'):]] = v
         params['BBOX'] = '{0:f},{1:f},{2:f},{3:f}'.format(*bbox)
         params['WIDTH'] = size
         params['HEIGHT'] = size

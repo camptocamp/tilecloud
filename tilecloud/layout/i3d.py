@@ -15,7 +15,7 @@ class I3DTileLayout(RETileLayout):
         RETileLayout.__init__(self, self.PATTERN, self.RE)
 
     @staticmethod
-    def filename(tilecoord):
+    def filename(tilecoord, metadata=None):
         return '/'.join(re.findall(r'[0-3]{1,2}',
                         I3DTileLayout.quadcode_from_tilecoord(tilecoord)))
 
