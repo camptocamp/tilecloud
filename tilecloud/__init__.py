@@ -342,7 +342,7 @@ class Tile(object):
 
     @property
     def formated_metadata(self):
-        return " ".join(["{}={}".format(k, v) for k, v in self.metadata.items()])
+        return " ".join(["{}={}".format(k, self.metadata[k]) for k in sorted(self.metadata.keys())])
 
     @property
     def __dict2__(self):
