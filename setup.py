@@ -16,7 +16,7 @@ install_requires = [
 
 setup(
     name='tilecloud',
-    version='0.5.0.dev6',
+    version='0.5.0.dev7',
     description='Tools for managing tiles',
     classifiers=[
         'Development Status :: 4 - Beta',
