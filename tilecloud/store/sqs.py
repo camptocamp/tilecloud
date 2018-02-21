@@ -82,6 +82,7 @@ class SQSTileStore(TileStore):
             if len(buffered_tiles) >= BATCH_SIZE:
                 self._send_buffer(buffered_tiles)
                 buffered_tiles = []
+            yield tile
         if len(buffered_tiles) > 0:
             self._send_buffer(buffered_tiles)
 
