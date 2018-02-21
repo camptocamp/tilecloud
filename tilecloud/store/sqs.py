@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 def maybe_stop(queue):
-    attributes = queue.get_attributes()
+    queue.load()
+    attributes = queue.attributes
     if int(attributes['ApproximateNumberOfMessages']) == 0:
         if int(attributes['ApproximateNumberOfMessagesNotVisible']) == 0:
             raise StopIteration
