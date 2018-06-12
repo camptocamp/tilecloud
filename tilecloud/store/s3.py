@@ -85,7 +85,7 @@ class S3TileStore(TileStore):
 
 
 def _get_status(s3_client_exception):
-    return int(s3_client_exception.response['Error']['Code'])
+    return s3_client_exception.response['ResponseMetadata']['HTTPStatusCode']
 
 
 def get_client(s3_host):
