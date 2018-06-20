@@ -260,6 +260,7 @@ class TestWMSTileLayout(unittest.TestCase):
             params={
                 'TRANSPARENT': 'FALSE',
                 'PARAM': 'Value',
+                'FILTER': 'l1:"field" = ''{PARAM}'''
             },
         )
         result = urlparse(layout.filename(TileCoord(0, 0, 0)))
@@ -267,6 +268,7 @@ class TestWMSTileLayout(unittest.TestCase):
         self.assertEqual(result.path, '/folder')
         query = parse_qs(result.query)
         self.assertEqual(query['PARAM'], ['Value'])
+        self.assertEqual(query['FILTER'], ['l1:"field" = ''Value'''])
         self.assertEqual(query['LAYERS'], ['l1,l2'])
         self.assertEqual(query['FORMAT'], ['image/png'])
         self.assertEqual(query['TRANSPARENT'], ['FALSE'])
