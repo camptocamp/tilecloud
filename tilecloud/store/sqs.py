@@ -1,4 +1,5 @@
 import base64
+import botocore.exceptions
 import json
 import logging
 import time
@@ -11,11 +12,16 @@ logger = logging.getLogger(__name__)
 
 
 def maybe_stop(queue):
-    queue.load()
+    try:
+        queue.load()
+    except botocore.exceptions.EndpointConnectionError:
+        logger.warning("Error fetching SQS attributes", exc_info=True)
+        raise StopIteration()
+
     attributes = queue.attributes
     if int(attributes['ApproximateNumberOfMessages']) == 0:
         if int(attributes['ApproximateNumberOfMessagesNotVisible']) == 0:
-            raise StopIteration
+            raise StopIteration()
         else:
             time.sleep(int(attributes['VisibilityTimeout']) / 4.0)
 
@@ -36,7 +42,12 @@ class SQSTileStore(TileStore):
 
     def list(self):
         while True:
-            sqs_messages = self.queue.receive_messages(MaxNumberOfMessages=BATCH_SIZE)
+            try:
+                sqs_messages = self.queue.receive_messages(MaxNumberOfMessages=BATCH_SIZE)
+            except botocore.exceptions.EndpointConnectionError:
+                logger.warning("Error fetching SQS messages", exc_info=True)
+                sqs_messages = []
+
             if not sqs_messages:
                 try:
                     self.on_empty(self.queue)
