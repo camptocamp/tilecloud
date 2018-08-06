@@ -1,11 +1,9 @@
-import base64
 import botocore.exceptions
-import json
 import logging
 import time
 
-from tilecloud import Tile, TileCoord, TileStore
-
+from tilecloud import TileStore
+from tilecloud.store.queue import encode_message, decode_message
 
 BATCH_SIZE = 10  # max Amazon allows
 logger = logging.getLogger(__name__)
@@ -56,14 +54,7 @@ class SQSTileStore(TileStore):
             else:
                 for sqs_message in sqs_messages:
                     try:
-                        body = json.loads(base64.b64decode(sqs_message.body.encode('utf-8')).decode('utf-8'))
-                        z = body.get('z')
-                        x = body.get('x')
-                        y = body.get('y')
-                        n = body.get('n')
-                        metadata = body.get('metadata', {})
-                        # FIXME deserialize other attributes
-                        tile = Tile(TileCoord(z, x, y, n), sqs_message=sqs_message, metadata=metadata)
+                        tile = decode_message(sqs_message.body.encode('utf-8'), sqs_message=sqs_message)
                         yield tile
                     except Exception:
                         logger.warning('Failed decoding the SQS message', exc_info=True)
@@ -77,7 +68,7 @@ class SQSTileStore(TileStore):
         return tile
 
     def put_one(self, tile):
-        sqs_message = _create_message(tile)
+        sqs_message = encode_message(tile)
 
         try:
             self.queue.send_message(MessageBody=sqs_message)
@@ -88,20 +79,22 @@ class SQSTileStore(TileStore):
 
     def put(self, tiles):
         buffered_tiles = []
-        for tile in tiles:
-            buffered_tiles.append(tile)
-            if len(buffered_tiles) >= BATCH_SIZE:
+        try:
+            for tile in tiles:
+                buffered_tiles.append(tile)
+                if len(buffered_tiles) >= BATCH_SIZE:
+                    self._send_buffer(buffered_tiles)
+                    buffered_tiles = []
+                yield tile
+        finally:
+            if len(buffered_tiles) > 0:
                 self._send_buffer(buffered_tiles)
-                buffered_tiles = []
-            yield tile
-        if len(buffered_tiles) > 0:
-            self._send_buffer(buffered_tiles)
 
     def _send_buffer(self, tiles):
         try:
             messages = [{
                 'Id': str(i),
-                'MessageBody': _create_message(tile)
+                'MessageBody': encode_message(tile)
             } for i, tile in enumerate(tiles)]
             response = self.queue.send_messages(Entries=messages)
             for failed in response.get('Failed', []):
@@ -112,18 +105,3 @@ class SQSTileStore(TileStore):
             logger.warning('Failed sending SQS messages', exc_info=True)
             for tile in tiles:
                 tile.error = e
-
-
-def _create_message(tile):
-    sqs_message = {
-        'z': tile.tilecoord.z,
-        'x': tile.tilecoord.x,
-        'y': tile.tilecoord.y,
-        'n': tile.tilecoord.n,
-        'metadata': tile.metadata
-    }
-    if 'sqs_message' in sqs_message['metadata']:
-        del sqs_message['metadata']['sqs_message']
-
-    # FIXME serialize other attributes
-    return base64.b64encode(json.dumps(sqs_message).encode('utf-8')).decode('utf-8')

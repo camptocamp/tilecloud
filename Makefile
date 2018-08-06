@@ -22,8 +22,14 @@ pyflakes:
 
 .PHONY: test
 test:
-	python setup.py nosetests
+	pytest -vv --cov=tilecloud
 
 .PHONY: pypi-upload
 pypi-upload: test pep8
 	python setup.py sdist upload
+
+.venv/timestamp: requirements.txt dev-requirements.txt Makefile
+	/usr/bin/virtualenv --python=/usr/bin/python3 .venv
+	.venv/bin/pip install --upgrade -r requirements.txt -r dev-requirements.txt
+	touch $@
+	@echo "Type in your shell: source .venv/bin/activate"

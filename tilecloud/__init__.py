@@ -769,6 +769,9 @@ class TileStore(object):
             queue = connection.create_queue(queue_name)
             queue.set_message_class(JSONMessage)
             return SQSTileStore(queue)
+        if name.startswith('redis://'):
+            from tilecloud.store.redis import RedisTileStore
+            return RedisTileStore(name)
         _, ext = os.path.splitext(name)
         if ext == '.bsddb':
             import bsddb
