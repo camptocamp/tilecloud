@@ -11,6 +11,7 @@ install_requires = [
     'Pillow',
     'pyproj',
     'requests>=1.0',
+    'redis>=2',
     'six',
 ]
 
