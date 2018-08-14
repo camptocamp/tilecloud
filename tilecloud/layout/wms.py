@@ -21,8 +21,9 @@ class WMSTileLayout(TileLayout):
             'STYLES': '',
             'SRS': srs,
         }
-        for key, value in params.items():
-            self.params[key] = value
+        self.params.update(params)
+        if params.get('FILTER', None) is not None:
+            self.params['FILTER'] = params['FILTER'].format(**params)
 
     def filename(self, tilecoord, metadata=None):
         metadata = {} if metadata is None else metadata
