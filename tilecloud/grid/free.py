@@ -12,7 +12,7 @@ class FreeTileGrid(TileGrid):
         assert list(resolutions) == sorted(resolutions, reverse=True)
         assert all(isinstance(r, integer_types) for r in resolutions)
         self.resolutions = resolutions
-        self.scale = 1 if scale is 1 else float(scale)
+        self.scale = float(scale)
         self.parent_zs = []
         self.child_zs = []
         for i, resolution in enumerate(self.resolutions):
