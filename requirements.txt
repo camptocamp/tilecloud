@@ -1,4 +1,4 @@
-boto3==1.9.117
+boto3==1.9.118
 bottle==0.12.16
 Pillow==5.4.1
 pyproj==2.1.1
