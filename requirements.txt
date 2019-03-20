@@ -1,7 +1,7 @@
-boto3==1.9.115
+boto3==1.9.117
 bottle==0.12.16
 Pillow==5.4.1
-pyproj==2.1.0
+pyproj==2.1.1
 redis==3.2.1
 requests==2.21.0
 six==1.12.0
