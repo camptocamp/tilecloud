@@ -9,19 +9,20 @@ BATCH_SIZE = 10  # max Amazon allows
 logger = logging.getLogger(__name__)
 
 
-def maybe_stop(queue):
+def maybe_stop(queue) -> bool:
     try:
         queue.load()
     except botocore.exceptions.EndpointConnectionError:
         logger.warning("Error fetching SQS attributes", exc_info=True)
-        raise StopIteration()
+        return True
 
     attributes = queue.attributes
     if int(attributes['ApproximateNumberOfMessages']) == 0:
         if int(attributes['ApproximateNumberOfMessagesNotVisible']) == 0:
-            raise StopIteration()
+            return True
         else:
             time.sleep(int(attributes['VisibilityTimeout']) / 4.0)
+    return False
 
 
 class SQSTileStore(TileStore):
@@ -47,9 +48,7 @@ class SQSTileStore(TileStore):
                 sqs_messages = []
 
             if not sqs_messages:
-                try:
-                    self.on_empty(self.queue)
-                except StopIteration:
+                if self.on_empty(self.queue):
                     break
             else:
                 for sqs_message in sqs_messages:
