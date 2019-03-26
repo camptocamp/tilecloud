@@ -104,3 +104,19 @@ class SQSTileStore(TileStore):
             logger.warning('Failed sending SQS messages', exc_info=True)
             for tile in tiles:
                 tile.error = e
+
+    def get_status(self):
+        """
+        Returns a map of stats
+        """
+        self.queue.load()
+        attributes = dict(self.queue.attributes)
+        return {
+            "Approximate number of tiles to generate": attributes['ApproximateNumberOfMessages'],
+            "Approximate number of generating tiles": attributes['ApproximateNumberOfMessagesNotVisible'],
+            "Delay in seconds": attributes['DelaySeconds'],
+            "Receive message wait time in seconds": attributes['ReceiveMessageWaitTimeSeconds'],
+            "Visibility timeout in seconds": attributes['VisibilityTimeout'],
+            "Queue creation date": time.ctime(int(attributes["CreatedTimestamp"])),
+            "Last modification in tile queue": time.ctime(int(attributes["LastModifiedTimestamp"]))
+        }
