@@ -9,10 +9,17 @@ services:
 matrix:
   include:
     - python: 3.5
+      # not available on xenial and the redis version is too old (<5), there => no redis tests
     - python: 3.6
+      dist: xenial
+      sudo: true
+      env:
+        - REDIS_URL=redis://localhost:6379
     - python: 3.7
       dist: xenial
       sudo: true
+      env:
+        - REDIS_URL=redis://localhost:6379
 
 install:
 - pip install --upgrade pip
@@ -22,7 +29,7 @@ install:
 script:
 - make pep8
 - make pyflakes
-- REDIS_URL=redis://localhost:6379  make test
+- make test
 - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
 
 after_success:
