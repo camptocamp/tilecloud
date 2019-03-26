@@ -9,6 +9,7 @@ services:
 matrix:
   include:
     - python: 3.5
+      # not available on xenial and the redis version is too old (<5), there => no redis tests
     - python: 3.6
       dist: xenial
       sudo: true

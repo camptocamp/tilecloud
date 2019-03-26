@@ -9,7 +9,6 @@ from tilecloud.store.queue import encode_message, decode_message
 
 STREAM_GROUP = 'tilecloud'
 CONSUMER_NAME = socket.gethostname() + '-' + str(os.getpid())
-PENDING_TIMEOUT_MS = 5 * 60 * 1000
 
 logger = logging.getLogger(__name__)
 
@@ -18,11 +17,14 @@ class RedisTileStore(TileStore):
     """
     Redis queue.
     """
-    def __init__(self, url, name='tilecloud', stop_if_empty=True, timeout=5, **kwargs):
+    def __init__(self, url, name='tilecloud', stop_if_empty=True, timeout=5, pending_timeout=5 * 60, max_retries=5,
+                 **kwargs):
         super(RedisTileStore, self).__init__(**kwargs)
         self._redis = redis.Redis.from_url(url)
         self._stop_if_empty = stop_if_empty
-        self._timeout = timeout
+        self._timeout_ms = int(timeout * 1000)
+        self._pending_timeout_ms = int(pending_timeout * 1000)
+        self._max_retires = max_retries
         if not name.startswith('queue_'):
             name = 'queue_' + name
         self._name = name.encode('utf-8')
@@ -42,7 +44,7 @@ class RedisTileStore(TileStore):
     def list(self):
         while True:
             queues = self._redis.xreadgroup(groupname=STREAM_GROUP, consumername=CONSUMER_NAME,
-                                            streams={self._name: '>'}, count=1, block=round(self._timeout * 1000))
+                                            streams={self._name: '>'}, count=1, block=round(self._timeout_ms))
 
             if not queues:
                 queues = self._claim_olds()
@@ -55,10 +57,8 @@ class RedisTileStore(TileStore):
                     for message in queue_messages:
                         id_, body = message
                         try:
-                            tile = decode_message(body[b'message'], from_redis=True)
+                            tile = decode_message(body[b'message'], from_redis=True, sqs_message=id_)
                             yield tile
-                            self._redis.xack(self._name, STREAM_GROUP, id_)
-                            self._redis.xdel(self._name, id_)
                         except Exception:
                             logger.warning('Failed decoding the Redis message', exc_info=True)
 
@@ -77,7 +77,10 @@ class RedisTileStore(TileStore):
     def delete_one(self, tile):
         # Once consumed from redis, we don't have to delete the tile from the queue.
         assert hasattr(tile, 'from_redis')
+        assert hasattr(tile, 'sqs_message')
         assert tile.from_redis is True
+        self._redis.xack(self._name, STREAM_GROUP, tile.sqs_message)
+        self._redis.xdel(self._name, tile.sqs_message)
         return tile
 
     def delete_all(self):
@@ -92,16 +95,31 @@ class RedisTileStore(TileStore):
     def _claim_olds(self):
         pendings = self._redis.xpending_range(name=self._name, groupname=STREAM_GROUP, min='-', max='+', count=10)
         if not pendings:
+            # None means there is nothing pending at all
             return None
         to_steal = []
+        to_drop = []
         for pending in pendings:
-            if int(pending['time_since_delivered']) >= PENDING_TIMEOUT_MS:
+            if int(pending['time_since_delivered']) >= self._pending_timeout_ms:
                 id_ = pending['message_id']
-                logger.info('A message has been pending for too long. Stealing it: %s', id_)
-                to_steal.append(id_)
+                if pending['times_delivered'] < self._max_retires:
+                    logger.info('A message has been pending for too long. Stealing it: %s', id_)
+                    to_steal.append(id_)
+                else:
+                    logger.warning(
+                        'A message has been pending for too long and retried too many times. Dropping it: %s', id_)
+                    to_drop.append(id_)
+
+        if to_drop:
+            drop_ids = self._redis.xclaim(name=self._name, groupname=STREAM_GROUP, consumername=CONSUMER_NAME,
+                                          min_idle_time=self._pending_timeout_ms, message_ids=to_drop, justid=True)
+            self._redis.xack(self._name, STREAM_GROUP, *drop_ids)
+            self._redis.xdel(self._name, *drop_ids)
+
         if to_steal:
             messages = self._redis.xclaim(name=self._name, groupname=STREAM_GROUP, consumername=CONSUMER_NAME,
-                                          min_idle_time=PENDING_TIMEOUT_MS, message_ids=to_steal)
+                                          min_idle_time=self._pending_timeout_ms, message_ids=to_steal)
             return [[self._name, messages]]
         else:
+            # Empty means there are pending jobs, but they are not old enough to be stolen
             return []
