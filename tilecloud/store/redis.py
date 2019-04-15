@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from c2cwsgiutils import stats
 import logging
 import os
 import redis
@@ -29,6 +30,7 @@ class RedisTileStore(TileStore):
         self._max_errors_nb = max_errors_nb
         if not name.startswith('queue_'):
             name = 'queue_' + name
+        self._name_str = name
         self._name = name.encode('utf-8')
         self._errors_name = self._name + b"_errors"
         try:
@@ -45,12 +47,14 @@ class RedisTileStore(TileStore):
         return tile
 
     def list(self):
+        count = 0
         while True:
             queues = self._redis.xreadgroup(groupname=STREAM_GROUP, consumername=CONSUMER_NAME,
                                             streams={self._name: '>'}, count=1, block=round(self._timeout_ms))
 
             if not queues:
                 queues = self._claim_olds()
+                stats.set_gauge(['redis', self._name_str, 'nb_messages'], 0)
                 if queues is None and self._stop_if_empty:
                     break
             if queues:
@@ -64,6 +68,11 @@ class RedisTileStore(TileStore):
                             yield tile
                         except Exception:
                             logger.warning('Failed decoding the Redis message', exc_info=True)
+                            stats.increment_counter(['redis', self._name_str, 'decode_error'])
+                        count += 1
+
+                if count % 100 == 0:
+                    stats.set_gauge(['redis', self._name_str, 'nb_messages'], self._redis.xlen(name=self._name))
 
     def put_one(self, tile):
         try:
@@ -125,10 +134,12 @@ class RedisTileStore(TileStore):
                 tile = decode_message(drop_message[b'message'])
                 self._redis.xadd(name=self._errors_name, fields=dict(tilecoord=str(tile.tilecoord)),
                                  maxlen=self._max_errors_nb)
+            stats.increment_counter(['redis', self._name_str, 'dropped'], len(to_drop))
 
         if to_steal:
             messages = self._redis.xclaim(name=self._name, groupname=STREAM_GROUP, consumername=CONSUMER_NAME,
                                           min_idle_time=self._pending_timeout_ms, message_ids=to_steal)
+            stats.increment_counter(['redis', self._name_str, 'stolen'], len(to_steal))
             return [[self._name, messages]]
         else:
             # Empty means there are pending jobs, but they are not old enough to be stolen
