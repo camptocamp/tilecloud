@@ -46,5 +46,5 @@ deploy:
   distributions: sdist bdist_wheel
   on:
     tags: true
-    python: 2.7
+    python: 3.6
     condition: "${TRAVIS_TAG} == `python setup.py --version`"
