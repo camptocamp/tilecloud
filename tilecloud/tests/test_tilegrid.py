@@ -108,6 +108,17 @@ class TestFreeTileGridWithScale(unittest.TestCase):
         assert self.ftg.tilecoord(1, 432000, 332000) == TileCoord(1, 6, 9)
 
 
+class TestFreeTileGridWithFloatResolutions(unittest.TestCase):
+    def setUp(self):
+        self.ftg = FreeTileGrid(
+            resolutions=(10, 5, 2.5), max_extent=(420000, 30000, 900000, 350000),
+            tile_size=100)
+
+    def test_extent(self):
+        assert self.ftg.extent(TileCoord(0, 0, 0)) == (420000.0, 349000.0, 421000.0, 350000.0)
+        assert self.ftg.extent(TileCoord(2, 0, 0)) == (420000.0, 349750.0, 420250.0, 350000.0)
+
+
 class TestFreeTileGridWithSubMetrics(unittest.TestCase):
 
     def setUp(self):

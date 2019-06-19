@@ -10,7 +10,7 @@ class FreeTileGrid(TileGrid):
     def __init__(self, resolutions, max_extent=None, tile_size=None, scale=1, flip_y=False):
         TileGrid.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         assert list(resolutions) == sorted(resolutions, reverse=True)
-        assert all(isinstance(r, integer_types) for r in resolutions)
+        assert all(isinstance(r, integer_types + (float, )) for r in resolutions)
         self.resolutions = resolutions
         self.scale = float(scale)
         self.parent_zs = []
@@ -57,7 +57,7 @@ class FreeTileGrid(TileGrid):
             self.max_extent[1] + \
             (self.tile_size * (y + tilecoord.n) + border) * \
             self.resolutions[tilecoord.z] / self.scale
-        return (minx, miny, maxx, maxy)
+        return minx, miny, maxx, maxy
 
     def parent(self, tilecoord):
         parent_z = self.parent_zs[tilecoord.z]
