@@ -1,5 +1,4 @@
 import PIL.Image
-from six.moves import xrange
 
 from tilecloud import BoundingPyramid, Tile, TileCoord, TileStore
 
@@ -32,8 +31,8 @@ class MaskTileStore(TileStore):
         return tile
 
     def list(self):
-        for x in xrange(0, self.width):
-            for y in xrange(0, self.height):
+        for x in range(0, self.width):
+            for y in range(0, self.height):
                 if self.pixels[x, y]:
                     yield Tile(TileCoord(self.z, self.xbounds.start + x, self.ybounds.stop - y - 1))
 

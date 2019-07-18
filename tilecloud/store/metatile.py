@@ -1,18 +1,9 @@
-from sys import version_info
+from io import BytesIO
+
+from PIL import Image
 
 from tilecloud import Tile, TileStore
 from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
-
-if version_info[0] == 2:
-    from cStringIO import StringIO
-else:
-    from io import BytesIO as StringIO
-
-try:
-    from PIL import Image
-    Image  # suppress pyflakes warning
-except ImportError:
-    import Image
 
 
 class MetaTileSplitterTileStore(TileStore):
@@ -25,7 +16,7 @@ class MetaTileSplitterTileStore(TileStore):
 
     def get(self, tiles):
         for metatile in tiles:
-            metaimage = None if metatile.data is None else Image.open(StringIO(metatile.data))
+            metaimage = None if metatile.data is None else Image.open(BytesIO(metatile.data))
             for tilecoord in metatile.tilecoord:
                 if metatile.error:
                     yield Tile(
@@ -42,7 +33,7 @@ class MetaTileSplitterTileStore(TileStore):
                 x = self.border + (tilecoord.x - metatile.tilecoord.x) * self.tile_size
                 y = self.border + (tilecoord.y - metatile.tilecoord.y) * self.tile_size
                 image = metaimage.crop((x, y, x + self.tile_size, y + self.tile_size))
-                string_io = StringIO()
+                string_io = BytesIO()
                 image.save(string_io, FORMAT_BY_CONTENT_TYPE[self.format])
                 yield Tile(
                     tilecoord, data=string_io.getvalue(), content_type=self.format,

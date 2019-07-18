@@ -1,9 +1,4 @@
-from six.moves import map as imap
-from sys import version_info
-if version_info[0] == 2:
-    from UserDict import DictMixin
-else:
-    from collections import MutableMapping as DictMixin
+from collections import MutableMapping as DictMixin
 
 
 def query(connection, *args):
@@ -42,7 +37,7 @@ class SQLiteDict(DictMixin):
         return self._unpackvalue(row)
 
     def __iter__(self):
-        return imap(self._unpackkey, query(self.connection, self.ITER_SQL))
+        return map(self._unpackkey, query(self.connection, self.ITER_SQL))
 
     def __len__(self):
         return query(self.connection, self.LEN_SQL).fetchone()[0]
@@ -53,14 +48,16 @@ class SQLiteDict(DictMixin):
             self.connection.commit()
 
     def iteritems(self):
-        return imap(self._unpackitem,
-                    query(self.connection,
-                          self.ITERITEMS_SQL))
+        return map(
+            self._unpackitem,
+            query(self.connection, self.ITERITEMS_SQL)
+        )
 
     def itervalues(self):
-        return imap(self._unpackvalue,
-                    query(self.connection,
-                          self.ITERVALUES_SQL))
+        return map(
+            self._unpackvalue,
+            query(self.connection, self.ITERVALUES_SQL)
+        )
 
     def keys(self):
         return list(iter(self))

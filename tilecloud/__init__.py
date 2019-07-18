@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 
 import collections
-from itertools import islice
 import logging
-from operator import attrgetter
 import os.path
 import re
-from sys import version_info
-from six import itervalues, iteritems
-from six.moves import xrange, reduce, filter as ifilter, map as imap
-if version_info[0] > 2:
-    def cmp(a, b):
-        return (a > b) - (a < b)
+from functools import reduce
+from itertools import islice
+from operator import attrgetter
+
+
+def cmp(a, b):
+    return (a > b) - (a < b)
 
 
 logger = logging.getLogger(__name__)
@@ -87,7 +86,7 @@ class Bounds(object):
 
     def __iter__(self):
         if self.start is not None:
-            for i in xrange(self.start, self.stop):
+            for i in range(self.start, self.stop):
                 yield i
 
     def __repr__(self):  # pragma: no cover
@@ -157,8 +156,10 @@ class BoundingPyramid(object):
 
     def __len__(self):
         """Returns the total number of TileCoords in self"""
-        return sum(len(xbounds) * len(ybounds)
-                   for xbounds, ybounds in itervalues(self.bounds))
+        return sum(
+            len(xbounds) * len(ybounds) for xbounds,
+            ybounds in self.bounds.values()
+        )
 
     def add(self, tilecoord):
         """Extends self to include tilecoord"""
@@ -191,11 +192,11 @@ class BoundingPyramid(object):
     def fill_down(self, bottom, start=None):
         if start is None:
             start = max(self.bounds)
-        for z in xrange(start, bottom):
+        for z in range(start, bottom):
             self.add_bounds(z + 1, self.tilegrid.fill_down(z, self.bounds[z]))
 
     def fill_up(self, top=0):
-        for z in xrange(max(self.bounds), top, -1):
+        for z in range(max(self.bounds), top, -1):
             self.add_bounds(z - 1, self.tilegrid.fill_up(z, self.bounds[z]))
 
     def iterbottomup(self):
@@ -273,7 +274,7 @@ class BoundingPyramid(object):
     @classmethod
     def full(cls, zmin=None, zmax=None):
         assert zmax is not None
-        zs = (zmax,) if zmin is None else xrange(zmin, zmax + 1)
+        zs = (zmax,) if zmin is None else range(zmin, zmax + 1)
         return cls(dict((z, (Bounds(0, 1 << z), Bounds(0, 1 << z)))
                         for z in zs))
 
@@ -309,7 +310,7 @@ class Tile(object):
         self.data = data
         self.error = None
         self.metadata = metadata if metadata is not None else {}
-        for key, value in iteritems(kwargs):
+        for key, value in kwargs.items():
             setattr(self, key, value)
 
     def __cmp__(self, other):
@@ -409,8 +410,8 @@ class TileCoord(object):
 
     def __iter__(self):
         """Yield each TileCoord"""
-        for i in xrange(0, self.n):
-            for j in xrange(0, self.n):
+        for i in range(0, self.n):
+            for j in range(0, self.n):
                 yield TileCoord(self.z, self.x + i, self.y + j)
 
     def __repr__(self):  # pragma: no cover
@@ -555,7 +556,7 @@ class TileStore(object):
         """
         self.bounding_pyramid = bounding_pyramid
         self.content_type = content_type
-        for key, value in iteritems(kwargs):
+        for key, value in kwargs.items():
             setattr(self, key, value)
 
     def __contains__(self, tile):
@@ -580,7 +581,7 @@ class TileStore(object):
         :rtype: int
 
         """
-        return reduce(lambda x, _: x + 1, ifilter(None, self.list()), 0)
+        return reduce(lambda x, _: x + 1, filter(None, self.list()), 0)
 
     def delete(self, tiles):
         """
@@ -592,7 +593,7 @@ class TileStore(object):
         :rtype: iterator
 
         """
-        return imap(self.delete_one, ifilter(None, tiles))
+        return map(self.delete_one, filter(None, tiles))
 
     @staticmethod
     def delete_one(tile):
@@ -617,7 +618,7 @@ class TileStore(object):
         :rtype: iterator
 
         """
-        return imap(self.get_one, ifilter(None, tiles))
+        return map(self.get_one, filter(None, tiles))
 
     def get_all(self):
         """
@@ -626,7 +627,7 @@ class TileStore(object):
         :rtype: iterator
 
         """
-        return imap(self.get_one, ifilter(None, self.list()))
+        return map(self.get_one, filter(None, self.list()))
 
     def get_bounding_pyramid(self):
         """
@@ -635,10 +636,11 @@ class TileStore(object):
         :rtype: :class:`BoundingPyramid`
 
         """
-        return reduce(BoundingPyramid.add,
-                      imap(attrgetter('tilecoord'),
-                           ifilter(None, self.list())),
-                      BoundingPyramid())
+        return reduce(
+            BoundingPyramid.add,
+            map(attrgetter('tilecoord'), filter(None, self.list())),
+            BoundingPyramid()
+        )
 
     @staticmethod
     def get_cheap_bounding_pyramid():
@@ -685,7 +687,7 @@ class TileStore(object):
         :rtype: iterator
 
         """
-        return imap(self.put_one, ifilter(None, tiles))
+        return map(self.put_one, filter(None, tiles))
 
     @staticmethod
     def put_one(tile):

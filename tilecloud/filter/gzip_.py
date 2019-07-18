@@ -1,5 +1,5 @@
 from gzip import GzipFile
-from six.moves import cStringIO as StringIO
+from io import StringIO
 
 
 class GzipCompressor(object):

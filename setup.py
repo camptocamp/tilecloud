@@ -12,7 +12,6 @@ install_requires = [
     'pyproj',
     'requests>=1.0',
     'redis>=2',
-    'six',
 ]
 
 setup(

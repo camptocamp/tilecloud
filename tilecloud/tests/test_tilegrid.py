@@ -1,6 +1,5 @@
 from itertools import islice
 import unittest
-from six.moves import xrange
 
 from tilecloud import TileCoord, TileGrid
 from tilecloud.grid.free import FreeTileGrid
@@ -189,9 +188,9 @@ class TestFreeQuadTileGridEquivalence(unittest.TestCase):
         assert sorted(self.ftg.children(tc)) == sorted(self.qtg.children(tc))
 
     def test_extent(self):
-        for z in xrange(0, 4):
-            for x in xrange(0, 1 << z):
-                for y in xrange(0, 1 << z):
+        for z in range(0, 4):
+            for x in range(0, 1 << z):
+                for y in range(0, 1 << z):
                     tilecoord = TileCoord(z, x, y)
                     assert self.ftg.extent(tilecoord) == self.qtg.extent(tilecoord)
 
@@ -244,9 +243,9 @@ class TestQuadTileGrid(unittest.TestCase):
         assert list(self.qtg.roots()) == [TileCoord(0, 0, 0)]
 
     def test_tilecoord(self):
-        for z in xrange(0, 4):
-            for x in xrange(0, 1 << z):
-                for y in xrange(0, 1 << z):
+        for z in range(0, 4):
+            for x in range(0, 1 << z):
+                for y in range(0, 1 << z):
                     tilecoord = TileCoord(z, x, y)
                     minx, miny, _, _ = self.qtg.extent(tilecoord)
                     assert self.qtg.tilecoord(z, minx, miny) == tilecoord
