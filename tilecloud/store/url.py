@@ -35,6 +35,7 @@ class URLTileStore(TileStore):
             tile.content_encoding = response.headers.get('Content-Encoding')
             tile.content_type = response.headers.get('Content-Type')
             if response.status_code < 300:
+                tile.data = response.content
                 if tile.content_type.startswith('image/'):
                     tile.data = response.content
                 else:

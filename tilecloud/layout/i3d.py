@@ -1,5 +1,4 @@
 import re
-from six.moves import xrange
 
 from tilecloud import TileCoord
 from tilecloud.layout.re_ import RETileLayout
@@ -28,7 +27,7 @@ class I3DTileLayout(RETileLayout):
     def quadcode_from_tilecoord(tilecoord):
         x, y = tilecoord.x, tilecoord.y
         result = ''
-        for _ in xrange(0, tilecoord.z):
+        for _ in range(0, tilecoord.z):
             result += '0123'[(x & 1) + ((y & 1) << 1)]
             x >>= 1
             y >>= 1

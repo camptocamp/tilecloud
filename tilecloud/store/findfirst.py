@@ -1,5 +1,3 @@
-from six.moves import filter as ifilter
-
 from tilecloud import TileStore
 
 
@@ -10,7 +8,7 @@ class FindFirstTileStore(TileStore):
         self.tilestores = tilestores
 
     def get_one(self, tile):
-        return next(ifilter(None,
-                            (store.get_one(tile)
-                                for store in self.tilestores)),
-                    None)
+        return next(filter(
+            None,
+            (store.get_one(tile) for store in self.tilestores)
+        ), None)

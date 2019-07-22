@@ -1,6 +1,4 @@
 from math import floor
-from six.moves import xrange
-from six import integer_types
 
 from tilecloud import TileCoord, TileGrid
 
@@ -10,13 +8,13 @@ class FreeTileGrid(TileGrid):
     def __init__(self, resolutions, max_extent=None, tile_size=None, scale=1, flip_y=False):
         TileGrid.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         assert list(resolutions) == sorted(resolutions, reverse=True)
-        assert all(isinstance(r, integer_types + (float, )) for r in resolutions)
+        assert all(isinstance(r, (int, float)) for r in resolutions)
         self.resolutions = resolutions
         self.scale = float(scale)
         self.parent_zs = []
         self.child_zs = []
         for i, resolution in enumerate(self.resolutions):
-            for parent in xrange(i - 1, -1, -1):
+            for parent in range(i - 1, -1, -1):
                 if self.resolutions[parent] % resolution == 0:
                     self.parent_zs.append(parent)
                     self.child_zs[parent].append(i)
@@ -29,9 +27,9 @@ class FreeTileGrid(TileGrid):
         if tilecoord.z < len(self.resolutions):
             for child_z in self.child_zs[tilecoord.z]:
                 factor = self.resolutions[tilecoord.z] / self.resolutions[child_z]
-                for i in xrange(0, int(factor)):
+                for i in range(0, int(factor)):
                     x = factor * tilecoord.x + i
-                    for j in xrange(0, int(factor)):
+                    for j in range(0, int(factor)):
                         y = factor * tilecoord.y + j
                         yield TileCoord(child_z, x, y)
 
@@ -92,4 +90,4 @@ class FreeTileGrid(TileGrid):
         return TileCoord(z, int(floor(tx)), int(floor(ty)))
 
     def zs(self):
-        return xrange(len(self.resolutions))
+        return range(len(self.resolutions))

@@ -1,5 +1,4 @@
 import unittest
-from six.moves import xrange
 
 from tilecloud import BoundingPyramid, Bounds, TileCoord
 
@@ -124,7 +123,7 @@ class TestGoogleTileGrid(unittest.TestCase):
 
     def test_fill(self):
         bp = BoundingPyramid()
-        bp.fill(xrange(0, 8), (572215.4395248143, 5684416.95917649, 1277662.36597472, 6145307.39552287))
+        bp.fill(range(0, 8), (572215.4395248143, 5684416.95917649, 1277662.36597472, 6145307.39552287))
         self.assertEqual(bp.zget(0), (Bounds(0, 1), Bounds(0, 1)))
         self.assertEqual(bp.zget(1), (Bounds(1, 2), Bounds(0, 1)))
         self.assertEqual(bp.zget(2), (Bounds(2, 3), Bounds(1, 2)))

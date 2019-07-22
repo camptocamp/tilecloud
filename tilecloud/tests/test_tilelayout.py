@@ -1,15 +1,14 @@
 import unittest
-from urllib.parse import parse_qs
-from six.moves.urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 from tilecloud import TileCoord, TileLayout
+from tilecloud.grid.free import FreeTileGrid
 from tilecloud.layout.osm import OSMTileLayout
 from tilecloud.layout.template import TemplateTileLayout
 from tilecloud.layout.tilecache import TileCacheDiskLayout
 from tilecloud.layout.wms import WMSTileLayout
 from tilecloud.layout.wmts import WMTSTileLayout
 from tilecloud.layout.wrapped import WrappedTileLayout
-from tilecloud.grid.free import FreeTileGrid
 
 
 class TestTileLayout(unittest.TestCase):

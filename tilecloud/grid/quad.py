@@ -1,5 +1,4 @@
 from itertools import count
-from six.moves import xrange
 
 from tilecloud import Bounds, TileCoord, TileGrid
 
@@ -61,6 +60,6 @@ class QuadTileGrid(TileGrid):
 
     def zs(self):
         if self.max_zoom:
-            return xrange(0, self.max_zoom + 1)
+            return range(0, self.max_zoom + 1)
         else:
             return count(0)
