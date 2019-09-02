@@ -2,4 +2,4 @@ boto3==1.9.220
 bottle==0.12.17
 c2cwsgiutils[broadcast]>=2.16,<4
 Pillow==6.1.0
-pyproj==2.3.0
+pyproj==2.3.1
