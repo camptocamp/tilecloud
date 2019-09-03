@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from builtins import filter as ifilter
 import collections
 import logging
 import os.path
@@ -581,7 +582,7 @@ class TileStore(object):
         :rtype: int
 
         """
-        return reduce(lambda x, _: x + 1, filter(None, self.list()), 0)
+        return reduce(lambda x, _: x + 1, ifilter(None, self.list()), 0)
 
     def delete(self, tiles):
         """
@@ -593,7 +594,7 @@ class TileStore(object):
         :rtype: iterator
 
         """
-        return map(self.delete_one, filter(None, tiles))
+        return map(self.delete_one, ifilter(None, tiles))
 
     @staticmethod
     def delete_one(tile):
@@ -618,7 +619,7 @@ class TileStore(object):
         :rtype: iterator
 
         """
-        return map(self.get_one, filter(None, tiles))
+        return map(self.get_one, ifilter(None, tiles))
 
     def get_all(self):
         """
@@ -627,7 +628,7 @@ class TileStore(object):
         :rtype: iterator
 
         """
-        return map(self.get_one, filter(None, self.list()))
+        return map(self.get_one, ifilter(None, self.list()))
 
     def get_bounding_pyramid(self):
         """
@@ -638,7 +639,7 @@ class TileStore(object):
         """
         return reduce(
             BoundingPyramid.add,
-            map(attrgetter('tilecoord'), filter(None, self.list())),
+            map(attrgetter('tilecoord'), ifilter(None, self.list())),
             BoundingPyramid()
         )
 
@@ -687,7 +688,7 @@ class TileStore(object):
         :rtype: iterator
 
         """
-        return map(self.put_one, filter(None, tiles))
+        return map(self.put_one, ifilter(None, tiles))
 
     @staticmethod
     def put_one(tile):
