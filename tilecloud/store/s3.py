@@ -13,7 +13,8 @@ class S3TileStore(TileStore):
     """Tiles stored in Amazon S3"""
 
     def __init__(self, bucket, tilelayout, dry_run=False, s3_host=None, cache_control=None, **kwargs):
-        self.client = get_client(s3_host)
+        self._s3_host = s3_host
+        self._client = None
         self.bucket = bucket
         self.tilelayout = tilelayout
         self.dry_run = dry_run
@@ -82,6 +83,12 @@ class S3TileStore(TileStore):
             except botocore.exceptions.ClientError as exc:
                 tile.error = exc
         return tile
+
+    @property
+    def client(self):
+        if self._client is None:
+            self._client = get_client(self._s3_host)
+        return self._client
 
 
 def _get_status(s3_client_exception):
