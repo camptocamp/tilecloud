@@ -1,0 +1,22 @@
+#!/bin/bash -e
+
+if [ "${CIRCLE_TAG}" != `python setup.py --version` ]
+then
+    echo "Ignore publishing on pypi"
+    exit 0
+fi
+
+echo  Prepare .pypirc config
+echo "[distutils]" > ~/.pypirc
+echo "index-servers = pypi" >> ~/.pypirc
+echo "[pypi]" >> ~/.pypirc
+echo "username:${PYPI_USERNAME}" >> ~/.pypirc
+echo "password:${PYPI_PASSWORD}" >> ~/.pypirc
+
+set -x
+
+# Publish the Python eggs
+python setup.py egg_info --tag-date sdist bdist_wheel
+twine upload dist/*
+
+rm ~/.pypirc
