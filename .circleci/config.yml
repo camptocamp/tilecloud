@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  build-python36:
+    docker:
+      - image: python:3.6
+      - image: redis
+    environment:
+      REDIS_URL: redis://localhost:6379
+    steps: &steps
+      - checkout
+      - run: pip install -r requirements.txt
+      - run: pip install -r dev-requirements.txt
+      - run: make pep8
+      - run: make pyflakes
+      - run: make test
+      - run: git diff --check ${CIRCLE_BRANCH} --
+  build-python37:
+    docker:
+      - image: python:3.7
+      - image: redis
+    environment:
+      REDIS_URL: redis://localhost:6379
+    steps: *steps
+  deploy:
+    docker:
+      - image: python:3.7
+    steps:
+      - checkout
+      - run: ci/publish-pypi
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-python36
+      - build-python37
+      - deploy:
+          requires:
+            - build-python36
+            - build-python37
+          filters:
+            tags:
+              only: /.+/
