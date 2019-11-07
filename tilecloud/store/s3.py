@@ -97,6 +97,5 @@ def _get_status(s3_client_exception):
 
 def get_client(s3_host):
     config = botocore.config.Config(connect_timeout=CLIENT_TIMEOUT, read_timeout=CLIENT_TIMEOUT)
-    session = boto3.session.Session()
-    return session.client('s3', endpoint_url=('https://%s/' % s3_host) if s3_host is not None else None,
-                          config=config)
+    return boto3.client('s3', endpoint_url=('https://%s/' % s3_host) if s3_host is not None else None,
+                        config=config)
