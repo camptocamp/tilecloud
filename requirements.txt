@@ -1,4 +1,4 @@
-boto3==1.10.19
+boto3==1.10.26
 bottle==0.12.17
 c2cwsgiutils[broadcast]>=2.16,<4
 Pillow==6.2.1
