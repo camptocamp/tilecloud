@@ -71,7 +71,7 @@ class RedisTileStore(TileStore):
                             stats.increment_counter(['redis', self._name_str, 'decode_error'])
                         count += 1
 
-                if count % 100 == 0:
+                if count % 20 == 0:
                     stats.set_gauge(['redis', self._name_str, 'nb_messages'], self._redis.xlen(name=self._name))
 
     def put_one(self, tile):
@@ -153,6 +153,7 @@ class RedisTileStore(TileStore):
         pending = self._redis.xpending(self._name, STREAM_GROUP)
         tiles_in_error = self._get_errors()
 
+        stats.set_gauge(['redis', self._name_str, 'nb_messages'], nb_messages)
         return {
             "Approximate number of tiles to generate": nb_messages,
             "Approximate number of generating tiles": pending['pending'],
