@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-if [ "${CIRCLE_TAG}" != `python setup.py --version` ]
+if [ "${GITHUB_REF}" != "refs/tags/$(python setup.py --version)" ]
 then
     echo "Ignore publishing on pypi"
     exit 0
@@ -10,8 +10,8 @@ echo  Prepare .pypirc config
 echo "[distutils]" > ~/.pypirc
 echo "index-servers = pypi" >> ~/.pypirc
 echo "[pypi]" >> ~/.pypirc
-echo "username:${PYPI_USERNAME}" >> ~/.pypirc
-echo "password:${PYPI_PASSWORD}" >> ~/.pypirc
+echo "username:${USERNAME}" >> ~/.pypirc
+echo "password:${PASSWORD}" >> ~/.pypirc
 
 set -x
 
