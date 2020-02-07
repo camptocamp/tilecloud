@@ -1,0 +1,45 @@
+---
+
+name: Continuous integration
+
+on:
+  push:
+
+jobs:
+  main:
+    runs-on: ubuntu-18.04
+    name: Continuous integration
+    timeout-minutes: 3
+
+    env:
+      REDIS_URL: redis://localhost:6379
+      PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
+      SUMMON_PROVIDER: /usr/local/bin/gopass
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - run: sudo apt update
+      - run: sudo apt install python3-wheel python3-setuptools libpq-dev
+
+      - run: python3 -m pip install --requirement=requirements.txt
+      - run: python3 -m pip install --requirement=dev-requirements.txt
+
+      - run: docker run --detach --publish=6379:6379 redis:5
+
+      - run: make pep8
+      - run: make pyflakes
+      - run: make test
+      - run: git --no-pager diff --check HEAD~100
+
+      - uses: camptocamp/initialise-gopass-summon-action@v1
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GITHUB_GOPASS_CI_TOKEN}}
+        if: github.repository == 'camptocamp/tilecloud'
+      - run: |
+          summon --yaml '
+              USERNAME: !var gs/ci/pypi/username
+              PASSWORD: !var gs/ci/pypi/password
+            ' ci/publish-pypi
+        if: github.repository == 'camptocamp/tilecloud'
