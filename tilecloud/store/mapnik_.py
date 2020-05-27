@@ -4,6 +4,7 @@ from tilecloud import TileStore
 
 try:
     import mapnik2 as mapnik
+
     mapnik  # suppress pyflakes warning
 except ImportError:
     import mapnik
@@ -17,8 +18,18 @@ class MapnikTileStore(TileStore):
     """
 
     def __init__(
-            self, tilegrid, mapfile, data_buffer=128, image_buffer=0, output_format='png256', resolution=2,
-            layers_fields=None, drop_empty_utfgrid=False, proj4_literal=None, **kwargs):
+        self,
+        tilegrid,
+        mapfile,
+        data_buffer=128,
+        image_buffer=0,
+        output_format="png256",
+        resolution=2,
+        layers_fields=None,
+        drop_empty_utfgrid=False,
+        proj4_literal=None,
+        **kwargs,
+    ):
         """
         Constructs a MapnikTileStore
 
@@ -58,14 +69,14 @@ class MapnikTileStore(TileStore):
         self.mapnik.resize(size, size)
         self.mapnik.zoom_to_box(bbox2d)
 
-        if self.output_format == 'grid':
+        if self.output_format == "grid":
             grid = mapnik.Grid(self.tilegrid.tile_size, self.tilegrid.tile_size)
             for n, l in enumerate(self.mapnik.layers):
                 if l.name in self.layers_fields:
                     mapnik.render_layer(self.mapnik, grid, layer=n, fields=self.layers_fields[l.name])
 
-            encode = grid.encode('utf', resolution=self.resolution)
-            if self.drop_empty_utfgrid and len(encode['data'].keys()) == 0:
+            encode = grid.encode("utf", resolution=self.resolution)
+            if self.drop_empty_utfgrid and len(encode["data"].keys()) == 0:
                 return None
             tile.data = dumps(encode)
         else:

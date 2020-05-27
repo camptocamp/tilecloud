@@ -7,7 +7,6 @@ from tilecloud.grid.quad import QuadTileGrid
 
 
 class TestTileGrid(unittest.TestCase):
-
     def setUp(self):
         self.tg = TileGrid()
 
@@ -23,7 +22,6 @@ class TestTileGrid(unittest.TestCase):
 
 
 class TestFreeTileGrid(unittest.TestCase):
-
     def setUp(self):
         self.resolutions = (1000, 999, 500, 250, 125, 123, 111, 100, 50, 25, 10)
         self.ftg = FreeTileGrid(self.resolutions)
@@ -45,10 +43,10 @@ class TestFreeTileGrid(unittest.TestCase):
 
 
 class TestFreeTileGrid2(unittest.TestCase):
-
     def setUp(self):
         self.ftg = FreeTileGrid(
-            resolutions=(750, 20, 10, 5), max_extent=(420000, 30000, 900000, 350000), tile_size=100)
+            resolutions=(750, 20, 10, 5), max_extent=(420000, 30000, 900000, 350000), tile_size=100
+        )
 
     def test_extent(self):
         assert self.ftg.extent(TileCoord(0, 0, 0)) == (420000, 275000, 495000, 350000)
@@ -82,11 +80,13 @@ class TestFreeTileGrid2(unittest.TestCase):
 
 
 class TestFreeTileGridWithScale(unittest.TestCase):
-
     def setUp(self):
         self.ftg = FreeTileGrid(
-            resolutions=(4000, 2000, 1000, 500), max_extent=(420000, 30000, 900000, 350000),
-            tile_size=100, scale=100)
+            resolutions=(4000, 2000, 1000, 500),
+            max_extent=(420000, 30000, 900000, 350000),
+            tile_size=100,
+            scale=100,
+        )
 
     def test_extent(self):
         assert self.ftg.extent(TileCoord(1, 4, 6)) == (428000, 336000, 430000, 338000)
@@ -110,8 +110,8 @@ class TestFreeTileGridWithScale(unittest.TestCase):
 class TestFreeTileGridWithFloatResolutions(unittest.TestCase):
     def setUp(self):
         self.ftg = FreeTileGrid(
-            resolutions=(10, 5, 2.5), max_extent=(420000, 30000, 900000, 350000),
-            tile_size=100)
+            resolutions=(10, 5, 2.5), max_extent=(420000, 30000, 900000, 350000), tile_size=100
+        )
 
     def test_extent(self):
         assert self.ftg.extent(TileCoord(0, 0, 0)) == (420000.0, 349000.0, 421000.0, 350000.0)
@@ -119,12 +119,13 @@ class TestFreeTileGridWithFloatResolutions(unittest.TestCase):
 
 
 class TestFreeTileGridWithSubMetrics(unittest.TestCase):
-
     def setUp(self):
         self.ftg = FreeTileGrid(
-            resolutions=(2, 1), max_extent=(420000, 30000, 900000, 350000), tile_size=100, scale=200)
+            resolutions=(2, 1), max_extent=(420000, 30000, 900000, 350000), tile_size=100, scale=200
+        )
         self.ftg2 = FreeTileGrid(
-            resolutions=(2, 1), max_extent=(420000, 30000, 900000, 350000), tile_size=256, scale=10)
+            resolutions=(2, 1), max_extent=(420000, 30000, 900000, 350000), tile_size=256, scale=10
+        )
 
     def test_extent(self):
         assert self.ftg.extent(TileCoord(0, 0, 0)) == (420000, 349999, 420001, 350000)
@@ -161,7 +162,6 @@ class TestFreeTileGridWithSubMetrics(unittest.TestCase):
 
 
 class TestFreeTileGridFlipY(unittest.TestCase):
-
     def setUp(self):
         self.ftsn = FreeTileGrid(resolutions=(8, 4, 2, 1), tile_size=0.125)
         self.ftsf = FreeTileGrid(resolutions=(8, 4, 2, 1), tile_size=0.125, flip_y=True)
@@ -174,7 +174,6 @@ class TestFreeTileGridFlipY(unittest.TestCase):
 
 
 class TestFreeQuadTileGridEquivalence(unittest.TestCase):
-
     def setUp(self):
         self.ftg = FreeTileGrid([8, 4, 2, 1], tile_size=0.125)
         self.qtg = QuadTileGrid(max_zoom=3)
@@ -206,17 +205,24 @@ class TestFreeQuadTileGridEquivalence(unittest.TestCase):
 
 
 class TestQuadTileGrid(unittest.TestCase):
-
     def setUp(self):
         self.qtg = QuadTileGrid(max_extent=(0.0, 1.0, 2.0, 3.0))
 
     def test_children(self):
-        assert sorted(self.qtg.children(TileCoord(1, 2, 3))) == \
-            [TileCoord(2, 4, 6), TileCoord(2, 4, 7), TileCoord(2, 5, 6), TileCoord(2, 5, 7)]
+        assert sorted(self.qtg.children(TileCoord(1, 2, 3))) == [
+            TileCoord(2, 4, 6),
+            TileCoord(2, 4, 7),
+            TileCoord(2, 5, 6),
+            TileCoord(2, 5, 7),
+        ]
 
     def test_children_root(self):
-        assert sorted(self.qtg.children(TileCoord(0, 0, 0))) == \
-            [TileCoord(1, 0, 0), TileCoord(1, 0, 1), TileCoord(1, 1, 0), TileCoord(1, 1, 1)]
+        assert sorted(self.qtg.children(TileCoord(0, 0, 0))) == [
+            TileCoord(1, 0, 0),
+            TileCoord(1, 0, 1),
+            TileCoord(1, 1, 0),
+            TileCoord(1, 1, 1),
+        ]
 
     def test_extent_z0(self):
         assert self.qtg.extent(TileCoord(0, 0, 0)) == (0.0, 1.0, 2.0, 3.0)
@@ -255,7 +261,6 @@ class TestQuadTileGrid(unittest.TestCase):
 
 
 class TestQuadTileGridFlipY(unittest.TestCase):
-
     def setUp(self):
         self.qtsn = QuadTileGrid()
         self.qtsf = QuadTileGrid(flip_y=True)

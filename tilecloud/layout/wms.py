@@ -4,7 +4,6 @@ from tilecloud import TileLayout
 
 
 class WMSTileLayout(TileLayout):
-
     def __init__(self, url, layers, srs, format, tilegrid, border=0, params=None):
         if params is None:
             params = {}
@@ -12,18 +11,18 @@ class WMSTileLayout(TileLayout):
         self.url = url
         self.border = border
         self.params = {
-            'LAYERS': layers,
-            'FORMAT': format,
-            'TRANSPARENT': 'TRUE' if format == 'image/png' else 'FALSE',
-            'SERVICE': 'WMS',
-            'VERSION': '1.1.1',
-            'REQUEST': 'GetMap',
-            'STYLES': '',
-            'SRS': srs,
+            "LAYERS": layers,
+            "FORMAT": format,
+            "TRANSPARENT": "TRUE" if format == "image/png" else "FALSE",
+            "SERVICE": "WMS",
+            "VERSION": "1.1.1",
+            "REQUEST": "GetMap",
+            "STYLES": "",
+            "SRS": srs,
         }
         self.params.update(params)
-        if params.get('FILTER', None) is not None:
-            self.params['FILTER'] = params['FILTER'].format(**params)
+        if params.get("FILTER", None) is not None:
+            self.params["FILTER"] = params["FILTER"].format(**params)
 
     def filename(self, tilecoord, metadata=None):
         metadata = {} if metadata is None else metadata
@@ -31,9 +30,9 @@ class WMSTileLayout(TileLayout):
         size = tilecoord.n * self.tilegrid.tile_size + 2 * self.border
         params = self.params.copy()
         for k, v in metadata.items():
-            if k.startswith('dimension_'):
-                params[k[len('dimension_'):]] = v
-        params['BBOX'] = '{0:f},{1:f},{2:f},{3:f}'.format(*bbox)
-        params['WIDTH'] = size
-        params['HEIGHT'] = size
-        return self.url + '?' + urlencode(params)
+            if k.startswith("dimension_"):
+                params[k[len("dimension_") :]] = v
+        params["BBOX"] = "{0:f},{1:f},{2:f},{3:f}".format(*bbox)
+        params["WIDTH"] = size
+        params["HEIGHT"] = size
+        return self.url + "?" + urlencode(params)

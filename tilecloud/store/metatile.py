@@ -7,7 +7,6 @@ from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class MetaTileSplitterTileStore(TileStore):
-
     def __init__(self, format, tile_size=256, border=0, **kwargs):
         self.format = format
         self.tile_size = tile_size
@@ -19,14 +18,14 @@ class MetaTileSplitterTileStore(TileStore):
             metaimage = None if metatile.data is None else Image.open(BytesIO(metatile.data))
             for tilecoord in metatile.tilecoord:
                 if metatile.error:
-                    yield Tile(
-                        tilecoord, metadata=metatile.metadata, error=metatile.error, metatile=metatile
-                    )
+                    yield Tile(tilecoord, metadata=metatile.metadata, error=metatile.error, metatile=metatile)
                     continue
                 if metatile.data is None:
                     yield Tile(
-                        tilecoord, metadata=metatile.metadata,
-                        error="Metatile data is None", metatile=metatile
+                        tilecoord,
+                        metadata=metatile.metadata,
+                        error="Metatile data is None",
+                        metatile=metatile,
                     )
                     continue
 
@@ -36,6 +35,9 @@ class MetaTileSplitterTileStore(TileStore):
                 string_io = BytesIO()
                 image.save(string_io, FORMAT_BY_CONTENT_TYPE[self.format])
                 yield Tile(
-                    tilecoord, data=string_io.getvalue(), content_type=self.format,
-                    metadata=metatile.metadata, metatile=metatile
+                    tilecoord,
+                    data=string_io.getvalue(),
+                    content_type=self.format,
+                    metadata=metatile.metadata,
+                    metatile=metatile,
                 )

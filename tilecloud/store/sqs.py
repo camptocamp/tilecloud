@@ -17,16 +17,15 @@ def maybe_stop(queue) -> bool:
         return True
 
     attributes = queue.attributes
-    if int(attributes['ApproximateNumberOfMessages']) == 0:
-        if int(attributes['ApproximateNumberOfMessagesNotVisible']) == 0:
+    if int(attributes["ApproximateNumberOfMessages"]) == 0:
+        if int(attributes["ApproximateNumberOfMessagesNotVisible"]) == 0:
             return True
         else:
-            time.sleep(int(attributes['VisibilityTimeout']) / 4.0)
+            time.sleep(int(attributes["VisibilityTimeout"]) / 4.0)
     return False
 
 
 class SQSTileStore(TileStore):
-
     def __init__(self, queue, on_empty=maybe_stop, **kwargs):
         TileStore.__init__(self, **kwargs)
         self.queue = queue
@@ -53,17 +52,17 @@ class SQSTileStore(TileStore):
             else:
                 for sqs_message in sqs_messages:
                     try:
-                        tile = decode_message(sqs_message.body.encode('utf-8'), sqs_message=sqs_message)
+                        tile = decode_message(sqs_message.body.encode("utf-8"), sqs_message=sqs_message)
                         yield tile
                     except Exception:
-                        logger.warning('Failed decoding the SQS message', exc_info=True)
+                        logger.warning("Failed decoding the SQS message", exc_info=True)
                         sqs_message.delete()
 
     @staticmethod
     def delete_one(tile):
-        assert hasattr(tile, 'sqs_message')
+        assert hasattr(tile, "sqs_message")
         tile.sqs_message.delete()
-        delattr(tile, 'sqs_message')
+        delattr(tile, "sqs_message")
         return tile
 
     def put_one(self, tile):
@@ -72,7 +71,7 @@ class SQSTileStore(TileStore):
         try:
             self.queue.send_message(MessageBody=sqs_message)
         except Exception as e:
-            logger.warning('Failed sending SQS message', exc_info=True)
+            logger.warning("Failed sending SQS message", exc_info=True)
             tile.error = e
         return tile
 
@@ -91,17 +90,14 @@ class SQSTileStore(TileStore):
 
     def _send_buffer(self, tiles):
         try:
-            messages = [{
-                'Id': str(i),
-                'MessageBody': encode_message(tile)
-            } for i, tile in enumerate(tiles)]
+            messages = [{"Id": str(i), "MessageBody": encode_message(tile)} for i, tile in enumerate(tiles)]
             response = self.queue.send_messages(Entries=messages)
-            for failed in response.get('Failed', []):
-                logger.warning('Failed sending SQS message: %s', failed['Message'])
-                pos = int(failed['Id'])
-                tiles[pos].error = failed['Message']
+            for failed in response.get("Failed", []):
+                logger.warning("Failed sending SQS message: %s", failed["Message"])
+                pos = int(failed["Id"])
+                tiles[pos].error = failed["Message"]
         except Exception as e:
-            logger.warning('Failed sending SQS messages', exc_info=True)
+            logger.warning("Failed sending SQS messages", exc_info=True)
             for tile in tiles:
                 tile.error = e
 
@@ -112,11 +108,11 @@ class SQSTileStore(TileStore):
         self.queue.load()
         attributes = dict(self.queue.attributes)
         return {
-            "Approximate number of tiles to generate": attributes['ApproximateNumberOfMessages'],
-            "Approximate number of generating tiles": attributes['ApproximateNumberOfMessagesNotVisible'],
-            "Delay in seconds": attributes['DelaySeconds'],
-            "Receive message wait time in seconds": attributes['ReceiveMessageWaitTimeSeconds'],
-            "Visibility timeout in seconds": attributes['VisibilityTimeout'],
+            "Approximate number of tiles to generate": attributes["ApproximateNumberOfMessages"],
+            "Approximate number of generating tiles": attributes["ApproximateNumberOfMessagesNotVisible"],
+            "Delay in seconds": attributes["DelaySeconds"],
+            "Receive message wait time in seconds": attributes["ReceiveMessageWaitTimeSeconds"],
+            "Visibility timeout in seconds": attributes["VisibilityTimeout"],
             "Queue creation date": time.ctime(int(attributes["CreatedTimestamp"])),
-            "Last modification in tile queue": time.ctime(int(attributes["LastModifiedTimestamp"]))
+            "Last modification in tile queue": time.ctime(int(attributes["LastModifiedTimestamp"])),
         }

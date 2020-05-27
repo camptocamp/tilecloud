@@ -2,7 +2,6 @@ from tilecloud import TileStore
 
 
 class MemcachedTileStore(TileStore):
-
     def __init__(self, client, tilelayout, flags=0, exptime=0, **kwargs):
         TileStore.__init__(self, **kwargs)
         self.client = client
@@ -22,8 +21,8 @@ class MemcachedTileStore(TileStore):
         return tile
 
     def put_one(self, tile):
-        flags = getattr(tile, 'memcached_flags', self.flags)
-        exptime = getattr(tile, 'memached_exptime', self.exptime)
+        flags = getattr(tile, "memcached_flags", self.flags)
+        exptime = getattr(tile, "memached_exptime", self.exptime)
         self.client.set(self.tilelayout.filename(tile.tilecoord, tile.metadata), flags, exptime, tile.data)
         return tile
 

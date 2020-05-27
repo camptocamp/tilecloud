@@ -4,12 +4,11 @@ from tempfile import NamedTemporaryFile
 
 
 class OptiPNG(object):
-
-    def __init__(self, options, arg0='/usr/bin/optipng'):
-        self.args = [arg0, '-q'] + list(options)
+    def __init__(self, options, arg0="/usr/bin/optipng"):
+        self.args = [arg0, "-q"] + list(options)
 
     def __call__(self, tile):
-        ntf = NamedTemporaryFile(delete=False, suffix='.png')
+        ntf = NamedTemporaryFile(delete=False, suffix=".png")
         try:
             ntf.write(tile.data)
             ntf.close()

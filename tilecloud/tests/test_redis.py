@@ -6,20 +6,28 @@ import time
 from tilecloud import Tile, TileCoord
 from tilecloud.store.redis import RedisTileStore
 
-url = os.environ.get('REDIS_URL')
+url = os.environ.get("REDIS_URL")
 if url is not None:
-    REDIS_VERSION = list(map(int, redis.Redis.from_url(url).info('server')['redis_version'].split('.')))
+    REDIS_VERSION = list(map(int, redis.Redis.from_url(url).info("server")["redis_version"].split(".")))
 else:
     REDIS_VERSION = []
 
-skip_no_redis = pytest.mark.skipif(url is None or REDIS_VERSION < [5, 0, 0],
-                                   reason="skipped because of missing REDIS_URL")
+skip_no_redis = pytest.mark.skipif(
+    url is None or REDIS_VERSION < [5, 0, 0], reason="skipped because of missing REDIS_URL"
+)
 
 
 @pytest.fixture()
 def store():
-    store = RedisTileStore(url, name="test", stop_if_empty=True, timeout=0.1, pending_timeout=0.5, max_retries=2,
-                           max_errors_age=1)
+    store = RedisTileStore(
+        url,
+        name="test",
+        stop_if_empty=True,
+        timeout=0.1,
+        pending_timeout=0.5,
+        max_retries=2,
+        max_errors_age=1,
+    )
     store.delete_all()
     yield store
 
@@ -30,7 +38,7 @@ def test_list(store):
         store.put_one(Tile(TileCoord(0, 0, y)))
 
     messages = store.get_status()
-    assert messages['Approximate number of tiles to generate'] == 10
+    assert messages["Approximate number of tiles to generate"] == 10
     assert messages["Approximate number of generating tiles"] == 0
 
     count = 0
@@ -39,14 +47,14 @@ def test_list(store):
         assert y == tile.tilecoord.y
         count += 1
         messages = store.get_status()
-        assert messages['Approximate number of tiles to generate'] == 10 - y
+        assert messages["Approximate number of tiles to generate"] == 10 - y
         assert messages["Approximate number of generating tiles"] == 1
         store.delete_one(tile)
 
     assert 10 == count
 
     messages = store.get_status()
-    assert messages['Approximate number of tiles to generate'] == 0
+    assert messages["Approximate number of tiles to generate"] == 0
     assert messages["Approximate number of generating tiles"] == 0
 
 
@@ -73,7 +81,7 @@ def test_recovery_from_failing_slave(store):
     assert 10 == count
 
     messages = store.get_status()
-    assert messages['Approximate number of tiles to generate'] == 0
+    assert messages["Approximate number of tiles to generate"] == 0
     assert messages["Approximate number of generating tiles"] == 0
     assert messages["Tiles in error"] == ""
 
@@ -82,7 +90,7 @@ def test_recovery_from_failing_slave(store):
 def test_dropping_too_many_retries(store):
     if REDIS_VERSION < [5, 0, 4]:
         # Bug in redis x5.0.3 that doesn't increment the retry counter.
-        pytest.skip('Bug in redis')
+        pytest.skip("Bug in redis")
     for y in range(10):
         store.put_one(Tile(TileCoord(0, 0, y)))
 
@@ -104,14 +112,14 @@ def test_dropping_too_many_retries(store):
 
     # test we see the tile in the list of errors
     messages = store.get_status()
-    assert messages['Approximate number of tiles to generate'] == 0
+    assert messages["Approximate number of tiles to generate"] == 0
     assert messages["Approximate number of generating tiles"] == 0
     assert messages["Tiles in error"] == "0/0/0"
 
     # test old errors deleting
     time.sleep(1.1)
     messages = store.get_status()
-    assert messages['Approximate number of tiles to generate'] == 0
+    assert messages["Approximate number of tiles to generate"] == 0
     assert messages["Approximate number of generating tiles"] == 0
     assert messages["Tiles in error"] == ""
 

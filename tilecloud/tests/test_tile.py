@@ -4,7 +4,6 @@ from tilecloud import Tile, TileCoord
 
 
 class TestTile(unittest.TestCase):
-
     def test_empty(self):
         tile = Tile(TileCoord(0, 0, 0))
         self.assertEqual(tile.content_type, None)
