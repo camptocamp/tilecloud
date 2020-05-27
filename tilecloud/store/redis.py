@@ -1,12 +1,14 @@
 from __future__ import absolute_import
-from c2cwsgiutils import stats
+
 import logging
 import os
-import redis
 import socket
 
+import redis
+
+from c2cwsgiutils import stats
 from tilecloud import TileStore
-from tilecloud.store.queue import encode_message, decode_message
+from tilecloud.store.queue import decode_message, encode_message
 
 STREAM_GROUP = "tilecloud"
 CONSUMER_NAME = socket.gethostname() + "-" + str(os.getpid())
@@ -70,7 +72,9 @@ class RedisTileStore(TileStore):
 
             if not queues:
                 queues = self._claim_olds()
-                stats.set_gauge(["redis", self._name_str, "nb_messages"], 0)
+                if queues is None:
+                    stats.set_gauge(["redis", self._name_str, "nb_messages"], 0)
+                    stats.set_gauge(["redis", self._name_str, "pending"], 0)
                 if queues is None and self._stop_if_empty:
                     break
             if queues:
@@ -87,10 +91,12 @@ class RedisTileStore(TileStore):
                             stats.increment_counter(["redis", self._name_str, "decode_error"])
                         count += 1
 
-                if count % 20 == 0:
+                if count % 10 == 0:
                     stats.set_gauge(
                         ["redis", self._name_str, "nb_messages"], self._redis.xlen(name=self._name)
                     )
+                    pending = self._redis.xpending(self._name, STREAM_GROUP)
+                    stats.set_gauge(["redis", self._name_str, "pending"], pending["pending"])
 
     def put_one(self, tile):
         try:
