@@ -33,13 +33,9 @@ class WMTSTileLayout(TileLayout):
         # Careful the order is important for the REST request encoding
         query = []
         if self.request_encoding == "KVP":
-            query.extend(
-                [("Service", "WMTS"), ("Request", "GetTile"), ("Format", self.format),]
-            )
+            query.extend([("Service", "WMTS"), ("Request", "GetTile"), ("Format", self.format)])
 
-        query.extend(
-            [("Version", "1.0.0"), ("Layer", self.layer), ("Style", self.style),]
-        )
+        query.extend([("Version", "1.0.0"), ("Layer", self.layer), ("Style", self.style)])
 
         for name in self.dimensions_name:
             query.append((name, metadata["dimension_" + name]))

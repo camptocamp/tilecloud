@@ -12,7 +12,7 @@ docs:
 
 .PHONY: pep8
 pep8:
-	find examples tilecloud tiles -name \*.py | xargs pep8 --ignore=E501
+	find examples tilecloud tiles -name \*.py | xargs pep8 --ignore=E501,W503,E203
 	pep8 --ignore=E501 tc-*
 
 .PHONY: pyflakes
