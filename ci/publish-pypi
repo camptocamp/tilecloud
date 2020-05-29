@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-if [ "${GITHUB_REF}" != "refs/tags/$(python setup.py --version)" ]
+if [ "${GITHUB_REF}" != "refs/tags/$(python3 setup.py --version)" ]
 then
     echo "Ignore publishing on pypi"
     exit 0
@@ -16,7 +16,7 @@ echo "password:${PASSWORD}" >> ~/.pypirc
 set -x
 
 # Publish the Python eggs
-python setup.py egg_info --tag-date sdist bdist_wheel
+python3 setup.py egg_info --tag-date sdist bdist_wheel
 twine upload dist/*
 
 rm ~/.pypirc
