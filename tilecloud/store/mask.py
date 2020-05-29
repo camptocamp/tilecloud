@@ -12,14 +12,14 @@ class MaskTileStore(TileStore):
         self.xbounds, self.ybounds = bounds
         self.width = self.xbounds.stop - self.xbounds.start
         self.height = self.ybounds.stop - self.ybounds.start
-        if 'bounding_pyramid' not in kwargs:
+        if "bounding_pyramid" not in kwargs:
             self.bounding_pyramid = BoundingPyramid({self.z: (self.xbounds, self.ybounds)})
         if file:
             self.image = PIL.Image.open(file)
-            assert self.image.mode == '1'
+            assert self.image.mode == "1"
             assert self.image.size == (self.width, self.height)
         else:
-            self.image = PIL.Image.new('1', (self.width, self.height))
+            self.image = PIL.Image.new("1", (self.width, self.height))
         self.pixels = self.image.load()
 
     def delete_one(self, tile):

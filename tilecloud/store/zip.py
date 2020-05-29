@@ -10,7 +10,6 @@ from tilecloud.layout.wrapped import WrappedTileLayout
 
 
 class ZipTileStore(TileStore):
-
     def __init__(self, zipfile, layout=None, **kwargs):
         TileStore.__init__(self, **kwargs)
         self.zipfile = zipfile
@@ -20,8 +19,9 @@ class ZipTileStore(TileStore):
             for name in self.zipfile.namelist():
                 extension_count[os.path.splitext(name)[1]] += 1
             for extension, _ in sorted(
-                    extension_count.items(), key=lambda p: tuple(reversed(p)), reverse=True):
-                if re.match(r'\.(jpe?g|png)\Z', extension, re.I):
+                extension_count.items(), key=lambda p: tuple(reversed(p)), reverse=True
+            ):
+                if re.match(r"\.(jpe?g|png)\Z", extension, re.I):
                     self.layout = WrappedTileLayout(OSMTileLayout(), suffix=extension)
                     break
         if self.layout is None:
@@ -38,7 +38,7 @@ class ZipTileStore(TileStore):
             return False
 
     def get_one(self, tile):
-        if hasattr(tile, 'zipinfo'):
+        if hasattr(tile, "zipinfo"):
             tile.data = self.zipfile.read(tile.zipinfo)
         else:
             filename = self.layout.filename(tile.tilecoord, tile.metadata)
@@ -55,7 +55,7 @@ class ZipTileStore(TileStore):
     def put_one(self, tile):
         filename = self.layout.filename(tile.tilecoord, tile.metadata)
         zipinfo = zipfile.ZipInfo(filename)
-        zipinfo.compress_type = getattr(self, 'compress_type', zipfile.ZIP_DEFLATED)
+        zipinfo.compress_type = getattr(self, "compress_type", zipfile.ZIP_DEFLATED)
         zipinfo.date_time = datetime.now().timetuple()[:6]
         zipinfo.external_attr = 0o644 << 16
         self.zipfile.writestr(zipinfo, tile.data)

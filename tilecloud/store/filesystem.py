@@ -25,7 +25,7 @@ class FilesystemTileStore(TileStore):
 
     def get_all(self):
         for tile in self.list():
-            with open(tile.path, 'rb') as file:
+            with open(tile.path, "rb") as file:
                 tile.data = file.read()
             yield tile
 
@@ -36,7 +36,7 @@ class FilesystemTileStore(TileStore):
             tile.error = e
             return tile
         try:
-            with open(filename, 'rb') as file:
+            with open(filename, "rb") as file:
                 tile.data = file.read()
             if self.content_type is not None:
                 tile.content_type = self.content_type
@@ -48,7 +48,7 @@ class FilesystemTileStore(TileStore):
                 raise
 
     def list(self):
-        top = getattr(self.tilelayout, 'prefix', '.')
+        top = getattr(self.tilelayout, "prefix", ".")
         for dirpath, _, filenames in os.walk(top):
             for filename in filenames:
                 path = os.path.join(dirpath, filename)
@@ -66,6 +66,6 @@ class FilesystemTileStore(TileStore):
         dirname = os.path.dirname(filename)
         if not os.path.exists(dirname):
             os.makedirs(dirname)
-        with open(filename, 'wb') as file:
+        with open(filename, "wb") as file:
             file.write(tile.data)
         return tile

@@ -26,5 +26,5 @@ class LogTileStore(TileStore):
                 yield Tile(self.tilelayout.tilecoord(match.group()), line=line)
 
     def put_one(self, tile):
-        self.file.write(self.tilelayout.filename(tile.tilecoord, tile.metadata) + '\n')
+        self.file.write(self.tilelayout.filename(tile.tilecoord, tile.metadata) + "\n")
         return tile

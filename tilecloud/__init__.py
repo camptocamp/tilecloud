@@ -17,7 +17,7 @@ def cmp(a, b):
 logger = logging.getLogger(__name__)
 
 
-def consume(iterator, n):  # pragma: no cover
+def consume(iterator, n=None):  # pragma: no cover
     "Advance the iterator n-steps ahead. If n is none, consume entirely."
     # Use functions that consume iterators at C speed.
     if n is None:
@@ -92,12 +92,9 @@ class Bounds(object):
 
     def __repr__(self):  # pragma: no cover
         if self.start is None:
-            return '{0!s}(None)'.format(self.__class__.__name__)
+            return "{0!s}(None)".format(self.__class__.__name__)
         else:
-            return '{0!s}({1!r}, {2!r})'.format(
-                self.__class__.__name__,
-                self.start, self.stop
-            )
+            return "{0!s}({1!r}, {2!r})".format(self.__class__.__name__, self.start, self.stop)
 
     def add(self, value):
         """Extends self to include value"""
@@ -122,8 +119,7 @@ class Bounds(object):
     def union(self, other):
         """Returns a new Bounds which is the union of self and other"""
         if self and other:
-            return Bounds(min(self.start, other.start),
-                          max(self.stop, other.stop))
+            return Bounds(min(self.start, other.start), max(self.stop, other.stop))
         elif self:
             return Bounds(self.start, self.stop)
         elif other:
@@ -133,12 +129,12 @@ class Bounds(object):
 
 
 class BoundingPyramid(object):
-
     def __init__(self, bounds=None, tilegrid=None):
         self.bounds = bounds or {}
         self.tilegrid = tilegrid
         if self.tilegrid is None:
             from tilecloud.grid.google import GoogleTileGrid
+
             self.tilegrid = GoogleTileGrid
 
     def __contains__(self, tilecoord):
@@ -157,10 +153,7 @@ class BoundingPyramid(object):
 
     def __len__(self):
         """Returns the total number of TileCoords in self"""
-        return sum(
-            len(xbounds) * len(ybounds) for xbounds,
-            ybounds in self.bounds.values()
-        )
+        return sum(len(xbounds) * len(ybounds) for xbounds, ybounds in self.bounds.values())
 
     def add(self, tilecoord):
         """Extends self to include tilecoord"""
@@ -169,8 +162,7 @@ class BoundingPyramid(object):
             xbounds.add(tilecoord.x)
             ybounds.add(tilecoord.y)
         else:
-            self.bounds[tilecoord.z] = (Bounds(tilecoord.x),
-                                        Bounds(tilecoord.y))
+            self.bounds[tilecoord.z] = (Bounds(tilecoord.x), Bounds(tilecoord.y))
         return self
 
     def add_bounds(self, z, bounds):
@@ -240,31 +232,33 @@ class BoundingPyramid(object):
     @classmethod
     def from_string(cls, s):
         match = re.match(
-            r'(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):' +
-            r'(?:(?P<plusz>\+)?(?P<z2>\d+)/)?' +
-            r'(?:(?P<plusx>\+)?(?P<x2>\d+)|(?P<starx>\*))/' +
-            r'(?:(?P<plusy>\+)?(?P<y2>\d+)|(?P<stary>\*))\Z', s)
+            r"(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):"
+            + r"(?:(?P<plusz>\+)?(?P<z2>\d+)/)?"
+            + r"(?:(?P<plusx>\+)?(?P<x2>\d+)|(?P<starx>\*))/"
+            + r"(?:(?P<plusy>\+)?(?P<y2>\d+)|(?P<stary>\*))\Z",
+            s,
+        )
         if not match:
-            raise ValueError('invalid literal for {0!s}.from_string(): {1!r}'.format(cls.__name__, s))
-        z1 = int(match.group('z1'))
-        x1 = int(match.group('x1'))
-        if match.group('starx'):
+            raise ValueError("invalid literal for {0!s}.from_string(): {1!r}".format(cls.__name__, s))
+        z1 = int(match.group("z1"))
+        x1 = int(match.group("x1"))
+        if match.group("starx"):
             x2 = 1 << z1
-        elif match.group('plusx'):
-            x2 = x1 + int(match.group('x2'))
+        elif match.group("plusx"):
+            x2 = x1 + int(match.group("x2"))
         else:
-            x2 = int(match.group('x2'))
-        y1 = int(match.group('y1'))
-        if match.group('stary'):
+            x2 = int(match.group("x2"))
+        y1 = int(match.group("y1"))
+        if match.group("stary"):
             y2 = 1 << z1
-        elif match.group('plusy'):
-            y2 = y1 + int(match.group('y2'))
+        elif match.group("plusy"):
+            y2 = y1 + int(match.group("y2"))
         else:
-            y2 = int(match.group('y2'))
+            y2 = int(match.group("y2"))
         result = cls({z1: (Bounds(x1, x2), Bounds(y1, y2))})
-        if match.group('z2'):
-            z2 = int(match.group('z2'))
-            if match.group('plusz'):
+        if match.group("z2"):
+            z2 = int(match.group("z2"))
+            if match.group("plusz"):
                 z2 += z1
             if z1 < z2:
                 result.fill_down(z2)
@@ -276,16 +270,15 @@ class BoundingPyramid(object):
     def full(cls, zmin=None, zmax=None):
         assert zmax is not None
         zs = (zmax,) if zmin is None else range(zmin, zmax + 1)
-        return cls(dict((z, (Bounds(0, 1 << z), Bounds(0, 1 << z)))
-                        for z in zs))
+        return cls(dict((z, (Bounds(0, 1 << z), Bounds(0, 1 << z))) for z in zs))
 
 
 class Tile(object):
     """An actual tile with optional metadata"""
 
     def __init__(
-            self, tilecoord, content_encoding=None, content_type=None,
-            data=None, metadata=None, **kwargs):
+        self, tilecoord, content_encoding=None, content_type=None, data=None, metadata=None, **kwargs
+    ):
         """
         Construct a :class:`Tile`.
 
@@ -339,8 +332,8 @@ class Tile(object):
 
         """
         keys = sorted(self.__dict__.keys())
-        attrs = ''.join(' {0!s}={1!r}'.format(key, self.__dict__[key]) for key in keys)
-        return '<Tile{0!s}>'.format(attrs)
+        attrs = "".join(" {0!s}={1!r}".format(key, self.__dict__[key]) for key in keys)
+        return "<Tile{0!s}>".format(attrs)
 
     @property
     def formated_metadata(self):
@@ -350,7 +343,7 @@ class Tile(object):
     def __dict2__(self):
         result = {}
         result.update(self.__dict__)
-        result['formated_metadata'] = self.formated_metadata
+        result["formated_metadata"] = self.formated_metadata
         return result
 
 
@@ -423,11 +416,9 @@ class TileCoord(object):
 
         """
         if self.n == 1:
-            return '{0!s}({1!r}, {2!r}, {3!r})'.format(
-                self.__class__.__name__, self.z, self.x, self.y
-            )
+            return "{0!s}({1!r}, {2!r}, {3!r})".format(self.__class__.__name__, self.z, self.x, self.y)
         else:
-            return '{0!s}({1!r}, {2!r}, {3!r}, {4!r})'.format(
+            return "{0!s}({1!r}, {2!r}, {3!r}, {4!r})".format(
                 self.__class__.__name__, self.z, self.x, self.y, self.n
             )
 
@@ -439,9 +430,9 @@ class TileCoord(object):
 
         """
         if self.n == 1:
-            return '{0:d}/{1:d}/{2:d}'.format(self.z, self.x, self.y)
+            return "{0:d}/{1:d}/{2:d}".format(self.z, self.x, self.y)
         else:
-            return '{0:d}/{1:d}/{2:d}:+{3:d}/+{4:d}'.format(self.z, self.x, self.y, self.n, self.n)
+            return "{0:d}/{1:d}/{2:d}:+{3:d}/+{4:d}".format(self.z, self.x, self.y, self.n, self.n)
 
     def metatilecoord(self, n=8):
         return TileCoord(self.z, n * (self.x // n), n * (self.y // n), n)
@@ -451,9 +442,9 @@ class TileCoord(object):
 
     @classmethod
     def from_string(cls, s):
-        m = re.match(r'(\d+)/(\d+)/(\d+)(?::\+(\d+)/\+\4)?\Z', s)
+        m = re.match(r"(\d+)/(\d+)/(\d+)(?::\+(\d+)/\+\4)?\Z", s)
         if not m:
-            raise ValueError('invalid literal for {0!s}.from_string: {1!r}'.format(cls.__name__, s))
+            raise ValueError("invalid literal for {0!s}.from_string: {1!r}".format(cls.__name__, s))
         x, y, z, n = m.groups()
         return cls(int(x), int(y), int(z), int(n) if n else 1)
 
@@ -638,9 +629,7 @@ class TileStore(object):
 
         """
         return reduce(
-            BoundingPyramid.add,
-            map(attrgetter('tilecoord'), ifilter(None, self.list())),
-            BoundingPyramid()
+            BoundingPyramid.add, map(attrgetter("tilecoord"), ifilter(None, self.list())), BoundingPyramid()
         )
 
     @staticmethod
@@ -736,61 +725,70 @@ class TileStore(object):
         <module>
 
         """
-        if name == 'null://':
+        if name == "null://":
             from tilecloud.store.null import NullTileStore
+
             return NullTileStore()
-        if name.startswith('bounds://'):
+        if name.startswith("bounds://"):
             from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
+
             return BoundingPyramidTileStore(BoundingPyramid.from_string(name[9:]))
-        if name.startswith('file://'):
+        if name.startswith("file://"):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.filesystem import FilesystemTileStore
+
             return FilesystemTileStore(TemplateTileLayout(name[7:]),)
-        if name.startswith('http://') or name.startswith('https://'):
+        if name.startswith("http://") or name.startswith("https://"):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.url import URLTileStore
+
             return URLTileStore((TemplateTileLayout(name),))
-        if name.startswith('memcached://'):
+        if name.startswith("memcached://"):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.memcached import MemcachedTileStore
             from tilecloud.lib.memcached import MemcachedClient
-            server, template = name[12:].split('/', 1)
-            host, port = server.split(':', 1)
+
+            server, template = name[12:].split("/", 1)
+            host, port = server.split(":", 1)
             client = MemcachedClient(host, int(port))
             return MemcachedTileStore(client, TemplateTileLayout(template))
-        if name.startswith('s3://'):
+        if name.startswith("s3://"):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.s3 import S3TileStore
-            bucket, template = name[5:].split('/', 1)
+
+            bucket, template = name[5:].split("/", 1)
             return S3TileStore(bucket, TemplateTileLayout(template))
-        if name.startswith('sqs://'):
+        if name.startswith("sqs://"):
             from tilecloud.store.sqs import SQSTileStore
             import boto.sqs
             from boto.sqs.jsonmessage import JSONMessage
-            region_name, queue_name = name[6:].split('/', 1)
+
+            region_name, queue_name = name[6:].split("/", 1)
             connection = boto.sqs.connect_to_region(region_name)
             queue = connection.create_queue(queue_name)
             queue.set_message_class(JSONMessage)
             return SQSTileStore(queue)
-        if name.startswith('redis://'):
+        if name.startswith("redis://"):
             from tilecloud.store.redis import RedisTileStore
+
             return RedisTileStore(name)
         _, ext = os.path.splitext(name)
-        if ext == '.bsddb':
+        if ext == ".bsddb":
             import bsddb
             from tilecloud.store.bsddb import BSDDBTileStore
+
             return BSDDBTileStore(bsddb.hashopen(name))
-        if ext == '.mbtiles':
+        if ext == ".mbtiles":
             import sqlite3
             from tilecloud.store.mbtiles import MBTilesTileStore
+
             return MBTilesTileStore(sqlite3.connect(name))
-        if ext == '.zip':
+        if ext == ".zip":
             import zipfile
             from tilecloud.store.zip import ZipTileStore
-            return ZipTileStore(zipfile.ZipFile(name, 'a'))
+
+            return ZipTileStore(zipfile.ZipFile(name, "a"))
         module = __import__(name)
-        components = name.split('.')
-        module = reduce(lambda module, attr: getattr(module, attr),
-                        components[1:],
-                        module)
-        return getattr(module, 'tilestore')
+        components = name.split(".")
+        module = reduce(lambda module, attr: getattr(module, attr), components[1:], module)
+        return getattr(module, "tilestore")

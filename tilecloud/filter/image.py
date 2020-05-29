@@ -32,8 +32,7 @@ class ImageFormatConverter(object):
         if tile.content_type != self.content_type:
             assert tile.data is not None
             string_io = StringIO()
-            PIL.Image.open(StringIO(tile.data)).save(string_io, self.format,
-                                                     **self.kwargs)
+            PIL.Image.open(StringIO(tile.data)).save(string_io, self.format, **self.kwargs)
             tile.content_type = self.content_type
             tile.data = string_io.getvalue()
         return tile
@@ -70,8 +69,7 @@ class MergeFilter(object):
         if content_type is None:
             self.content_type = tile.content_type
         string_io = StringIO()
-        image.save(string_io, FORMAT_BY_CONTENT_TYPE[content_type],
-                   **self.kwargs)
+        image.save(string_io, FORMAT_BY_CONTENT_TYPE[content_type], **self.kwargs)
         tile.content_type = content_type
         tile.data = string_io.getvalue()
         return tile
@@ -98,8 +96,6 @@ class PILImageFilter(object):
         image = PIL.Image.open(StringIO(tile.data))
         image = image.filter(self.filter)
         string_io = StringIO()
-        image.save(string_io,
-                   FORMAT_BY_CONTENT_TYPE.get(tile.content_type, 'PNG'),
-                   **self.kwargs)
+        image.save(string_io, FORMAT_BY_CONTENT_TYPE.get(tile.content_type, "PNG"), **self.kwargs)
         tile.data = string_io.getvalue()
         return tile

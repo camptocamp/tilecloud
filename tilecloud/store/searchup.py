@@ -2,7 +2,6 @@ from tilecloud import Tile, TileStore
 
 
 class SearchUpTileStore(TileStore):
-
     def __init__(self, tilestore, tilegrid):
         super(SearchUpTileStore, self).__init__()
         self.tilestore = tilestore

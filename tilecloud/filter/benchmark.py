@@ -3,8 +3,7 @@ import math
 
 
 class Statistics(object):
-
-    def __init__(self, format='%f'):
+    def __init__(self, format="%f"):
         self.format = format
         self.n = 0
         self.sum = 0.0
@@ -22,9 +21,9 @@ class Statistics(object):
     def __str__(self):
         result = []
         if self.n:
-            result.append('/'.join(self.format % value for value in (self.minimum, self.mean, self.maximum)))
-        result.append('(n={0:d})'.format(self.n))
-        return ' '.join(result)
+            result.append("/".join(self.format % value for value in (self.minimum, self.mean, self.maximum)))
+        result.append("(n={0:d})".format(self.n))
+        return " ".join(result)
 
     @property
     def mean(self):
@@ -40,8 +39,7 @@ class Statistics(object):
 
 
 class Benchmark(object):
-
-    def __init__(self, attr='benchmark'):
+    def __init__(self, attr="benchmark"):
         self.attr = attr
         self.statisticss = {}
 
@@ -50,7 +48,7 @@ class Benchmark(object):
             if key in self.statisticss:
                 statistics = self.statisticss[key]
             else:
-                statistics = Statistics('%.3fs')
+                statistics = Statistics("%.3fs")
                 self.statisticss[key] = statistics
         else:
             statistics = None
@@ -65,18 +63,19 @@ class Benchmark(object):
                 else:
                     setattr(tile, self.attr, stats.timer([key]))
             return tile
+
         return callback
 
 
 class StatsdCountTiles(object):
     def __call__(self, tile):
         if tile:
-            stats.increment_counter(['tiles'])
+            stats.increment_counter(["tiles"])
         return tile
 
 
 class StatsdCountErrors(object):
     def __call__(self, tile):
         if tile and tile.error:
-            stats.increment_counter(['errors'])
+            stats.increment_counter(["errors"])
         return tile

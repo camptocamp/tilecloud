@@ -2,7 +2,6 @@ from tilecloud import Tile, TileStore
 
 
 class DictTileStore(TileStore):
-
     def __init__(self, tiles=None, **kwargs):
         self.tiles = tiles or {}
         TileStore.__init__(self, **kwargs)

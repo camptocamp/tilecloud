@@ -89,8 +89,10 @@ class MaximumErrorRate(object):
         self.tile_count += 1
         if tile and tile.error:
             self.error_count += 1
-            if (self.tile_count >= self.min_tiles and
-                    self.error_count >= self.max_error_rate * self.tile_count):
+            if (
+                self.tile_count >= self.min_tiles
+                and self.error_count >= self.max_error_rate * self.tile_count
+            ):
                 raise TooManyErrors
         return tile
 
@@ -119,4 +121,5 @@ class MaximumErrors(object):
 
 class TooManyErrors(RuntimeError):
     """TooManyErrors exception class."""
+
     pass

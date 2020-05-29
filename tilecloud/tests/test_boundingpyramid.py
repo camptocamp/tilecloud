@@ -4,7 +4,6 @@ from tilecloud import BoundingPyramid, Bounds, TileCoord
 
 
 class TestBoundingPyramid(unittest.TestCase):
-
     def test_empty(self):
         bp = BoundingPyramid()
         self.assertEqual(len(bp), 0)
@@ -13,7 +12,10 @@ class TestBoundingPyramid(unittest.TestCase):
 
     def test_eq(self):
         self.assertEqual(BoundingPyramid(), BoundingPyramid())
-        self.assertEqual(BoundingPyramid({5: (Bounds(2, 5), Bounds(6, 15))}), BoundingPyramid({5: (Bounds(2, 5), Bounds(6, 15))}))
+        self.assertEqual(
+            BoundingPyramid({5: (Bounds(2, 5), Bounds(6, 15))}),
+            BoundingPyramid({5: (Bounds(2, 5), Bounds(6, 15))}),
+        )
 
     def test_add(self):
         bp = BoundingPyramid()
@@ -50,7 +52,9 @@ class TestBoundingPyramid(unittest.TestCase):
         bp = BoundingPyramid()
         bp.add(TileCoord(2, 1, 3))
         bp.fill_up(0)
-        self.assertEqual(list(bp.iterbottomup()), [TileCoord(2, 1, 3), TileCoord(1, 0, 1), TileCoord(0, 0, 0)])
+        self.assertEqual(
+            list(bp.iterbottomup()), [TileCoord(2, 1, 3), TileCoord(1, 0, 1), TileCoord(0, 0, 0)]
+        )
 
     def test_itertopdown(self):
         bp = BoundingPyramid()
@@ -71,34 +75,34 @@ class TestBoundingPyramid(unittest.TestCase):
         self.assertEqual(sorted(bp.zs()), [0, 1, 2])
 
     def test_from_string_star(self):
-        bp = BoundingPyramid.from_string('0/0/0:2/*/*')
+        bp = BoundingPyramid.from_string("0/0/0:2/*/*")
         self.assertEqual(bp.zget(0), (Bounds(0, 1), Bounds(0, 1)))
         self.assertEqual(bp.zget(1), (Bounds(0, 2), Bounds(0, 2)))
         self.assertEqual(bp.zget(2), (Bounds(0, 4), Bounds(0, 4)))
         self.assertRaises(KeyError, bp.zget, 3)
 
     def test_from_string_relative(self):
-        bp = BoundingPyramid.from_string('2/1/3:+1/+1/+1')
+        bp = BoundingPyramid.from_string("2/1/3:+1/+1/+1")
         self.assertRaises(KeyError, bp.zget, 1)
         self.assertEqual(bp.zget(2), (Bounds(1, 2), Bounds(3, 4)))
         self.assertEqual(bp.zget(3), (Bounds(2, 4), Bounds(6, 8)))
         self.assertRaises(KeyError, bp.zget, 4)
 
     def test_from_string_one_level(self):
-        bp = BoundingPyramid.from_string('5/9/13:12/15')
+        bp = BoundingPyramid.from_string("5/9/13:12/15")
         self.assertRaises(KeyError, bp.zget, 4)
         self.assertEqual(bp.zget(5), (Bounds(9, 12), Bounds(13, 15)))
         self.assertRaises(KeyError, bp.zget, 6)
 
     def test_from_string_up(self):
-        bp = BoundingPyramid.from_string('2/1/3:0/2/4')
+        bp = BoundingPyramid.from_string("2/1/3:0/2/4")
         self.assertEqual(bp.zget(0), (Bounds(0, 1), Bounds(0, 1)))
         self.assertEqual(bp.zget(1), (Bounds(0, 1), Bounds(1, 2)))
         self.assertEqual(bp.zget(2), (Bounds(1, 2), Bounds(3, 4)))
         self.assertRaises(KeyError, bp.zget, 3)
 
     def test_from_string_error(self):
-        self.assertRaises(ValueError, BoundingPyramid.from_string, '1/2/3:5/A')
+        self.assertRaises(ValueError, BoundingPyramid.from_string, "1/2/3:5/A")
 
     def test_full(self):
         bp = BoundingPyramid.full(1, 3)
@@ -120,7 +124,6 @@ class TestBoundingPyramid(unittest.TestCase):
 
 
 class TestGoogleTileGrid(unittest.TestCase):
-
     def test_fill(self):
         bp = BoundingPyramid()
         bp.fill(range(0, 8), (572215.4395248143, 5684416.95917649, 1277662.36597472, 6145307.39552287))

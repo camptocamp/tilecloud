@@ -2,7 +2,6 @@ import time
 
 
 class RateLimit(object):
-
     def __init__(self, rate):
         self.rate = rate
         self.count = 0

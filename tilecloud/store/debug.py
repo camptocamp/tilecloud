@@ -1,4 +1,3 @@
-
 from io import StringIO
 
 import PIL.Image
@@ -10,13 +9,12 @@ from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class DebugTileStore(TileStore):
-
     def __init__(self, color=(0, 0, 0), **kwargs):
-        TileStore.__init__(self, content_type='image/png', **kwargs)
+        TileStore.__init__(self, content_type="image/png", **kwargs)
         self.color = color
 
     def get_one(self, tile):
-        image = PIL.Image.new('RGBA', (256, 256), (0, 0, 0, 0))
+        image = PIL.Image.new("RGBA", (256, 256), (0, 0, 0, 0))
         draw = PIL.ImageDraw.Draw(image)
         draw.line([(0, 255), (0, 0), (255, 0)], fill=self.color)
         text = str(tile.tilecoord)

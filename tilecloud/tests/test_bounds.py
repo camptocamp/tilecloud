@@ -4,7 +4,6 @@ from tilecloud import Bounds
 
 
 class TestBounds(unittest.TestCase):
-
     def test_empty(self):
         bounds = Bounds()
         assert len(bounds) == 0
