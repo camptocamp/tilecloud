@@ -1,4 +1,4 @@
-class EveryNth(object):
+class EveryNth:
     """
     Create a filter that returns one out of every n tiles. This is done
     using consistent hashing.

@@ -1,4 +1,4 @@
-class Logger(object):
+class Logger:
     def __init__(self, logger, level, msgformat, *args, **kwargs):
         self.logger = logger
         self.level = level

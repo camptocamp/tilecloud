@@ -34,10 +34,12 @@ class RedisTileStore(TileStore):
         sentinels=None,
         service_name="mymaster",
         sentinel_kwargs=None,
-        connection_kwargs={},
+        connection_kwargs=None,
         **kwargs,
     ):
         super().__init__(**kwargs)
+
+        connection_kwargs = connection_kwargs or {}
 
         if sentinels is not None:
             sentinel = redis.sentinel.Sentinel(
@@ -181,7 +183,7 @@ class RedisTileStore(TileStore):
             drop_ids = [drop_message[0] for drop_message in drop_messages]
             self._master.xack(self._name, STREAM_GROUP, *drop_ids)
             self._master.xdel(self._name, *drop_ids)
-            for drop_id, drop_message in drop_messages:
+            for _, drop_message in drop_messages:
                 tile = decode_message(drop_message[b"message"])
                 self._master.xadd(
                     name=self._errors_name,

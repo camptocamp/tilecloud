@@ -1,5 +1,5 @@
-pep8==1.7.1
-pyflakes==2.2.0
+prospector==1.2.0
+mypy==0.770
 pytest==5.4.3
 pytest-cov==2.9.0
 twine==3.1.1

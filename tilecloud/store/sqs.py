@@ -1,9 +1,10 @@
-import botocore.exceptions
 import logging
 import time
 
+import botocore.exceptions
+
 from tilecloud import TileStore
-from tilecloud.store.queue import encode_message, decode_message
+from tilecloud.store.queue import decode_message, encode_message
 
 BATCH_SIZE = 10  # max Amazon allows
 logger = logging.getLogger(__name__)

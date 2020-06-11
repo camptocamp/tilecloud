@@ -431,16 +431,12 @@ This is equivalent to:
 
     $ python setup.py nosetests
 
-For pull requests, it is very much appreciated if your code passes
-`pep8 <http://pypi.python.org/pypi/pep8>`_ and
-`pyflakes <http://pypi.python.org/pypi/pyflakes>`_ without
-warnings, with the exception of pep8 warning "E501 line too long",
-which is allowed. You can run pep8 and pyflakes on the codebase
-with the command:
+For pull requests, it is very much appreciated if your code passes `prospector`_ without warnings.
+You can run prospector on the codebase with the command:
 
 ::
 
-    $ make pep8 pyflakes
+    $ make prospector
 
 License
 =======

@@ -4,8 +4,6 @@ from tilecloud import TileStore
 
 try:
     import mapnik2 as mapnik
-
-    mapnik  # suppress pyflakes warning
 except ImportError:
     import mapnik
 

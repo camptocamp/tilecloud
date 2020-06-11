@@ -4,7 +4,7 @@ This module includes filters for dealing with errors in tiles.
 from tilecloud.filter.logger import Logger
 
 
-class CollectErrors(object):
+class CollectErrors:
     """
     Create a filter for collecting tiles with errors in an attribute
     called ``errors``.
@@ -19,7 +19,7 @@ class CollectErrors(object):
         return tile
 
 
-class DropErrors(object):
+class DropErrors:
     """
     Create a filter for dropping all tiles with errors.
     """
@@ -42,7 +42,7 @@ class LogErrors(Logger):
         return tile
 
 
-class MaximumConsecutiveErrors(object):
+class MaximumConsecutiveErrors:
     """
     Create a filter that raises a :class:`TooManyErrors` exception
     when there are ``max_consecutive_errors`` consecutive errors.
@@ -66,7 +66,7 @@ class MaximumConsecutiveErrors(object):
         return tile
 
 
-class MaximumErrorRate(object):
+class MaximumErrorRate:
     """
     Create a filter that raises a :class:`TooManyErrors` exception
     when the total error rate exceeds ``max_error_rate``.
@@ -97,7 +97,7 @@ class MaximumErrorRate(object):
         return tile
 
 
-class MaximumErrors(object):
+class MaximumErrors:
     """
     Create a filter that raises a :class:`TooManyErrors` exception when
     a number of errors is reached.
@@ -121,5 +121,3 @@ class MaximumErrors(object):
 
 class TooManyErrors(RuntimeError):
     """TooManyErrors exception class."""
-
-    pass

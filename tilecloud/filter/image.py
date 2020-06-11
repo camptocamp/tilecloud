@@ -11,7 +11,7 @@ from tilecloud import Tile
 from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
-class ImageFormatConverter(object):
+class ImageFormatConverter:
     """
     Create a filter that converts a tile into the desired format.
 
@@ -38,7 +38,7 @@ class ImageFormatConverter(object):
         return tile
 
 
-class MergeFilter(object):
+class MergeFilter:
     """
     Create a filter that merges the tile with tiles of the same
     coordinates.
@@ -75,7 +75,7 @@ class MergeFilter(object):
         return tile
 
 
-class PILImageFilter(object):
+class PILImageFilter:
     """
     Create a filter to filter the tile image (with the PIL ``filter``
     function).

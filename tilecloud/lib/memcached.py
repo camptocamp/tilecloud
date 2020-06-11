@@ -6,7 +6,7 @@ class MemcachedError(RuntimeError):
     pass
 
 
-class MemcachedClient(object):
+class MemcachedClient:
 
     VALUE_RE = re.compile(r"VALUE\s+(?P<key>\S+)\s+(?P<flags>\d+)\s+(?P<bytes>\d+)(?:\s+(?P<cas>\d+))?\Z")
 

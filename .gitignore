@@ -5,6 +5,8 @@
 /lib
 /man
 /tilecloud.egg-info
+/.mypy_cache/
+/dist/
 .coverage
 *.egg
 *.jpg

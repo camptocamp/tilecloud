@@ -3,7 +3,7 @@ from subprocess import call
 from tempfile import NamedTemporaryFile
 
 
-class OptiPNG(object):
+class OptiPNG:
     def __init__(self, options, arg0="/usr/bin/optipng"):
         self.args = [arg0, "-q"] + list(options)
 

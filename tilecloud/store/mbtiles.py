@@ -3,7 +3,7 @@
 import mimetypes
 import sqlite3
 
-from tilecloud import Bounds, BoundingPyramid, Tile, TileCoord, TileStore
+from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
 from tilecloud.lib.sqlite3_ import SQLiteDict, query
 
 
@@ -24,7 +24,10 @@ class Metadata(SQLiteDict):
 class Tiles(SQLiteDict):
     """A dict facade for the tiles table"""
 
-    CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS tiles (zoom_level integer, tile_column integer, tile_row integer, tile_data blob, PRIMARY KEY (zoom_level, tile_column, tile_row))"
+    CREATE_TABLE_SQL = (
+        "CREATE TABLE IF NOT EXISTS tiles (zoom_level integer, tile_column integer, "
+        "tile_row integer, tile_data blob, PRIMARY KEY (zoom_level, tile_column, tile_row))"
+    )
     CONTAINS_SQL = "SELECT COUNT(*) FROM tiles WHERE zoom_level = ? AND tile_column = ? AND tile_row = ?"
     DELITEM_SQL = "DELETE FROM tiles WHERE zoom_level = ? AND tile_column = ? AND tile_row = ?"
     GETITEM_SQL = "SELECT tile_data FROM tiles WHERE zoom_level = ? AND tile_column = ? AND tile_row = ?"
@@ -62,7 +65,11 @@ class Tiles(SQLiteDict):
 class MBTilesTileStore(TileStore):
     """A MBTiles tile store"""
 
-    BOUNDING_PYRAMID_SQL = "SELECT zoom_level, MIN(tile_column), MAX(tile_column) + 1, MIN((1 << zoom_level) - tile_row - 1), MAX((1 << zoom_level) - tile_row - 1) + 1 FROM tiles GROUP BY zoom_level ORDER BY zoom_level"
+    BOUNDING_PYRAMID_SQL = (
+        "SELECT zoom_level, MIN(tile_column), MAX(tile_column) + 1, "
+        "MIN((1 << zoom_level) - tile_row - 1), MAX((1 << zoom_level) - tile_row - 1) + 1 "
+        "FROM tiles GROUP BY zoom_level ORDER BY zoom_level"
+    )
     SET_METADATA_ZOOMS_SQL = "SELECT MIN(zoom_level), MAX(zoom_level) FROM tiles"
 
     def __init__(self, connection, commit=True, tilecoord_in_topleft=False, **kwargs):

@@ -1,4 +1,4 @@
-class InBoundingPyramid(object):
+class InBoundingPyramid:
     """
     Creates a filter that filters out tiles that are not in the specified
     bounding pyramid. When called the filter returns ``None`` if the tile

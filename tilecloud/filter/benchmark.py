@@ -1,8 +1,9 @@
-from c2cwsgiutils import stats
 import math
 
+from c2cwsgiutils import stats
 
-class Statistics(object):
+
+class Statistics:
     def __init__(self, format="%f"):
         self.format = format
         self.n = 0
@@ -38,7 +39,7 @@ class Statistics(object):
         return math.sqrt(self.variance)
 
 
-class Benchmark(object):
+class Benchmark:
     def __init__(self, attr="benchmark"):
         self.attr = attr
         self.statisticss = {}
@@ -67,14 +68,14 @@ class Benchmark(object):
         return callback
 
 
-class StatsdCountTiles(object):
+class StatsdCountTiles:
     def __call__(self, tile):
         if tile:
             stats.increment_counter(["tiles"])
         return tile
 
 
-class StatsdCountErrors(object):
+class StatsdCountErrors:
     def __call__(self, tile):
         if tile and tile.error:
             stats.increment_counter(["errors"])
