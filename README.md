@@ -46,8 +46,9 @@ Example tasks that TileCloud makes easy include:
 
 TileCloud depends on some Python modules. It's easiest to install them with `pip` in a `virtualenv`:
 
-    $ virtualenv .
-    $ . bin/activate
+    $ python3 -m venv .venv
+    $ . .venv/bin/activate
+    $ pip install --upgrade pip
     $ pip install -r requirements.txt
 
 For a quick demo, run

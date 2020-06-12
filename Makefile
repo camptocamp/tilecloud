@@ -5,6 +5,7 @@ all: test prospector docs
 clean:
 	find tilecloud tiles -name \*.pyc | xargs rm -f
 	make -C docs clean
+	rm -rf .venv
 
 .PHONY: docs
 docs:
