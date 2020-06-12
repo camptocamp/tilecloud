@@ -27,8 +27,7 @@ jobs:
 
       - run: docker run --detach --publish=6379:6379 redis:5
 
-      - run: make pep8
-      - run: make pyflakes
+      - run: make prospector
       - run: make test
       - run: git --no-pager diff --check HEAD~100
 

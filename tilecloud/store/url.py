@@ -1,7 +1,8 @@
 import logging
-import requests
-from tilecloud import TileStore
 
+import requests
+
+from tilecloud import TileStore
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +26,7 @@ class URLTileStore(TileStore):
             tile.error = e
             return tile
 
-        logger.info("GET {0!s}".format(url))
+        logger.info("GET %s", url)
         try:
             response = self.session.get(url)
             if response.status_code == 404:

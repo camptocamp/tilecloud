@@ -1,4 +1,4 @@
-class ContentTypeAdder(object):
+class ContentTypeAdder:
     """
     Create a filter that adds a content type to the tile.
 

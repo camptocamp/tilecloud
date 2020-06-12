@@ -1,8 +1,8 @@
+import os.path
+import re
+import zipfile
 from collections import defaultdict
 from datetime import datetime
-import re
-import os.path
-import zipfile
 
 from tilecloud import Tile, TileStore
 from tilecloud.layout.osm import OSMTileLayout
@@ -10,7 +10,7 @@ from tilecloud.layout.wrapped import WrappedTileLayout
 
 
 class ZipTileStore(TileStore):
-    def __init__(self, zipfile, layout=None, **kwargs):
+    def __init__(self, zipfile, layout=None, **kwargs):  # pylint: disable=redefined-outer-name
         TileStore.__init__(self, **kwargs)
         self.zipfile = zipfile
         self.layout = layout

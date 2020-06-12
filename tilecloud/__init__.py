@@ -1,13 +1,14 @@
 #!/usr/bin/env python
+# pylint: disable=import-outside-toplevel
 
 from builtins import filter as ifilter
 import collections
-import logging
-import os.path
-import re
 from functools import reduce
 from itertools import islice
+import logging
 from operator import attrgetter
+import os.path
+import re
 
 
 def cmp(a, b):
@@ -28,7 +29,7 @@ def consume(iterator, n=None):  # pragma: no cover
         next(islice(iterator, n, n), None)
 
 
-class Bounds(object):
+class Bounds:
     """Uni-dimensional integer bounds"""
 
     def __init__(self, start=None, stop=None):
@@ -128,7 +129,7 @@ class Bounds(object):
             return Bounds()
 
 
-class BoundingPyramid(object):
+class BoundingPyramid:
     def __init__(self, bounds=None, tilegrid=None):
         self.bounds = bounds or {}
         self.tilegrid = tilegrid
@@ -273,7 +274,7 @@ class BoundingPyramid(object):
         return cls(dict((z, (Bounds(0, 1 << z), Bounds(0, 1 << z))) for z in zs))
 
 
-class Tile(object):
+class Tile:
     """An actual tile with optional metadata"""
 
     def __init__(
@@ -347,7 +348,7 @@ class Tile(object):
         return result
 
 
-class TileCoord(object):
+class TileCoord:
     """A tile coordinate"""
 
     def __init__(self, z, x, y, n=1):
@@ -453,7 +454,7 @@ class TileCoord(object):
         return cls(*tpl)
 
 
-class TileGrid(object):
+class TileGrid:
     """Lays out tiles at multiple zoom levels"""
 
     def __init__(self, max_extent=None, tile_size=None, flip_y=False):
@@ -500,7 +501,7 @@ class TileGrid(object):
         raise NotImplementedError
 
 
-class TileLayout(object):
+class TileLayout:
     """Maps tile coordinates to filenames and vice versa"""
 
     @staticmethod
@@ -530,7 +531,7 @@ class TileLayout(object):
         raise NotImplementedError
 
 
-class TileStore(object):
+class TileStore:
     """A tile store"""
 
     def __init__(self, bounding_pyramid=None, content_type=None, **kwargs):
@@ -730,22 +731,34 @@ class TileStore(object):
 
             return NullTileStore()
         if name.startswith("bounds://"):
-            from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
+            from tilecloud.store.boundingpyramid import (
+                BoundingPyramidTileStore,
+            )
 
             return BoundingPyramidTileStore(BoundingPyramid.from_string(name[9:]))
         if name.startswith("file://"):
-            from tilecloud.layout.template import TemplateTileLayout
-            from tilecloud.store.filesystem import FilesystemTileStore
+            from tilecloud.layout.template import (
+                TemplateTileLayout,
+            )
+            from tilecloud.store.filesystem import (
+                FilesystemTileStore,
+            )
 
             return FilesystemTileStore(TemplateTileLayout(name[7:]),)
         if name.startswith("http://") or name.startswith("https://"):
-            from tilecloud.layout.template import TemplateTileLayout
+            from tilecloud.layout.template import (
+                TemplateTileLayout,
+            )
             from tilecloud.store.url import URLTileStore
 
             return URLTileStore((TemplateTileLayout(name),))
         if name.startswith("memcached://"):
-            from tilecloud.layout.template import TemplateTileLayout
-            from tilecloud.store.memcached import MemcachedTileStore
+            from tilecloud.layout.template import (
+                TemplateTileLayout,
+            )
+            from tilecloud.store.memcached import (
+                MemcachedTileStore,
+            )
             from tilecloud.lib.memcached import MemcachedClient
 
             server, template = name[12:].split("/", 1)
@@ -753,15 +766,19 @@ class TileStore(object):
             client = MemcachedClient(host, int(port))
             return MemcachedTileStore(client, TemplateTileLayout(template))
         if name.startswith("s3://"):
-            from tilecloud.layout.template import TemplateTileLayout
+            from tilecloud.layout.template import (
+                TemplateTileLayout,
+            )
             from tilecloud.store.s3 import S3TileStore
 
             bucket, template = name[5:].split("/", 1)
             return S3TileStore(bucket, TemplateTileLayout(template))
         if name.startswith("sqs://"):
             from tilecloud.store.sqs import SQSTileStore
-            import boto.sqs
-            from boto.sqs.jsonmessage import JSONMessage
+            import boto.sqs  # pylint: disable=import-error
+            from boto.sqs.jsonmessage import (  # pylint: disable=import-error
+                JSONMessage,
+            )
 
             region_name, queue_name = name[6:].split("/", 1)
             connection = boto.sqs.connect_to_region(region_name)
@@ -774,7 +791,7 @@ class TileStore(object):
             return RedisTileStore(name)
         _, ext = os.path.splitext(name)
         if ext == ".bsddb":
-            import bsddb
+            import bsddb  # pylint: disable=import-error
             from tilecloud.store.bsddb import BSDDBTileStore
 
             return BSDDBTileStore(bsddb.hashopen(name))
@@ -790,5 +807,5 @@ class TileStore(object):
             return ZipTileStore(zipfile.ZipFile(name, "a"))
         module = __import__(name)
         components = name.split(".")
-        module = reduce(lambda module, attr: getattr(module, attr), components[1:], module)
+        module = reduce(getattr, components[1:], module)
         return getattr(module, "tilestore")

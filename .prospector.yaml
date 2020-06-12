@@ -1,0 +1,30 @@
+strictness: veryhigh
+np_doc-warnings: true
+
+pylint:
+  options:
+    max-line-length: 110
+  disable:
+    - abstract-method
+    - too-many-arguments
+    - invalid-name
+    - redefined-builtin
+    - broad-except
+    - too-many-locals
+    - no-else-return
+    - wrong-import-order
+    - too-many-instance-attributes
+    - too-many-ancestors
+    - too-few-public-methods
+    - too-many-return-statements
+
+pep8:
+  disable:
+    - E203
+    - E501
+
+mypy:
+  run: true
+
+mccabe:
+  run: false

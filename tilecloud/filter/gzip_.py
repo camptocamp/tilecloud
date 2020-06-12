@@ -2,7 +2,7 @@ from gzip import GzipFile
 from io import StringIO
 
 
-class GzipCompressor(object):
+class GzipCompressor:
     """
     Create a filter that compresses a tile with gzip.
 
@@ -26,7 +26,7 @@ class GzipCompressor(object):
         return tile
 
 
-class GzipDecompressor(object):
+class GzipDecompressor:
     """
     Create a filter that decompresses a tile with gzip.
     """
