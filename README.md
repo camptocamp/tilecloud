@@ -1,10 +1,8 @@
-TileCloud
-=========
+# TileCloud
 
 A powerful utility for generating, managing, transforming, and visualizing map tiles in multiple formats.
 
-Introduction
-============
+# Introduction
 
 TileCloud is a powerful utility for generating, managing, transforming, visualising and map tiles in multiple
 formats. It can create, read update, delete tiles in multiple back ends, called TileStores. Existing
@@ -44,8 +42,7 @@ Example tasks that TileCloud makes easy include:
 -   Efficiently delete millions of tiles in S3.
 -   Read JSON tiles from a tarball, compress them, and upload them.
 
-Getting started
-===============
+# Getting started
 
 TileCloud depends on some Python modules. It's easiest to install them with `pip` in a `virtualenv`:
 
@@ -123,8 +120,7 @@ Point your browser at <http://localhost:8080> as usual. The `--root` option to `
 viewer to start at a defined tile, rather than at 0/0/0, so you don't have to zoom in to find the tiles that
 you downloaded.
 
-Tile coordinates, tile layouts, tile grids and bounding pyramids
-================================================================
+# Tile coordinates, tile layouts, tile grids and bounding pyramids
 
 TileCloud always represents tile coordinates as strings like `z/x/y`. TileCloud primarily works in tile
 coordinates, although geographic coordinates can be used in some places.
@@ -156,8 +152,7 @@ demonstrated by a few examples:
 
 :   This represents the range same as the previous example using a relative `maxz`.
 
-Quick tile generation
-=====================
+# Quick tile generation
 
 The `tc-copy` command can be used to copy tiles between different TileStores. If a TileStore has the side
 effect of generating tiles, then it functions as a quick tile generation utility. First, some quick examples.
@@ -201,8 +196,7 @@ Here, `tc-viewer` is acting as a proxy, serving tiles stored in S3 over HTTP, by
 controls (assuming you have the correct credentials, of course). This allows you to visualize the exact tiles
 that you've stored.
 
-Rendering the World
-===================
+# Rendering the World
 
 At [FOSS4G-NA](http://foss4g-na.org/), [MapBox](http://mapbox.com/) presented an excellent strategy for
 [rendering the world](http://mapbox.com/blog/rendering-the-world/). TileCloud supports the subdivision
@@ -235,8 +229,7 @@ You can look at these tiles (which show buildings in Medford, OR) with the comma
 
     ./tc-viewer --root=7/20/47 tiles.openstreetmap_org medford_buildings.mbtiles
 
-A cheap-and-cheerful tile server
-================================
+# A cheap-and-cheerful tile server
 
 `tc-viewer` can be used as a lightweight tile server, which can be useful for development, debugging and
 off-line demos. The TileStores passed as arguments to `tc-viewer` are available at the URL:
@@ -271,16 +264,14 @@ see [Cross-Domain Textures](https://developer.mozilla.org/en/WebGL/Cross-Domain_
 It makes many assumptions - including the benevolence of the user - that make it entirely unsuitable as a
 generic tile server. It should only be used in development or demonstration environments.
 
-Comparing mapping libraries
-===========================
+# Comparing mapping libraries
 
 `tc-viewer` supports most popular web mapping libraries out-of-the box. This can be very useful for quick,
 practical comparisons. If your favourite mapping library is missing, please submit an
 [issue](https://github.com/camptocamp/tilecloud/issues), or, even better, a [pull
 request](https://github.com/camptocamp/tilecloud/pulls).
 
-Contributing
-============
+# Contributing
 
 Please report bugs and feature requests using the [GitHub issue
 tracker](https://github.com/camptocamp/tilecloud/issues).
@@ -302,10 +293,10 @@ prospector on the codebase with the command:
 
     $ make prospector
 
-License
-=======
+# License
 
 Copyright (c) 2012, Tom Payne <twpayne@gmail.com> All rights reserved.
+Copyright (c) 2012, Camptocamp All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 the following conditions are met:
