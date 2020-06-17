@@ -1,5 +1,5 @@
-import os
 from glob import glob
+import os
 
 from setuptools import find_packages, setup
 
@@ -17,7 +17,7 @@ install_requires = [
 
 setup(
     name="tilecloud",
-    version="1.4.3",
+    version="1.5.0",
     description="Tools for managing tiles",
     classifiers=[
         "Development Status :: 4 - Beta",
