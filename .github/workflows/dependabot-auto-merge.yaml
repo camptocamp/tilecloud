@@ -6,7 +6,6 @@ on:
       - opened
       - ready_for_review
       - reopened
-      - unlocked
 
 jobs:
   auto-merge:
