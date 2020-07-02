@@ -731,34 +731,22 @@ class TileStore:
 
             return NullTileStore()
         if name.startswith("bounds://"):
-            from tilecloud.store.boundingpyramid import (
-                BoundingPyramidTileStore,
-            )
+            from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 
             return BoundingPyramidTileStore(BoundingPyramid.from_string(name[9:]))
         if name.startswith("file://"):
-            from tilecloud.layout.template import (
-                TemplateTileLayout,
-            )
-            from tilecloud.store.filesystem import (
-                FilesystemTileStore,
-            )
+            from tilecloud.layout.template import TemplateTileLayout
+            from tilecloud.store.filesystem import FilesystemTileStore
 
             return FilesystemTileStore(TemplateTileLayout(name[7:]),)
         if name.startswith("http://") or name.startswith("https://"):
-            from tilecloud.layout.template import (
-                TemplateTileLayout,
-            )
+            from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.url import URLTileStore
 
             return URLTileStore((TemplateTileLayout(name),))
         if name.startswith("memcached://"):
-            from tilecloud.layout.template import (
-                TemplateTileLayout,
-            )
-            from tilecloud.store.memcached import (
-                MemcachedTileStore,
-            )
+            from tilecloud.layout.template import TemplateTileLayout
+            from tilecloud.store.memcached import MemcachedTileStore
             from tilecloud.lib.memcached import MemcachedClient
 
             server, template = name[12:].split("/", 1)
@@ -766,9 +754,7 @@ class TileStore:
             client = MemcachedClient(host, int(port))
             return MemcachedTileStore(client, TemplateTileLayout(template))
         if name.startswith("s3://"):
-            from tilecloud.layout.template import (
-                TemplateTileLayout,
-            )
+            from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.s3 import S3TileStore
 
             bucket, template = name[5:].split("/", 1)
@@ -776,9 +762,7 @@ class TileStore:
         if name.startswith("sqs://"):
             from tilecloud.store.sqs import SQSTileStore
             import boto.sqs  # pylint: disable=import-error
-            from boto.sqs.jsonmessage import (  # pylint: disable=import-error
-                JSONMessage,
-            )
+            from boto.sqs.jsonmessage import JSONMessage  # pylint: disable=import-error
 
             region_name, queue_name = name[6:].split("/", 1)
             connection = boto.sqs.connect_to_region(region_name)
