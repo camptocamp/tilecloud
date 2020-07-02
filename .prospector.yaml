@@ -17,6 +17,7 @@ pylint:
     - too-many-ancestors
     - too-few-public-methods
     - too-many-return-statements
+    - cyclic-import  # see: https://github.com/PyCQA/pylint/issues/850
 
 pep8:
   disable:
