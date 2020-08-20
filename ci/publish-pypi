@@ -6,6 +6,9 @@ then
     exit 0
 fi
 
+
+python3 -m pip install --requirement=requirements-publish.txt
+
 echo  Prepare .pypirc config
 echo "[distutils]" > ~/.pypirc
 echo "index-servers = pypi" >> ~/.pypirc

@@ -1,7 +1,8 @@
+import logging
+
 import boto3
 import botocore.config
 import botocore.exceptions
-import logging
 
 from tilecloud import Tile, TileStore
 

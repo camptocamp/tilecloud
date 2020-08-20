@@ -23,7 +23,7 @@ jobs:
       - run: sudo apt install python3-wheel python3-setuptools libpq-dev
 
       - run: python3 -m pip install --requirement=requirements.txt
-      - run: python3 -m pip install --requirement=dev-requirements.txt
+      - run: python3 -m pip install --requirement=requirements-dev.txt
 
       - run: docker run --detach --publish=6379:6379 redis:5
 
