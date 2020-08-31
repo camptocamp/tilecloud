@@ -8,6 +8,7 @@ README = open(os.path.join(here, "README.md")).read()
 
 install_requires = [
     "boto3",
+    "azure-storage-blob",
     "bottle",
     "Pillow",
     "pyproj",
