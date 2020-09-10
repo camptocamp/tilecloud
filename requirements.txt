@@ -1,5 +1,5 @@
 azure-storage-blob==12.4.0
-boto3==1.14.57
+boto3==1.14.58
 bottle==0.12.18
 c2cwsgiutils[broadcast]>=4.0.1
 Pillow==7.2.0
