@@ -21,3 +21,6 @@ test:
 .PHONY: pypi-upload
 pypi-upload: test prospector
 	python3 setup.py sdist upload
+
+.PHONY: checks
+checks: prospector test

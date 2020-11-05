@@ -8,10 +8,9 @@ jobs:
   main:
     runs-on: ubuntu-20.04
     name: Continuous integration
-    timeout-minutes: 3
+    timeout-minutes: 10
 
     env:
-      REDIS_URL: redis://localhost:6379
       PATH: /bin:/usr/bin:/usr/local/bin:/home/runner/.local/bin
       SUMMON_PROVIDER: /usr/local/bin/gopass
 
@@ -21,15 +20,11 @@ jobs:
       - run: |
           sudo rm /etc/apt/sources.list.d/*.list
           sudo apt update
-          sudo apt install python3-wheel python3-setuptools libpq-dev
+          sudo apt install --yes python3-wheel python3-setuptools
 
-      - run: python3 -m pip install --requirement=requirements.txt
       - run: python3 -m pip install --requirement=requirements-dev.txt
 
-      - run: docker run --detach --publish=6379:6379 redis:5
-
-      - run: make prospector
-      - run: make test
+      - run: docker-compose up --exit-code-from test
       - run: git --no-pager diff --check HEAD~100
 
       - uses: camptocamp/initialise-gopass-summon-action@v1
