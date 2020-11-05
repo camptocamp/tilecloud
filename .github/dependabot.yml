@@ -1,14 +1,14 @@
 version: 2
 updates:
-- package-ecosystem: pip
-  directory: "/"
-  schedule:
-    interval: daily
-    time: '02:00'
-  open-pull-requests-limit: 99
-  allow:
-  - dependency-type: direct
-  ignore:
-  - dependency-name: none
-    versions:
-    - ">= 0"
+  - package-ecosystem: pip
+    directory: '/'
+    schedule:
+      interval: daily
+      time: '02:00'
+    open-pull-requests-limit: 99
+    allow:
+      - dependency-type: direct
+    ignore:
+      - dependency-name: none
+        versions:
+          - '>= 0'

@@ -1,5 +1,4 @@
 ---
-
 name: Continuous integration
 
 on:
@@ -19,8 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - run: sudo apt update
-      - run: sudo apt install python3-wheel python3-setuptools libpq-dev
+      - run: |
+          sudo rm /etc/apt/sources.list.d/*.list
+          sudo apt update
+          sudo apt install python3-wheel python3-setuptools libpq-dev
 
       - run: python3 -m pip install --requirement=requirements.txt
       - run: python3 -m pip install --requirement=requirements-dev.txt
