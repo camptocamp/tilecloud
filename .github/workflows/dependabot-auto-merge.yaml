@@ -1,3 +1,4 @@
+---
 name: Auto merge Dependabot updates
 
 on:
@@ -9,7 +10,7 @@ on:
 
 jobs:
   auto-merge:
-    name: Auto merge
+    name: Auto merge Dependabot updates
     runs-on: ubuntu-latest
     steps:
       - name: Auto merge
