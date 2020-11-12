@@ -1,6 +1,5 @@
 ---
-
-name: "CodeQL scanning"
+name: CodeQL scanning
 
 on:
   push:
@@ -8,7 +7,7 @@ on:
 
 jobs:
   codeql:
-    name: "CodeQL scanning"
+    name: CodeQL scanning
     runs-on: ubuntu-latest
 
     steps:
