@@ -1,0 +1,21 @@
+commit 5e629e3fee3015e3629bf9fff5e441e0a0442c3b
+Author: Stéphane Brunner <stephane.brunner@camptocamp.com>
+Date:   Fri Nov 13 16:05:38 2020 +0100
+
+    Fix clean Docker hub tags
+
+diff --git a/ci/clean-dockerhub-tag b/ci/clean-dockerhub-tag
+index 9a9295b..6d15208 100755
+--- a/ci/clean-dockerhub-tag
++++ b/ci/clean-dockerhub-tag
+@@ -39,8 +39,8 @@ def main() -> None:
+         headers={"Content-Type": "application/json"},
+         data=json.dumps(
+             {
+-                "username": subprocess.check_call(["gopass", "gs/ci/dockerhub/username"]),
+-                "password": subprocess.check_call(["gopass", "gs/ci/dockerhub/password"]),
++                "username": subprocess.check_output(["gopass", "gs/ci/dockerhub/username"]).decode(),
++                "password": subprocess.check_output(["gopass", "gs/ci/dockerhub/password"]).decode(),
+             }
+         ),
+     ).json()["token"]

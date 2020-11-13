@@ -1,0 +1,11 @@
+Error on backporting to branch master, error on cherry picking 5e629e3fee3015e3629bf9fff5e441e0a0442c3b:
+
+
+
+to continue do:
+git fetch && git checkout backport/761-to-master && git reset --mixed HEAD^
+rm BACKPORT_TODO
+git apply --3way --index 5e629e3fee3015e3629bf9fff5e441e0a0442c3b.patch
+rm 5e629e3fee3015e3629bf9fff5e441e0a0442c3b.patch
+git commit --message="Fix clean Docker hub tags"
+git push origin backport/761-to-master --force
