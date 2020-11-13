@@ -16,4 +16,4 @@ jobs:
     steps:
       - uses: camptocamp/backport-action@master
         with:
-          token: ${{ secrets.GITHUB_GOPASS_CI_TOKEN }}
+          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
