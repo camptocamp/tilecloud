@@ -7,12 +7,20 @@ on:
       - opened
       - ready_for_review
       - reopened
+  workflow_run:
+    workflows:
+      - Continuous integration
+    types:
+      - completed
 
 jobs:
   auto-merge:
     name: Auto merge Dependabot updates
     runs-on: ubuntu-20.04
     steps:
+      - run: echo {{ toJson(github) }}
+      - run: echo {{ toJson(job) }}
+      - run: echo {{ toJson(steps) }}
       - name: Auto merge
         uses: ridedott/dependabot-auto-merge-action@master
         with:
