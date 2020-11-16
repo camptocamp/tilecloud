@@ -18,9 +18,15 @@ jobs:
     name: Auto merge Dependabot updates
     runs-on: ubuntu-20.04
     steps:
-      - run: echo {{ toJson(github) }}
-      - run: echo {{ toJson(job) }}
-      - run: echo {{ toJson(steps) }}
+      - run: echo "$ECHO"
+        env:
+          ECHO: ${{ toJson(github) }}
+      - run: echo "$ECHO"
+        env:
+          ECHO: ${{ toJson(job) }}
+      - run: echo "$ECHO"
+        env:
+          ECHO: ${{ toJson(steps) }}
       - name: Auto merge
         uses: ridedott/dependabot-auto-merge-action@master
         with:
