@@ -1,8 +1,6 @@
+/.venv
 /EGG-INFO
-/bin
 /distribute-*.tar.gz
-/include
-/lib
 /man
 /tilecloud.egg-info
 /.mypy_cache/
