@@ -1,0 +1,38 @@
+commit bbaa6821e83ad9b8073356b35f064b7c72443251
+Author: Stéphane Brunner <stephane.brunner@camptocamp.com>
+Date:   Wed Nov 18 14:12:28 2020 +0100
+
+    Publish Docker images to GitHub Container Registry
+
+diff --git a/scripts/publish b/scripts/publish
+index fd235e9..54b7fe7 100755
+--- a/scripts/publish
++++ b/scripts/publish
+@@ -27,17 +27,25 @@ then
+   summon --yaml '
+     USER: !var gs/ci/dockerhub/username
+     PASS: !var gs/ci/dockerhub/password
+-  ' bash -c 'docker login -u ${USER} -p ${PASS}'
++  ' bash -c 'docker login --username=${USER} --password=${PASS}'
++  summon --yaml '
++    USER: !var gs/ci/github/username
++    PASS: !var gs/ci/github/token/gopass
++  ' bash -c 'docker login ghcr.io --username=${USER} --password=${PASS}'
+   if [[ "${tag}" != "latest" ]]
+   then
+     docker tag camptocamp/c2cwsgiutils camptocamp/c2cwsgiutils:${tag}
++    docker tag camptocamp/c2cwsgiutils ghcr.io/camptocamp/c2cwsgiutils:${tag}
+   fi
+   docker push camptocamp/c2cwsgiutils:${tag}
++  docker push ghcr.io/camptocamp/c2cwsgiutils:${tag}
+ 
+   if [[ $1 == refs/heads/master ]]
+   then
+     docker push camptocamp/c2cwsgiutils-redis-sentinel:5
++    docker tag camptocamp/c2cwsgiutils-redis-sentinel:5 ghcr.io/camptocamp/c2cwsgiutils-redis-sentinel:5
++    docker push ghcr.io/camptocamp/c2cwsgiutils-redis-sentinel:5
+   fi
+ 
+-  rm -rf ~/.docker*  # docker logout
++  rm -rf ~/.docker*  # Docker logout
+ fi
