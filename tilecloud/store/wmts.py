@@ -1,5 +1,5 @@
-from tilecloud.store.url import URLTileStore
 from tilecloud.layout.wmts import WMTSTileLayout
+from tilecloud.store.url import URLTileStore
 
 
 class WMTSTileStore(URLTileStore):

@@ -11,10 +11,10 @@ from tilecloud.store.mask import MaskTileStore
 
 def main(argv):
     option_parser = OptionParser()
-    option_parser.add_option('--bounds', metavar='BOUNDS')
-    option_parser.add_option('--limit', metavar='LIMIT', type=int)
-    option_parser.add_option('--output', metavar='FILENAME')
-    option_parser.add_option('-z', metavar='Z', type=int)
+    option_parser.add_option("--bounds", metavar="BOUNDS")
+    option_parser.add_option("--limit", metavar="LIMIT", type=int)
+    option_parser.add_option("--output", metavar="FILENAME")
+    option_parser.add_option("-z", metavar="Z", type=int)
     options, args = option_parser.parse_args(argv[1:])
     assert options.output
     assert options.z
@@ -27,13 +27,12 @@ def main(argv):
         tilestream = bounding_pyramid_tilestore.put(tilestream)
         consume(tilestream, options.limit)
         bounding_pyramid = bounding_pyramid_tilestore.get_bounding_pyramid()
-    mask_tilestore = MaskTileStore(options.z,
-                                   bounding_pyramid.zget(options.z))
+    mask_tilestore = MaskTileStore(options.z, bounding_pyramid.zget(options.z))
     tilestream = chain.from_iterable(ts.list() for ts in tilestores)
     tilestream = mask_tilestore.put(tilestream)
     consume(tilestream, options.limit)
-    mask_tilestore.save(options.output, 'PNG')
+    mask_tilestore.save(options.output, "PNG")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main(sys.argv))

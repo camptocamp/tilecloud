@@ -1,7 +1,6 @@
 from tilecloud.layout.template import TemplateTileLayout
 from tilecloud.store.url import URLTileStore
 
-
 tilestore = URLTileStore(
     (
         TemplateTileLayout("http://{0!s}.tile.stamen.com/watercolor/%(z)d/%(x)d/%(y)d.jpg".format(server))

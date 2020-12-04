@@ -29,10 +29,10 @@ def detect_edge(tilestore, z, first, last, other, horizontal, up):
 
 def main(argv):
     option_parser = OptionParser()
-    option_parser.add_option('-b', '--bounds', metavar='BOUNDING-PYRAMID')
-    option_parser.add_option('-r', '--relative', action='store_true')
-    option_parser.add_option('-s', '--seed', metavar='SEED')
-    option_parser.add_option('-z', '--zoom', metavar='ZOOM', type=int)
+    option_parser.add_option("-b", "--bounds", metavar="BOUNDING-PYRAMID")
+    option_parser.add_option("-r", "--relative", action="store_true")
+    option_parser.add_option("-s", "--seed", metavar="SEED")
+    option_parser.add_option("-z", "--zoom", metavar="ZOOM", type=int)
     options, args = option_parser.parse_args(argv[1:])
     bounding_pyramid = BoundingPyramid.from_string(options.bounds)
     z = options.zoom
@@ -50,10 +50,10 @@ def main(argv):
         ystart = detect_edge(tilestore, z, ybounds.start, seed.y, seed.x, False, True)
         ystop = detect_edge(tilestore, z, seed.y, ybounds.stop, seed.x, False, False)
         if options.relative:
-            print('%d/%d/%d:+%d/+%d' % (z, xstart, ystart, xstop - xstart, ystop - ystart))
+            print("%d/%d/%d:+%d/+%d" % (z, xstart, ystart, xstop - xstart, ystop - ystart))
         else:
-            print('%d/%d/%d:%d/%d' % (z, xstart, ystart, xstop, ystop))
+            print("%d/%d/%d:%d/%d" % (z, xstart, ystart, xstop, ystop))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main(sys.argv))
