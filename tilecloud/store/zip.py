@@ -1,8 +1,8 @@
+from collections import defaultdict
+from datetime import datetime
 import os.path
 import re
 import zipfile
-from collections import defaultdict
-from datetime import datetime
 
 from tilecloud import Tile, TileStore
 from tilecloud.layout.osm import OSMTileLayout

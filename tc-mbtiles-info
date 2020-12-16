@@ -8,8 +8,8 @@ import textwrap
 
 from tilecloud.store.mbtiles import Metadata, Tiles
 
-
-BOUNDING_PYRAMID_SQL = textwrap.dedent('''\
+BOUNDING_PYRAMID_SQL = textwrap.dedent(
+    """\
     SELECT
         zoom_level,
         MIN(tile_column),
@@ -25,14 +25,14 @@ BOUNDING_PYRAMID_SQL = textwrap.dedent('''\
         zoom_level
     ORDER BY
         zoom_level
-    ''')
+    """
+)
 
 
 def main(argv):
     option_parser = OptionParser()
-    option_parser.add_option('-m', '--metadata', action='store_true')
-    option_parser.add_option('-t', '--tiles',
-                             choices=('bounding-pyramid', 'count', 'list'))
+    option_parser.add_option("-m", "--metadata", action="store_true")
+    option_parser.add_option("-t", "--tiles", choices=("bounding-pyramid", "count", "list"))
     options, args = option_parser.parse_args(argv[1:])
     for arg in args:
         assert os.path.exists(arg)
@@ -40,24 +40,23 @@ def main(argv):
         if options.metadata:
             metadata = Metadata(connection)
             for key, value in metadata.iteritems():
-                print('%s: %s' % (key, value))
+                print("%s: %s" % (key, value))
         if options.tiles:
-            if options.tiles == 'count':
+            if options.tiles == "count":
                 print(len(Tiles(connection)))
-            elif options.tiles == 'bounding-pyramid':
+            elif options.tiles == "bounding-pyramid":
                 cursor = connection.cursor()
                 cursor.execute(BOUNDING_PYRAMID_SQL)
                 for row in cursor:
                     if row[5] == row[6]:
-                        extra = ''
+                        extra = ""
                     else:
-                        extra = ' # %+d' % (row[5] - row[6])
-                    print('%d/%d/%d:%d/%d%s' % (row[0], row[1], row[2], row[3],
-                                                row[4], extra))
-            elif options.tiles == 'list':
+                        extra = " # %+d" % (row[5] - row[6])
+                    print("%d/%d/%d:%d/%d%s" % (row[0], row[1], row[2], row[3], row[4], extra))
+            elif options.tiles == "list":
                 for key in Tiles(connection):
-                    print('%d/%d/%d' % (key.z, key.x, key.y))
+                    print("%d/%d/%d" % (key.z, key.x, key.y))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main(sys.argv))

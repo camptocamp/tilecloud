@@ -9,7 +9,6 @@ from tilecloud import BoundingPyramid, TileStore, consume
 from tilecloud.filter.logger import Logger
 from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(os.path.basename(sys.argv[0]))
 
