@@ -78,7 +78,7 @@ def main(argv):
             else:
                 tilestream = input_tilestore.list()
             if options.i is not None and options.n is not None:
-                tilestream = imap(EveryNth(options.n, options.i), tilestream)
+                tilestream = map(EveryNth(options.n, options.i), tilestream)
             if options.randomize:
                 tilestream = list(tilestream)
                 random.shuffle(tilestream)
@@ -90,7 +90,7 @@ def main(argv):
                 tilestream = map(benchmark.sample(), tilestream)
             tilestream = input_tilestore.get(tilestream)
             if benchmark:
-                tilestream = imap(benchmark.sample("get"), tilestream)
+                tilestream = map(benchmark.sample("get"), tilestream)
             for i, g in enumerate(generate):
                 tilestream = g.get(tilestream)
                 if options.benchmark:
