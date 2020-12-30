@@ -35,10 +35,13 @@ class URLTileStore(TileStore):
             tile.content_type = response.headers.get("Content-Type")
             if response.status_code < 300:
                 tile.data = response.content
-                if tile.content_type.startswith("image/"):
-                    tile.data = response.content
-                else:
-                    tile.error = response.text
+                if tile.content_type:
+                    if tile.content_type.startswith("image/"):
+                        tile.data = response.content
+                    else:
+                        tile.error = response.text
+                elif response.status_code != 200:
+                    tile.error = "Unable to read content type {0}".format(title.content_type)
             else:
                 tile.error = response.reason
         except requests.exceptions.RequestException as e:
