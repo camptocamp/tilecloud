@@ -8,7 +8,8 @@ on:
 jobs:
   codeql:
     name: CodeQL scanning
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository

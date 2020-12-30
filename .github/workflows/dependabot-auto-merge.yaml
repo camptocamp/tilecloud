@@ -1,3 +1,4 @@
+---
 name: Auto merge Dependabot updates
 
 on:
@@ -6,14 +7,30 @@ on:
       - opened
       - ready_for_review
       - reopened
-      - unlocked
+  workflow_run:
+    workflows:
+      - Continuous integration
+    types:
+      - completed
 
 jobs:
   auto-merge:
-    name: Auto merge
-    runs-on: ubuntu-latest
+    name: Auto merge Dependabot updates
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+
     steps:
+      - run: echo "$ECHO"
+        env:
+          ECHO: ${{ toJson(github) }}
+      - run: echo "$ECHO"
+        env:
+          ECHO: ${{ toJson(job) }}
+      - run: echo "$ECHO"
+        env:
+          ECHO: ${{ toJson(steps) }}
       - name: Auto merge
-        uses: ridedott/dependabot-auto-merge-action@master
+        uses: sbrunner/merge-me-action@workflow_run_dist
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_LOGIN: dependabot[bot]

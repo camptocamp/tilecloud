@@ -1,6 +1,5 @@
 from tilecloud.store.wmts import WMTSTileStore
 
-
 tilestore = WMTSTileStore(
     url="http://v2.suite.opengeo.org/geoserver/gwc/service/wmts/",
     layer="medford:buildings",

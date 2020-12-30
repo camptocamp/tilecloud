@@ -1,6 +1,5 @@
 import re
 
-
 from tilecloud import Tile, TileStore
 
 

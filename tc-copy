@@ -1,18 +1,24 @@
 #!/usr/bin/env python
 
-from c2cwsgiutils import stats
-from itertools import imap
 import logging
 from optparse import OptionParser
 import os.path
 import random
 import sys
 
+from c2cwsgiutils import stats
+
 from tilecloud import BoundingPyramid, TileStore, consume
 from tilecloud.filter.benchmark import Benchmark, StatsdCountErrors, StatsdCountTiles
 from tilecloud.filter.consistenthash import EveryNth
 from tilecloud.filter.contenttype import ContentTypeAdder
-from tilecloud.filter.error import DropErrors, LogErrors, MaximumConsecutiveErrors, MaximumErrorRate, MaximumErrors
+from tilecloud.filter.error import (
+    DropErrors,
+    LogErrors,
+    MaximumConsecutiveErrors,
+    MaximumErrorRate,
+    MaximumErrors,
+)
 from tilecloud.filter.logger import Logger
 from tilecloud.filter.rate import RateLimit
 from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
@@ -21,25 +27,25 @@ from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 def main(argv):
     logger = logging.getLogger(os.path.basename(argv[0]))
     option_parser = OptionParser()
-    option_parser.add_option('--benchmark', action='store_true')
-    option_parser.add_option('-b', '--bounding-pyramid', metavar='BOUNDING-PYRAMID')
-    option_parser.add_option('--add-content-type', action='store_true')
-    option_parser.add_option('-i', metavar='I', type=int)
-    option_parser.add_option('-g', '--generate', metavar='TILE-STORE', action='append')
-    option_parser.add_option('--limit', metavar='N', type=int)
-    option_parser.add_option('-m', '--move', action='store_true')
-    option_parser.add_option('--maximum-consecutive-errors', metavar='N', type=int)
-    option_parser.add_option('--maximum-errors', metavar='N', type=int)
-    option_parser.add_option('--maximum-error-rate', metavar='FLOAT', type=float)
-    option_parser.add_option('-n', metavar='N', type=int)
-    option_parser.add_option('-o', '--overwrite', action='store_true')
-    option_parser.add_option('-r', '--rate-limit', metavar='HZ', type=float)
-    option_parser.add_option('--randomize', action='store_true')
-    option_parser.add_option('--statsd', action='store_true')
-    option_parser.add_option('--statsd-host', default='127.0.0.1', metavar='HOST')
-    option_parser.add_option('--statsd-port', default=8125, metavar='PORT', type=int)
-    option_parser.add_option('--statsd-prefix', default='tc-copy-', metavar='PREFIX')
-    option_parser.add_option('-v', '--verbose', action='store_true')
+    option_parser.add_option("--benchmark", action="store_true")
+    option_parser.add_option("-b", "--bounding-pyramid", metavar="BOUNDING-PYRAMID")
+    option_parser.add_option("--add-content-type", action="store_true")
+    option_parser.add_option("-i", metavar="I", type=int)
+    option_parser.add_option("-g", "--generate", metavar="TILE-STORE", action="append")
+    option_parser.add_option("--limit", metavar="N", type=int)
+    option_parser.add_option("-m", "--move", action="store_true")
+    option_parser.add_option("--maximum-consecutive-errors", metavar="N", type=int)
+    option_parser.add_option("--maximum-errors", metavar="N", type=int)
+    option_parser.add_option("--maximum-error-rate", metavar="FLOAT", type=float)
+    option_parser.add_option("-n", metavar="N", type=int)
+    option_parser.add_option("-o", "--overwrite", action="store_true")
+    option_parser.add_option("-r", "--rate-limit", metavar="HZ", type=float)
+    option_parser.add_option("--randomize", action="store_true")
+    option_parser.add_option("--statsd", action="store_true")
+    option_parser.add_option("--statsd-host", default="127.0.0.1", metavar="HOST")
+    option_parser.add_option("--statsd-port", default=8125, metavar="PORT", type=int)
+    option_parser.add_option("--statsd-prefix", default="tc-copy-", metavar="PREFIX")
+    option_parser.add_option("-v", "--verbose", action="store_true")
     options, args = option_parser.parse_args(argv[1:])
     if options.verbose:
         logging.basicConfig(level=logging.INFO)
@@ -54,7 +60,7 @@ def main(argv):
     if options.statsd:
         statsd_settings = {
             "c2c.statsd_address": options.statsd_host + ":" + options.statsd_port,
-            "c2c.statsd_prefix": options.statsd_prefix
+            "c2c.statsd_prefix": options.statsd_prefix,
         }
         stats.init_backends(statsd_settings)
 
@@ -79,51 +85,58 @@ def main(argv):
             if not options.overwrite:
                 tilestream = (tile for tile in tilestream if tile not in output_tilestore)
             if options.rate_limit:
-                tilestream = imap(RateLimit(options.rate_limit), tilestream)
+                tilestream = map(RateLimit(options.rate_limit), tilestream)
             if benchmark:
-                tilestream = imap(benchmark.sample(), tilestream)
+                tilestream = map(benchmark.sample(), tilestream)
             tilestream = input_tilestore.get(tilestream)
             if benchmark:
-                tilestream = imap(benchmark.sample('get'), tilestream)
+                tilestream = imap(benchmark.sample("get"), tilestream)
             for i, g in enumerate(generate):
                 tilestream = g.get(tilestream)
                 if options.benchmark:
-                    tilestream = imap(benchmark.sample('generate-%d' % (i,)), tilestream)
-            tilestream = imap(LogErrors(logger, logging.ERROR, '%(tilecoord)s: %(error)s'), tilestream)
+                    tilestream = map(benchmark.sample("generate-%d" % (i,)), tilestream)
+            tilestream = map(LogErrors(logger, logging.ERROR, "%(tilecoord)s: %(error)s"), tilestream)
             if options.statsd:
-                tilestream = imap(StatsdCountErrors(), tilestream)
+                tilestream = map(StatsdCountErrors(), tilestream)
             if options.maximum_consecutive_errors:
-                tilestream = imap(MaximumConsecutiveErrors(options.maximum_consecutive_errors), tilestream)
+                tilestream = map(MaximumConsecutiveErrors(options.maximum_consecutive_errors), tilestream)
             if options.maximum_error_rate:
-                tilestream = imap(MaximumErrorRate(options.maximum_error_rate), tilestream)
+                tilestream = map(MaximumErrorRate(options.maximum_error_rate), tilestream)
             if options.maximum_errors:
-                tilestream = imap(MaximumErrors(options.maximum_errors), tilestream)
-            tilestream = imap(DropErrors(), tilestream)
+                tilestream = map(MaximumErrors(options.maximum_errors), tilestream)
+            tilestream = map(DropErrors(), tilestream)
             if options.add_content_type:
-                tilestream = imap(ContentTypeAdder(), tilestream)
+                tilestream = map(ContentTypeAdder(), tilestream)
             tilestream = output_tilestore.put(tilestream)
             if benchmark:
-                tilestream = imap(benchmark.sample('put'), tilestream)
+                tilestream = map(benchmark.sample("put"), tilestream)
             if options.move:
                 tilestream = input_tilestore.delete(tilestream)
                 if benchmark:
-                    tilestream = imap(benchmark.sample('delete'), tilestream)
+                    tilestream = map(benchmark.sample("delete"), tilestream)
             if options.verbose:
-                tilestream = imap(Logger(logger, logging.INFO, '%(tilecoord)s'), tilestream)
+                tilestream = map(Logger(logger, logging.INFO, "%(tilecoord)s"), tilestream)
             if options.statsd:
-                tilestream = imap(StatsdCountTiles(), tilestream)
+                tilestream = map(StatsdCountTiles(), tilestream)
             consume(tilestream, options.limit)
     finally:
         logging.basicConfig(level=logging.INFO)
         if benchmark:
-            keys = ['get']
-            keys.extend('generate-%i' % (i,) for i in range(0, len(generate)))
-            keys.extend(['put', 'delete'])
+            keys = ["get"]
+            keys.extend("generate-%i" % (i,) for i in range(0, len(generate)))
+            keys.extend(["put", "delete"])
             for key in keys:
                 if key in benchmark.statisticss:
                     statistics = benchmark.statisticss[key]
-                    logger.info('%s: %s%s' % (key, statistics, ' (%.1f tiles/s)' % (1.0 / statistics.mean,) if statistics.n else ''))
+                    logger.info(
+                        "%s: %s%s"
+                        % (
+                            key,
+                            statistics,
+                            " (%.1f tiles/s)" % (1.0 / statistics.mean,) if statistics.n else "",
+                        )
+                    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main(sys.argv))

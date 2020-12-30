@@ -5,6 +5,7 @@ all: test prospector docs
 clean:
 	find tilecloud tiles -name \*.pyc | xargs rm -f
 	make -C docs clean
+	rm -rf .venv
 
 .PHONY: docs
 docs:
@@ -21,3 +22,6 @@ test:
 .PHONY: pypi-upload
 pypi-upload: test prospector
 	python3 setup.py sdist upload
+
+.PHONY: checks
+checks: prospector test

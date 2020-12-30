@@ -1,7 +1,8 @@
 import os
+import time
+
 import pytest
 import redis
-import time
 
 from tilecloud import Tile, TileCoord
 from tilecloud.store.redis import RedisTileStore

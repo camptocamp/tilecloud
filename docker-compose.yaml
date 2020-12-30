@@ -1,0 +1,17 @@
+---
+
+version: '2.1'
+
+services:
+  redis:
+    image: redis:5
+
+  test:
+    build: .
+    environment:
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - ./:/app/
+    command:
+      - make
+      - checks

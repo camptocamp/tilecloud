@@ -6,8 +6,9 @@ import json
 import mimetypes
 import os.path
 import re
-from urllib2 import urlopen  # pylint: disable=import-error
 from urllib.parse import urlparse
+
+from urllib2 import urlopen  # pylint: disable=import-error
 
 from tilecloud import BoundingPyramid
 from tilecloud.layout.template import TemplateTileLayout

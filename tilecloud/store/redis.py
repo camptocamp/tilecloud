@@ -4,9 +4,9 @@ import logging
 import os
 import socket
 
+from c2cwsgiutils import stats
 import redis.sentinel
 
-from c2cwsgiutils import stats
 from tilecloud import TileStore
 from tilecloud.store.queue import decode_message, encode_message
 

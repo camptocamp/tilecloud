@@ -13,7 +13,6 @@ from tilecloud.store.mbtiles import MBTilesTileStore
 from tilecloud.store.renderingtheworld import RenderingTheWorldTileStore
 from tilecloud.store.wmts import WMTSTileStore
 
-
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(os.path.basename(sys.argv[0]))
 

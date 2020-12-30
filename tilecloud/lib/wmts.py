@@ -51,13 +51,13 @@ def get_capabilities(layers, tile_matrix_set, wmts_gettile):
         dimension_default: the default dimension value
         dimension_values: the possible dimension value
         matrix_set: the matrix set name
-    tile_matrix_set a dict that contants the tile matrix set definition:
+    tile_matrix_set a dict that constants the tile matrix set definition:
         name: the name of the tile matrix set
         srs: projection like 'EPSG:21781'
         units: units like 'meters'
         resolutions: array of floats for used resolutions
         bbox: array of floats, the use bbox where the tiles is generated
-        tiles_size: the sise of the tiles (int)
+        tiles_size: the size of the tiles (int)
         yorigin: 'top' if the tiles origin is at top
     """
     return jinja2_template(
