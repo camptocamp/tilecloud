@@ -694,7 +694,7 @@ class TileStore:
         raise NotImplementedError
 
     @staticmethod
-    def load(name):  # pragma: no cover
+    def load(name, allows_no_contenttype=False):  # pragma: no cover
         """
         Construct a :class:`TileStore` from a name.
 
@@ -745,7 +745,7 @@ class TileStore:
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.url import URLTileStore
 
-            return URLTileStore((TemplateTileLayout(name),))
+            return URLTileStore((TemplateTileLayout(name),), allows_no_contenttype=allows_no_contenttype)
         if name.startswith("memcached://"):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.lib.memcached import MemcachedClient

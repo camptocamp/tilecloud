@@ -72,7 +72,7 @@ def main(argv):
     try:
         output_tilestore = TileStore.load(args[-1])
         for arg in args[:-1]:
-            input_tilestore = TileStore.load(arg)
+            input_tilestore = TileStore.load(arg, allows_no_contenttype=options.add_content_type)
             if bounding_pyramid:
                 tilestream = BoundingPyramidTileStore(bounding_pyramid).list()
             else:
