@@ -5,18 +5,19 @@ pylint:
   options:
     max-line-length: 110
   disable:
-    - abstract-method
+    - too-many-instance-attributes
+    - too-many-ancestors
+    - too-many-return-statements
+    - too-many-branches
     - too-many-arguments
+    - too-many-locals
+    - too-few-public-methods
+    - wrong-import-order
+    - no-else-return
+    - abstract-method
     - invalid-name
     - redefined-builtin
     - broad-except
-    - too-many-locals
-    - no-else-return
-    - wrong-import-order
-    - too-many-instance-attributes
-    - too-many-ancestors
-    - too-few-public-methods
-    - too-many-return-statements
     - cyclic-import  # see: https://github.com/PyCQA/pylint/issues/850
 
 pep8:
