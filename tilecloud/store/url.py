@@ -8,8 +8,9 @@ logger = logging.getLogger(__name__)
 
 
 class URLTileStore(TileStore):
-    def __init__(self, tilelayouts, headers=None, **kwargs):
+    def __init__(self, tilelayouts, headers=None, allows_no_contenttype=False, **kwargs):
         TileStore.__init__(self, **kwargs)
+        self.allows_no_contenttype = allows_no_contenttype
         self.tilelayouts = tuple(tilelayouts)
         self.session = requests.session()
         if headers is not None:
@@ -29,16 +30,26 @@ class URLTileStore(TileStore):
         logger.info("GET %s", url)
         try:
             response = self.session.get(url)
-            if response.status_code == 404:
+            if response.status_code == 404 or response.status_code == 204:
                 return None
             tile.content_encoding = response.headers.get("Content-Encoding")
             tile.content_type = response.headers.get("Content-Type")
             if response.status_code < 300:
-                tile.data = response.content
-                if tile.content_type.startswith("image/"):
-                    tile.data = response.content
+                if response.status_code != 200:
+                    tile.error = "Unsupportetd status code {}: {}".format(
+                        response.status_code, response.reason
+                    )
+                if tile.content_type:
+                    if tile.content_type.startswith("image/"):
+                        tile.data = response.content
+                    else:
+                        tile.error = response.text
                 else:
-                    tile.error = response.text
+                    if self.allows_no_contenttype:
+                        tile.data = response.content
+                    else:
+                        tile.error = "The Content-Type header is missing"
+
             else:
                 tile.error = response.reason
         except requests.exceptions.RequestException as e:
