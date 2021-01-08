@@ -10,6 +10,7 @@ on:
   workflow_run:
     workflows:
       - Continuous integration
+      - CodeQL scanning
     types:
       - completed
 
