@@ -1,4 +1,4 @@
-azure-storage-blob==12.7.0
+azure-storage-blob==12.7.1
 boto3==1.16.58
 bottle==0.12.19
 c2cwsgiutils[broadcast]>=4.0.1
