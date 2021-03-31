@@ -85,6 +85,7 @@ class RedisTileStore(TileStore):
                 count=1,
                 block=round(self._timeout_ms),
             )
+            logger.debug("Get %d new elements", len(queues))
 
             if not queues:
                 queues = self._claim_olds()
@@ -146,15 +147,20 @@ class RedisTileStore(TileStore):
         self._master.xtrim(name=self._errors_name, maxlen=0)
 
     def _claim_olds(self):
+        logger.debug("Claim old's")
         pendings = self._master.xpending_range(
             name=self._name, groupname=STREAM_GROUP, min="-", max="+", count=10
         )
         if not pendings:
+            logger.debug("Empty pendings")
             # None means there is nothing pending at all
             return None
         to_steal = []
         to_drop = []
         for pending in pendings:
+            logger.debug(
+                "Pending for %d, threshold %d", int(pending["time_since_delivered"]), self._pending_timeout_ms
+            )
             if int(pending["time_since_delivered"]) >= self._pending_timeout_ms:
                 id_ = pending["message_id"]
                 nb_retries = int(pending["times_delivered"])
@@ -172,6 +178,7 @@ class RedisTileStore(TileStore):
                     )
                     to_drop.append(id_)
 
+        logger.debug("%d elements to drop", len(to_drop))
         if to_drop:
             drop_messages = self._master.xclaim(
                 name=self._name,
@@ -192,6 +199,7 @@ class RedisTileStore(TileStore):
                 )
             stats.increment_counter(["redis", self._name_str, "dropped"], len(to_drop))
 
+        logger.debug("%d elements to steal", len(to_steal))
         if to_steal:
             messages = self._master.xclaim(
                 name=self._name,
