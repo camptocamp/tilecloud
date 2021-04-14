@@ -1,0 +1,14 @@
+commit df72929ae72b33498b858a76cbc6bc279750ded9
+Author: Stéphane Brunner <stephane.brunner@camptocamp.com>
+Date:   Wed Apr 14 11:52:17 2021 +0200
+
+    Bump c2cciutils
+
+diff --git a/ci/requirements.txt b/ci/requirements.txt
+index 6719be5..f337ce9 100644
+--- a/ci/requirements.txt
++++ b/ci/requirements.txt
+@@ -1,2 +1,2 @@
+-c2cciutils==1.0
++c2cciutils==1.1.dev20210414082455
+ pipfile==0.0.2
