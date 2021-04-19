@@ -2,15 +2,9 @@
 name: Auto merge Dependabot updates
 
 on:
-  pull_request:
-    types:
-      - opened
-      - ready_for_review
-      - reopened
   workflow_run:
     workflows:
       - Continuous integration
-      - CodeQL scanning
     types:
       - completed
 
@@ -21,17 +15,7 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - run: echo "$ECHO"
-        env:
-          ECHO: ${{ toJson(github) }}
-      - run: echo "$ECHO"
-        env:
-          ECHO: ${{ toJson(job) }}
-      - run: echo "$ECHO"
-        env:
-          ECHO: ${{ toJson(steps) }}
       - name: Auto merge
-        uses: sbrunner/merge-me-action@workflow_run_dist
+        uses: ridedott/merge-me-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_LOGIN: dependabot[bot]

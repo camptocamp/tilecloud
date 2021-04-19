@@ -7,6 +7,9 @@ on:
       - closed
       - labeled
 
+env:
+  HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
+
 jobs:
   backport:
     runs-on: ubuntu-20.04
@@ -17,3 +20,4 @@ jobs:
       - uses: camptocamp/backport-action@master
         with:
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
