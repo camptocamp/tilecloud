@@ -3,6 +3,10 @@ name: Continuous integration
 
 on:
   push:
+  pull_request:
+
+env:
+  HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
 
 jobs:
   main:
@@ -19,7 +23,7 @@ jobs:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
           patterns: pypi
-        if: github.repository == 'camptocamp/tilecloud'
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -33,4 +37,4 @@ jobs:
 
       - name: Publish
         run: c2cciutils-publish
-        if: github.repository == 'camptocamp/tilecloud'
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
