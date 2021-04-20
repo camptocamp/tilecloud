@@ -1,6 +1,6 @@
-from typing import Tuple
+from typing import Iterable
 
-from tilecloud import TileStore
+from tilecloud import Tile, TileStore
 
 
 class NullTileStore(TileStore):
@@ -18,7 +18,7 @@ class NullTileStore(TileStore):
         return tile
 
     @staticmethod
-    def list() -> Tuple[()]:
+    def list() -> Iterable[Tile]:
         return ()
 
     @staticmethod

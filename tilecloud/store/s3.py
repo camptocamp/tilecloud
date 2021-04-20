@@ -1,7 +1,8 @@
 import logging
-from typing import Any, Optional
+from typing import Any, Iterator, Optional, cast
 
 import boto3
+import botocore.client
 import botocore.config
 import botocore.exceptions
 
@@ -25,14 +26,14 @@ class S3TileStore(TileStore):
         **kwargs: Any,
     ) -> None:
         self._s3_host = s3_host
-        self._client = None
+        self._client: Optional["botocore.client.S3"] = None
         self.bucket = bucket
         self.tilelayout = tilelayout
         self.dry_run = dry_run
         self.cache_control = cache_control
         TileStore.__init__(self, **kwargs)
 
-    def __contains__(self, tile):
+    def __contains__(self, tile: Tile) -> bool:
         if not tile:
             return False
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
@@ -45,7 +46,7 @@ class S3TileStore(TileStore):
             else:
                 raise
 
-    def delete_one(self, tile):
+    def delete_one(self, tile: Tile) -> Tile:
         try:
             key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
             if not self.dry_run:
@@ -54,7 +55,7 @@ class S3TileStore(TileStore):
             tile.error = exc
         return tile
 
-    def get_one(self, tile):
+    def get_one(self, tile: Tile) -> Optional[Tile]:
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         try:
             response = self.client.get_object(Bucket=self.bucket, Key=key_name)
@@ -68,7 +69,7 @@ class S3TileStore(TileStore):
                 tile.error = exc
         return tile
 
-    def list(self):
+    def list(self) -> Iterator[Tile]:
         prefix = getattr(self.tilelayout, "prefix", "")
         for s3_key in self.client.list_objects(Bucket=self.bucket, Prefix=prefix):
             try:
@@ -77,7 +78,7 @@ class S3TileStore(TileStore):
                 continue
             yield Tile(tilecoord)
 
-    def put_one(self, tile):
+    def put_one(self, tile: Tile) -> Tile:
         assert tile.data is not None
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         args = {}
@@ -97,17 +98,17 @@ class S3TileStore(TileStore):
         return tile
 
     @property
-    def client(self):
+    def client(self) -> "botocore.client.S3":
         if self._client is None:
             self._client = get_client(self._s3_host)
         return self._client
 
 
-def _get_status(s3_client_exception):
-    return s3_client_exception.response["ResponseMetadata"]["HTTPStatusCode"]
+def _get_status(s3_client_exception: botocore.exceptions.ClientError) -> int:
+    return cast(int, s3_client_exception.response["ResponseMetadata"]["HTTPStatusCode"])
 
 
-def get_client(s3_host):
+def get_client(s3_host: Optional[str]) -> "botocore.client.S3":
     config = botocore.config.Config(connect_timeout=CLIENT_TIMEOUT, read_timeout=CLIENT_TIMEOUT)
     return boto3.client(
         "s3", endpoint_url=("https://%s/" % s3_host) if s3_host is not None else None, config=config

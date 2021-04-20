@@ -1,7 +1,5 @@
 import re
-from typing import Any, Optional
-
-from _sre import SRE_Match
+from typing import Any, Match, Optional
 
 from tilecloud import TileCoord
 from tilecloud.layout.re_ import RETileLayout
@@ -18,8 +16,8 @@ class OSMTileLayout(RETileLayout):
 
     @staticmethod
     def filename(tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
-        return "{0:d}/{1:d}/{2:d}".format(tilecoord.z, tilecoord.x, tilecoord.y)
+        return f"{tilecoord.z}/{tilecoord.x}/{tilecoord.y}"
 
     @staticmethod
-    def _tilecoord(match: SRE_Match) -> TileCoord:
+    def _tilecoord(match: Match[str]) -> TileCoord:
         return TileCoord(*map(int, match.groups()))

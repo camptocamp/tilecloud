@@ -3,7 +3,7 @@
 import mimetypes
 import sqlite3
 from sqlite3 import Connection
-from typing import Any, Iterator, Optional, Tuple, Union
+from typing import Any, Iterator, Optional, Tuple
 
 from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
 from tilecloud.lib.sqlite3_ import SQLiteDict, query
@@ -53,7 +53,7 @@ class Tiles(SQLiteDict):
         y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1
         return (key.z, key.x, y)
 
-    def _unpackitem(self, row: Tuple[int, int, int, Optional[bytes]]) -> Tuple[TileCoord, Optional[bytes]]:
+    def _unpackitem(self, row: Tuple[int, int, int, bytes]) -> Tuple[TileCoord, bytes]:
         z, x, y, data = row
         y = y if self.tilecoord_in_topleft else (1 << z) - y - 1
         return (TileCoord(z, x, y), data)
@@ -81,11 +81,11 @@ class MBTilesTileStore(TileStore):
         self.metadata = Metadata(self.connection, commit)
         self.tiles = Tiles(tilecoord_in_topleft, self.connection, commit)
         if "content_type" not in kwargs and "format" in self.metadata:
-            kwargs["content_type"] = mimetypes.types_map.get("." + self.metadata["format"])
+            kwargs["content_type"] = mimetypes.types_map.get("." + self.metadata["format"])  # type: ignore
         TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile: Tile) -> bool:
-        return tile and tile.tilecoord in self.tiles
+        return tile and tile.tilecoord in self.tiles  # type: ignore
 
     def __len__(self) -> int:
         return len(self.tiles)
@@ -94,7 +94,7 @@ class MBTilesTileStore(TileStore):
         del self.tiles[tile.tilecoord]
         return tile
 
-    def get_all(self) -> Iterator[Union[Iterator, Iterator[Tile]]]:
+    def get_all(self) -> Iterator[Tile]:
         for tilecoord, data in self.tiles.iteritems():
             tile = Tile(tilecoord, data=data)
             if self.content_type is not None:
@@ -116,8 +116,8 @@ class MBTilesTileStore(TileStore):
             tile.content_type = self.content_type
         return tile
 
-    def list(self) -> Iterator:
-        return (Tile(tilecoord) for tilecoord in self.tiles)
+    def list(self) -> Iterator[Tile]:
+        return (Tile(tilecoord) for tilecoord in self.tiles)  # type: ignore
 
     def put_one(self, tile: Tile) -> Tile:
         self.tiles[tile.tilecoord] = getattr(tile, "data", None)

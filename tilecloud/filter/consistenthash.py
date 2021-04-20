@@ -1,3 +1,8 @@
+from typing import Optional
+
+from tilecloud import Tile
+
+
 class EveryNth:
     """
     Create a filter that returns one out of every n tiles. This is done
@@ -16,11 +21,11 @@ class EveryNth:
 
     """
 
-    def __init__(self, n, i):
+    def __init__(self, n: int, i: int) -> None:
         self.n = n
         self.i = i
 
-    def __call__(self, tile):
+    def __call__(self, tile: Tile) -> Optional[Tile]:
         if hash(tile.tilecoord) % self.n == self.i:
             return tile
         else:

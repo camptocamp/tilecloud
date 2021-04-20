@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Iterator, Optional, Tuple, Union
+from typing import Iterable, Iterator, Optional, Tuple
 
 from tilecloud import Bounds, TileCoord, TileGrid
 
@@ -15,7 +15,7 @@ class QuadTileGrid(TileGrid):
         TileGrid.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         self.max_zoom = max_zoom
 
-    def children(self, tilecoord: TileCoord) -> Iterator[Union[Iterator, Iterator[TileCoord]]]:
+    def children(self, tilecoord: TileCoord) -> Iterator[TileCoord]:
         if self.max_zoom is None or tilecoord.z < self.max_zoom:
             yield TileCoord(tilecoord.z + 1, 2 * tilecoord.x, 2 * tilecoord.y)
             yield TileCoord(tilecoord.z + 1, 2 * tilecoord.x + 1, 2 * tilecoord.y)
@@ -44,12 +44,20 @@ class QuadTileGrid(TileGrid):
     @staticmethod
     def fill_down(z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
         xbounds, ybounds = bounds
+        assert xbounds.start is not None
+        assert xbounds.stop is not None
+        assert ybounds.start is not None
+        assert ybounds.stop is not None
         return (Bounds(2 * xbounds.start, 2 * xbounds.stop), Bounds(2 * ybounds.start, 2 * ybounds.stop))
 
     @staticmethod
     def fill_up(z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
         assert z > 0
         xbounds, ybounds = bounds
+        assert xbounds.start is not None
+        assert xbounds.stop is not None
+        assert ybounds.start is not None
+        assert ybounds.stop is not None
         return (
             Bounds(xbounds.start // 2, max(xbounds.stop // 2, 1)),
             Bounds(ybounds.start // 2, max(ybounds.stop // 2, 1)),
@@ -63,7 +71,7 @@ class QuadTileGrid(TileGrid):
             return TileCoord(tilecoord.z - 1, int(tilecoord.x // 2), int(tilecoord.y // 2))
 
     @staticmethod
-    def roots() -> Iterator[Union[Iterator, Iterator[TileCoord]]]:
+    def roots() -> Iterator[TileCoord]:
         yield TileCoord(0, 0, 0)
 
     def tilecoord(self, z: int, x: float, y: float) -> TileCoord:
@@ -73,7 +81,7 @@ class QuadTileGrid(TileGrid):
             tilecoord_y = (1 << z) - tilecoord_y - 1
         return TileCoord(z, tilecoord_x, tilecoord_y)
 
-    def zs(self) -> Union[count, range]:
+    def zs(self) -> Iterable[int]:
         if self.max_zoom:
             return range(0, self.max_zoom + 1)
         else:

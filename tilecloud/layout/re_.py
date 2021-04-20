@@ -1,10 +1,10 @@
-from _sre import SRE_Pattern
+from typing import Match, Pattern
 
-from tilecloud import TileLayout
+from tilecloud import TileCoord, TileLayout
 
 
 class RETileLayout(TileLayout):
-    def __init__(self, pattern: str, filename_re: SRE_Pattern) -> None:
+    def __init__(self, pattern: str, filename_re: Pattern[str]) -> None:
         self.pattern = pattern
         self.filename_re = filename_re
 
@@ -17,5 +17,5 @@ class RETileLayout(TileLayout):
         return self._tilecoord(match)
 
     @staticmethod
-    def _tilecoord(match):  # pragma: no cover
+    def _tilecoord(match: Match[str]) -> TileCoord:  # pragma: no cover
         raise NotImplementedError

@@ -28,7 +28,7 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Topic :: Scientific/Engineering :: GIS",
-        "Typed"
+        "Typed",
     ],
     author="Camptocamp",
     author_email="info@camptocmap.com",

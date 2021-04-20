@@ -1,5 +1,6 @@
 import re
 import socket
+from typing import Optional, Tuple
 
 
 class MemcachedError(RuntimeError):
@@ -8,58 +9,58 @@ class MemcachedError(RuntimeError):
 
 class MemcachedClient:
 
-    VALUE_RE = re.compile(r"VALUE\s+(?P<key>\S+)\s+(?P<flags>\d+)\s+(?P<bytes>\d+)(?:\s+(?P<cas>\d+))?\Z")
+    VALUE_RE = re.compile(br"VALUE\s+(?P<key>\S+)\s+(?P<flags>\d+)\s+(?P<bytes>\d+)(?:\s+(?P<cas>\d+))?\Z")
 
-    def __init__(self, host="localhost", port=11211):
+    def __init__(self, host: str = "localhost", port: int = 11211):
         self.socket = socket.create_connection((host, port))
-        self.buffer = ""
+        self.buffer = b""
 
-    def delete(self, key):
-        self.writeline("delete {0!s}".format(key))
+    def delete(self, key: str) -> bool:
+        self.writeline(f"delete {key}".encode())
         line = self.readline()
-        if line == "DELETED":
+        if line == b"DELETED":
             return True
-        elif line == "NOT_FOUND":
+        elif line == b"NOT_FOUND":
             return False
         else:
             raise MemcachedError(line)
 
-    def get(self, key):
-        self.writeline("get {0!s}".format(key))
+    def get(self, key: str) -> Tuple[Optional[int], Optional[bytes], Optional[int]]:
+        self.writeline(f"get {key}".encode())
         line = self.readline()
-        if line == "END":
+        if line == b"END":
             return None, None, None
         m = self.VALUE_RE.match(line)
         if not m:
             raise MemcachedError(line)
-        assert m.group("key") == key
+        assert m.group("key") == key.encode()
         flags = int(m.group("flags"))
         value = self.readvalue(int(m.group("bytes")))
         cas = None if m.group("cas") is None else int(m.group("cas"))
         line = self.readline()
-        if line != "END":
+        if line != b"END":
             raise MemcachedError(line)
         return flags, value, cas
 
-    def set(self, key, flags, exptime, value):
-        self.writeline("set {0!s} {1:d} {2:d} {3:d}".format(key, flags, exptime, len(value)))
+    def set(self, key: str, flags: int, exptime: int, value: bytes) -> None:
+        self.writeline(f"set {key} {flags} {exptime} {len(value)}".encode())
         self.writeline(value)
         line = self.readline()
-        if line != "STORED":
+        if line != b"STORED":
             raise MemcachedError(line)
 
-    def readvalue(self, n):
+    def readvalue(self, n: int) -> bytes:
         while len(self.buffer) < n + 2:
             self.buffer += self.socket.recv(n + 2 - len(self.buffer))
-        if self.buffer[n : n + 2] != "\r\n":
+        if self.buffer[n : n + 2] != b"\r\n":
             raise MemcachedError
         result = self.buffer[:n]
         self.buffer = self.buffer[n + 2 :]
         return result
 
-    def readline(self):
+    def readline(self) -> bytes:
         while True:
-            index = self.buffer.find("\r\n")
+            index = self.buffer.find(b"\r\n")
             if index == -1:
                 self.buffer += self.socket.recv(1024)
             else:
@@ -67,5 +68,5 @@ class MemcachedClient:
                 self.buffer = self.buffer[index + 2 :]
                 return line
 
-    def writeline(self, line):
-        self.socket.send(line + "\r\n")
+    def writeline(self, line: bytes) -> None:
+        self.socket.send(line + b"\r\n")

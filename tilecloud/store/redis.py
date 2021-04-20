@@ -3,11 +3,12 @@ from __future__ import absolute_import
 import logging
 import os
 import socket
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Set, Tuple, Union
 
 from c2cwsgiutils import stats
 import redis.sentinel
 
-from tilecloud import TileStore
+from tilecloud import Tile, TileStore
 from tilecloud.store.queue import decode_message, encode_message
 
 STREAM_GROUP = "tilecloud"
@@ -23,19 +24,19 @@ class RedisTileStore(TileStore):
 
     def __init__(
         self,
-        url=None,
-        name="tilecloud",
-        stop_if_empty=True,
-        timeout=5,
-        pending_timeout=5 * 60,
-        max_retries=5,
-        max_errors_age=24 * 3600,
-        max_errors_nb=100,
-        sentinels=None,
-        service_name="mymaster",
-        sentinel_kwargs=None,
-        connection_kwargs=None,
-        **kwargs,
+        url: Optional[str] = None,
+        name: str = "tilecloud",
+        stop_if_empty: bool = True,
+        timeout: int = 5,
+        pending_timeout: int = 5 * 60,
+        max_retries: int = 5,
+        max_errors_age: int = 24 * 3600,
+        max_errors_nb: int = 100,
+        sentinels: Optional[List[Tuple[str, int]]] = None,
+        service_name: str = "mymaster",
+        sentinel_kwargs: Any = None,
+        connection_kwargs: Any = None,
+        **kwargs: Any,
     ):
         super().__init__(**kwargs)
 
@@ -48,6 +49,7 @@ class RedisTileStore(TileStore):
             self._master = sentinel.master_for(service_name)
             self._slave = sentinel.slave_for(service_name)
         else:
+            assert url is not None
             self._master = redis.Redis.from_url(url, **connection_kwargs)
             self._slave = self._master
 
@@ -68,14 +70,14 @@ class RedisTileStore(TileStore):
             if "BUSYGROUP" not in str(e):
                 raise
 
-    def __contains__(self, tile):
+    def __contains__(self, tile: Tile) -> bool:
         return False
 
     @staticmethod
-    def get_one(tile):
+    def get_one(tile: Tile) -> Tile:
         return tile
 
-    def list(self):
+    def list(self) -> Iterator[Tile]:
         count = 0
         while True:
             queues = self._master.xreadgroup(
@@ -115,28 +117,29 @@ class RedisTileStore(TileStore):
                     pending = self._slave.xpending(self._name, STREAM_GROUP)
                     stats.set_gauge(["redis", self._name_str, "pending"], pending["pending"])
 
-    def put_one(self, tile):
+    def put_one(self, tile: Tile) -> Tile:
         try:
             self._master.xadd(name=self._name, fields={"message": encode_message(tile)})
         except Exception as e:
             logger.warning("Failed sending Redis message", exc_info=True)
             tile.error = e
+        return tile
 
-    def put(self, tiles):
+    def put(self, tiles: Iterator[Tile]) -> Iterator[Tile]:
         for tile in tiles:
             self.put_one(tile)
             yield tile
 
-    def delete_one(self, tile):
+    def delete_one(self, tile: Tile) -> Tile:
         # Once consumed from redis, we don't have to delete the tile from the queue.
         assert hasattr(tile, "from_redis")
         assert hasattr(tile, "sqs_message")
-        assert tile.from_redis is True
-        self._master.xack(self._name, STREAM_GROUP, tile.sqs_message)
-        self._master.xdel(self._name, tile.sqs_message)
+        assert tile.from_redis is True  # type: ignore
+        self._master.xack(self._name, STREAM_GROUP, tile.sqs_message)  # type: ignore
+        self._master.xdel(self._name, tile.sqs_message)  # type: ignore
         return tile
 
-    def delete_all(self):
+    def delete_all(self) -> None:
         """
         Used only by tests
         """
@@ -146,7 +149,7 @@ class RedisTileStore(TileStore):
         self._master.xgroup_create(name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
         self._master.xtrim(name=self._errors_name, maxlen=0)
 
-    def _claim_olds(self):
+    def _claim_olds(self) -> Optional[Iterable[Tuple[bytes, Any]]]:
         logger.debug("Claim old's")
         pendings = self._master.xpending_range(
             name=self._name, groupname=STREAM_GROUP, min="-", max="+", count=10
@@ -209,12 +212,12 @@ class RedisTileStore(TileStore):
                 message_ids=to_steal,
             )
             stats.increment_counter(["redis", self._name_str, "stolen"], len(to_steal))
-            return [[self._name, messages]]
+            return [(self._name, messages)]
         else:
             # Empty means there are pending jobs, but they are not old enough to be stolen
             return []
 
-    def get_status(self):
+    def get_status(self) -> Dict[str, Union[str, int]]:
         """
         Returns a map of stats
         """
@@ -229,7 +232,7 @@ class RedisTileStore(TileStore):
             "Tiles in error": ", ".join(tiles_in_error),
         }
 
-    def _get_errors(self):
+    def _get_errors(self) -> Set[str]:
         now, now_us = self._slave.time()
         old_timestamp = (now - self._max_errors_age) * 1000 + now_us / 1000
 

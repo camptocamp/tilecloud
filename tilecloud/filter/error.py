@@ -1,6 +1,9 @@
 """
 This module includes filters for dealing with errors in tiles.
 """
+from typing import List, Optional
+
+from tilecloud import Tile
 from tilecloud.filter.logger import Logger
 
 
@@ -10,10 +13,10 @@ class CollectErrors:
     called ``errors``.
     """
 
-    def __init__(self):
-        self.errors = []
+    def __init__(self) -> None:
+        self.errors: List[Tile] = []
 
-    def __call__(self, tile):
+    def __call__(self, tile: Tile) -> Tile:
         if tile and tile.error:
             self.errors.append(tile)
         return tile
@@ -24,7 +27,7 @@ class DropErrors:
     Create a filter for dropping all tiles with errors.
     """
 
-    def __call__(self, tile):
+    def __call__(self, tile: Tile) -> Optional[Tile]:
         if not tile or tile.error:
             return None
         else:
@@ -36,7 +39,7 @@ class LogErrors(Logger):
     Create a filter for logging all tiles with errors.
     """
 
-    def __call__(self, tile):
+    def __call__(self, tile: Tile) -> Tile:
         if tile and tile.error:
             Logger.__call__(self, tile)
         return tile
@@ -52,11 +55,11 @@ class MaximumConsecutiveErrors:
         exceeded a :class:`TooManyErrors` exception is raised.
     """
 
-    def __init__(self, max_consecutive_errors):
+    def __init__(self, max_consecutive_errors: int):
         self.max_consecutive_errors = max_consecutive_errors
         self.consecutive_errors = 0
 
-    def __call__(self, tile):
+    def __call__(self, tile: Tile) -> Tile:
         if tile and tile.error:
             self.consecutive_errors += 1
             if self.consecutive_errors > self.max_consecutive_errors:
@@ -79,13 +82,13 @@ class MaximumErrorRate:
        exception can be raised. Defaults to 8.
     """
 
-    def __init__(self, max_error_rate, min_tiles=8):
+    def __init__(self, max_error_rate: float, min_tiles: int = 8):
         self.max_error_rate = max_error_rate
         self.min_tiles = min_tiles
         self.tile_count = 0
         self.error_count = 0
 
-    def __call__(self, tile):
+    def __call__(self, tile: Tile) -> Tile:
         self.tile_count += 1
         if tile and tile.error:
             self.error_count += 1
@@ -107,11 +110,11 @@ class MaximumErrors:
         exception is raised.
     """
 
-    def __init__(self, max_errors):
+    def __init__(self, max_errors: int):
         self.max_errors = max_errors
         self.error_count = 0
 
-    def __call__(self, tile):
+    def __call__(self, tile: Tile) -> Tile:
         if tile and tile.error:
             self.error_count += 1
             if self.error_count >= self.max_errors:

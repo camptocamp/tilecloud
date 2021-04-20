@@ -1,4 +1,4 @@
-from typing import Any, Iterator, Optional, Union
+from typing import Any, Iterator, Optional
 
 from tilecloud import Tile, TileStore
 
@@ -9,7 +9,7 @@ class DictTileStore(TileStore):
         TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile: Tile) -> bool:
-        return tile and tile.tilecoord in self.tiles
+        return tile is not None and tile.tilecoord in self.tiles
 
     def __len__(self) -> int:
         return len(self.tiles)
@@ -25,7 +25,7 @@ class DictTileStore(TileStore):
         else:
             return None
 
-    def list(self) -> Iterator[Union[Iterator, Iterator[Tile]]]:
+    def list(self) -> Iterator[Tile]:
         for tilecoord in self.tiles.keys():
             yield Tile(tilecoord)
 

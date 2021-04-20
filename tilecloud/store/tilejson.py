@@ -6,6 +6,7 @@ import json
 import mimetypes
 import os.path
 import re
+from typing import Any
 from urllib.parse import urlparse
 
 from urllib2 import urlopen  # pylint: disable=import-error
@@ -19,7 +20,7 @@ class TileJSONTileStore(URLTileStore):
 
     KEYS = "name description version attribution template legend center".split()
 
-    def __init__(self, tile_json, urls_key="tiles", **kwargs):
+    def __init__(self, tile_json: str, urls_key: str = "tiles", **kwargs: Any):
         # FIXME schema
         # FIXME version 1.0.0 support
         d = json.loads(tile_json)
@@ -32,7 +33,9 @@ class TileJSONTileStore(URLTileStore):
             zmin, zmax = d.get("minzoom", 0), d.get("maxzoom", 22)
             if "bounds" in d:
                 lonmin, latmin, lonmax, latmax = d["bounds"]
-                bounding_pyramid = BoundingPyramid.from_wgs84(zmin, zmax, lonmin, lonmax, latmin, latmax)
+                bounding_pyramid = BoundingPyramid.from_wgs84(  # type: ignore
+                    zmin, zmax, lonmin, lonmax, latmin, latmax
+                )
             else:
                 bounding_pyramid = BoundingPyramid.full(zmin, zmax)
             kwargs["bounding_pyramid"] = bounding_pyramid
@@ -47,5 +50,5 @@ class TileJSONTileStore(URLTileStore):
         URLTileStore.__init__(self, tilelayouts, **kwargs)
 
     @classmethod
-    def from_url(cls, url):
+    def from_url(cls, url: str) -> Any:
         return cls(urlopen(url).read())

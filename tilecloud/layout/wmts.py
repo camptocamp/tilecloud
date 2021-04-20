@@ -1,24 +1,28 @@
-from typing import Dict, Tuple
+from typing import Dict, List, Optional, Tuple
 
-from tilecloud import TileLayout
+from tilecloud import TileCoord, TileLayout
 
 
 class WMTSTileLayout(TileLayout):
     def __init__(
         self,
         url: str = "",
-        layer: str = None,
-        style: str = None,
-        format: str = None,
-        tile_matrix_set: str = None,
+        layer: Optional[str] = None,
+        style: Optional[str] = None,
+        format: Optional[str] = None,
+        tile_matrix_set: Optional[str] = None,
         tile_matrix: type = str,
-        dimensions_name: Tuple[str] = (),
+        dimensions_name: Tuple[str, ...] = (),
         request_encoding: str = "KVP",
     ) -> None:
         self.url = url
+        assert layer is not None
         self.layer = layer
+        assert style is not None
         self.style = style
+        assert format is not None
         self.format = format
+        assert tile_matrix_set is not None
         self.tile_matrix_set = tile_matrix_set
         self.tile_matrix = tile_matrix
         self.dimensions_name = dimensions_name
@@ -30,10 +34,10 @@ class WMTSTileLayout(TileLayout):
         elif self.url and self.url[-1] != "/":
             self.url += "/"
 
-    def filename(self, tilecoord: TileCoord, metadata: Dict[str, str] = None) -> str:
+    def filename(self, tilecoord: TileCoord, metadata: Optional[Dict[str, str]] = None) -> str:
         metadata = {} if metadata is None else metadata
         # Careful the order is important for the REST request encoding
-        query = []
+        query: List[Tuple[str, str]] = []
         if self.request_encoding == "KVP":
             query.extend([("Service", "WMTS"), ("Request", "GetTile"), ("Format", self.format)])
 

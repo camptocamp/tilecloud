@@ -1,7 +1,5 @@
 import re
-from typing import Any, Optional
-
-from _sre import SRE_Match
+from typing import Any, Match, Optional
 
 from tilecloud import TileCoord
 from tilecloud.layout.re_ import RETileLayout
@@ -32,5 +30,5 @@ class TemplateTileLayout(RETileLayout):
         return self.template % dict(z=tilecoord.z, x=tilecoord.x, y=tilecoord.y)
 
     @staticmethod
-    def _tilecoord(match: SRE_Match) -> TileCoord:
+    def _tilecoord(match: Match[str]) -> TileCoord:
         return TileCoord(*(int(match.group(s)) for s in "zxy"))

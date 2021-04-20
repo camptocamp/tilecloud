@@ -1,7 +1,7 @@
 from typing import Any, Dict, Optional
 from urllib.parse import urlencode
 
-from tilecloud import TileLayout
+from tilecloud import TileCoord, TileLayout
 from tilecloud.grid.free import FreeTileGrid
 
 
@@ -44,6 +44,6 @@ class WMSTileLayout(TileLayout):
             if k.startswith("dimension_"):
                 params[k[len("dimension_") :]] = v
         params["BBOX"] = "{0:f},{1:f},{2:f},{3:f}".format(*bbox)
-        params["WIDTH"] = size
-        params["HEIGHT"] = size
+        params["WIDTH"] = str(size)
+        params["HEIGHT"] = str(size)
         return self.url + "?" + urlencode(params)

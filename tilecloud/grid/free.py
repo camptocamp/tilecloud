@@ -18,8 +18,8 @@ class FreeTileGrid(TileGrid):
         assert all(isinstance(r, (int, float)) for r in resolutions)
         self.resolutions = resolutions
         self.scale = float(scale)
-        self.parent_zs = []
-        self.child_zs = []
+        self.parent_zs: List[Optional[int]] = []
+        self.child_zs: List[List[int]] = []
         for i, resolution in enumerate(self.resolutions):
             for parent in range(i - 1, -1, -1):
                 if self.resolutions[parent] % resolution == 0:
@@ -30,18 +30,19 @@ class FreeTileGrid(TileGrid):
                 self.parent_zs.append(None)
             self.child_zs.append([])
 
-    def children(self, tilecoord: TileCoord) -> Iterator[Union[Iterator, Iterator[TileCoord]]]:
+    def children(self, tilecoord: TileCoord) -> Iterator[TileCoord]:
         if tilecoord.z < len(self.resolutions):
             for child_z in self.child_zs[tilecoord.z]:
                 factor = self.resolutions[tilecoord.z] / self.resolutions[child_z]
                 for i in range(0, int(factor)):
-                    x = factor * tilecoord.x + i
+                    x = round(factor * tilecoord.x + i)
                     for j in range(0, int(factor)):
-                        y = factor * tilecoord.y + j
+                        y = round(factor * tilecoord.y + j)
                         yield TileCoord(child_z, x, y)
 
     def extent(self, tilecoord: TileCoord, border: int = 0) -> Tuple[float, float, float, float]:
-        y = tilecoord.y
+        assert self.max_extent
+        y: float = tilecoord.y
         if not self.flip_y:
             n = (
                 self.scale
@@ -74,12 +75,12 @@ class FreeTileGrid(TileGrid):
             factor = self.resolutions[parent_z] / self.resolutions[tilecoord.z]
             return TileCoord(parent_z, int(tilecoord.x // factor), int(tilecoord.y // factor))
 
-    def roots(self) -> Iterator[Union[Iterator, Iterator[TileCoord]]]:
+    def roots(self) -> Iterator[TileCoord]:
         for z, parent_z in enumerate(self.parent_zs):
             if parent_z is None:
-                x, s = 0, 0
+                x, s = 0, 0.0
                 while s < self.resolutions[0]:
-                    y, t = 0, 0
+                    y, t = 0, 0.0
                     while t < self.resolutions[0]:
                         yield TileCoord(z, x, y)
                         y += 1

@@ -1,3 +1,8 @@
+from typing import Optional
+
+from tilecloud import Tile
+
+
 class ContentTypeAdder:
     """
     Create a filter that adds a content type to the tile.
@@ -7,10 +12,10 @@ class ContentTypeAdder:
         that the content type will be determined based on the tile data.
     """
 
-    def __init__(self, content_type=None):
+    def __init__(self, content_type: Optional[str] = None) -> None:
         self.content_type = content_type
 
-    def __call__(self, tile):
+    def __call__(self, tile: Tile) -> Tile:
         if self.content_type is None and tile.content_encoding is None and tile.data is not None:
             data = str(tile.data)
             if data.startswith("{"):
