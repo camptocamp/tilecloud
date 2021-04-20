@@ -1,4 +1,5 @@
 from io import BytesIO
+from typing import Any, Iterator, List, Union
 
 from PIL import Image
 
@@ -7,13 +8,13 @@ from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class MetaTileSplitterTileStore(TileStore):
-    def __init__(self, format, tile_size=256, border=0, **kwargs):
+    def __init__(self, format: str, tile_size: int = 256, border: int = 0, **kwargs: Any) -> None:
         self.format = format
         self.tile_size = tile_size
         self.border = border
         TileStore.__init__(self, **kwargs)
 
-    def get(self, tiles):
+    def get(self, tiles: List[Tile]) -> Iterator[Union[Iterator, Iterator[Tile]]]:
         for metatile in tiles:
             metaimage = None if metatile.data is None else Image.open(BytesIO(metatile.data))
             for tilecoord in metatile.tilecoord:

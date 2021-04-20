@@ -1,10 +1,12 @@
 import logging
+from typing import Any, Optional
 
 import boto3
 import botocore.config
 import botocore.exceptions
 
 from tilecloud import Tile, TileStore
+from tilecloud.layout.template import TemplateTileLayout
 
 logger = logging.getLogger(__name__)
 CLIENT_TIMEOUT = 60
@@ -13,7 +15,15 @@ CLIENT_TIMEOUT = 60
 class S3TileStore(TileStore):
     """Tiles stored in Amazon S3"""
 
-    def __init__(self, bucket, tilelayout, dry_run=False, s3_host=None, cache_control=None, **kwargs):
+    def __init__(
+        self,
+        bucket: str,
+        tilelayout: TemplateTileLayout,
+        dry_run: bool = False,
+        s3_host: Optional[Any] = None,
+        cache_control: Optional[Any] = None,
+        **kwargs: Any,
+    ) -> None:
         self._s3_host = s3_host
         self._client = None
         self.bucket = bucket

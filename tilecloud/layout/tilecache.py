@@ -1,4 +1,7 @@
 import re
+from typing import Any, Optional
+
+from _sre import SRE_Match
 
 from tilecloud import TileCoord
 from tilecloud.layout.re_ import RETileLayout
@@ -10,18 +13,18 @@ class TileCacheDiskLayout(RETileLayout):
     PATTERN = r"[0-9]{2}(?:/[0-9]{3}){6}"
     RE = re.compile(r"([0-9]{2})/([0-9]{3})/([0-9]{3})/([0-9]{3})/([0-9]{3})/([0-9]{3})/([0-9]{3})")
 
-    def __init__(self):
+    def __init__(self) -> None:
         RETileLayout.__init__(self, self.PATTERN, self.RE)
 
     @staticmethod
-    def filename(tilecoord, metadata=None):
+    def filename(tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
         zs = "{0:02d}".format(tilecoord.z)
         xs = "{0:09d}".format(tilecoord.x)
         ys = "{0:09d}".format(tilecoord.y)
         return "/".join((zs, xs[0:3], xs[3:6], xs[6:9], ys[0:3], ys[3:6], ys[6:9]))
 
     @staticmethod
-    def _tilecoord(_match):
+    def _tilecoord(_match: SRE_Match) -> TileCoord:
         ints = list(map(int, _match.groups()))
         z = ints[0]
         x = 1000000 * ints[1] + 1000 * ints[2] + ints[3]

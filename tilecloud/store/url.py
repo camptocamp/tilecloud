@@ -1,14 +1,22 @@
 import logging
+from typing import Any, Optional, Tuple
 
 import requests
 
 from tilecloud import TileStore
+from tilecloud.layout.template import TemplateTileLayout
 
 logger = logging.getLogger(__name__)
 
 
 class URLTileStore(TileStore):
-    def __init__(self, tilelayouts, headers=None, allows_no_contenttype=False, **kwargs):
+    def __init__(
+        self,
+        tilelayouts: Tuple[TemplateTileLayout],
+        headers: Optional[Any] = None,
+        allows_no_contenttype: bool = False,
+        **kwargs: Any,
+    ) -> None:
         TileStore.__init__(self, **kwargs)
         self.allows_no_contenttype = allows_no_contenttype
         self.tilelayouts = tuple(tilelayouts)

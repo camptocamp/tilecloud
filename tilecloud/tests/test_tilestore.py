@@ -8,7 +8,7 @@ from tilecloud.store.null import NullTileStore
 
 
 class TestTileStore(unittest.TestCase):
-    def test_empty(self):
+    def test_empty(self) -> None:
         ts = TileStore()
         self.assertEqual(ts.bounding_pyramid, None)
         self.assertEqual(ts.content_type, None)
@@ -25,43 +25,43 @@ class TestTileStore(unittest.TestCase):
         self.assertFalse(None in ts)
         self.assertEqual(ts.get_bounding_pyramid(), BoundingPyramid())
 
-    def test_init_kwargs(self):
+    def test_init_kwargs(self) -> None:
         ts = TileStore(kwarg=None)
         self.assertEqual(ts.kwarg, None)
 
-    def test_init_boundingpyramid(self):
+    def test_init_boundingpyramid(self) -> None:
         ts = TileStore(bounding_pyramid=BoundingPyramid.from_string("1/0/0:1/1"))
         self.assertTrue(Tile(TileCoord(1, 0, 0)) in ts)
         tiles = list(ts.list())
         self.assertEqual(len(tiles), 1)
         self.assertEqual(tiles[0].tilecoord, TileCoord(1, 0, 0))
 
-    def test_load_null(self):
+    def test_load_null(self) -> None:
         self.assertTrue(isinstance(TileStore.load("null://"), NullTileStore))
 
-    def test_load_http(self):
+    def test_load_http(self) -> None:
         from tilecloud.store.url import URLTileStore
 
         self.assertTrue(isinstance(TileStore.load("http://"), URLTileStore))
 
-    def test_load_https(self):
+    def test_load_https(self) -> None:
         from tilecloud.store.url import URLTileStore
 
         self.assertTrue(isinstance(TileStore.load("https://"), URLTileStore))
 
-    def test_load_s3(self):
+    def test_load_s3(self) -> None:
         from tilecloud.store.s3 import S3TileStore
 
         self.assertTrue(isinstance(TileStore.load("s3://bucket/template"), S3TileStore))
 
 
 class TestDictTileStore(unittest.TestCase):
-    def test_empty(self):
+    def test_empty(self) -> None:
         tilestore = DictTileStore()
         self.assertEqual(len(tilestore), 0)
         self.assertEqual(list(tilestore.list()), [])
 
-    def test_one(self):
+    def test_one(self) -> None:
         tilestore = DictTileStore()
         self.assertEqual(len(tilestore), 0)
         tilestream = [Tile(TileCoord(1, 0, 0), data="data"), None, Tile(TileCoord(1, 0, 1), error=True)]
@@ -91,13 +91,13 @@ class TestDictTileStore(unittest.TestCase):
         self.assertFalse(Tile(TileCoord(1, 0, 0)) in tilestore)
         self.assertTrue(Tile(TileCoord(1, 0, 1)) in tilestore)
 
-    def test_get_one(self):
+    def test_get_one(self) -> None:
         tilestore = DictTileStore()
         self.assertEqual(tilestore.get_one(Tile(TileCoord(0, 0, 0))), None)
 
 
 class TestMBTilesTileStore(unittest.TestCase):
-    def test_one(self):
+    def test_one(self) -> None:
         tilestore = MBTilesTileStore(sqlite3.connect(":memory:"), content_type="image/png")
         self.assertEqual(len(tilestore), 0)
         tilestream = [Tile(TileCoord(1, 0, 0), data=b"data"), None, Tile(TileCoord(1, 0, 1), error=True)]
@@ -135,7 +135,7 @@ class TestMBTilesTileStore(unittest.TestCase):
         self.assertFalse(Tile(TileCoord(1, 0, 0)) in tilestore)
         self.assertTrue(Tile(TileCoord(1, 0, 1)) in tilestore)
 
-    def test_metadata(self):
+    def test_metadata(self) -> None:
         tilestore = MBTilesTileStore(sqlite3.connect(":memory:"))
         tilestore.put_one(Tile(TileCoord(1, 0, 0)))
         tilestore.put_one(Tile(TileCoord(2, 0, 0)))
@@ -145,14 +145,14 @@ class TestMBTilesTileStore(unittest.TestCase):
         self.assertEqual(sorted(tilestore.metadata.itervalues()), ["1", "2"])
         self.assertEqual(sorted(tilestore.metadata.keys()), ["maxzoom", "minzoom"])
 
-    def test_content_type(self):
+    def test_content_type(self) -> None:
         connection = sqlite3.connect(":memory:")
         tilestore1 = MBTilesTileStore(connection)
         tilestore1.metadata["format"] = "png"
         tilestore2 = MBTilesTileStore(connection)
         self.assertEqual(tilestore2.content_type, "image/png")
 
-    def test_empty(self):
+    def test_empty(self) -> None:
         connection = sqlite3.connect(":memory:")
         tilestore = MBTilesTileStore(connection)
         self.assertEqual(len(tilestore), 0)
@@ -160,7 +160,7 @@ class TestMBTilesTileStore(unittest.TestCase):
 
 
 class TestNullTileStore(unittest.TestCase):
-    def test(self):
+    def test(self) -> None:
         tilestore = NullTileStore()
         tile = Tile(TileCoord(0, 0, 0))
         self.assertFalse(tile in tilestore)

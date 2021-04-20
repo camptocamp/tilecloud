@@ -1,18 +1,20 @@
+from typing import Dict, Tuple
+
 from tilecloud import TileLayout
 
 
 class WMTSTileLayout(TileLayout):
     def __init__(
         self,
-        url="",
-        layer=None,
-        style=None,
-        format=None,
-        tile_matrix_set=None,
-        tile_matrix=str,
-        dimensions_name=(),
-        request_encoding="KVP",
-    ):
+        url: str = "",
+        layer: str = None,
+        style: str = None,
+        format: str = None,
+        tile_matrix_set: str = None,
+        tile_matrix: type = str,
+        dimensions_name: Tuple[str] = (),
+        request_encoding: str = "KVP",
+    ) -> None:
         self.url = url
         self.layer = layer
         self.style = style
@@ -28,7 +30,7 @@ class WMTSTileLayout(TileLayout):
         elif self.url and self.url[-1] != "/":
             self.url += "/"
 
-    def filename(self, tilecoord, metadata=None):
+    def filename(self, tilecoord: TileCoord, metadata: Dict[str, str] = None) -> str:
         metadata = {} if metadata is None else metadata
         # Careful the order is important for the REST request encoding
         query = []

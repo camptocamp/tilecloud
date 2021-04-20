@@ -1,10 +1,18 @@
 from math import floor
+from typing import Iterator, List, Optional, Tuple, Union
 
 from tilecloud import TileCoord, TileGrid
 
 
 class FreeTileGrid(TileGrid):
-    def __init__(self, resolutions, max_extent=None, tile_size=None, scale=1, flip_y=False):
+    def __init__(
+        self,
+        resolutions: Union[List[int], Tuple[int, ...], Tuple[int, int, float]],
+        max_extent: Optional[Tuple[int, int, int, int]] = None,
+        tile_size: Optional[float] = None,
+        scale: int = 1,
+        flip_y: bool = False,
+    ) -> None:
         TileGrid.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         assert list(resolutions) == sorted(resolutions, reverse=True)
         assert all(isinstance(r, (int, float)) for r in resolutions)
@@ -22,7 +30,7 @@ class FreeTileGrid(TileGrid):
                 self.parent_zs.append(None)
             self.child_zs.append([])
 
-    def children(self, tilecoord):
+    def children(self, tilecoord: TileCoord) -> Iterator[Union[Iterator, Iterator[TileCoord]]]:
         if tilecoord.z < len(self.resolutions):
             for child_z in self.child_zs[tilecoord.z]:
                 factor = self.resolutions[tilecoord.z] / self.resolutions[child_z]
@@ -32,7 +40,7 @@ class FreeTileGrid(TileGrid):
                         y = factor * tilecoord.y + j
                         yield TileCoord(child_z, x, y)
 
-    def extent(self, tilecoord, border=0):
+    def extent(self, tilecoord: TileCoord, border: int = 0) -> Tuple[float, float, float, float]:
         y = tilecoord.y
         if not self.flip_y:
             n = (
@@ -58,7 +66,7 @@ class FreeTileGrid(TileGrid):
         )
         return minx, miny, maxx, maxy
 
-    def parent(self, tilecoord):
+    def parent(self, tilecoord: TileCoord) -> Optional[TileCoord]:
         parent_z = self.parent_zs[tilecoord.z]
         if parent_z is None:
             return None
@@ -66,7 +74,7 @@ class FreeTileGrid(TileGrid):
             factor = self.resolutions[parent_z] / self.resolutions[tilecoord.z]
             return TileCoord(parent_z, int(tilecoord.x // factor), int(tilecoord.y // factor))
 
-    def roots(self):
+    def roots(self) -> Iterator[Union[Iterator, Iterator[TileCoord]]]:
         for z, parent_z in enumerate(self.parent_zs):
             if parent_z is None:
                 x, s = 0, 0
@@ -79,7 +87,7 @@ class FreeTileGrid(TileGrid):
                     x += 1
                     s += self.resolutions[z]
 
-    def tilecoord(self, z, x, y):
+    def tilecoord(self, z: int, x: float, y: float) -> TileCoord:
         tx = self.scale * (x - self.max_extent[0]) / (self.resolutions[z] * self.tile_size)
         ty = self.scale * (y - self.max_extent[1]) / float(self.resolutions[z] * self.tile_size)
 
@@ -93,5 +101,5 @@ class FreeTileGrid(TileGrid):
 
         return TileCoord(z, int(floor(tx)), int(floor(ty)))
 
-    def zs(self):
+    def zs(self) -> range:
         return range(len(self.resolutions))
