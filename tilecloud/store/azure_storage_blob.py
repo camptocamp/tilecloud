@@ -9,7 +9,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class AzureStorageBlobTileStore(TileStore):
-    """ Tiles stored in Azure storge blob """
+    """Tiles stored in Azure storge blob"""
 
     def __init__(self, container, tilelayout, dry_run=False, cache_control=None, **kwargs):
         self.client = BlobServiceClient.from_connection_string(os.getenv("AZURE_STORAGE_CONNECTION_STRING"))
