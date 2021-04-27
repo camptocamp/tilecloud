@@ -18,7 +18,7 @@ install_requires = [
 
 setup(
     name="tilecloud",
-    version="1.5.0",
+    version="1.6.0",
     description="Tools for managing tiles",
     classifiers=[
         "Development Status :: 6 - Mature",
@@ -39,9 +39,6 @@ setup(
     install_requires=install_requires,
     test_suite="tilecloud.tests",
     scripts=glob("tc-*"),
-    entry_points="""
-    # -*- Entry points: -*-
-    """,
     long_description=README,
     long_description_content_type="text/markdown",
 )
