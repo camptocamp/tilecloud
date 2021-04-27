@@ -8,10 +8,10 @@ from tilecloud.store.metatile import MetaTileSplitterTileStore
 
 
 class TestMetaTileSplitterTileStore(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.mtsts = MetaTileSplitterTileStore("image/png", tile_size=2)
 
-    def test_get(self):
+    def test_get(self) -> None:
         image = Image.new("RGBA", (4, 4))
         image.paste((255, 0, 0, 0), (0, 0, 2, 2))
         image.paste((0, 255, 0, 0), (0, 2, 2, 4))
@@ -41,10 +41,10 @@ class TestMetaTileSplitterTileStore(unittest.TestCase):
 
 
 class TestMetaTileSplitterTileStoreWithBorder(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.mtsts = MetaTileSplitterTileStore("image/png", tile_size=2, border=2)
 
-    def test_get(self):
+    def test_get(self) -> None:
         image = Image.new("RGBA", (8, 8))
         image.paste((255, 0, 0, 0), (0, 0, 4, 4))
         image.paste((0, 255, 0, 0), (0, 4, 4, 8))

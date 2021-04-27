@@ -1,11 +1,12 @@
 import re
+from typing import Any, Match, Optional
 
 from tilecloud import TileCoord
 from tilecloud.layout.re_ import RETileLayout
 
 
 class TemplateTileLayout(RETileLayout):
-    def __init__(self, template):
+    def __init__(self, template: str) -> None:
         self.template = template
         self.prefix = None
         index, patterns, filename_patterns = 0, [], []
@@ -25,9 +26,9 @@ class TemplateTileLayout(RETileLayout):
         filename_re = re.compile("".join(filename_patterns))
         RETileLayout.__init__(self, pattern, filename_re)
 
-    def filename(self, tilecoord, metadata=None):
+    def filename(self, tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
         return self.template % dict(z=tilecoord.z, x=tilecoord.x, y=tilecoord.y)
 
     @staticmethod
-    def _tilecoord(match):
+    def _tilecoord(match: Match[str]) -> TileCoord:
         return TileCoord(*(int(match.group(s)) for s in "zxy"))

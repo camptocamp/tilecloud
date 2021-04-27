@@ -1,6 +1,7 @@
 from json import dumps
+from typing import Any, Dict, List, Optional
 
-from tilecloud import TileStore
+from tilecloud import Tile, TileGrid, TileStore
 
 try:
     import mapnik2 as mapnik
@@ -17,16 +18,16 @@ class MapnikTileStore(TileStore):
 
     def __init__(
         self,
-        tilegrid,
-        mapfile,
-        data_buffer=128,
-        image_buffer=0,
-        output_format="png256",
-        resolution=2,
-        layers_fields=None,
-        drop_empty_utfgrid=False,
-        proj4_literal=None,
-        **kwargs,
+        tilegrid: TileGrid,
+        mapfile: str,
+        data_buffer: int = 128,
+        image_buffer: int = 0,
+        output_format: str = "png256",
+        resolution: int = 2,
+        layers_fields: Optional[Dict[str, List[str]]] = None,
+        drop_empty_utfgrid: bool = False,
+        proj4_literal: Optional[str] = None,
+        **kwargs: Any,
     ):
         """
         Constructs a MapnikTileStore
@@ -37,7 +38,7 @@ class MapnikTileStore(TileStore):
         :param output_format: the output format,
             possible values 'jpeg', 'png', 'png256', 'grid',
             default is 'png256'
-        :param layers: the layers and fields used in the grid generation,
+        :param layers_fields: the layers and fields used in the grid generation,
             example: { 'my_layer': ['my_first_field', 'my_segonf_field']},
             default is {}.
         :param **kwargs: for extended class.
@@ -59,7 +60,7 @@ class MapnikTileStore(TileStore):
         if proj4_literal is not None:
             self.mapnik.srs = proj4_literal
 
-    def get_one(self, tile):
+    def get_one(self, tile: Tile) -> Optional[Tile]:
         bbox = self.tilegrid.extent(tile.tilecoord, self.buffer)
         bbox2d = mapnik.Box2d(bbox[0], bbox[1], bbox[2], bbox[3])
 
@@ -76,7 +77,7 @@ class MapnikTileStore(TileStore):
             encode = grid.encode("utf", resolution=self.resolution)
             if self.drop_empty_utfgrid and len(encode["data"].keys()) == 0:
                 return None
-            tile.data = dumps(encode)
+            tile.data = dumps(encode).encode()
         else:
             # Render image with default Agg renderer
             im = mapnik.Image(size, size)

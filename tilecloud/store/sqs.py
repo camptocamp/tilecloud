@@ -1,16 +1,18 @@
 import logging
 import time
+from typing import Any, Callable, Dict, Iterator, List
 
+import botocore.client
 import botocore.exceptions
 
-from tilecloud import TileStore
+from tilecloud import Tile, TileStore
 from tilecloud.store.queue import decode_message, encode_message
 
 BATCH_SIZE = 10  # max Amazon allows
 logger = logging.getLogger(__name__)
 
 
-def maybe_stop(queue) -> bool:
+def maybe_stop(queue: botocore.client.SQS) -> bool:
     try:
         queue.load()
     except botocore.exceptions.EndpointConnectionError:
@@ -27,19 +29,24 @@ def maybe_stop(queue) -> bool:
 
 
 class SQSTileStore(TileStore):
-    def __init__(self, queue, on_empty=maybe_stop, **kwargs):
+    def __init__(
+        self,
+        queue: botocore.client.SQS,
+        on_empty: Callable[[botocore.client.SQS], bool] = maybe_stop,
+        **kwargs: Any,
+    ):
         TileStore.__init__(self, **kwargs)
         self.queue = queue
         self.on_empty = on_empty
 
-    def __contains__(self, tile):
+    def __contains__(self, tile: Tile) -> bool:
         return False
 
     @staticmethod
-    def get_one(tile):
+    def get_one(tile: Tile) -> Tile:
         return tile
 
-    def list(self):
+    def list(self) -> Iterator[Tile]:
         while True:
             try:
                 sqs_messages = self.queue.receive_messages(MaxNumberOfMessages=BATCH_SIZE)
@@ -59,14 +66,13 @@ class SQSTileStore(TileStore):
                         logger.warning("Failed decoding the SQS message", exc_info=True)
                         sqs_message.delete()
 
-    @staticmethod
-    def delete_one(tile):
+    def delete_one(self, tile: Tile) -> Tile:
         assert hasattr(tile, "sqs_message")
-        tile.sqs_message.delete()
+        tile.sqs_message.delete()  # type: ignore
         delattr(tile, "sqs_message")
         return tile
 
-    def put_one(self, tile):
+    def put_one(self, tile: Tile) -> Tile:
         sqs_message = encode_message(tile)
 
         try:
@@ -76,7 +82,7 @@ class SQSTileStore(TileStore):
             tile.error = e
         return tile
 
-    def put(self, tiles):
+    def put(self, tiles: Iterator[Tile]) -> Iterator[Tile]:
         buffered_tiles = []
         try:
             for tile in tiles:
@@ -89,9 +95,11 @@ class SQSTileStore(TileStore):
             if len(buffered_tiles) > 0:
                 self._send_buffer(buffered_tiles)
 
-    def _send_buffer(self, tiles):
+    def _send_buffer(self, tiles: List[Tile]) -> None:
         try:
-            messages = [{"Id": str(i), "MessageBody": encode_message(tile)} for i, tile in enumerate(tiles)]
+            messages: List[Dict[str, Any]] = [
+                {"Id": str(i), "MessageBody": encode_message(tile)} for i, tile in enumerate(tiles)
+            ]
             response = self.queue.send_messages(Entries=messages)
             for failed in response.get("Failed", []):
                 logger.warning("Failed sending SQS message: %s", failed["Message"])
@@ -102,7 +110,7 @@ class SQSTileStore(TileStore):
             for tile in tiles:
                 tile.error = e
 
-    def get_status(self):
+    def get_status(self) -> Dict[str, str]:
         """
         Returns a map of stats
         """

@@ -2,6 +2,8 @@
 
 import mimetypes
 import sqlite3
+from sqlite3 import Connection
+from typing import Any, Iterator, Optional, Tuple
 
 from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
 from tilecloud.lib.sqlite3_ import SQLiteDict, query
@@ -39,24 +41,24 @@ class Tiles(SQLiteDict):
         "INSERT OR REPLACE INTO tiles (zoom_level, tile_column, tile_row, tile_data) VALUES (?, ?, ?, ?)"
     )
 
-    def __init__(self, tilecoord_in_topleft, *args, **kwargs):
+    def __init__(self, tilecoord_in_topleft: bool, *args: Any, **kwargs: Any) -> None:
         self.tilecoord_in_topleft = tilecoord_in_topleft
         SQLiteDict.__init__(self, *args, **kwargs)
 
-    def _packitem(self, key, value):
+    def _packitem(self, key: TileCoord, value: Optional[bytes]) -> Tuple[int, int, int, Optional[memoryview]]:
         y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1
         return (key.z, key.x, y, sqlite3.Binary(value) if value is not None else None)
 
-    def _packkey(self, key):
+    def _packkey(self, key: TileCoord) -> Tuple[int, int, int]:
         y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1
         return (key.z, key.x, y)
 
-    def _unpackitem(self, row):
+    def _unpackitem(self, row: Tuple[int, int, int, bytes]) -> Tuple[TileCoord, bytes]:
         z, x, y, data = row
         y = y if self.tilecoord_in_topleft else (1 << z) - y - 1
         return (TileCoord(z, x, y), data)
 
-    def _unpackkey(self, row):
+    def _unpackkey(self, row: Tuple[int, int, int]) -> TileCoord:
         z, x, y = row
         y = y if self.tilecoord_in_topleft else (1 << z) - y - 1
         return TileCoord(z, x, y)
@@ -72,38 +74,40 @@ class MBTilesTileStore(TileStore):
     )
     SET_METADATA_ZOOMS_SQL = "SELECT MIN(zoom_level), MAX(zoom_level) FROM tiles"
 
-    def __init__(self, connection, commit=True, tilecoord_in_topleft=False, **kwargs):
+    def __init__(
+        self, connection: Connection, commit: bool = True, tilecoord_in_topleft: bool = False, **kwargs: Any
+    ) -> None:
         self.connection = connection
         self.metadata = Metadata(self.connection, commit)
         self.tiles = Tiles(tilecoord_in_topleft, self.connection, commit)
         if "content_type" not in kwargs and "format" in self.metadata:
-            kwargs["content_type"] = mimetypes.types_map.get("." + self.metadata["format"])
+            kwargs["content_type"] = mimetypes.types_map.get("." + self.metadata["format"])  # type: ignore
         TileStore.__init__(self, **kwargs)
 
-    def __contains__(self, tile):
-        return tile and tile.tilecoord in self.tiles
+    def __contains__(self, tile: Tile) -> bool:
+        return tile and tile.tilecoord in self.tiles  # type: ignore
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.tiles)
 
-    def delete_one(self, tile):
+    def delete_one(self, tile: Tile) -> Tile:
         del self.tiles[tile.tilecoord]
         return tile
 
-    def get_all(self):
+    def get_all(self) -> Iterator[Tile]:
         for tilecoord, data in self.tiles.iteritems():
             tile = Tile(tilecoord, data=data)
             if self.content_type is not None:
                 tile.content_type = self.content_type
             yield tile
 
-    def get_cheap_bounding_pyramid(self):
+    def get_cheap_bounding_pyramid(self) -> BoundingPyramid:
         bounds = {}
         for z, xstart, xstop, ystart, ystop in query(self.connection, self.BOUNDING_PYRAMID_SQL):
             bounds[z] = (Bounds(xstart, xstop), Bounds(ystart, ystop))
         return BoundingPyramid(bounds)
 
-    def get_one(self, tile):
+    def get_one(self, tile: Tile) -> Optional[Tile]:
         try:
             tile.data = self.tiles[tile.tilecoord]
         except KeyError:
@@ -112,14 +116,14 @@ class MBTilesTileStore(TileStore):
             tile.content_type = self.content_type
         return tile
 
-    def list(self):
-        return (Tile(tilecoord) for tilecoord in self.tiles)
+    def list(self) -> Iterator[Tile]:
+        return (Tile(tilecoord) for tilecoord in self.tiles)  # type: ignore
 
-    def put_one(self, tile):
+    def put_one(self, tile: Tile) -> Tile:
         self.tiles[tile.tilecoord] = getattr(tile, "data", None)
         return tile
 
-    def set_metadata_zooms(self):
+    def set_metadata_zooms(self) -> None:
         for minzoom, maxzoom in query(self.connection, self.SET_METADATA_ZOOMS_SQL):
             self.metadata["minzoom"] = minzoom
             self.metadata["maxzoom"] = maxzoom

@@ -1,14 +1,21 @@
 import logging
+from typing import Any, Iterable, Optional
 
 import requests
 
-from tilecloud import TileStore
+from tilecloud import Tile, TileLayout, TileStore
 
 logger = logging.getLogger(__name__)
 
 
 class URLTileStore(TileStore):
-    def __init__(self, tilelayouts, headers=None, allows_no_contenttype=False, **kwargs):
+    def __init__(
+        self,
+        tilelayouts: Iterable[TileLayout],
+        headers: Optional[Any] = None,
+        allows_no_contenttype: bool = False,
+        **kwargs: Any,
+    ) -> None:
         TileStore.__init__(self, **kwargs)
         self.allows_no_contenttype = allows_no_contenttype
         self.tilelayouts = tuple(tilelayouts)
@@ -16,7 +23,9 @@ class URLTileStore(TileStore):
         if headers is not None:
             self.session.headers.update(headers)
 
-    def get_one(self, tile):
+    def get_one(self, tile: Tile) -> Optional[Tile]:
+        if tile is None:
+            return None
         if self.bounding_pyramid is not None:
             if tile.tilecoord not in self.bounding_pyramid:
                 return None

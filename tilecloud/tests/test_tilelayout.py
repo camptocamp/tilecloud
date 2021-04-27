@@ -12,27 +12,27 @@ from tilecloud.layout.wrapped import WrappedTileLayout
 
 
 class TestTileLayout(unittest.TestCase):
-    def test_filename(self):
+    def test_filename(self) -> None:
         self.assertRaises(NotImplementedError, TileLayout().filename, None)
 
-    def test_tilecoord(self):
+    def test_tilecoord(self) -> None:
         self.assertRaises(NotImplementedError, TileLayout().tilecoord, None)
 
 
 class TestOSMTileLayout(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.tilelayout = OSMTileLayout()
 
-    def test_filename(self):
+    def test_filename(self) -> None:
         assert self.tilelayout.filename(TileCoord(1, 2, 3)) == "1/2/3"
 
-    def test_tilecoord(self):
+    def test_tilecoord(self) -> None:
         assert self.tilelayout.tilecoord("1/2/3") == TileCoord(1, 2, 3)
         self.assertRaises(ValueError, self.tilelayout.tilecoord, "1/2/")
 
 
 class TestWMTSTileLayout(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.rest = WMTSTileLayout(
             url="test",
             layer="layer",
@@ -68,7 +68,7 @@ class TestWMTSTileLayout(unittest.TestCase):
             request_encoding="KVP",
         )
 
-    def test_filename(self):
+    def test_filename(self) -> None:
         assert (
             self.rest.filename(TileCoord(1, 2, 3), {"dimension_DATE": "2011"})
             == "test/1.0.0/layer/default/2011/swissgrid/1/3/2.png"
@@ -78,7 +78,7 @@ class TestWMTSTileLayout(unittest.TestCase):
             == "test?Service=WMTS&Request=GetTile&Format=.png&Version=1.0.0&Layer=layer&Style=default&DATE=2011&TileMatrixSet=swissgrid&TileMatrix=1&TileRow=3&TileCol=2"
         )
 
-    def test_filename_without_url(self):
+    def test_filename_without_url(self) -> None:
         # s3 url it shouldn't starts with a /
         assert (
             self.rest_nourl.filename(TileCoord(1, 2, 3), {"dimension_DATE": "2011"})
@@ -91,7 +91,7 @@ class TestWMTSTileLayout(unittest.TestCase):
 
 
 class TestWMSTileLayout(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.tilegrid = FreeTileGrid(
             resolutions=(1000000, 500000, 1),
             max_extent=(420000, 30000, 900000, 350000),
@@ -99,7 +99,7 @@ class TestWMSTileLayout(unittest.TestCase):
             scale=10000,
         )
 
-    def test_png(self):
+    def test_png(self) -> None:
         layout = WMSTileLayout(
             url="http://example.com/folder",
             layers="l1,l2",
@@ -123,7 +123,7 @@ class TestWMSTileLayout(unittest.TestCase):
         bbox = [float(i) for i in query["BBOX"][0].split(",")]
         assert bbox == [420000.0, 340000.0, 430000.0, 350000.0]
 
-    def test_jpeg(self):
+    def test_jpeg(self) -> None:
         layout = WMSTileLayout(
             url="http://example.com/folder",
             layers="l1,l2",
@@ -147,7 +147,7 @@ class TestWMSTileLayout(unittest.TestCase):
         bbox = [float(i) for i in query["BBOX"][0].split(",")]
         assert bbox == [420000.0, 340000.0, 430000.0, 350000.0]
 
-    def test_border(self):
+    def test_border(self) -> None:
         layout = WMSTileLayout(
             url="http://example.com/folder",
             layers="l1,l2",
@@ -173,7 +173,7 @@ class TestWMSTileLayout(unittest.TestCase):
         assert len(bbox) == 4
         assert bbox == [419000.0, 339000.0, 431000.0, 351000.0]
 
-    def test_subx_metric(self):
+    def test_subx_metric(self) -> None:
         layout = WMSTileLayout(
             url="http://example.com/folder",
             layers="l1,l2",
@@ -197,7 +197,7 @@ class TestWMSTileLayout(unittest.TestCase):
         bbox = [float(i) for i in query["BBOX"][0].split(",")]
         assert bbox == [420000.0, 349999.99, 420000.01, 350000.0]
 
-    def test_metatile(self):
+    def test_metatile(self) -> None:
         layout = WMSTileLayout(
             url="http://example.com/folder",
             layers="l1,l2",
@@ -221,7 +221,7 @@ class TestWMSTileLayout(unittest.TestCase):
         bbox = [float(i) for i in query["BBOX"][0].split(",")]
         assert bbox == [420000.0, 340000.0, 430000.0, 350000.0]
 
-    def test_metatile_border(self):
+    def test_metatile_border(self) -> None:
         layout = WMSTileLayout(
             url="http://example.com/folder",
             layers="l1,l2",
@@ -246,7 +246,7 @@ class TestWMSTileLayout(unittest.TestCase):
         bbox = [float(i) for i in query["BBOX"][0].split(",")]
         assert bbox == [419750.0, 339750.0, 430250.0, 350250.0]
 
-    def test_params(self):
+    def test_params(self) -> None:
         layout = WMSTileLayout(
             url="http://example.com/folder",
             layers="l1,l2",
@@ -275,34 +275,34 @@ class TestWMSTileLayout(unittest.TestCase):
 
 
 class TestTemplateTileLayout(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.tilelayout = TemplateTileLayout("%(z)d/%(x)d/%(y)d")
 
-    def test_filename(self):
+    def test_filename(self) -> None:
         assert self.tilelayout.filename(TileCoord(1, 2, 3)) == "1/2/3"
 
-    def test_tilecoord(self):
+    def test_tilecoord(self) -> None:
         assert self.tilelayout.tilecoord("1/2/3") == TileCoord(1, 2, 3)
 
 
 class TestWrappedTileLayout(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.tilelayout = WrappedTileLayout(OSMTileLayout(), "prefix/", ".suffix")
 
-    def test_filename(self):
+    def test_filename(self) -> None:
         assert self.tilelayout.filename(TileCoord(1, 2, 3)) == "prefix/1/2/3.suffix"
 
-    def test_tilecoord(self):
+    def test_tilecoord(self) -> None:
         assert self.tilelayout.tilecoord("prefix/1/2/3.suffix") == TileCoord(1, 2, 3)
         self.assertRaises(ValueError, self.tilelayout.tilecoord, "prefix//1/2/3.suffix")
 
 
 class TestTileCacheDiskLayout(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.tilelayout = TileCacheDiskLayout()
 
-    def test_filename(self):
+    def test_filename(self) -> None:
         assert "01/123/456/789/987/654/321" == self.tilelayout.filename(TileCoord(1, 123456789, 987654321))
 
-    def test_tilecoord(self):
+    def test_tilecoord(self) -> None:
         assert TileCoord(1, 123456789, 987654321) == self.tilelayout.tilecoord("01/123/456/789/987/654/321")
