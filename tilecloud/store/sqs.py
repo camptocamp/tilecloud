@@ -12,7 +12,7 @@ BATCH_SIZE = 10  # max Amazon allows
 logger = logging.getLogger(__name__)
 
 
-def maybe_stop(queue: botocore.client.SQS) -> bool:
+def maybe_stop(queue: "botocore.client.SQS") -> bool:
     try:
         queue.load()
     except botocore.exceptions.EndpointConnectionError:
@@ -31,8 +31,8 @@ def maybe_stop(queue: botocore.client.SQS) -> bool:
 class SQSTileStore(TileStore):
     def __init__(
         self,
-        queue: botocore.client.SQS,
-        on_empty: Callable[[botocore.client.SQS], bool] = maybe_stop,
+        queue: "botocore.client.SQS",
+        on_empty: Callable[["botocore.client.SQS"], bool] = maybe_stop,
         **kwargs: Any,
     ):
         TileStore.__init__(self, **kwargs)
