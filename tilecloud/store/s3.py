@@ -1,4 +1,5 @@
 import logging
+import threading
 from typing import Any, Iterator, Optional, cast
 
 import boto3
@@ -10,6 +11,7 @@ from tilecloud import Tile, TileStore
 from tilecloud.layout.template import TemplateTileLayout
 
 logger = logging.getLogger(__name__)
+lock = threading.Lock()
 CLIENT_TIMEOUT = 60
 
 
@@ -110,6 +112,7 @@ def _get_status(s3_client_exception: botocore.exceptions.ClientError) -> int:
 
 def get_client(s3_host: Optional[str]) -> "botocore.client.S3":
     config = botocore.config.Config(connect_timeout=CLIENT_TIMEOUT, read_timeout=CLIENT_TIMEOUT)
-    return boto3.client(
-        "s3", endpoint_url=("https://%s/" % s3_host) if s3_host is not None else None, config=config
-    )
+    with lock:
+        return boto3.client(
+            "s3", endpoint_url=("https://%s/" % s3_host) if s3_host is not None else None, config=config
+        )
