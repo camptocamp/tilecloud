@@ -1,5 +1,5 @@
 from io import BytesIO
-from typing import Any, Iterator
+from typing import Any, Iterable, Iterator
 
 from PIL import Image
 
@@ -14,7 +14,7 @@ class MetaTileSplitterTileStore(TileStore):
         self.border = border
         TileStore.__init__(self, **kwargs)
 
-    def get(self, tiles: Iterator[Tile]) -> Iterator[Tile]:
+    def get(self, tiles: Iterable[Tile]) -> Iterator[Tile]:
         for metatile in tiles:
             if isinstance(metatile.data, bytes):
                 metaimage = Image.open(BytesIO(metatile.data))
