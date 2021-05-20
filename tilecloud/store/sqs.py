@@ -1,6 +1,6 @@
 import logging
 import time
-from typing import Any, Callable, Dict, Iterator, List
+from typing import Any, Callable, Dict, Iterable, Iterator, List
 
 import botocore.client
 import botocore.exceptions
@@ -82,7 +82,7 @@ class SQSTileStore(TileStore):
             tile.error = e
         return tile
 
-    def put(self, tiles: Iterator[Tile]) -> Iterator[Tile]:
+    def put(self, tiles: Iterable[Tile]) -> Iterator[Tile]:
         buffered_tiles = []
         try:
             for tile in tiles:

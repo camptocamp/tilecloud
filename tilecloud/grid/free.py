@@ -1,5 +1,5 @@
 from math import floor
-from typing import Iterator, List, Optional, Tuple, Union
+from typing import Iterator, List, Optional, Sequence, Tuple
 
 from tilecloud import TileCoord, TileGrid
 
@@ -7,7 +7,7 @@ from tilecloud import TileCoord, TileGrid
 class FreeTileGrid(TileGrid):
     def __init__(
         self,
-        resolutions: Union[List[int], Tuple[int, ...], Tuple[int, int, float]],
+        resolutions: Sequence[int],
         max_extent: Optional[Tuple[int, int, int, int]] = None,
         tile_size: Optional[float] = None,
         scale: int = 1,
@@ -40,7 +40,7 @@ class FreeTileGrid(TileGrid):
                         y = round(factor * tilecoord.y + j)
                         yield TileCoord(child_z, x, y)
 
-    def extent(self, tilecoord: TileCoord, border: int = 0) -> Tuple[float, float, float, float]:
+    def extent(self, tilecoord: TileCoord, border: float = 0) -> Tuple[float, float, float, float]:
         assert self.max_extent
         y: float = tilecoord.y
         if not self.flip_y:
