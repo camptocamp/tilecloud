@@ -125,7 +125,7 @@ class RedisTileStore(TileStore):
             tile.error = e
         return tile
 
-    def put(self, tiles: Iterator[Tile]) -> Iterator[Tile]:
+    def put(self, tiles: Iterable[Tile]) -> Iterator[Tile]:
         for tile in tiles:
             self.put_one(tile)
             yield tile

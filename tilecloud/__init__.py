@@ -19,7 +19,7 @@ def cmp(a: Any, b: Any) -> int:
 logger = logging.getLogger(__name__)
 
 
-def consume(iterator: Iterator["Tile"], n: Optional[int] = None) -> None:  # pragma: no cover
+def consume(iterator: Iterable[Any], n: Optional[int] = None) -> None:  # pragma: no cover
     "Advance the iterator n-steps ahead. If n is none, consume entirely."
     # Use functions that consume iterators at C speed.
     if n is None:
@@ -509,7 +509,7 @@ class TileGrid:
         """Generates all the children of tilecoord"""
         raise NotImplementedError
 
-    def extent(self, tilecoord: TileCoord, border: int = 0) -> Tuple[float, float, float, float]:
+    def extent(self, tilecoord: TileCoord, border: float = 0) -> Tuple[float, float, float, float]:
         """Returns the extent of the tile at tilecoord"""
         raise NotImplementedError
 
@@ -614,7 +614,7 @@ class TileStore:
         """
         return reduce(lambda x, _: x + 1, ifilter(None, self.list()), 0)
 
-    def delete(self, tiles: Iterator[Tile]) -> Iterator[Tile]:
+    def delete(self, tiles: Iterable[Tile]) -> Iterator[Tile]:
         """
         Delete ``tiles`` from the store.
 
@@ -638,7 +638,7 @@ class TileStore:
         """
         raise NotImplementedError
 
-    def get(self, tiles: Iterator[Tile]) -> Iterator[Optional[Tile]]:
+    def get(self, tiles: Iterable[Tile]) -> Iterator[Optional[Tile]]:
         """
         Add data to each of ``tiles``.
 
@@ -703,7 +703,7 @@ class TileStore:
             for tilecoord in self.bounding_pyramid:
                 yield Tile(tilecoord)
 
-    def put(self, tiles: Iterator[Tile]) -> Iterator[Tile]:
+    def put(self, tiles: Iterable[Tile]) -> Iterator[Tile]:
         """
         Store ``tiles`` in the store.
 

@@ -1,8 +1,7 @@
 from typing import Any, Dict, Optional
 from urllib.parse import urlencode
 
-from tilecloud import TileCoord, TileLayout
-from tilecloud.grid.free import FreeTileGrid
+from tilecloud import TileCoord, TileGrid, TileLayout
 
 
 class WMSTileLayout(TileLayout):
@@ -12,7 +11,7 @@ class WMSTileLayout(TileLayout):
         layers: str,
         srs: str,
         format: str,
-        tilegrid: FreeTileGrid,
+        tilegrid: TileGrid,
         border: int = 0,
         params: Optional[Dict[str, str]] = None,
     ) -> None:

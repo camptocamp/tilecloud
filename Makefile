@@ -13,7 +13,7 @@ docs:
 
 .PHONY: prospector
 prospector:
-	prospector tilecloud
+	prospector tilecloud --output=pylint
 
 .PHONY: test
 test:
