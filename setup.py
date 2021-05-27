@@ -34,11 +34,14 @@ setup(
     author_email="info@camptocmap.com",
     url="http://github.com/camptocamp/tilecloud",
     license="BSD",
-    packages=find_packages(exclude=["tiles", "tilecloud.tests"]),
+    packages=find_packages(exclude=["tiles", "tiles.*", "tilecloud.tests"]),
     zip_safe=True,
     install_requires=install_requires,
     test_suite="tilecloud.tests",
     scripts=glob("tc-*"),
     long_description=README,
     long_description_content_type="text/markdown",
+    package_data={
+        "tilecloud": ["py.typed"],
+    },
 )

@@ -22,7 +22,7 @@ class QuadTileGrid(TileGrid):
             yield TileCoord(tilecoord.z + 1, 2 * tilecoord.x, 2 * tilecoord.y + 1)
             yield TileCoord(tilecoord.z + 1, 2 * tilecoord.x + 1, 2 * tilecoord.y + 1)
 
-    def extent(self, tilecoord: TileCoord, border: int = 0) -> Tuple[float, float, float, float]:
+    def extent(self, tilecoord: TileCoord, border: float = 0) -> Tuple[float, float, float, float]:
         y = tilecoord.y
         if not self.flip_y:
             y = (1 << tilecoord.z) - y - tilecoord.n
