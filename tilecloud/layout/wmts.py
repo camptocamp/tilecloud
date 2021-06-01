@@ -1,4 +1,4 @@
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import Callable, Dict, Iterable, List, Optional, Tuple
 
 from tilecloud import TileCoord, TileLayout
 
@@ -11,7 +11,7 @@ class WMTSTileLayout(TileLayout):
         style: Optional[str] = None,
         format: Optional[str] = None,
         tile_matrix_set: Optional[str] = None,
-        tile_matrix: type = str,
+        tile_matrix: Callable[[int], str] = str,
         dimensions_name: Iterable[str] = (),
         request_encoding: str = "KVP",
     ) -> None:

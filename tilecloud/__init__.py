@@ -19,7 +19,7 @@ def cmp(a: Any, b: Any) -> int:
 logger = logging.getLogger(__name__)
 
 
-def consume(iterator: Iterable[Any], n: Optional[int] = None) -> None:  # pragma: no cover
+def consume(iterator: Iterator["Tile"], n: Optional[int] = None) -> None:  # pragma: no cover
     "Advance the iterator n-steps ahead. If n is none, consume entirely."
     # Use functions that consume iterators at C speed.
     if n is None:
@@ -670,7 +670,7 @@ class TileStore:
             BoundingPyramid.add, map(attrgetter("tilecoord"), ifilter(None, self.list())), BoundingPyramid()
         )
 
-    def get_cheap_bounding_pyramid(self) -> Optional[Any]:  # pylint: disable=no-self-use
+    def get_cheap_bounding_pyramid(self) -> Optional[BoundingPyramid]:  # pylint: disable=no-self-use
         """
         Returns a bounding pyramid that is cheap to calculate, or ``None`` if
         it is not possible to calculate a bounding pyramid cheaply.
