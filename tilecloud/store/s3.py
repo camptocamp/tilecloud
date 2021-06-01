@@ -7,8 +7,7 @@ import botocore.client
 import botocore.config
 import botocore.exceptions
 
-from tilecloud import Tile, TileStore
-from tilecloud.layout.template import TemplateTileLayout
+from tilecloud import Tile, TileLayout, TileStore
 
 logger = logging.getLogger(__name__)
 lock = threading.Lock()
@@ -21,7 +20,7 @@ class S3TileStore(TileStore):
     def __init__(
         self,
         bucket: str,
-        tilelayout: TemplateTileLayout,
+        tilelayout: TileLayout,
         dry_run: bool = False,
         s3_host: Optional[Any] = None,
         cache_control: Optional[Any] = None,
