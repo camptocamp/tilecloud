@@ -6,7 +6,7 @@ import socket
 from typing import Any, Dict, Iterable, Iterator, List, Optional, Set, Tuple, Union
 
 from c2cwsgiutils import stats
-import redis.sentinel  # type: ignore
+import redis.sentinel
 
 from tilecloud import Tile, TileStore
 from tilecloud.store.queue import decode_message, encode_message
