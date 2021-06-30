@@ -24,7 +24,5 @@ class WrappedTileLayout(TileLayout):
     def tilecoord(self, filename: str) -> TileCoord:
         match = self.filename_re.match(filename)
         if not match:
-            raise ValueError(
-                f"invalid literal for {self.__class__.__name__!s}.tilecoord(): {filename!r}"
-            )
+            raise ValueError(f"invalid literal for {self.__class__.__name__!s}.tilecoord(): {filename!r}")
         return self.tilelayout.tilecoord(match.group(1))
