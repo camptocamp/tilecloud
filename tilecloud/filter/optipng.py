@@ -23,6 +23,6 @@ class OptiPNG:
         finally:
             try:
                 os.unlink(ntf.name)
-            except IOError:
+            except OSError:
                 pass
         return tile

@@ -40,7 +40,7 @@ def main(argv):
         if options.metadata:
             metadata = Metadata(connection)
             for key, value in metadata.iteritems():
-                print("%s: %s" % (key, value))
+                print(f"{key}: {value}")
         if options.tiles:
             if options.tiles == "count":
                 print(len(Tiles(connection)))

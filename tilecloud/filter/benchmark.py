@@ -26,7 +26,7 @@ class Statistics:
         result = []
         if self.n:
             result.append("/".join(self.format % value for value in (self.minimum, self.mean, self.maximum)))
-        result.append("(n={0:d})".format(self.n))
+        result.append(f"(n={self.n:d})")
         return " ".join(result)
 
     @property

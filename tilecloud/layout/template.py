@@ -17,7 +17,7 @@ class TemplateTileLayout(RETileLayout):
             patterns.append(prematch_pattern)
             patterns.append(r"\d+")
             filename_patterns.append(prematch_pattern)
-            filename_patterns.append(r"(?P<{0!s}>\d+)".format(match.group(1)))
+            filename_patterns.append(fr"(?P<{match.group(1)!s}>\d+)")
             index = match.end()
         postmatch_pattern = re.escape(self.template[index:])
         patterns.append(postmatch_pattern)

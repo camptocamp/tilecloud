@@ -6,5 +6,5 @@ tilestore = WMTSTileStore(
     style="_null",
     format="image/png",
     tile_matrix_set="EPSG:900913",
-    tile_matrix=lambda z: "EPSG:900913:{0:d}".format(z),
+    tile_matrix=lambda z: f"EPSG:900913:{z:d}",
 )

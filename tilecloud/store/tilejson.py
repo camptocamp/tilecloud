@@ -41,11 +41,11 @@ class TileJSONTileStore(URLTileStore):
             kwargs["bounding_pyramid"] = bounding_pyramid
         urls = d[urls_key]
         if "content_type" not in kwargs:
-            exts = set(os.path.splitext(urlparse(url1).path)[1] for url1 in urls)
-            content_types = set(mimetypes.types_map.get(ext) for ext in exts)
+            exts = {os.path.splitext(urlparse(url1).path)[1] for url1 in urls}
+            content_types = {mimetypes.types_map.get(ext) for ext in exts}
             assert len(content_types) == 1
             kwargs["content_type"] = content_types.pop()
-        templates = [re.sub(r"\{([xyz])\}", lambda m: "%({0!s})d".format(m.group(1)), url2) for url2 in urls]
+        templates = [re.sub(r"\{([xyz])\}", lambda m: f"%({m.group(1)!s})d", url2) for url2 in urls]
         tilelayouts = map(TemplateTileLayout, templates)
         URLTileStore.__init__(self, tilelayouts, **kwargs)
 

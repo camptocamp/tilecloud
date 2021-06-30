@@ -3,7 +3,7 @@ from tilecloud.store.url import URLTileStore
 
 tilestore = URLTileStore(
     (
-        TemplateTileLayout("http://{0!s}.tile.openstreetmap.org/%(z)d/%(x)d/%(y)d.png".format(server))
+        TemplateTileLayout(f"http://{server!s}.tile.openstreetmap.org/%(z)d/%(x)d/%(y)d.png")
         for server in "abc"
     ),
     attribution="&copy; OpenStreetMap contributors, CC-BY-SA",

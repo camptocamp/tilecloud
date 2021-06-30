@@ -133,7 +133,7 @@ def main(argv):
                         % (
                             key,
                             statistics,
-                            " (%.1f tiles/s)" % (1.0 / statistics.mean,) if statistics.n else "",
+                            f" ({1.0 / statistics.mean:.1f} tiles/s)" if statistics.n else "",
                         )
                     )
 

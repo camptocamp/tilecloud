@@ -42,7 +42,7 @@ class FilesystemTileStore(TileStore):
             if self.content_type is not None:
                 tile.content_type = self.content_type
             return tile
-        except IOError as e:
+        except OSError as e:
             if e.errno == errno.ENOENT:
                 return None
             else:

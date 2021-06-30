@@ -93,14 +93,13 @@ class Bounds:
     def __iter__(self) -> Iterator[int]:
         if self.start is not None:
             assert self.stop is not None
-            for i in range(self.start, self.stop):
-                yield i
+            yield from range(self.start, self.stop)
 
     def __repr__(self) -> str:  # pragma: no cover
         if self.start is None:
-            return "{0!s}(None)".format(self.__class__.__name__)
+            return f"{self.__class__.__name__!s}(None)"
         else:
-            return "{0!s}({1!r}, {2!r})".format(self.__class__.__name__, self.start, self.stop)
+            return f"{self.__class__.__name__!s}({self.start!r}, {self.stop!r})"
 
     def add(self, value: int) -> "Bounds":
         """Extends self to include value"""
@@ -219,13 +218,11 @@ class BoundingPyramid:
 
     def iterbottomup(self) -> Iterator["TileCoord"]:
         for z in reversed(sorted(self.bounds.keys())):
-            for tilecoord in self.ziter(z):
-                yield tilecoord
+            yield from self.ziter(z)
 
     def itertopdown(self) -> Iterator["TileCoord"]:
         for z in sorted(self.bounds.keys()):
-            for tilecoord in self.ziter(z):
-                yield tilecoord
+            yield from self.ziter(z)
 
     def metatilecoords(self, n: int = 8) -> Iterator["TileCoord"]:
         for z in sorted(self.bounds.keys()):
@@ -268,7 +265,7 @@ class BoundingPyramid:
             s,
         )
         if not match:
-            raise ValueError("invalid literal for {0!s}.from_string(): {1!r}".format(cls.__name__, s))
+            raise ValueError(f"invalid literal for {cls.__name__!s}.from_string(): {s!r}")
         z1 = int(match.group("z1"))
         x1 = int(match.group("x1"))
         if match.group("starx"):
@@ -299,7 +296,7 @@ class BoundingPyramid:
     def full(cls, zmin: Optional[int] = None, zmax: Optional[int] = None) -> "BoundingPyramid":
         assert zmax is not None
         zs = (zmax,) if zmin is None else range(zmin, zmax + 1)
-        return cls(dict((z, (Bounds(0, 1 << z), Bounds(0, 1 << z))) for z in zs))
+        return cls({z: (Bounds(0, 1 << z), Bounds(0, 1 << z)) for z in zs})
 
 
 class Tile:
@@ -369,12 +366,12 @@ class Tile:
 
         """
         keys = sorted(self.__dict__.keys())
-        attrs = "".join(" {0!s}={1!r}".format(key, self.__dict__[key]) for key in keys)
-        return "<Tile{0!s}>".format(attrs)
+        attrs = "".join(f" {key!s}={self.__dict__[key]!r}" for key in keys)
+        return f"<Tile{attrs!s}>"
 
     @property
     def formated_metadata(self) -> str:
-        return " ".join(["{}={}".format(k, self.metadata[k]) for k in sorted(self.metadata.keys())])
+        return " ".join([f"{k}={self.metadata[k]}" for k in sorted(self.metadata.keys())])
 
     @property
     def __dict2__(self) -> Dict[str, Any]:
@@ -455,9 +452,9 @@ class TileCoord:
 
         """
         if self.n == 1:
-            return "{0!s}({1!r}, {2!r}, {3!r})".format(self.__class__.__name__, self.z, self.x, self.y)
+            return f"{self.__class__.__name__!s}({self.z!r}, {self.x!r}, {self.y!r})"
         else:
-            return "{0!s}({1!r}, {2!r}, {3!r}, {4!r})".format(
+            return "{!s}({!r}, {!r}, {!r}, {!r})".format(
                 self.__class__.__name__, self.z, self.x, self.y, self.n
             )
 
@@ -469,9 +466,9 @@ class TileCoord:
 
         """
         if self.n == 1:
-            return "{0:d}/{1:d}/{2:d}".format(self.z, self.x, self.y)
+            return f"{self.z:d}/{self.x:d}/{self.y:d}"
         else:
-            return "{0:d}/{1:d}/{2:d}:+{3:d}/+{4:d}".format(self.z, self.x, self.y, self.n, self.n)
+            return f"{self.z:d}/{self.x:d}/{self.y:d}:+{self.n:d}/+{self.n:d}"
 
     def metatilecoord(self, n: int = 8) -> "TileCoord":
         return TileCoord(self.z, n * (self.x // n), n * (self.y // n), n)
@@ -483,7 +480,7 @@ class TileCoord:
     def from_string(cls, s: str) -> "TileCoord":
         m = re.match(r"(\d+)/(\d+)/(\d+)(?::\+(\d+)/\+\4)?\Z", s)
         if not m:
-            raise ValueError("invalid literal for {0!s}.from_string: {1!r}".format(cls.__name__, s))
+            raise ValueError(f"invalid literal for {cls.__name__!s}.from_string: {s!r}")
         x, y, z, n = m.groups()
         return cls(int(x), int(y), int(z), int(n) if n else 1)
 

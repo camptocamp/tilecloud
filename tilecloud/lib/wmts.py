@@ -64,7 +64,7 @@ def matrix_sets(tile_matrix_set: TileMatrixSet) -> Dict[str, MatrixSet]:
             "resolution": resolution,
             # 0.000028 corresponds to 0.28 mm per pixel
             "scale": resolution * METERS_PER_UNIT[units] / 0.00028,
-            "topleft": "{0:f} {1:f}".format(tile_matrix_set["bbox"][0], maxy),
+            "topleft": "{:f} {:f}".format(tile_matrix_set["bbox"][0], maxy),
         }
         matrix_set["matrices"].append(matrix)
     sets[tile_matrix_set["name"]] = matrix_set

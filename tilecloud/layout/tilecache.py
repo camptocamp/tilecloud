@@ -16,9 +16,9 @@ class TileCacheDiskLayout(RETileLayout):
 
     @staticmethod
     def filename(tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
-        zs = "{:02d}".format(tilecoord.z)
-        xs = "{:09f}".format(tilecoord.x)
-        ys = "{:09f}".format(tilecoord.y)
+        zs = f"{tilecoord.z:02d}"
+        xs = f"{tilecoord.x:09f}"
+        ys = f"{tilecoord.y:09f}"
         return "/".join((zs, xs[0:3], xs[3:6], xs[6:9], ys[0:3], ys[3:6], ys[6:9]))
 
     @staticmethod
