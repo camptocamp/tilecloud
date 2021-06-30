@@ -5,8 +5,7 @@ from tilecloud import Tile
 
 class EveryNth:
     """
-    Create a filter that returns one out of every n tiles. This is done
-    using consistent hashing.
+    Create a filter that returns one out of every n tiles. This is done using consistent hashing.
 
     The following is used to determine if the tile should be returned::
 
@@ -17,8 +16,6 @@ class EveryNth:
 
     :param n:
         ``n`` in the above calculation.
-
-
     """
 
     def __init__(self, n: int, i: int) -> None:

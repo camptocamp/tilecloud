@@ -20,7 +20,11 @@ logger = logging.getLogger(__name__)
 
 
 def consume(iterator: Iterator["Tile"], n: Optional[int] = None) -> None:  # pragma: no cover
-    "Advance the iterator n-steps ahead. If n is none, consume entirely."
+    """
+    Advance the iterator n-steps ahead.
+
+    If n is none, consume entirely.
+    """
     # Use functions that consume iterators at C speed.
     if n is None:
         # feed the entire iterator into a zero-length deque
@@ -31,7 +35,9 @@ def consume(iterator: Iterator["Tile"], n: Optional[int] = None) -> None:  # pra
 
 
 class Bounds:
-    """Uni-dimensional integer bounds"""
+    """
+    Uni-dimensional integer bounds.
+    """
 
     def __init__(self, start: Optional[int] = None, stop: Optional[int] = None) -> None:
         """
@@ -42,7 +48,6 @@ class Bounds:
 
         :param stop: Stop
         :type stop: int or ``None``
-
         """
         self.start = start
         if stop is None:
@@ -69,7 +74,6 @@ class Bounds:
         :type key: int
 
         :rtype: bool
-
         """
         if self.start is None:
             return False
@@ -82,7 +86,6 @@ class Bounds:
         Return the number of unique elements.
 
         :rtype: int
-
         """
         if self.start is None:
             return 0
@@ -102,7 +105,9 @@ class Bounds:
             return f"{self.__class__.__name__!s}({self.start!r}, {self.stop!r})"
 
     def add(self, value: int) -> "Bounds":
-        """Extends self to include value"""
+        """
+        Extends self to include value.
+        """
         if self.start is None:
             self.start = value
             self.stop = value + 1
@@ -113,7 +118,9 @@ class Bounds:
         return self
 
     def update(self, other: "Bounds") -> "Bounds":
-        """Merges other into self"""
+        """
+        Merges other into self.
+        """
         if self.start is None:
             self.start = other.start
             self.stop = other.stop
@@ -127,7 +134,9 @@ class Bounds:
         return self
 
     def union(self, other: "Bounds") -> "Bounds":
-        """Returns a new Bounds which is the union of self and other"""
+        """
+        Returns a new Bounds which is the union of self and other.
+        """
         if self and other:
             assert self.start is not None
             assert self.stop is not None
@@ -154,7 +163,9 @@ class BoundingPyramid:
             self.tilegrid = GoogleTileGrid
 
     def __contains__(self, tilecoord: "TileCoord") -> bool:
-        """Returns True if tilecoord is in self"""
+        """
+        Returns True if tilecoord is in self.
+        """
         if tilecoord.z not in self.bounds:
             return False
         xbounds, ybounds = self.bounds[tilecoord.z]
@@ -166,15 +177,21 @@ class BoundingPyramid:
         return self.tilegrid == other.tilegrid and self.bounds == other.bounds
 
     def __iter__(self) -> Iterator["TileCoord"]:
-        """Generates every TileCoord in self, in increasing z, x, and y order"""
+        """
+        Generates every TileCoord in self, in increasing z, x, and y order.
+        """
         return self.itertopdown()
 
     def __len__(self) -> int:
-        """Returns the total number of TileCoords in self"""
+        """
+        Returns the total number of TileCoords in self.
+        """
         return sum(len(xbounds) * len(ybounds) for xbounds, ybounds in self.bounds.values())
 
     def add(self, tilecoord: "TileCoord") -> "BoundingPyramid":
-        """Extends self to include tilecoord"""
+        """
+        Extends self to include tilecoord.
+        """
         if tilecoord.z in self.bounds:
             xbounds, ybounds = self.bounds[tilecoord.z]
             xbounds.add(tilecoord.x)
@@ -241,11 +258,15 @@ class BoundingPyramid:
                 x += n
 
     def zget(self, z: int) -> Tuple[Bounds, Bounds]:
-        """Return the tuple (xbounds, ybounds) at level z"""
+        """
+        Return the tuple (xbounds, ybounds) at level z.
+        """
         return self.bounds[z]
 
     def ziter(self, z: int) -> Iterator["TileCoord"]:
-        """Generates every TileCoord in self at level z"""
+        """
+        Generates every TileCoord in self at level z.
+        """
         if z in self.bounds:
             xbounds, ybounds = self.bounds[z]
             for x in xbounds:
@@ -300,7 +321,9 @@ class BoundingPyramid:
 
 
 class Tile:
-    """An actual tile with optional metadata"""
+    """
+    An actual tile with optional metadata.
+    """
 
     def __init__(
         self,
@@ -328,7 +351,6 @@ class Tile:
 
         :param kwargs: The metadata attributes
         :type kargs: dict or ``None``
-
         """
         self.tilecoord = tilecoord
         self.content_encoding = content_encoding
@@ -346,7 +368,6 @@ class Tile:
         :rtype: int
 
         Tile comparison is done by comparing their coordinates.
-
         """
         return cmp(self.tilecoord, other.tilecoord)
 
@@ -363,7 +384,6 @@ class Tile:
         Return a string representation for debugging.
 
         :rtype: string
-
         """
         keys = sorted(self.__dict__.keys())
         attrs = "".join(f" {key!s}={self.__dict__[key]!r}" for key in keys)
@@ -382,7 +402,9 @@ class Tile:
 
 
 class TileCoord:
-    """A tile coordinate"""
+    """
+    A tile coordinate.
+    """
 
     def __init__(self, z: int, x: int, y: int, n: int = 1) -> None:
         """
@@ -399,7 +421,6 @@ class TileCoord:
 
         :param n: Tile size
         :type n: int
-
         """
         self.z = z
         self.x = x
@@ -414,7 +435,6 @@ class TileCoord:
 
         :class:`TileCoord`s are compared in order of their size and ``z``, ``x`` and
         ``y`` coordinates.
-
         """
         return cmp(self.n, other.n) or cmp(self.z, other.z) or cmp(self.x, other.x) or cmp(self.y, other.y)
 
@@ -434,12 +454,13 @@ class TileCoord:
 
         The hash values are unique for all tiles at a given zoom level, but
         tiles from different zoom levels may have equal hash values.
-
         """
         return ((self.x // self.n) << self.z) ^ (self.y // self.n)
 
     def __iter__(self) -> Iterator["TileCoord"]:
-        """Yield each TileCoord"""
+        """
+        Yield each TileCoord.
+        """
         for i in range(0, self.n):
             for j in range(0, self.n):
                 yield TileCoord(self.z, self.x + i, self.y + j)
@@ -449,7 +470,6 @@ class TileCoord:
         Return a string representation for debugging.
 
         :rtype: string
-
         """
         if self.n == 1:
             return f"{self.__class__.__name__!s}({self.z!r}, {self.x!r}, {self.y!r})"
@@ -463,7 +483,6 @@ class TileCoord:
         Return a string representation.
 
         :rtype: string
-
         """
         if self.n == 1:
             return f"{self.z:d}/{self.x:d}/{self.y:d}"
@@ -490,7 +509,9 @@ class TileCoord:
 
 
 class TileGrid:
-    """Lays out tiles at multiple zoom levels"""
+    """
+    Lays out tiles at multiple zoom levels.
+    """
 
     def __init__(
         self,
@@ -503,11 +524,15 @@ class TileGrid:
         self.flip_y = flip_y
 
     def children(self, tilecoord: TileCoord) -> Iterator[TileCoord]:
-        """Generates all the children of tilecoord"""
+        """
+        Generates all the children of tilecoord.
+        """
         raise NotImplementedError
 
     def extent(self, tilecoord: TileCoord, border: float = 0) -> Tuple[float, float, float, float]:
-        """Returns the extent of the tile at tilecoord"""
+        """
+        Returns the extent of the tile at tilecoord.
+        """
         raise NotImplementedError
 
     def fill_down(self, z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
@@ -517,24 +542,34 @@ class TileGrid:
         raise NotImplementedError
 
     def parent(self, tilecoord: TileCoord) -> Optional[TileCoord]:
-        """Returns the parent of tilecoord"""
+        """
+        Returns the parent of tilecoord.
+        """
         raise NotImplementedError
 
     def roots(self) -> Iterator[TileCoord]:
-        """Generates all the root tiles"""
+        """
+        Generates all the root tiles.
+        """
         raise NotImplementedError
 
     def tilecoord(self, z: int, x: float, y: float) -> TileCoord:
-        """Returns the TileCoord for location (x, y) at level z"""
+        """
+        Returns the TileCoord for location (x, y) at level z.
+        """
         raise NotImplementedError
 
     def zs(self) -> Iterable[int]:
-        """Generates all zs"""
+        """
+        Generates all zs.
+        """
         raise NotImplementedError
 
 
 class TileLayout:
-    """Maps tile coordinates to filenames and vice versa"""
+    """
+    Maps tile coordinates to filenames and vice versa.
+    """
 
     def filename(self, tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
         """
@@ -544,7 +579,6 @@ class TileLayout:
         :type tilecoord: :class:`TileCoord`
 
         :rtype: string
-
         """
         raise NotImplementedError
 
@@ -556,13 +590,14 @@ class TileLayout:
         :type filename: string
 
         :rtype: :class:`TileCoord`
-
         """
         raise NotImplementedError
 
 
 class TileStore:
-    """A tile store"""
+    """
+    A tile store.
+    """
 
     def __init__(
         self,
@@ -580,7 +615,6 @@ class TileStore:
         :type content_type: string or ``None``
 
         :param kwargs: Extra attributes
-
         """
         self.bounding_pyramid = bounding_pyramid
         self.content_type = content_type
@@ -595,7 +629,6 @@ class TileStore:
         :type tile: :class:`Tile`
 
         :rtype: bool
-
         """
         if tile and self.bounding_pyramid:
             return tile.tilecoord in self.bounding_pyramid
@@ -607,7 +640,6 @@ class TileStore:
         Returns the total number of tiles in the store.
 
         :rtype: int
-
         """
         return reduce(lambda x, _: x + 1, ifilter(None, self.list()), 0)
 
@@ -619,7 +651,6 @@ class TileStore:
         :type tiles: iterable
 
         :rtype: iterator
-
         """
         return map(self.delete_one, ifilter(None, tiles))
 
@@ -631,7 +662,6 @@ class TileStore:
         :type tile: :class:`Tile` or ``None``
 
         :rtype: :class:`Tile` or ``None``
-
         """
         raise NotImplementedError
 
@@ -643,7 +673,6 @@ class TileStore:
         :type tiles: iterator
 
         :rtype: iterator
-
         """
         return map(self.get_one, ifilter(None, tiles))
 
@@ -652,7 +681,6 @@ class TileStore:
         Generate all the tiles in the store with their data.
 
         :rtype: iterator
-
         """
         return map(self.get_one, ifilter(None, self.list()))
 
@@ -661,7 +689,6 @@ class TileStore:
         Returns the bounding pyramid that encloses all tiles in the store.
 
         :rtype: :class:`BoundingPyramid`
-
         """
         return reduce(
             BoundingPyramid.add, map(attrgetter("tilecoord"), ifilter(None, self.list())), BoundingPyramid()
@@ -669,11 +696,10 @@ class TileStore:
 
     def get_cheap_bounding_pyramid(self) -> Optional[BoundingPyramid]:  # pylint: disable=no-self-use
         """
-        Returns a bounding pyramid that is cheap to calculate, or ``None`` if
-        it is not possible to calculate a bounding pyramid cheaply.
+        Returns a bounding pyramid that is cheap to calculate, or ``None`` if it is not possible to calculate
+        a bounding pyramid cheaply.
 
         :rtype: :class:`BoundingPyramid` or ``None``
-
         """
         return None
 
@@ -685,7 +711,6 @@ class TileStore:
         :type tile: :class:`Tile` or ``None``
 
         :rtype: :class:`Tile` or ``None``
-
         """
         raise NotImplementedError
 
@@ -694,7 +719,6 @@ class TileStore:
         Generate all the tiles in the store, but without their data.
 
         :rtype: iterator
-
         """
         if self.bounding_pyramid is not None:
             for tilecoord in self.bounding_pyramid:
@@ -708,7 +732,6 @@ class TileStore:
         :type tiles: iterator
 
         :rtype: iterator
-
         """
         return map(self.put_one, ifilter(None, tiles))
 
@@ -720,7 +743,6 @@ class TileStore:
         :type tile: :class:`Tile` or ``None``
 
         :rtype: :class:`Tile` or ``None``
-
         """
         raise NotImplementedError
 
@@ -755,7 +777,6 @@ class TileStore:
         <filename>.zip
 
         <module>
-
         """
         if name == "null://":
             from tilecloud.store.null import NullTileStore

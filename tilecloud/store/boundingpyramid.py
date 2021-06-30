@@ -4,7 +4,9 @@ from tilecloud import BoundingPyramid, Tile, TileStore
 
 
 class BoundingPyramidTileStore(TileStore):
-    """All tiles in a bounding box"""
+    """
+    All tiles in a bounding box.
+    """
 
     def __init__(self, bounding_pyramid: Optional[BoundingPyramid] = None, **kwargs: Any):
         TileStore.__init__(self, **kwargs)

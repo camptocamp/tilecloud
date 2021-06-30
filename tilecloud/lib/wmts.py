@@ -83,7 +83,8 @@ class Layer(TypedDict):
 def get_capabilities(layers: List[Layer], tile_matrix_set: TileMatrixSet, wmts_gettile: str) -> str:
     """
     layers is an array of dict that contains:
-        extension: the tiles extension like 'png'
+
+    extension: the tiles extension like 'png'
         dimension_key: the used dimension key
         dimension_default: the default dimension value
         dimension_values: the possible dimension value

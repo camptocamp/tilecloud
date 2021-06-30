@@ -1,6 +1,7 @@
 """
-This module includes filters doing manipulations on the tile image. It
-requires the PIL lib.
+This module includes filters doing manipulations on the tile image.
+
+It requires the PIL lib.
 """
 
 from io import BytesIO
@@ -41,8 +42,7 @@ class ImageFormatConverter:
 
 class MergeFilter:
     """
-    Create a filter that merges the tile with tiles of the same
-    coordinates.
+    Create a filter that merges the tile with tiles of the same coordinates.
 
     :param tilestores:
         A collection of :class:`TileStore` objects from which tiles to
@@ -81,8 +81,7 @@ class MergeFilter:
 
 class PILImageFilter:
     """
-    Create a filter to filter the tile image (with the PIL ``filter``
-    function).
+    Create a filter to filter the tile image (with the PIL ``filter`` function).
 
     :param filter:
         The filter to pass to the PIL ``filter`` function.

@@ -6,7 +6,9 @@ from tilecloud.layout.re_ import RETileLayout
 
 
 class OSMTileLayout(RETileLayout):
-    """OpenStreetMap tile layout"""
+    """
+    OpenStreetMap tile layout.
+    """
 
     PATTERN = r"[0-9]+/[0-9]+/[0-9]+"
     RE = re.compile(r"([0-9]+)/([0-9]+)/([0-9]+)\Z")

@@ -139,7 +139,7 @@ class RedisTileStore(TileStore):
 
     def delete_all(self) -> None:
         """
-        Used only by tests
+        Used only by tests.
         """
         self._master.xtrim(name=self._name, maxlen=0)
         # xtrim doesn't empty the group claims. So we have to delete and re-create groups
@@ -217,7 +217,7 @@ class RedisTileStore(TileStore):
 
     def get_status(self) -> Dict[str, Union[str, int]]:
         """
-        Returns a map of stats
+        Returns a map of stats.
         """
         nb_messages = self._slave.xlen(self._name)
         pending = self._slave.xpending(self._name, STREAM_GROUP)

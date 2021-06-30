@@ -10,7 +10,6 @@ class GzipCompressor:
 
     :param compresslevel:
         The compression level. Default is 9.
-
     """
 
     def __init__(self, compresslevel: int = 9):

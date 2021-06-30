@@ -6,7 +6,9 @@ from tilecloud.grid.quad import QuadTileGrid
 
 
 class RenderingTheWorldTileStore(TileStore):
-    """http://mapbox.com/blog/rendering-the-world/"""
+    """
+    http://mapbox.com/blog/rendering-the-world/
+    """
 
     def __init__(
         self,
