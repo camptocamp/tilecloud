@@ -7,7 +7,9 @@ from tilecloud import Tile, TileLayout, TileStore
 
 
 class FilesystemTileStore(TileStore):
-    """Tiles stored in a filesystem"""
+    """
+    Tiles stored in a filesystem.
+    """
 
     def __init__(self, tilelayout: TileLayout, **kwargs: Any):
         TileStore.__init__(self, **kwargs)
@@ -42,7 +44,7 @@ class FilesystemTileStore(TileStore):
             if self.content_type is not None:
                 tile.content_type = self.content_type
             return tile
-        except IOError as e:
+        except OSError as e:
             if e.errno == errno.ENOENT:
                 return None
             else:

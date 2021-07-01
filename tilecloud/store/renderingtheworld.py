@@ -6,7 +6,9 @@ from tilecloud.grid.quad import QuadTileGrid
 
 
 class RenderingTheWorldTileStore(TileStore):
-    """http://mapbox.com/blog/rendering-the-world/"""
+    """
+    http://mapbox.com/blog/rendering-the-world/
+    """
 
     def __init__(
         self,
@@ -15,7 +17,7 @@ class RenderingTheWorldTileStore(TileStore):
         queue: Optional[Deque[Tile]] = None,
         seeds: Tuple[Tile, ...] = (),
     ):
-        super(RenderingTheWorldTileStore, self).__init__()
+        super().__init__()
         self.subdivide = subdivide
         self.tilegrid = tilegrid
         if self.tilegrid is None:

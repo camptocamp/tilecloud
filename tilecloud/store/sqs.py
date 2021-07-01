@@ -112,7 +112,7 @@ class SQSTileStore(TileStore):
 
     def get_status(self) -> Dict[str, str]:
         """
-        Returns a map of stats
+        Returns a map of stats.
         """
         self.queue.load()
         attributes = dict(self.queue.attributes)

@@ -18,7 +18,9 @@ else:
 
 
 class SQLiteDict(Base):
-    """A dict facade for an SQLite table"""
+    """
+    A dict facade for an SQLite table.
+    """
 
     def __init__(
         self,

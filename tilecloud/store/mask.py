@@ -6,7 +6,9 @@ from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
 
 
 class MaskTileStore(TileStore):
-    """A black and white image representing present and absent tiles"""
+    """
+    A black and white image representing present and absent tiles.
+    """
 
     def __init__(self, z: int, bounds: Tuple[Bounds, Bounds], file: Optional[str] = None, **kwargs: Any):
         TileStore.__init__(self, **kwargs)

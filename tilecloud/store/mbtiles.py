@@ -10,7 +10,9 @@ from tilecloud.lib.sqlite3_ import SQLiteDict, query
 
 
 class Metadata(SQLiteDict):
-    """A dict facade for the metadata table"""
+    """
+    A dict facade for the metadata table.
+    """
 
     CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS metadata (name text, value text, PRIMARY KEY (name))"
     CONTAINS_SQL = "SELECT COUNT(*) FROM metadata WHERE name = ?"
@@ -24,7 +26,9 @@ class Metadata(SQLiteDict):
 
 
 class Tiles(SQLiteDict):
-    """A dict facade for the tiles table"""
+    """
+    A dict facade for the tiles table.
+    """
 
     CREATE_TABLE_SQL = (
         "CREATE TABLE IF NOT EXISTS tiles (zoom_level integer, tile_column integer, "
@@ -65,7 +69,9 @@ class Tiles(SQLiteDict):
 
 
 class MBTilesTileStore(TileStore):
-    """A MBTiles tile store"""
+    """
+    A MBTiles tile store.
+    """
 
     BOUNDING_PYRAMID_SQL = (
         "SELECT zoom_level, MIN(tile_column), MAX(tile_column) + 1, "

@@ -5,9 +5,8 @@ from tilecloud import BoundingPyramid, Tile
 
 class InBoundingPyramid:
     """
-    Creates a filter that filters out tiles that are not in the specified
-    bounding pyramid. When called the filter returns ``None`` if the tile
-    is not in the bounding pyramid.
+    Creates a filter that filters out tiles that are not in the specified bounding pyramid. When called the
+    filter returns ``None`` if the tile is not in the bounding pyramid.
 
     :param bounding_pyramid:
         A :class:`tilecloud.BoundingPyramid` object.

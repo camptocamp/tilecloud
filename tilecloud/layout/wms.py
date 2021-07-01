@@ -42,7 +42,7 @@ class WMSTileLayout(TileLayout):
         for k, v in metadata.items():
             if k.startswith("dimension_"):
                 params[k[len("dimension_") :]] = v
-        params["BBOX"] = "{0:f},{1:f},{2:f},{3:f}".format(*bbox)
+        params["BBOX"] = "{:f},{:f},{:f},{:f}".format(*bbox)
         params["WIDTH"] = str(size)
         params["HEIGHT"] = str(size)
         return self.url + "?" + urlencode(params)

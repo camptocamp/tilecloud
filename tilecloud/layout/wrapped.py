@@ -6,7 +6,9 @@ from tilecloud.layout.re_ import RETileLayout
 
 
 class WrappedTileLayout(TileLayout):
-    """A tile layout with an option prefix and/or suffix"""
+    """
+    A tile layout with an option prefix and/or suffix.
+    """
 
     def __init__(self, tilelayout: RETileLayout, prefix: str = "", suffix: str = "") -> None:
         self.tilelayout = tilelayout
@@ -24,7 +26,5 @@ class WrappedTileLayout(TileLayout):
     def tilecoord(self, filename: str) -> TileCoord:
         match = self.filename_re.match(filename)
         if not match:
-            raise ValueError(
-                "invalid literal for {0!s}.tilecoord(): {1!r}".format(self.__class__.__name__, filename)
-            )
+            raise ValueError(f"invalid literal for {self.__class__.__name__!s}.tilecoord(): {filename!r}")
         return self.tilelayout.tilecoord(match.group(1))

@@ -9,8 +9,7 @@ from tilecloud.filter.logger import Logger
 
 class CollectErrors:
     """
-    Create a filter for collecting tiles with errors in an attribute
-    called ``errors``.
+    Create a filter for collecting tiles with errors in an attribute called ``errors``.
     """
 
     def __init__(self) -> None:
@@ -47,8 +46,8 @@ class LogErrors(Logger):
 
 class MaximumConsecutiveErrors:
     """
-    Create a filter that raises a :class:`TooManyErrors` exception
-    when there are ``max_consecutive_errors`` consecutive errors.
+    Create a filter that raises a :class:`TooManyErrors` exception when there are ``max_consecutive_errors``
+    consecutive errors.
 
     :param max_consecutive_errors:
         The max number of permitted consecutive errors. Once
@@ -71,8 +70,8 @@ class MaximumConsecutiveErrors:
 
 class MaximumErrorRate:
     """
-    Create a filter that raises a :class:`TooManyErrors` exception
-    when the total error rate exceeds ``max_error_rate``.
+    Create a filter that raises a :class:`TooManyErrors` exception when the total error rate exceeds
+    ``max_error_rate``.
 
     :param max_error_rate:
        The maximum error rate. Once exceeded a :class:`TooManyErrors`
@@ -102,8 +101,7 @@ class MaximumErrorRate:
 
 class MaximumErrors:
     """
-    Create a filter that raises a :class:`TooManyErrors` exception when
-    a number of errors is reached.
+    Create a filter that raises a :class:`TooManyErrors` exception when a number of errors is reached.
 
     :param max_errors:
         The maximum number of errors. Once exceeded a :class:`TooManyErrors`
@@ -123,4 +121,6 @@ class MaximumErrors:
 
 
 class TooManyErrors(RuntimeError):
-    """TooManyErrors exception class."""
+    """
+    TooManyErrors exception class.
+    """

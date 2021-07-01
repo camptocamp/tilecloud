@@ -32,7 +32,7 @@ class TestFreeTileGrid(unittest.TestCase):
                 assert self.resolutions[i] % self.resolutions[child_z] == 0
 
     def test_root_parents(self) -> None:
-        for root_z in set(root.z for root in self.ftg.roots()):
+        for root_z in {root.z for root in self.ftg.roots()}:
             assert self.ftg.parent(TileCoord(root_z, 0, 0)) is None
 
     def test_root_zero(self) -> None:

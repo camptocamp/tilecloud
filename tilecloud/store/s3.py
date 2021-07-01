@@ -15,7 +15,9 @@ CLIENT_TIMEOUT = 60
 
 
 class S3TileStore(TileStore):
-    """Tiles stored in Amazon S3"""
+    """
+    Tiles stored in Amazon S3.
+    """
 
     def __init__(
         self,

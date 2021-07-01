@@ -11,9 +11,7 @@ class RETileLayout(TileLayout):
     def tilecoord(self, filename: str) -> TileCoord:
         match = self.filename_re.match(filename)
         if not match:
-            raise ValueError(
-                "invalid literal for {0!s}.tilecoord(): {1!r}".format(self.__class__.__name__, filename)
-            )
+            raise ValueError(f"invalid literal for {self.__class__.__name__!s}.tilecoord(): {filename!r}")
         return self._tilecoord(match)
 
     @staticmethod
