@@ -1,11 +1,17 @@
-.PHONY: all
-all: test prospector docs
+.PHONY: checks
+checks:
+	docker-compose build
+	docker-compose up --exit-code-from tests
+
+.PHONY: tests-fast
+tests-fast:
+	docker-compose build
+	docker-compose up --exit-code-from tests
 
 .PHONY: clean
 clean:
 	find tilecloud tiles -name \*.pyc | xargs rm -f
 	make -C docs clean
-	rm -rf .venv
 
 .PHONY: docs
 docs:
@@ -15,13 +21,9 @@ docs:
 prospector:
 	prospector tilecloud --output=pylint
 
-.PHONY: test
-test:
+.PHONY: tests
+tests:
 	pytest -vv --cov=tilecloud
 
-.PHONY: pypi-upload
-pypi-upload: test prospector
-	python3 setup.py sdist upload
-
-.PHONY: checks
-checks: prospector test
+.PHONY: checks-internal
+checks-internal: prospector tests

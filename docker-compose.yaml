@@ -3,9 +3,9 @@ version: '2.1'
 
 services:
   redis:
-    image: redis:5
+    image: redis:6
 
-  test:
+  tests:
     build: .
     environment:
       REDIS_URL: redis://redis:6379
@@ -13,4 +13,4 @@ services:
       - ./:/app/
     command:
       - make
-      - checks
+      - tests

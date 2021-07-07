@@ -33,7 +33,7 @@ jobs:
 
       - run: python3 -m pip install --requirement=requirements-dev.txt
 
-      - run: docker-compose up --exit-code-from test
+      - run: docker-compose up --exit-code-from tests
 
       - name: Publish
         run: c2cciutils-publish
