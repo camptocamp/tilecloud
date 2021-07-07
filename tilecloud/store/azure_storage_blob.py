@@ -1,8 +1,8 @@
 import logging
-import os
-from typing import Any, Iterator, Optional
+from typing import Any, Iterator, Optional, Union
 
-from azure.storage.blob import BlobServiceClient
+import azure.core.credentials
+import azure.storage.blob
 
 from tilecloud import Tile, TileLayout, TileStore
 
@@ -14,13 +14,16 @@ class AzureStorageBlobTileStore(TileStore):
 
     def __init__(
         self,
+        account_url: str,
         container: str,
         tilelayout: TileLayout,
+        credential: Optional[Union[str, azure.core.credentials.AzureSasCredential]] = None,
         dry_run: bool = False,
         cache_control: Optional[str] = None,
         **kwargs: Any,
     ):
-        self.client = BlobServiceClient.from_connection_string(os.getenv("AZURE_STORAGE_CONNECTION_STRING"))
+        self.client = azure.storage.blob.BlobServiceClient(account_url=account_url, credential=credential)
+
         self.container_name = container
         try:
             self.container_client = self.client.create_container(container)
@@ -52,8 +55,9 @@ class AzureStorageBlobTileStore(TileStore):
         try:
             blob = self.client.get_blob_client(container=self.container_name, blob=key_name)
             tile.data = blob.download_blob().readall()
-            tile.content_encoding = blob.Metadata.FirstOrDefault("ContentEncoding", None)
-            tile.content_type = blob.Metadata.FirstOrDefault("ContentType", None)
+            properties = blob.get_blob_properties()
+            tile.content_encoding = properties.content_settings.content_encoding
+            tile.content_type = properties.content_settings.content_type
         except Exception as exc:
             tile.error = exc
         return tile
@@ -74,13 +78,14 @@ class AzureStorageBlobTileStore(TileStore):
         if not self.dry_run:
             try:
                 blob = self.client.get_blob_client(container=self.container_name, blob=key_name)
-                blob.upload_blob(tile.data)
-                if tile.content_encoding is not None:
-                    blob.Metadata.Add("ContentEncoding", tile.content_encoding)
-                if tile.content_type is not None:
-                    blob.Metadata.Add("ContentType", tile.content_type)
-                if self.cache_control is not None:
-                    blob.Metadata.Add("CacheControl", tile.cache_control)  # type: ignore
+                blob.upload_blob(
+                    tile.data,
+                    content_settings=azure.storage.blob.ContentSettings(
+                        content_type=tile.content_type,
+                        content_encoding=tile.content_encoding,
+                        cache_control=self.cache_control,
+                    ),
+                )
             except Exception as exc:
                 tile.error = exc
 
