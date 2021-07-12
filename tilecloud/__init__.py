@@ -19,7 +19,7 @@ def cmp(a: Any, b: Any) -> int:
 logger = logging.getLogger(__name__)
 
 
-def consume(iterator: Iterator["Tile"], n: Optional[int] = None) -> None:  # pragma: no cover
+def consume(iterator: Iterator[Optional["Tile"]], n: Optional[int] = None) -> None:  # pragma: no cover
     "Advance the iterator n-steps ahead. If n is none, consume entirely."
     # Use functions that consume iterators at C speed.
     if n is None:
