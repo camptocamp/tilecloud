@@ -18,7 +18,7 @@ pylint:
     - invalid-name
     - redefined-builtin
     - broad-except
-    - cyclic-import  # see: https://github.com/PyCQA/pylint/issues/850
+    - cyclic-import # see: https://github.com/PyCQA/pylint/issues/850
 
 pep8:
   disable:
