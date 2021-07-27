@@ -22,6 +22,10 @@ class Queue:
         self.errors_name = errors_name
 
 
+class Empty(Exception):
+    pass
+
+
 class RedisTileStore(TileStore):
     """
     Redis queue.
@@ -101,29 +105,33 @@ class RedisTileStore(TileStore):
             if self._stop_if_empty:
                 assert len(self._queues) == 1, "Stop if empty can't wirks in multy queue mode"
 
-            if not queues:
-                queues = self._claim_olds()
-                if queues is None and self._stop_if_empty:
-                    break
-            if queues:
-                for redis_message in queues:
-                    queue_name_b, queue_messages = redis_message
-                    queue_name = queue_name_b.decode()
-                    for message in queue_messages:
-                        id_, body = message
-                        try:
-                            tile = decode_message(
-                                body[b"message"], from_redis=True, message_id=id_, queue_name=queue_name
-                            )
-                            yield tile
-                        except Exception:
-                            logger.warning("Failed decoding the Redis message", exc_info=True)
-                            stats.increment_counter(["redis", queue_name, "decode_error"])
-                        count += 1
+            try:
+                if not queues:
+                    queues = self._claim_olds()
+                if queues:
+                    for redis_message in queues:
+                        queue_name_b, queue_messages = redis_message
+                        queue_name = queue_name_b.decode()
+                        for message in queue_messages:
+                            id_, body = message
+                            try:
+                                tile = decode_message(
+                                    body[b"message"], from_redis=True, message_id=id_, queue_name=queue_name
+                                )
+                                yield tile
+                            except Exception:
+                                logger.warning("Failed decoding the Redis message", exc_info=True)
+                                stats.increment_counter(["redis", queue_name, "decode_error"])
+                            count += 1
 
-                    stats.set_gauge(["redis", queue_name, "nb_messages"], self._slave.xlen(name=queue_name_b))
-                    pending = self._slave.xpending(queue_name_b, STREAM_GROUP)
-                    stats.set_gauge(["redis", queue_name, "pending"], pending["pending"])
+                        stats.set_gauge(
+                            ["redis", queue_name, "nb_messages"], self._slave.xlen(name=queue_name_b)
+                        )
+                        pending = self._slave.xpending(queue_name_b, STREAM_GROUP)
+                        stats.set_gauge(["redis", queue_name, "pending"], pending["pending"])
+            except Empty:
+                if self._stop_if_empty:
+                    break
 
     def put_one(self, tile: Tile) -> Tile:
         assert len(self._queues) == 1
@@ -179,7 +187,7 @@ class RedisTileStore(TileStore):
                 stats.set_gauge(["redis", queue.name_str, "pending"], 0)
                 # None means there is nothing pending at all
                 if self._stop_if_empty:
-                    return None
+                    raise Empty()
             to_steal = []
             to_drop = []
             for pending in pendings:
@@ -237,8 +245,7 @@ class RedisTileStore(TileStore):
                     message_ids=to_steal,
                 )
                 stats.increment_counter(["redis", queue.name_str, "stolen"], len(to_steal))
-                return [(queue.name, messages)]
-        return []
+                yield queue.name, messages
 
     def get_status(self, queue_name: Optional[str] = None) -> Dict[str, Union[str, int]]:
         """
