@@ -113,7 +113,7 @@ class RedisTileStore(TileStore):
                     for message in queue_messages:
                         id_, body = message
                         try:
-                            tile = decode_message(body[b"message"], from_redis=True, sqs_message=id_)
+                            tile = decode_message(body[b"message"], from_redis=True, message_id=id_)
                             yield tile
                         except Exception:
                             logger.warning("Failed decoding the Redis message", exc_info=True)
@@ -150,10 +150,10 @@ class RedisTileStore(TileStore):
     def delete_one(self, tile: Tile) -> Tile:
         # Once consumed from redis, we don't have to delete the tile from the queue.
         assert hasattr(tile, "from_redis")
-        assert hasattr(tile, "sqs_message")
+        assert hasattr(tile, "message_id")
         assert tile.from_redis is True  # type: ignore
-        self._master.xack(list(self._queues.values())[0].name, STREAM_GROUP, tile.sqs_message)  # type: ignore
-        self._master.xdel(list(self._queues.values())[0].name, tile.sqs_message)  # type: ignore
+        self._master.xack(list(self._queues.values())[0].name, STREAM_GROUP, tile.message_id)  # type: ignore
+        self._master.xdel(list(self._queues.values())[0].name, tile.message_id)  # type: ignore
         return tile
 
     def delete_all(self) -> None:
