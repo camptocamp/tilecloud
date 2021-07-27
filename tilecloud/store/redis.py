@@ -93,7 +93,7 @@ class RedisTileStore(TileStore):
             queues = self._master.xreadgroup(
                 groupname=STREAM_GROUP,
                 consumername=CONSUMER_NAME,
-                streams={list(self._queues.values())[0]: ">"},
+                streams={q.name: ">" for q in self._queues.values()},
                 count=1,
                 block=round(self._timeout_ms),
             )
