@@ -98,41 +98,35 @@ class RedisTileStore(TileStore):
                 block=round(self._timeout_ms),
             )
             logger.debug("Get %d new elements", len(queues))
+            if self._stop_if_empty:
+                assert len(self._queues) == 1, "Stop if empty can't wirks in multy queue mode"
 
             if not queues:
                 queues = self._claim_olds()
-                if queues is None:
-                    stats.set_gauge(["redis", list(self._queues.values())[0].name_str, "nb_messages"], 0)
-                    stats.set_gauge(["redis", list(self._queues.values())[0].name_str, "pending"], 0)
                 if queues is None and self._stop_if_empty:
                     break
             if queues:
                 for redis_message in queues:
-                    queue_name, queue_messages = redis_message
-                    assert queue_name == list(self._queues.values())[0].name
+                    queue_name_b, queue_messages = redis_message
+                    queue_name = queue_name_b.decode()
                     for message in queue_messages:
                         id_, body = message
                         try:
-                            tile = decode_message(body[b"message"], from_redis=True, message_id=id_)
+                            tile = decode_message(
+                                body[b"message"], from_redis=True, message_id=id_, queue_name=queue_name
+                            )
                             yield tile
                         except Exception:
                             logger.warning("Failed decoding the Redis message", exc_info=True)
-                            stats.increment_counter(
-                                ["redis", list(self._queues.values())[0].name_str, "decode_error"]
-                            )
+                            stats.increment_counter(["redis", queue_name, "decode_error"])
                         count += 1
 
-                if count % 10 == 0:
-                    stats.set_gauge(
-                        ["redis", list(self._queues.values())[0].name_str, "nb_messages"],
-                        self._slave.xlen(name=list(self._queues.values())[0].name),
-                    )
-                    pending = self._slave.xpending(list(self._queues.values())[0].name, STREAM_GROUP)
-                    stats.set_gauge(
-                        ["redis", list(self._queues.values())[0].name_str, "pending"], pending["pending"]
-                    )
+                    stats.set_gauge(["redis", queue_name, "nb_messages"], self._slave.xlen(name=queue_name_b))
+                    pending = self._slave.xpending(queue_name_b, STREAM_GROUP)
+                    stats.set_gauge(["redis", queue_name, "pending"], pending["pending"])
 
     def put_one(self, tile: Tile) -> Tile:
+        assert len(self._queues) == 1
         try:
             self._master.xadd(
                 name=list(self._queues.values())[0].name, fields={"message": encode_message(tile)}
@@ -152,21 +146,26 @@ class RedisTileStore(TileStore):
         assert hasattr(tile, "from_redis")
         assert hasattr(tile, "message_id")
         assert tile.from_redis is True  # type: ignore
-        self._master.xack(list(self._queues.values())[0].name, STREAM_GROUP, tile.message_id)  # type: ignore
-        self._master.xdel(list(self._queues.values())[0].name, tile.message_id)  # type: ignore
+        queue = None
+        if hasattr(tile, "queue_name"):
+            queue = self._queues[tile.queue_name]  # type: ignore
+        else:
+            assert len(self._queues) == 1
+            queue = list(self._queues.values())[0]
+        self._master.xack(queue.name, STREAM_GROUP, tile.message_id)  # type: ignore
+        self._master.xdel(queue.name, tile.message_id)  # type: ignore
         return tile
 
     def delete_all(self) -> None:
         """
         Used only by tests.
         """
-        self._master.xtrim(name=list(self._queues.values())[0].name, maxlen=0)
-        # xtrim doesn't empty the group claims. So we have to delete and re-create groups
-        self._master.xgroup_destroy(name=list(self._queues.values())[0].name, groupname=STREAM_GROUP)
-        self._master.xgroup_create(
-            name=list(self._queues.values())[0].name, groupname=STREAM_GROUP, id="0-0", mkstream=True
-        )
-        self._master.xtrim(name=list(self._queues.values())[0].errors_name, maxlen=0)
+        for queue in self._queues.values():
+            self._master.xtrim(name=queue.name, maxlen=0)
+            # xtrim doesn't empty the group claims. So we have to delete and re-create groups
+            self._master.xgroup_destroy(name=queue.name, groupname=STREAM_GROUP)
+            self._master.xgroup_create(name=queue.name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
+            self._master.xtrim(name=queue.errors_name, maxlen=0)
 
     def _claim_olds(self) -> Optional[Iterable[Tuple[bytes, Any]]]:
         logger.debug("Claim old's")
@@ -240,26 +239,34 @@ class RedisTileStore(TileStore):
             # Empty means there are pending jobs, but they are not old enough to be stolen
             return []
 
-    def get_status(self) -> Dict[str, Union[str, int]]:
+    def get_status(self, queue_name: Optional[str] = None) -> Dict[str, Union[str, int]]:
         """
         Returns a map of stats.
         """
-        nb_messages = self._slave.xlen(list(self._queues.values())[0].name)
-        pending = self._slave.xpending(list(self._queues.values())[0].name, STREAM_GROUP)
-        tiles_in_error = self._get_errors()
+        queue: Optional[Queue] = None
+        if queue_name is None:
+            assert len(self._queues) == 1
+            queue = list(self._queues.values())[0]
+        else:
+            queue = self._queues[queue_name]
+        assert queue
 
-        stats.set_gauge(["redis", list(self._queues.values())[0].name_str, "nb_messages"], nb_messages)
+        nb_messages = self._slave.xlen(queue.name)
+        pending = self._slave.xpending(queue.name, STREAM_GROUP)
+        tiles_in_error = self._get_errors(queue)
+
+        stats.set_gauge(["redis", queue.name_str, "nb_messages"], nb_messages)
         return {
             "Approximate number of tiles to generate": nb_messages,
             "Approximate number of generating tiles": pending["pending"],
             "Tiles in error": ", ".join(tiles_in_error),
         }
 
-    def _get_errors(self) -> Set[str]:
+    def _get_errors(self, queue: Queue) -> Set[str]:
         now, now_us = self._slave.time()
         old_timestamp = (now - self._max_errors_age) * 1000 + now_us / 1000
 
-        errors = self._slave.xrange(name=list(self._queues.values())[0].errors_name)
+        errors = self._slave.xrange(queue.errors_name)
         tiles_in_error = set()
         old_errors = []
         for error_id, error_message in errors:
@@ -270,5 +277,5 @@ class RedisTileStore(TileStore):
                 tiles_in_error.add(error_message[b"tilecoord"].decode())
         if old_errors:
             logger.info("Deleting %d old errors", len(old_errors))
-            self._master.xdel(list(self._queues.values())[0].errors_name, *old_errors)
+            self._master.xdel(queue.errors_name, *old_errors)
         return tiles_in_error
