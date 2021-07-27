@@ -169,75 +169,76 @@ class RedisTileStore(TileStore):
 
     def _claim_olds(self) -> Optional[Iterable[Tuple[bytes, Any]]]:
         logger.debug("Claim old's")
-        pendings = self._master.xpending_range(
-            name=list(self._queues.values())[0].name, groupname=STREAM_GROUP, min="-", max="+", count=10
-        )
-        if not pendings:
-            logger.debug("Empty pendings")
-            # None means there is nothing pending at all
-            return None
-        to_steal = []
-        to_drop = []
-        for pending in pendings:
-            logger.debug(
-                "Pending for %d, threshold %d", int(pending["time_since_delivered"]), self._pending_timeout_ms
+        for queue in self._queues.values():
+            pendings = self._master.xpending_range(
+                name=queue.name, groupname=STREAM_GROUP, min="-", max="+", count=10
             )
-            if int(pending["time_since_delivered"]) >= self._pending_timeout_ms:
-                id_ = pending["message_id"]
-                nb_retries = int(pending["times_delivered"])
-                if nb_retries < self._max_retries:
-                    logger.info(
-                        "A message has been pending for too long. Stealing it (retry #%d): %s",
-                        nb_retries,
-                        id_,
-                    )
-                    to_steal.append(id_)
-                else:
-                    logger.warning(
-                        "A message has been pending for too long and retried too many times. Dropping it: %s",
-                        id_,
-                    )
-                    to_drop.append(id_)
-
-        logger.debug("%d elements to drop", len(to_drop))
-        if to_drop:
-            drop_messages = self._master.xclaim(
-                name=list(self._queues.values())[0].name,
-                groupname=STREAM_GROUP,
-                consumername=CONSUMER_NAME,
-                min_idle_time=self._pending_timeout_ms,
-                message_ids=to_drop,
-            )
-            drop_ids = [drop_message[0] for drop_message in drop_messages]
-            self._master.xack(list(self._queues.values())[0].name, STREAM_GROUP, *drop_ids)
-            self._master.xdel(list(self._queues.values())[0].name, *drop_ids)
-            for _, drop_message in drop_messages:
-                tile = decode_message(drop_message[b"message"])
-                self._master.xadd(
-                    name=list(self._queues.values())[0].errors_name,
-                    fields=dict(tilecoord=str(tile.tilecoord)),
-                    maxlen=self._max_errors_nb,
+            if not pendings:
+                logger.debug("Empty pendings")
+                stats.set_gauge(["redis", queue.name_str, "nb_messages"], 0)
+                stats.set_gauge(["redis", queue.name_str, "pending"], 0)
+                # None means there is nothing pending at all
+                if self._stop_if_empty:
+                    return None
+            to_steal = []
+            to_drop = []
+            for pending in pendings:
+                logger.debug(
+                    "Pending for %d, threshold %d",
+                    int(pending["time_since_delivered"]),
+                    self._pending_timeout_ms,
                 )
-            stats.increment_counter(
-                ["redis", list(self._queues.values())[0].name_str, "dropped"], len(to_drop)
-            )
+                if int(pending["time_since_delivered"]) >= self._pending_timeout_ms:
+                    id_ = pending["message_id"]
+                    nb_retries = int(pending["times_delivered"])
+                    if nb_retries < self._max_retries:
+                        logger.info(
+                            "A message has been pending for too long. Stealing it (retry #%d): %s",
+                            nb_retries,
+                            id_,
+                        )
+                        to_steal.append(id_)
+                    else:
+                        logger.warning(
+                            "A message has been pending for too long and retried too many times. "
+                            "Dropping it: %s",
+                            id_,
+                        )
+                        to_drop.append(id_)
 
-        logger.debug("%d elements to steal", len(to_steal))
-        if to_steal:
-            messages = self._master.xclaim(
-                name=list(self._queues.values())[0].name,
-                groupname=STREAM_GROUP,
-                consumername=CONSUMER_NAME,
-                min_idle_time=self._pending_timeout_ms,
-                message_ids=to_steal,
-            )
-            stats.increment_counter(
-                ["redis", list(self._queues.values())[0].name_str, "stolen"], len(to_steal)
-            )
-            return [(list(self._queues.values())[0].name, messages)]
-        else:
-            # Empty means there are pending jobs, but they are not old enough to be stolen
-            return []
+            logger.debug("%d elements to drop", len(to_drop))
+            if to_drop:
+                drop_messages = self._master.xclaim(
+                    name=queue.name,
+                    groupname=STREAM_GROUP,
+                    consumername=CONSUMER_NAME,
+                    min_idle_time=self._pending_timeout_ms,
+                    message_ids=to_drop,
+                )
+                drop_ids = [drop_message[0] for drop_message in drop_messages]
+                self._master.xack(queue.name, STREAM_GROUP, *drop_ids)
+                self._master.xdel(queue.name, *drop_ids)
+                for _, drop_message in drop_messages:
+                    tile = decode_message(drop_message[b"message"])
+                    self._master.xadd(
+                        name=queue.errors_name,
+                        fields=dict(tilecoord=str(tile.tilecoord)),
+                        maxlen=self._max_errors_nb,
+                    )
+                stats.increment_counter(["redis", queue.name_str, "dropped"], len(to_drop))
+
+            logger.debug("%d elements to steal", len(to_steal))
+            if to_steal:
+                messages = self._master.xclaim(
+                    name=queue.name,
+                    groupname=STREAM_GROUP,
+                    consumername=CONSUMER_NAME,
+                    min_idle_time=self._pending_timeout_ms,
+                    message_ids=to_steal,
+                )
+                stats.increment_counter(["redis", queue.name_str, "stolen"], len(to_steal))
+                return [(queue.name, messages)]
+        return None
 
     def get_status(self, queue_name: Optional[str] = None) -> Dict[str, Union[str, int]]:
         """
