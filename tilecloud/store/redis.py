@@ -238,7 +238,7 @@ class RedisTileStore(TileStore):
                 )
                 stats.increment_counter(["redis", queue.name_str, "stolen"], len(to_steal))
                 return [(queue.name, messages)]
-        return None
+        return []
 
     def get_status(self, queue_name: Optional[str] = None) -> Dict[str, Union[str, int]]:
         """
