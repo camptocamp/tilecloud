@@ -1,4 +1,4 @@
-from collections import MutableMapping
+from collections.abc import MutableMapping
 from sqlite3 import Connection, Cursor
 from typing import TYPE_CHECKING, AbstractSet, Any, Iterator, Optional, Tuple, Union
 
@@ -12,7 +12,7 @@ def query(connection: Connection, *args: Any) -> Cursor:
 
 
 if TYPE_CHECKING:
-    Base = MutableMapping[Union[str, TileCoord], bytes]
+    Base = MutableMapping[Union[str, TileCoord], bytes]  # pylint: disable=unsubscriptable-object
 else:
     Base = MutableMapping
 
