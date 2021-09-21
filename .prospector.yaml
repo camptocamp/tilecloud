@@ -28,5 +28,10 @@ pep8:
 mypy:
   run: true
 
+bandit:
+  run: true
+  options:
+    config: .bandit.yaml
+
 mccabe:
   run: false

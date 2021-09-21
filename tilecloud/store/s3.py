@@ -115,5 +115,5 @@ def get_client(s3_host: Optional[str]) -> "botocore.client.S3":
     config = botocore.config.Config(connect_timeout=CLIENT_TIMEOUT, read_timeout=CLIENT_TIMEOUT)
     with lock:
         return boto3.client(
-            "s3", endpoint_url=("https://%s/" % s3_host) if s3_host is not None else None, config=config
+            "s3", endpoint_url=(f"https://{s3_host}/") if s3_host is not None else None, config=config
         )
