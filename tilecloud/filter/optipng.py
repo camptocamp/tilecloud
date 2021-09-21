@@ -1,5 +1,5 @@
 import os
-from subprocess import call
+from subprocess import call  # nosec
 from tempfile import NamedTemporaryFile
 from typing import List
 
@@ -16,7 +16,7 @@ class OptiPNG:
                 assert tile.data is not None
                 ntf.write(tile.data)
                 ntf.close()
-                retcode = call(self.args + [ntf.name])
+                retcode = call(self.args + [ntf.name])  # nosec
                 if retcode == 0:
                     with open(ntf.name, "rb") as f:
                         tile.data = f.read()

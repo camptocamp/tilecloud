@@ -51,4 +51,4 @@ class TileJSONTileStore(URLTileStore):
 
     @classmethod
     def from_url(cls, url: str) -> Any:
-        return cls(urlopen(url).read())
+        return cls(urlopen(url).read())  # nosec
