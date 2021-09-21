@@ -39,15 +39,13 @@ class URLTileStore(TileStore):
         logger.info("GET %s", url)
         try:
             response = self.session.get(url)
-            if response.status_code == 404 or response.status_code == 204:
+            if response.status_code in (404, 204):
                 return None
             tile.content_encoding = response.headers.get("Content-Encoding")
             tile.content_type = response.headers.get("Content-Type")
             if response.status_code < 300:
                 if response.status_code != 200:
-                    tile.error = "Unsupportetd status code {}: {}".format(
-                        response.status_code, response.reason
-                    )
+                    tile.error = f"Unsupported status code {response.status_code}: {response.reason}"
                 if tile.content_type:
                     if tile.content_type.startswith("image/"):
                         tile.data = response.content

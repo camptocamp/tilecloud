@@ -100,9 +100,9 @@ class Bounds:
 
     def __repr__(self) -> str:  # pragma: no cover
         if self.start is None:
-            return f"{self.__class__.__name__!s}(None)"
+            return f"{self.__class__.__name__}(None)"
         else:
-            return f"{self.__class__.__name__!s}({self.start!r}, {self.stop!r})"
+            return f"{self.__class__.__name__}({self.start}, {self.stop})"
 
     def add(self, value: int) -> "Bounds":
         """
@@ -286,7 +286,7 @@ class BoundingPyramid:
             s,
         )
         if not match:
-            raise ValueError(f"invalid literal for {cls.__name__!s}.from_string(): {s!r}")
+            raise ValueError(f"invalid literal for {cls.__name__}.from_string(): {s}")
         z1 = int(match.group("z1"))
         x1 = int(match.group("x1"))
         if match.group("starx"):
@@ -386,8 +386,8 @@ class Tile:
         :rtype: string
         """
         keys = sorted(self.__dict__.keys())
-        attrs = "".join(f" {key!s}={self.__dict__[key]!r}" for key in keys)
-        return f"<Tile{attrs!s}>"
+        attrs = "".join(f" {key}={self.__dict__[key]}" for key in keys)
+        return f"<Tile{attrs}>"
 
     @property
     def formated_metadata(self) -> str:
@@ -472,11 +472,9 @@ class TileCoord:
         :rtype: string
         """
         if self.n == 1:
-            return f"{self.__class__.__name__!s}({self.z!r}, {self.x!r}, {self.y!r})"
+            return f"{self.__class__.__name__}({self.z}, {self.x}, {self.y})"
         else:
-            return "{!s}({!r}, {!r}, {!r}, {!r})".format(
-                self.__class__.__name__, self.z, self.x, self.y, self.n
-            )
+            return f"{self.__class__.__name__}({self.z}, {self.x}, {self.x}, {self.n})"
 
     def __str__(self) -> str:
         """
@@ -485,9 +483,9 @@ class TileCoord:
         :rtype: string
         """
         if self.n == 1:
-            return f"{self.z:d}/{self.x:d}/{self.y:d}"
+            return f"{self.z}/{self.x}/{self.y}"
         else:
-            return f"{self.z:d}/{self.x:d}/{self.y:d}:+{self.n:d}/+{self.n:d}"
+            return f"{self.z}/{self.x}/{self.y}:+{self.n}/+{self.n}"
 
     def metatilecoord(self, n: int = 8) -> "TileCoord":
         return TileCoord(self.z, n * (self.x // n), n * (self.y // n), n)
@@ -499,7 +497,7 @@ class TileCoord:
     def from_string(cls, s: str) -> "TileCoord":
         m = re.match(r"(\d+)/(\d+)/(\d+)(?::\+(\d+)/\+\4)?\Z", s)
         if not m:
-            raise ValueError(f"invalid literal for {cls.__name__!s}.from_string: {s!r}")
+            raise ValueError(f"invalid literal for {cls.__name__}.from_string: {s}")
         x, y, z, n = m.groups()
         return cls(int(x), int(y), int(z), int(n) if n else 1)
 
