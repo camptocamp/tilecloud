@@ -6,6 +6,9 @@ checks:
   versions:
     audit: False
     rebuild: False
+  prospector_config:
+    properties:
+      doc-warnings: false
 
 publish:
   docker:

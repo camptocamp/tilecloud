@@ -1,5 +1,6 @@
 strictness: veryhigh
-np_doc-warnings: true
+doc-warnings: false
+max-line-length: 110
 
 pylint:
   options:
