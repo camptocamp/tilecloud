@@ -4,4 +4,4 @@ pytest-cov==3.0.0
 mypy==0.910
 types-boto==2.49.1
 types-redis==3.5.11
-types-requests==2.25.9
+types-requests==2.25.10
