@@ -43,11 +43,10 @@ class Bounds:
         """
         Construct a :class:`Bounds` object.
 
-        :param start: Start
-        :type start: int or ``None``
+        Arguments:
 
-        :param stop: Stop
-        :type stop: int or ``None``
+            start: Start
+            stop: Stop
         """
         self.start = start
         if stop is None:
@@ -70,10 +69,9 @@ class Bounds:
         """
         Return ``True`` if ``self`` contains ``key``.
 
-        :param key: Key
-        :type key: int
+        Arguments:
 
-        :rtype: bool
+            key: Key
         """
         if self.start is None:
             return False
@@ -84,8 +82,6 @@ class Bounds:
     def __len__(self) -> int:
         """
         Return the number of unique elements.
-
-        :rtype: int
         """
         if self.start is None:
             return 0
@@ -337,20 +333,13 @@ class Tile:
         """
         Construct a :class:`Tile`.
 
-        :param tilecoord: Tile coordinate
-        :type tilecoord: :class:`TileCoord`
+        Arguments:
 
-        :param content_encoding: Content encoding
-        :type content_encoding: string or ``None``
-
-        :param content_type: Content type
-        :type content_type: string or ``None``
-
-        :param data: Data
-        :type data: string or ``None``
-
-        :param kwargs: The metadata attributes
-        :type kargs: dict or ``None``
+            tilecoord: Tile coordinate
+            content_encoding: Content encoding
+            content_type: Content type
+            data: Data
+            kwargs: The metadata attributes
         """
         self.tilecoord = tilecoord
         self.content_encoding = content_encoding
@@ -364,8 +353,6 @@ class Tile:
     def __cmp__(self, other: "Tile") -> int:
         """
         Compare ``self`` to ``other``.
-
-        :rtype: int
 
         Tile comparison is done by comparing their coordinates.
         """
@@ -382,8 +369,6 @@ class Tile:
     def __repr__(self) -> str:  # pragma: no cover
         """
         Return a string representation for debugging.
-
-        :rtype: string
         """
         keys = sorted(self.__dict__.keys())
         attrs = "".join(f" {key}={self.__dict__[key]}" for key in keys)
@@ -410,17 +395,12 @@ class TileCoord:
         """
         Construct a TileCoord.
 
-        :param z: Zoom level
-        :type z: int
+        Attributes:
 
-        :param x: X coordinate
-        :type x: int
-
-        :param y: Y coordinate
-        :type y: int
-
-        :param n: Tile size
-        :type n: int
+            z: Zoom level
+            x: X coordinate
+            y: Y coordinate
+            n: Tile size
         """
         self.z = z
         self.x = x
@@ -430,8 +410,6 @@ class TileCoord:
     def __cmp__(self, other: "TileCoord") -> int:
         """
         Compare ``self`` to ``other``.
-
-        :rtype: int
 
         :class:`TileCoord`s are compared in order of their size and ``z``, ``x`` and
         ``y`` coordinates.
@@ -450,8 +428,6 @@ class TileCoord:
         """
         Return a hash value.
 
-        :rtype: int
-
         The hash values are unique for all tiles at a given zoom level, but
         tiles from different zoom levels may have equal hash values.
         """
@@ -468,8 +444,6 @@ class TileCoord:
     def __repr__(self) -> str:  # pragma: no cover
         """
         Return a string representation for debugging.
-
-        :rtype: string
         """
         if self.n == 1:
             return f"{self.__class__.__name__}({self.z}, {self.x}, {self.y})"
@@ -479,8 +453,6 @@ class TileCoord:
     def __str__(self) -> str:
         """
         Return a string representation.
-
-        :rtype: string
         """
         if self.n == 1:
             return f"{self.z}/{self.x}/{self.y}"
@@ -573,10 +545,9 @@ class TileLayout:
         """
         Return the filename for the given tile coordinate.
 
-        :param tilecoord: Tile coordinate
-        :type tilecoord: :class:`TileCoord`
+        Attributes:
 
-        :rtype: string
+            tilecoord: Tile coordinate
         """
         raise NotImplementedError
 
@@ -584,10 +555,9 @@ class TileLayout:
         """
         Return the tile coordinate for the given filename.
 
-        :param filename: Filename
-        :type filename: string
+        Attributes:
 
-        :rtype: :class:`TileCoord`
+            filename: Filename
         """
         raise NotImplementedError
 
@@ -606,13 +576,11 @@ class TileStore:
         """
         Construct a :class:`TileStore`.
 
-        :param bounding_pyramid: Bounding pyramid
-        :type bounding_pyramid: :class:`BoundingPyramid` or ``None``
+        Attributes:
 
-        :param content_type: Default content type for tiles in this store
-        :type content_type: string or ``None``
-
-        :param kwargs: Extra attributes
+            bounding_pyramid: Bounding pyramid
+            content_type: Default content type for tiles in this store
+            kwargs: Extra attributes
         """
         self.bounding_pyramid = bounding_pyramid
         self.content_type = content_type
@@ -623,10 +591,9 @@ class TileStore:
         """
         Return true if this store contains ``tile``.
 
-        :param tile: Tile
-        :type tile: :class:`Tile`
+        Attributes:
 
-        :rtype: bool
+            tile: Tile
         """
         if tile and self.bounding_pyramid:
             return tile.tilecoord in self.bounding_pyramid
@@ -636,8 +603,6 @@ class TileStore:
     def __len__(self) -> int:
         """
         Returns the total number of tiles in the store.
-
-        :rtype: int
         """
         return reduce(lambda x, _: x + 1, ifilter(None, self.list()), 0)
 
@@ -645,10 +610,9 @@ class TileStore:
         """
         Delete ``tiles`` from the store.
 
-        :param tiles: Input tilestream
-        :type tiles: iterable
+        Attributes:
 
-        :rtype: iterator
+            tiles: Input tilestream
         """
         return map(self.delete_one, ifilter(None, tiles))
 
@@ -656,10 +620,9 @@ class TileStore:
         """
         Delete ``tile`` and return ``tile``.
 
-        :param tile: Tile
-        :type tile: :class:`Tile` or ``None``
+        Attributes:
 
-        :rtype: :class:`Tile` or ``None``
+            tile: Tile
         """
         raise NotImplementedError
 
@@ -667,26 +630,21 @@ class TileStore:
         """
         Add data to each of ``tiles``.
 
-        :param tiles: Tilestream
-        :type tiles: iterator
+        Attributes:
 
-        :rtype: iterator
+            tiles: Tilestream
         """
         return map(self.get_one, ifilter(None, tiles))
 
     def get_all(self) -> Iterator[Optional[Tile]]:
         """
         Generate all the tiles in the store with their data.
-
-        :rtype: iterator
         """
         return map(self.get_one, ifilter(None, self.list()))
 
     def get_bounding_pyramid(self) -> BoundingPyramid:
         """
         Returns the bounding pyramid that encloses all tiles in the store.
-
-        :rtype: :class:`BoundingPyramid`
         """
         return reduce(
             BoundingPyramid.add, map(attrgetter("tilecoord"), ifilter(None, self.list())), BoundingPyramid()
@@ -696,8 +654,6 @@ class TileStore:
         """
         Returns a bounding pyramid that is cheap to calculate, or ``None`` if it is not possible to calculate
         a bounding pyramid cheaply.
-
-        :rtype: :class:`BoundingPyramid` or ``None``
         """
         return None
 
@@ -705,18 +661,15 @@ class TileStore:
         """
         Add data to ``tile``, or return ``None`` if ``tile`` is not in the store.
 
-        :param tile: Tile
-        :type tile: :class:`Tile` or ``None``
+        Attributes:
 
-        :rtype: :class:`Tile` or ``None``
+            tile: Tile
         """
         raise NotImplementedError
 
     def list(self) -> Iterable[Tile]:
         """
         Generate all the tiles in the store, but without their data.
-
-        :rtype: iterator
         """
         if self.bounding_pyramid is not None:
             for tilecoord in self.bounding_pyramid:
@@ -726,10 +679,9 @@ class TileStore:
         """
         Store ``tiles`` in the store.
 
-        :param tiles: Tilestream
-        :type tiles: iterator
+        Attributes:
 
-        :rtype: iterator
+            tiles: Tilestream
         """
         return map(self.put_one, ifilter(None, tiles))
 
@@ -737,10 +689,9 @@ class TileStore:
         """
         Store ``tile`` in the store.
 
-        :param tile: Tile
-        :type tile: :class:`Tile` or ``None``
+        Attributes:
 
-        :rtype: :class:`Tile` or ``None``
+            tile: Tile
         """
         raise NotImplementedError
 
@@ -749,10 +700,9 @@ class TileStore:
         """
         Construct a :class:`TileStore` from a name.
 
-        :param name: Name
-        :type name: string
+        Attributes:
 
-        :rtype: :class:`TileStore`
+            name: Name
 
         The following shortcuts are available:
 

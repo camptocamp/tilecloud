@@ -11,10 +11,10 @@ class EveryNth:
 
         hash(tile.tilecoord) % n == i
 
-    :param i:
+        i:
         ``i`` in the above calculation.
 
-    :param n:
+        n:
         ``n`` in the above calculation.
     """
 

@@ -32,16 +32,16 @@ class MapnikTileStore(TileStore):
         """
         Constructs a MapnikTileStore.
 
-        :param tilegrid: the tilegrid.
-        :param mapfile: the file used to render the tiles.
-        :param buffer_size: the image buffer size default is 128.
-        :param output_format: the output format,
+            tilegrid: the tilegrid.
+            mapfile: the file used to render the tiles.
+            buffer_size: the image buffer size default is 128.
+            output_format: the output format,
             possible values 'jpeg', 'png', 'png256', 'grid',
             default is 'png256'
-        :param layers_fields: the layers and fields used in the grid generation,
+            layers_fields: the layers and fields used in the grid generation,
             example: { 'my_layer': ['my_first_field', 'my_segonf_field']},
             default is {}.
-        :param **kwargs: for extended class.
+            **kwargs: for extended class.
         """
         if layers_fields is None:
             layers_fields = {}

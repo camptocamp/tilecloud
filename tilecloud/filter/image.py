@@ -17,11 +17,11 @@ class ImageFormatConverter:
     """
     Create a filter that converts a tile into the desired format.
 
-    :param content_type:
+        content_type:
         The content type representing the format to convert the tile image
         to.
 
-    :param kwargs:
+        kwargs:
         Extra arguments passed to ``PIL`` when opening the tile image.
     """
 
@@ -44,11 +44,11 @@ class MergeFilter:
     """
     Create a filter that merges the tile with tiles of the same coordinates.
 
-    :param tilestores:
+        tilestores:
         A collection of :class:`TileStore` objects from which tiles to
         merge with the currently handled tile are read.
 
-    :param content_type:
+        content_type:
         The content type to set in the tile. If ``None`` the content
         type of the first tile found in the stream is used for every
         other tile. Default is ``None``.
@@ -83,10 +83,10 @@ class PILImageFilter:
     """
     Create a filter to filter the tile image (with the PIL ``filter`` function).
 
-    :param filter:
+        filter:
         The filter to pass to the PIL ``filter`` function.
 
-    :param kwargs:
+        kwargs:
         Extra params passed to the PIL ``save`` function.
     """
 
