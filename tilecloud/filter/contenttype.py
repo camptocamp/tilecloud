@@ -7,7 +7,7 @@ class ContentTypeAdder:
     """
     Create a filter that adds a content type to the tile.
 
-    :param content_type:
+        content_type:
         Force this content type for the tile. Default is ``None``, meaning
         that the content type will be determined based on the tile data.
     """

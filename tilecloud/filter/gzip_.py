@@ -8,7 +8,7 @@ class GzipCompressor:
     """
     Create a filter that compresses a tile with gzip.
 
-    :param compresslevel:
+        compresslevel:
         The compression level. Default is 9.
     """
 

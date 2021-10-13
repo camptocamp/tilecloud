@@ -49,7 +49,7 @@ class MaximumConsecutiveErrors:
     Create a filter that raises a :class:`TooManyErrors` exception when there are ``max_consecutive_errors``
     consecutive errors.
 
-    :param max_consecutive_errors:
+        max_consecutive_errors:
         The max number of permitted consecutive errors. Once
         exceeded a :class:`TooManyErrors` exception is raised.
     """
@@ -73,10 +73,10 @@ class MaximumErrorRate:
     Create a filter that raises a :class:`TooManyErrors` exception when the total error rate exceeds
     ``max_error_rate``.
 
-    :param max_error_rate:
+        max_error_rate:
        The maximum error rate. Once exceeded a :class:`TooManyErrors`
        exception is raised.
-    :param min_tiles:
+        min_tiles:
        The minimum number of received tiles before a :class:`TooManyErrors`
        exception can be raised. Defaults to 8.
     """
@@ -103,7 +103,7 @@ class MaximumErrors:
     """
     Create a filter that raises a :class:`TooManyErrors` exception when a number of errors is reached.
 
-    :param max_errors:
+        max_errors:
         The maximum number of errors. Once exceeded a :class:`TooManyErrors`
         exception is raised.
     """
