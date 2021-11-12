@@ -1,13 +1,18 @@
 import logging
 import os
 import socket
-from typing import Any, Dict, Iterable, Iterator, List, Optional, Set, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Set, Tuple, Union
 
 from c2cwsgiutils import stats
 import redis.sentinel
 
 from tilecloud import Tile, TileStore
 from tilecloud.store.queue import decode_message, encode_message
+
+if TYPE_CHECKING:
+    Redis = redis.Redis[str]  # pylint: disable=unsubscriptable-object
+else:
+    Redis = redis.Redis
 
 STREAM_GROUP = "tilecloud"
 CONSUMER_NAME = socket.gethostname() + "-" + str(os.getpid())
@@ -19,6 +24,9 @@ class RedisTileStore(TileStore):
     """
     Redis queue.
     """
+
+    _master: Redis
+    _slave: Redis
 
     def __init__(
         self,
@@ -63,7 +71,9 @@ class RedisTileStore(TileStore):
         self._name = name.encode("utf-8")
         self._errors_name = self._name + b"_errors"
         try:
-            self._master.xgroup_create(name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
+            self._master.xgroup_create(  # type: ignore
+                name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True
+            )
         except redis.ResponseError as e:
             if "BUSYGROUP" not in str(e):
                 raise
@@ -78,7 +88,7 @@ class RedisTileStore(TileStore):
     def list(self) -> Iterator[Tile]:
         count = 0
         while True:
-            queues = self._master.xreadgroup(
+            queues = self._master.xreadgroup(  # type: ignore
                 groupname=STREAM_GROUP,
                 consumername=CONSUMER_NAME,
                 streams={self._name: ">"},
@@ -110,14 +120,15 @@ class RedisTileStore(TileStore):
 
                 if count % 10 == 0:
                     stats.set_gauge(
-                        ["redis", self._name_str, "nb_messages"], self._slave.xlen(name=self._name)
+                        ["redis", self._name_str, "nb_messages"],
+                        self._slave.xlen(name=self._name),
                     )
-                    pending = self._slave.xpending(self._name, STREAM_GROUP)
+                    pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore
                     stats.set_gauge(["redis", self._name_str, "pending"], pending["pending"])
 
     def put_one(self, tile: Tile) -> Tile:
         try:
-            self._master.xadd(name=self._name, fields={"message": encode_message(tile)})
+            self._master.xadd(name=self._name, fields={"message": encode_message(tile)})  # type: ignore
         except Exception as e:
             logger.warning("Failed sending Redis message", exc_info=True)
             tile.error = e
@@ -141,15 +152,17 @@ class RedisTileStore(TileStore):
         """
         Used only by tests.
         """
-        self._master.xtrim(name=self._name, maxlen=0)
+        self._master.xtrim(name=self._name, maxlen=0)  # type: ignore
         # xtrim doesn't empty the group claims. So we have to delete and re-create groups
-        self._master.xgroup_destroy(name=self._name, groupname=STREAM_GROUP)
-        self._master.xgroup_create(name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
-        self._master.xtrim(name=self._errors_name, maxlen=0)
+        self._master.xgroup_destroy(name=self._name, groupname=STREAM_GROUP)  # type: ignore
+        self._master.xgroup_create(  # type: ignore
+            name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True
+        )
+        self._master.xtrim(name=self._errors_name, maxlen=0)  # type: ignore
 
     def _claim_olds(self) -> Optional[Iterable[Tuple[bytes, Any]]]:
         logger.debug("Claim old's")
-        pendings = self._master.xpending_range(
+        pendings = self._master.xpending_range(  # type: ignore
             name=self._name, groupname=STREAM_GROUP, min="-", max="+", count=10
         )
         if not pendings:
@@ -181,7 +194,7 @@ class RedisTileStore(TileStore):
 
         logger.debug("%d elements to drop", len(to_drop))
         if to_drop:
-            drop_messages = self._master.xclaim(
+            drop_messages = self._master.xclaim(  # type: ignore
                 name=self._name,
                 groupname=STREAM_GROUP,
                 consumername=CONSUMER_NAME,
@@ -189,11 +202,11 @@ class RedisTileStore(TileStore):
                 message_ids=to_drop,
             )
             drop_ids = [drop_message[0] for drop_message in drop_messages]
-            self._master.xack(self._name, STREAM_GROUP, *drop_ids)
-            self._master.xdel(self._name, *drop_ids)
+            self._master.xack(self._name, STREAM_GROUP, *drop_ids)  # type: ignore
+            self._master.xdel(self._name, *drop_ids)  # type: ignore
             for _, drop_message in drop_messages:
                 tile = decode_message(drop_message[b"message"])
-                self._master.xadd(
+                self._master.xadd(  # type: ignore
                     name=self._errors_name,
                     fields=dict(tilecoord=str(tile.tilecoord)),
                     maxlen=self._max_errors_nb,
@@ -202,7 +215,7 @@ class RedisTileStore(TileStore):
 
         logger.debug("%d elements to steal", len(to_steal))
         if to_steal:
-            messages = self._master.xclaim(
+            messages = self._master.xclaim(  # type: ignore
                 name=self._name,
                 groupname=STREAM_GROUP,
                 consumername=CONSUMER_NAME,
@@ -220,7 +233,7 @@ class RedisTileStore(TileStore):
         Returns a map of stats.
         """
         nb_messages = self._slave.xlen(self._name)
-        pending = self._slave.xpending(self._name, STREAM_GROUP)
+        pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore
         tiles_in_error = self._get_errors()
 
         stats.set_gauge(["redis", self._name_str, "nb_messages"], nb_messages)
@@ -231,10 +244,10 @@ class RedisTileStore(TileStore):
         }
 
     def _get_errors(self) -> Set[str]:
-        now, now_us = self._slave.time()
+        now, now_us = self._slave.time()  # type: ignore
         old_timestamp = (now - self._max_errors_age) * 1000 + now_us / 1000
 
-        errors = self._slave.xrange(name=self._errors_name)
+        errors = self._slave.xrange(name=self._errors_name)  # type: ignore
         tiles_in_error = set()
         old_errors = []
         for error_id, error_message in errors:
@@ -245,5 +258,5 @@ class RedisTileStore(TileStore):
                 tiles_in_error.add(error_message[b"tilecoord"].decode())
         if old_errors:
             logger.info("Deleting %d old errors", len(old_errors))
-            self._master.xdel(self._errors_name, *old_errors)
+            self._master.xdel(self._errors_name, *old_errors)  # type: ignore
         return tiles_in_error
