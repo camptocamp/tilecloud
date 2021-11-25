@@ -128,7 +128,7 @@ class RedisTileStore(TileStore):
 
     def put_one(self, tile: Tile) -> Tile:
         try:
-            self._master.xadd(name=self._name, fields={"message": encode_message(tile)})  # type: ignore
+            self._master.xadd(name=self._name, fields={"message": encode_message(tile)})
         except Exception as e:
             logger.warning("Failed sending Redis message", exc_info=True)
             tile.error = e
@@ -152,17 +152,17 @@ class RedisTileStore(TileStore):
         """
         Used only by tests.
         """
-        self._master.xtrim(name=self._name, maxlen=0)  # type: ignore
+        self._master.xtrim(name=self._name, maxlen=0)
         # xtrim doesn't empty the group claims. So we have to delete and re-create groups
         self._master.xgroup_destroy(name=self._name, groupname=STREAM_GROUP)  # type: ignore
         self._master.xgroup_create(  # type: ignore
             name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True
         )
-        self._master.xtrim(name=self._errors_name, maxlen=0)  # type: ignore
+        self._master.xtrim(name=self._errors_name, maxlen=0)
 
     def _claim_olds(self) -> Optional[Iterable[Tuple[bytes, Any]]]:
         logger.debug("Claim old's")
-        pendings = self._master.xpending_range(  # type: ignore
+        pendings = self._master.xpending_range(
             name=self._name, groupname=STREAM_GROUP, min="-", max="+", count=10
         )
         if not pendings:
@@ -206,7 +206,7 @@ class RedisTileStore(TileStore):
             self._master.xdel(self._name, *drop_ids)  # type: ignore
             for _, drop_message in drop_messages:
                 tile = decode_message(drop_message[b"message"])
-                self._master.xadd(  # type: ignore
+                self._master.xadd(
                     name=self._errors_name,
                     fields=dict(tilecoord=str(tile.tilecoord)),
                     maxlen=self._max_errors_nb,
