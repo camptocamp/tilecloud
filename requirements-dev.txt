@@ -1,4 +1,4 @@
-prospector[with_mypy,with_bandit]==1.5.1
+prospector[with_mypy,with_bandit]==1.5.2
 pytest==6.2.5
 pytest-cov==3.0.0
 mypy==0.910
