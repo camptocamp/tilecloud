@@ -1,8 +1,10 @@
 import logging
-from typing import Any, Iterator, Optional, Union
+import os
+from typing import Any, Iterator, Optional
 
-import azure.core.credentials
-import azure.storage.blob
+from azure.core.exceptions import ResourceNotFoundError
+from azure.identity import DefaultAzureCredential
+from azure.storage.blob import BlobServiceClient, ContentSettings
 
 from tilecloud import Tile, TileLayout, TileStore
 
@@ -11,26 +13,30 @@ LOGGER = logging.getLogger(__name__)
 
 class AzureStorageBlobTileStore(TileStore):
     """
-    Tiles stored in Azure storge blob.
+    Tiles stored in Azure storage blob.
     """
 
     def __init__(
         self,
-        account_url: str,
         container: str,
         tilelayout: TileLayout,
-        credential: Optional[Union[str, azure.core.credentials.AzureSasCredential]] = None,
         dry_run: bool = False,
         cache_control: Optional[str] = None,
+        client: Optional[BlobServiceClient] = None,
         **kwargs: Any,
     ):
-        self.client = azure.storage.blob.BlobServiceClient(account_url=account_url, credential=credential)
+        if client is None:
+            if "AZURE_STORAGE_CONNECTION_STRING" in os.environ:
+                client = BlobServiceClient.from_connection_string(
+                    os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
+                )
+            else:
+                client = BlobServiceClient(
+                    account_url=os.environ["AZURE_STORAGE_ACCOUNT_URL"],
+                    credential=DefaultAzureCredential(),
+                )
 
-        self.container_name = container
-        try:
-            self.container_client = self.client.create_container(container)
-        except Exception as e:
-            LOGGER.info(e)
+        self.container_client = client.get_container_client(container=container)
         self.tilelayout = tilelayout
         self.dry_run = dry_run
         self.cache_control = cache_control
@@ -46,7 +52,7 @@ class AzureStorageBlobTileStore(TileStore):
         try:
             key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
             if not self.dry_run:
-                blob = self.client.get_blob_client(container=self.container_name, blob=key_name)
+                blob = self.container_client.get_blob_client(blob=key_name)
                 blob.delete_blob()
         except Exception as exc:
             tile.error = exc
@@ -55,12 +61,15 @@ class AzureStorageBlobTileStore(TileStore):
     def get_one(self, tile: Tile) -> Optional[Tile]:
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         try:
-            blob = self.client.get_blob_client(container=self.container_name, blob=key_name)
+            blob = self.container_client.get_blob_client(blob=key_name)
             tile.data = blob.download_blob().readall()
             properties = blob.get_blob_properties()
             tile.content_encoding = properties.content_settings.content_encoding
             tile.content_type = properties.content_settings.content_type
+        except ResourceNotFoundError:
+            return None
         except Exception as exc:
+            LOGGER.exception(exc)
             tile.error = exc
         return tile
 
@@ -79,10 +88,11 @@ class AzureStorageBlobTileStore(TileStore):
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         if not self.dry_run:
             try:
-                blob = self.client.get_blob_client(container=self.container_name, blob=key_name)
+                blob = self.container_client.get_blob_client(blob=key_name)
                 blob.upload_blob(
                     tile.data,
-                    content_settings=azure.storage.blob.ContentSettings(
+                    overwrite=True,
+                    content_settings=ContentSettings(
                         content_type=tile.content_type,
                         content_encoding=tile.content_encoding,
                         cache_control=self.cache_control,
