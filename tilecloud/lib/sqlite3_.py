@@ -1,6 +1,6 @@
 from collections.abc import MutableMapping
 from sqlite3 import Connection, Cursor
-from typing import TYPE_CHECKING, AbstractSet, Any, Iterator, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Iterator, KeysView, Optional, Tuple, Union
 
 from tilecloud import TileCoord
 
@@ -67,7 +67,7 @@ class SQLiteDict(Base):
     def itervalues(self) -> Iterator[Tuple[bytes]]:
         return map(self._unpackvalue, query(self.connection, self.ITERVALUES_SQL))  # type: ignore
 
-    def keys(self) -> AbstractSet[str]:
+    def keys(self) -> KeysView[str]:
         return set(iter(self))  # type: ignore
 
     def _packitem(  # pylint: disable=no-self-use
