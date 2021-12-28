@@ -2,6 +2,6 @@ prospector[with_mypy,with_bandit]==1.5.3.1
 pytest==6.2.5
 pytest-cov==3.0.0
 mypy==0.930
-types-boto==2.49.2
+types-boto==2.49.3
 types-redis==4.0.6
 types-requests==2.26.2
