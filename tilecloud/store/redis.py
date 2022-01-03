@@ -71,9 +71,7 @@ class RedisTileStore(TileStore):
         self._name = name.encode("utf-8")
         self._errors_name = self._name + b"_errors"
         try:
-            self._master.xgroup_create(  # type: ignore
-                name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True
-            )
+            self._master.xgroup_create(name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
         except redis.ResponseError as e:
             if "BUSYGROUP" not in str(e):
                 raise
@@ -88,7 +86,7 @@ class RedisTileStore(TileStore):
     def list(self) -> Iterator[Tile]:
         count = 0
         while True:
-            queues = self._master.xreadgroup(  # type: ignore
+            queues = self._master.xreadgroup(
                 groupname=STREAM_GROUP,
                 consumername=CONSUMER_NAME,
                 streams={self._name: ">"},
@@ -155,9 +153,7 @@ class RedisTileStore(TileStore):
         self._master.xtrim(name=self._name, maxlen=0)
         # xtrim doesn't empty the group claims. So we have to delete and re-create groups
         self._master.xgroup_destroy(name=self._name, groupname=STREAM_GROUP)  # type: ignore
-        self._master.xgroup_create(  # type: ignore
-            name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True
-        )
+        self._master.xgroup_create(name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
         self._master.xtrim(name=self._errors_name, maxlen=0)
 
     def _claim_olds(self) -> Optional[Iterable[Tuple[bytes, Any]]]:
@@ -247,7 +243,7 @@ class RedisTileStore(TileStore):
         now, now_us = self._slave.time()  # type: ignore
         old_timestamp = (now - self._max_errors_age) * 1000 + now_us / 1000
 
-        errors = self._slave.xrange(name=self._errors_name)  # type: ignore
+        errors = self._slave.xrange(name=self._errors_name)
         tiles_in_error = set()
         old_errors = []
         for error_id, error_message in errors:
