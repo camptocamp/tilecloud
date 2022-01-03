@@ -3,6 +3,6 @@ azure-identity==1.7.1
 boto3==1.20.26
 bottle==0.12.19
 c2cwsgiutils[broadcast]>=4.0.1
-Pillow==8.4.0
+Pillow==9.0.0
 pyproj==3.3.0
 pyramid==2.0
