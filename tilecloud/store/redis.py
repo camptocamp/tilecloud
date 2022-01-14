@@ -240,7 +240,7 @@ class RedisTileStore(TileStore):
         }
 
     def _get_errors(self) -> Set[str]:
-        now, now_us = self._slave.time()  # type: ignore
+        now, now_us = self._slave.time()
         old_timestamp = (now - self._max_errors_age) * 1000 + now_us / 1000
 
         errors = self._slave.xrange(name=self._errors_name)
