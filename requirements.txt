@@ -1,5 +1,5 @@
 azure-storage-blob==12.8.1
-azure-identity==1.7.1
+azure-identity==1.8.0
 boto3==1.21.10
 bottle==0.12.19
 c2cwsgiutils[broadcast]>=4.0.1
