@@ -1,4 +1,4 @@
-azure-storage-blob==12.8.1
+azure-storage-blob==12.10.0
 azure-identity==1.8.0
 boto3==1.21.16
 bottle==0.12.19
