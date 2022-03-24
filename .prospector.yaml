@@ -21,7 +21,7 @@ pylint:
     - broad-except
     - cyclic-import # see: https://github.com/PyCQA/pylint/issues/850
 
-pep8:
+pycodestyle:
   disable:
     - E203
     - E501
