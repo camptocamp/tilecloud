@@ -16,8 +16,7 @@ class TileCacheDiskLayout(RETileLayout):
     def __init__(self) -> None:
         RETileLayout.__init__(self, self.PATTERN, self.RE)
 
-    @staticmethod
-    def filename(tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
+    def filename(self, tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
         zs = f"{tilecoord.z:02d}"
         xs = f"{tilecoord.x:09f}"
         ys = f"{tilecoord.y:09f}"
