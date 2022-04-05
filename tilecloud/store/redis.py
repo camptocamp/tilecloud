@@ -79,8 +79,7 @@ class RedisTileStore(TileStore):
     def __contains__(self, tile: Tile) -> bool:
         return False
 
-    @staticmethod
-    def get_one(tile: Tile) -> Tile:
+    def get_one(self, tile: Tile) -> Tile:
         return tile
 
     def list(self) -> Iterator[Tile]:

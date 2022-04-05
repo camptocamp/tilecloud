@@ -11,18 +11,14 @@ class NullTileStore(TileStore):
     def __contains__(self, tile: Tile) -> bool:
         return False
 
-    @staticmethod
-    def delete_one(tile: Tile) -> Tile:
+    def delete_one(self, tile: Tile) -> Tile:
         return tile
 
-    @staticmethod
-    def get_one(tile: Tile) -> Tile:
+    def get_one(self, tile: Tile) -> Tile:
         return tile
 
-    @staticmethod
-    def list() -> Iterable[Tile]:
+    def list(self) -> Iterable[Tile]:
         return ()
 
-    @staticmethod
-    def put_one(tile: Tile) -> Tile:
+    def put_one(self, tile: Tile) -> Tile:
         return tile

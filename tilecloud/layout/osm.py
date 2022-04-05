@@ -16,8 +16,7 @@ class OSMTileLayout(RETileLayout):
     def __init__(self) -> None:
         RETileLayout.__init__(self, self.PATTERN, self.RE)
 
-    @staticmethod
-    def filename(tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
+    def filename(self, tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
         return f"{tilecoord.z}/{tilecoord.x}/{tilecoord.y}"
 
     @staticmethod

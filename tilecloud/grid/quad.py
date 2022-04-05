@@ -41,8 +41,7 @@ class QuadTileGrid(TileGrid):
         )
         return (minx, miny, maxx, maxy)
 
-    @staticmethod
-    def fill_down(z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
+    def fill_down(self, z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
         xbounds, ybounds = bounds
         assert xbounds.start is not None
         assert xbounds.stop is not None
@@ -50,8 +49,7 @@ class QuadTileGrid(TileGrid):
         assert ybounds.stop is not None
         return (Bounds(2 * xbounds.start, 2 * xbounds.stop), Bounds(2 * ybounds.start, 2 * ybounds.stop))
 
-    @staticmethod
-    def fill_up(z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
+    def fill_up(self, z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
         assert z > 0
         xbounds, ybounds = bounds
         assert xbounds.start is not None
@@ -63,15 +61,13 @@ class QuadTileGrid(TileGrid):
             Bounds(ybounds.start // 2, max(ybounds.stop // 2, 1)),
         )
 
-    @staticmethod
-    def parent(tilecoord: TileCoord) -> Optional[TileCoord]:
+    def parent(self, tilecoord: TileCoord) -> Optional[TileCoord]:
         if tilecoord.z == 0:
             return None
         else:
             return TileCoord(tilecoord.z - 1, int(tilecoord.x // 2), int(tilecoord.y // 2))
 
-    @staticmethod
-    def roots() -> Iterator[TileCoord]:
+    def roots(self) -> Iterator[TileCoord]:
         yield TileCoord(0, 0, 0)
 
     def tilecoord(self, z: int, x: float, y: float) -> TileCoord:
