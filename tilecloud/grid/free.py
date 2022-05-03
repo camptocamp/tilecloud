@@ -1,5 +1,5 @@
 from math import floor
-from typing import Iterator, List, Optional, Sequence, Tuple
+from typing import Iterator, List, Optional, Sequence, Tuple, Union
 
 from tilecloud import TileCoord, TileGrid
 
@@ -7,8 +7,8 @@ from tilecloud import TileCoord, TileGrid
 class FreeTileGrid(TileGrid):
     def __init__(
         self,
-        resolutions: Sequence[int],
-        max_extent: Optional[Tuple[int, int, int, int]] = None,
+        resolutions: Sequence[Union[int, float]],
+        max_extent: Optional[Union[Tuple[int, int, int, int], Tuple[float, float, float, float]]] = None,
         tile_size: Optional[float] = None,
         scale: int = 1,
         flip_y: bool = False,
