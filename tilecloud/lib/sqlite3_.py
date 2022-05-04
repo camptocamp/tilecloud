@@ -12,7 +12,7 @@ def query(connection: Connection, *args: Any) -> Cursor:
 
 
 if TYPE_CHECKING:
-    Base = MutableMapping[Union[str, TileCoord], bytes]
+    Base = MutableMapping[Union[str, TileCoord], bytes]  # pylint: disable=unsubscriptable-object
 else:
     Base = MutableMapping
 
