@@ -5,9 +5,7 @@ checks:
     clean.yaml: False
     audit.yaml: False
     rebuild.yaml: False
-  versions:
-    audit: False
-    rebuild: False
+  versions: False
   prospector_config:
     properties:
       doc-warnings: false

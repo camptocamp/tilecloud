@@ -10,7 +10,7 @@ from tilecloud import Tile, TileStore
 from tilecloud.store.queue import decode_message, encode_message
 
 if TYPE_CHECKING:
-    Redis = redis.Redis[str]  # pylint: disable=unsubscriptable-object
+    Redis = redis.Redis[str]
 else:
     Redis = redis.Redis
 
