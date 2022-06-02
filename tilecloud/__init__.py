@@ -650,7 +650,7 @@ class TileStore:
             BoundingPyramid.add, map(attrgetter("tilecoord"), ifilter(None, self.list())), BoundingPyramid()
         )
 
-    def get_cheap_bounding_pyramid(self) -> Optional[BoundingPyramid]:  # pylint: disable=no-self-use
+    def get_cheap_bounding_pyramid(self) -> Optional[BoundingPyramid]:
         """
         Returns a bounding pyramid that is cheap to calculate, or ``None`` if it is not possible to calculate
         a bounding pyramid cheaply.

@@ -70,24 +70,20 @@ class SQLiteDict(Base):
     def keys(self) -> KeysView[str]:
         return set(iter(self))  # type: ignore
 
-    def _packitem(  # pylint: disable=no-self-use
-        self, key: TileCoord, value: Optional[bytes]
-    ) -> Tuple[int, int, int, Optional[memoryview]]:
+    def _packitem(self, key: TileCoord, value: Optional[bytes]) -> Tuple[int, int, int, Optional[memoryview]]:
         return (key, value)  # type: ignore
 
-    def _packkey(self, key: TileCoord) -> Tuple[int, int, int]:  # pylint: disable=no-self-use
+    def _packkey(self, key: TileCoord) -> Tuple[int, int, int]:
         return (key,)  # type: ignore
 
     @staticmethod
     def _packvalue(value: Any) -> Tuple[Any]:  # pragma: no cover
         return (value,)
 
-    def _unpackitem(  # pylint: disable=no-self-use
-        self, row: Tuple[int, int, int, bytes]
-    ) -> Tuple[TileCoord, bytes]:  # pragma: no cover
+    def _unpackitem(self, row: Tuple[int, int, int, bytes]) -> Tuple[TileCoord, bytes]:  # pragma: no cover
         return row  # type: ignore
 
-    def _unpackkey(self, row: Tuple[int, int, int]) -> TileCoord:  # pylint: disable=no-self-use
+    def _unpackkey(self, row: Tuple[int, int, int]) -> TileCoord:
         return row[0]  # type: ignore
 
     @staticmethod
