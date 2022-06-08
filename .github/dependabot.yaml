@@ -5,13 +5,13 @@ updates:
   - package-ecosystem: pip
     directory: /
     schedule:
-      interval: daily
+      interval: monthly
     ignore:
       - dependency-name: none
 
   - package-ecosystem: docker
     directory: '/'
     schedule:
-      interval: daily
+      interval: monthly
     ignore:
       - dependency-name: none
