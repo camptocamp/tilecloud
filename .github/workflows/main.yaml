@@ -40,6 +40,8 @@ jobs:
       - run: python3 -m pip install --requirement=requirements-dev.txt
 
       - run: docker-compose up --exit-code-from test
+        env:
+          DOCKER_BUILDKIT: '1'
 
       - name: Publish
         run: c2cciutils-publish
