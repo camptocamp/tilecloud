@@ -1,0 +1,3 @@
+ignored:
+  - DL3008 # Pin versions in apt get install.
+  - DL3042 # Avoid use of cache directory with pip. Use `pip install --no-cache-dir <package>`

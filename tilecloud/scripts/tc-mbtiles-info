@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-from optparse import OptionParser
 import os.path
 import sqlite3
 import sys
 import textwrap
+from optparse import OptionParser
 
 from tilecloud.store.mbtiles import Metadata, Tiles
 
@@ -29,11 +29,11 @@ BOUNDING_PYRAMID_SQL = textwrap.dedent(
 )
 
 
-def main(argv):
+def main():
     option_parser = OptionParser()
     option_parser.add_option("-m", "--metadata", action="store_true")
     option_parser.add_option("-t", "--tiles", choices=("bounding-pyramid", "count", "list"))
-    options, args = option_parser.parse_args(argv[1:])
+    options, args = option_parser.parse_args()
     for arg in args:
         assert os.path.exists(arg)
         connection = sqlite3.connect(arg)
@@ -59,4 +59,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    sys.exit(main())

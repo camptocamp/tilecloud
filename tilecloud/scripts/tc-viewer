@@ -1,50 +1,14 @@
 #!/usr/bin/env python
 
-from optparse import OptionParser
 import os.path
 import re
 import sys
+from optparse import OptionParser
 
 import bottle
 
 from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
 from tilecloud.filter.contenttype import ContentTypeAdder
-
-option_parser = OptionParser()
-option_parser.add_option("--cache", action="store_true")
-option_parser.add_option("--debug", action="store_true", default=False)
-option_parser.add_option("--root", metavar="Z/X/Y")
-option_parser.add_option("--host", default="127.0.0.1", metavar="HOST")
-option_parser.add_option("--port", default=8080, metavar="PORT", type=int)
-option_parser.add_option("--quiet", action="store_true", default=False)
-option_parser.add_option("--max-extent", metavar="MAX-EXTENT", type=str)
-option_parser.add_option("--resolutions", metavar="RESOLUTIONS", type=str)
-option_parser.add_option("--server", metavar="SERVER")
-options, args = option_parser.parse_args(sys.argv[1:])
-
-if options.debug:
-    bottle.DEBUG = True
-if options.root:
-    match = re.match(r"(\d+)/(\d+)/(\d+)\Z", options.root)
-    root = TileCoord(*map(int, match.groups()))
-else:
-    root = TileCoord(0, 0, 0)
-if options.server is None:
-    try:
-        import tornado.httpserver
-        import tornado.ioloop
-        import tornado.wsgi
-
-        options.server = "tornado"
-        id(tornado)  # Suppress pyflakes warning 'tornado' imported but unused
-    except ImportError:
-        options.server = "wsgiref"
-
-cache = {} if options.cache else None
-max_extent = options.max_extent
-resolutions = options.resolutions
-tilestores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
-content_type_adder = ContentTypeAdder()
 
 
 @bottle.route("/tiles/<index:int>/tiles/<z:int>/<x:int>/<y:int><ext:re:.*>")
@@ -160,7 +124,44 @@ def index():
     return dict(debug=bottle.request.GET.get("debug"))
 
 
-if __name__ == "__main__":
+def main():
+    option_parser = OptionParser()
+    option_parser.add_option("--cache", action="store_true")
+    option_parser.add_option("--debug", action="store_true", default=False)
+    option_parser.add_option("--root", metavar="Z/X/Y")
+    option_parser.add_option("--host", default="127.0.0.1", metavar="HOST")
+    option_parser.add_option("--port", default=8080, metavar="PORT", type=int)
+    option_parser.add_option("--quiet", action="store_true", default=False)
+    option_parser.add_option("--max-extent", metavar="MAX-EXTENT", type=str)
+    option_parser.add_option("--resolutions", metavar="RESOLUTIONS", type=str)
+    option_parser.add_option("--server", metavar="SERVER")
+    options, args = option_parser.parse_args(sys.argv[1:])
+
+    if options.debug:
+        bottle.DEBUG = True
+    if options.root:
+        match = re.match(r"(\d+)/(\d+)/(\d+)\Z", options.root)
+        root = TileCoord(*map(int, match.groups()))
+    else:
+        root = TileCoord(0, 0, 0)
+    if options.server is None:
+        try:
+            import tornado.httpserver
+            import tornado.ioloop
+            import tornado.wsgi
+
+            options.server = "tornado"
+            id(tornado)  # Suppress pyflakes warning 'tornado' imported but unused
+        except ImportError:
+            options.server = "wsgiref"
+
+    global cache, max_extent, resolutions, tilestores, content_type_adder
+    cache = {} if options.cache else None
+    max_extent = options.max_extent
+    resolutions = options.resolutions
+    tilestores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
+    content_type_adder = ContentTypeAdder()
+
     bottle.run(
         host=options.host,
         port=options.port,
@@ -168,3 +169,7 @@ if __name__ == "__main__":
         quiet=options.quiet,
         server=options.server,
     )
+
+
+if __name__ == "__main__":
+    main()

@@ -13,4 +13,5 @@ services:
       - ./:/app/
     command:
       - make
-      - checks
+      - prospector
+      - tests

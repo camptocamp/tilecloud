@@ -1,8 +1,2 @@
-azure-storage-blob==12.8.1
-azure-identity==1.10.0
-boto3==1.24.14
-bottle==0.12.21
-c2cwsgiutils[broadcast]==5.0.0
-Pillow==9.1.1
-pyproj==3.3.1
-pyramid==2.0
+poetry==1.1.13
+poetry-plugin-tweak-dependencies-version==0.1.7

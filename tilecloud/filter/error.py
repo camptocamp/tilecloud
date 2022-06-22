@@ -38,7 +38,7 @@ class LogErrors(Logger):
     Create a filter for logging all tiles with errors.
     """
 
-    def __call__(self, tile: Tile) -> Tile:
+    def __call__(self, tile: Optional[Tile]) -> Optional[Tile]:
         if tile and tile.error:
             Logger.__call__(self, tile)
         return tile

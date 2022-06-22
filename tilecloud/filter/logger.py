@@ -1,5 +1,5 @@
 import logging
-from typing import Any
+from typing import Any, Optional
 
 from tilecloud import Tile
 
@@ -12,7 +12,7 @@ class Logger:
         self.args = args
         self.kwargs = kwargs
 
-    def __call__(self, tile: Tile) -> Tile:
+    def __call__(self, tile: Optional[Tile]) -> Optional[Tile]:
         if tile is not None:
             variables = {}
             variables.update(tile.__dict2__)

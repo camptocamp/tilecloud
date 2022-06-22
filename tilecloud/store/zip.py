@@ -1,9 +1,9 @@
-from collections import defaultdict
-from datetime import datetime
 import os.path
 import re
-from typing import Any, Dict, Iterator, Optional
 import zipfile
+from collections import defaultdict
+from datetime import datetime
+from typing import Any, Dict, Iterator, Optional
 
 from tilecloud import Tile, TileLayout, TileStore
 from tilecloud.layout.osm import OSMTileLayout
