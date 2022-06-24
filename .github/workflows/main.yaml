@@ -37,11 +37,12 @@ jobs:
       - name: Checks
         run: c2cciutils-checks
 
-      - run: python3 -m pip install --requirement=requirements-dev.txt
+      - name: Applications checks
+        run: make checks
 
-      - run: docker-compose up --exit-code-from test
-        env:
-          DOCKER_BUILDKIT: '1'
+      - name: Logs
+        run: c2cciutils-docker-logs
+        if: always()
 
       - name: Publish
         run: c2cciutils-publish

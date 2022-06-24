@@ -5,12 +5,11 @@ Filters are callables. They receive a tile (:class:`tilecloud.Tile` object) as
 their first argument and return a tile. They can act on the tile they receive.
 They may return ``None`` to drop the tile.
 
-To filter a time stream use the ``itertools.imap`` function. For example::
+To filter a time stream use the ``map`` function. For example::
 
-    from itertools import imap
     from tilecloud.filter.error import DropErrors
 
-    tilestream = imap(DropErrors(), tilestream)
+    tilestream = map(DropErrors(), tilestream)
 
 TileCloud provides a number of filters (filter factories really). See below.
 

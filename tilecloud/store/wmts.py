@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 from tilecloud.layout.wmts import WMTSTileLayout
 from tilecloud.store.url import URLTileStore
@@ -12,7 +12,7 @@ class WMTSTileStore(URLTileStore):
         style: Optional[str] = None,
         format: Optional[str] = None,
         tile_matrix_set: Optional[str] = None,
-        tile_matrix: type = str,
+        tile_matrix: Callable[[int], str] = str,
         **kwargs: Any,
     ):
         layout = WMTSTileLayout(url, layer, style, format, tile_matrix_set, tile_matrix)

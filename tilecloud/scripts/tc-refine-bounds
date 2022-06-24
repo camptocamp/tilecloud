@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from optparse import OptionParser
 import sys
+from optparse import OptionParser
 
 from tilecloud import BoundingPyramid, Tile, TileCoord, TileStore
 
@@ -27,13 +27,13 @@ def detect_edge(tilestore, z, first, last, other, horizontal, up):
     return last
 
 
-def main(argv):
+def main():
     option_parser = OptionParser()
     option_parser.add_option("-b", "--bounds", metavar="BOUNDING-PYRAMID")
     option_parser.add_option("-r", "--relative", action="store_true")
     option_parser.add_option("-s", "--seed", metavar="SEED")
     option_parser.add_option("-z", "--zoom", metavar="ZOOM", type=int)
-    options, args = option_parser.parse_args(argv[1:])
+    options, args = option_parser.parse_args()
     bounding_pyramid = BoundingPyramid.from_string(options.bounds)
     z = options.zoom
     if options.seed is None:
@@ -56,4 +56,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    sys.exit(main())

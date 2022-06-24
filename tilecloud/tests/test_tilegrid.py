@@ -1,5 +1,5 @@
-from itertools import islice
 import unittest
+from itertools import islice
 
 from tilecloud import TileCoord, TileGrid
 from tilecloud.grid.free import FreeTileGrid

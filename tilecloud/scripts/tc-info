@@ -1,22 +1,21 @@
 #!/usr/bin/env python
 
+import sys
 from collections import defaultdict
-from itertools import imap
 from operator import attrgetter
 from optparse import OptionParser
-import sys
 
 from tilecloud import BoundingPyramid, TileStore
 
 
-def main(argv):
+def main():
     option_parser = OptionParser()
     option_parser.add_option("-b", "--bounding-pyramid", metavar="BOUNDING-PYRAMID")
     option_parser.add_option("-r", "--relative", action="store_true")
     option_parser.add_option(
         "-t", "--tiles", choices=("bounding-pyramid", "completion", "count", "estimate-completion", "list")
     )
-    options, args = option_parser.parse_args(argv[1:])
+    options, args = option_parser.parse_args()
     for arg in args:
         tilestore = TileStore.load(arg)
         if options.tiles == "bounding-pyramid":
@@ -43,7 +42,7 @@ def main(argv):
         elif options.tiles == "completion":
             bounding_pyramid = BoundingPyramid.from_string(options.bounding_pyramid)
             completed = defaultdict(set)
-            for tilecoord in imap(attrgetter("tilecoord"), tilestore.list()):
+            for tilecoord in map(attrgetter("tilecoord"), tilestore.list()):
                 completed[tilecoord.z].add((tilecoord.x, tilecoord.y))
             for z in bounding_pyramid.zs():
                 numerator = len(completed[z])
@@ -70,4 +69,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    sys.exit(main())

@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 import logging
-from optparse import OptionParser
 import os.path
 import random
 import sys
+from optparse import OptionParser
 
 from c2cwsgiutils import stats
 
@@ -24,8 +24,8 @@ from tilecloud.filter.rate import RateLimit
 from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 
 
-def main(argv):
-    logger = logging.getLogger(os.path.basename(argv[0]))
+def main():
+    logger = logging.getLogger(os.path.basename(sys.argv[0]))
     option_parser = OptionParser()
     option_parser.add_option("--benchmark", action="store_true")
     option_parser.add_option("-b", "--bounding-pyramid", metavar="BOUNDING-PYRAMID")
@@ -46,7 +46,7 @@ def main(argv):
     option_parser.add_option("--statsd-port", default=8125, metavar="PORT", type=int)
     option_parser.add_option("--statsd-prefix", default="tc-copy-", metavar="PREFIX")
     option_parser.add_option("-v", "--verbose", action="store_true")
-    options, args = option_parser.parse_args(argv[1:])
+    options, args = option_parser.parse_args()
     if options.verbose:
         logging.basicConfig(level=logging.INFO)
     else:
@@ -139,4 +139,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    sys.exit(main())

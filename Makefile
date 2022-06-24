@@ -1,3 +1,14 @@
+export DOCKER_BUILDKIT = 1
+DOCKER_BUILD_ARG = $(shell bash -c '[ "$$CI" == "true" ] && echo "--pull"')
+
+.PHONY: help
+help: ## Display this help message
+	@echo "Usage: make <target>"
+	@echo
+	@echo "Available targets:"
+	@grep --extended-regexp --no-filename '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | sort | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "	%-20s%s\n", $$1, $$2}'
+
 .PHONY: all
 all: test prospector docs
 
@@ -5,23 +16,24 @@ all: test prospector docs
 clean:
 	find tilecloud tiles -name \*.pyc | xargs rm -f
 	make -C docs clean
-	rm -rf .venv
 
 .PHONY: docs
-docs:
+docs: ## Make the documentation
 	make -C docs html
+
 
 .PHONY: prospector
 prospector:
-	prospector tilecloud --output=pylint
+	prospector --output=pylint --die-on-tool-error
 
-.PHONY: test
-test:
-	pytest -vv --cov=tilecloud
+.PHONY: tests
+tests:
+	pytest --verbose --color=yes --cov=tilecloud
 
-.PHONY: pypi-upload
-pypi-upload: test prospector
-	python3 setup.py sdist upload
+.PHONY: build ## build the images for the checks
+build:
+	docker-compose build $(DOCKER_BUILD_ARG)
 
-.PHONY: checks
-checks: prospector test
+.PHONY: checks ## Run the checks
+checks: build
+	docker-compose up --exit-code-from test

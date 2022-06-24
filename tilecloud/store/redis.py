@@ -3,8 +3,8 @@ import os
 import socket
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Set, Tuple, Union
 
-from c2cwsgiutils import stats
 import redis.sentinel
+from c2cwsgiutils import stats
 
 from tilecloud import Tile, TileStore
 from tilecloud.store.queue import decode_message, encode_message

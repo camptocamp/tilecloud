@@ -1,7 +1,7 @@
 from typing import Any, Optional
 
-from tilecloud import Tile, TileLayout, TileStore
 import tilecloud.lib.memcached
+from tilecloud import Tile, TileLayout, TileStore
 
 
 class MemcachedTileStore(TileStore):

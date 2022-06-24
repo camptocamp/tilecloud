@@ -1,3 +1,104 @@
 [tool.black]
 line-length = 110
 target-version = ['py38']
+
+[tool.mypy]
+python_version = 3.8
+warn_redundant_casts = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+strict_optional = true
+strict = true
+
+[tool.isort]
+known_first_party = "tilecloud"
+profile = "black"
+line_length = 110
+
+[tool.poetry]
+name = "tilecloud"
+version = "0.0.0"
+description = "Tools for managing tiles"
+readme = "README.md"
+authors = ["Camptocamp <info@camptocamp.com>"]
+repository = "https://github.com/camptocamp/tilecloud"
+license = "BSD"
+keywords = ["gis", "tilecloud"]
+packages = [{ include = "tilecloud" }]
+classifiers = [
+        "Development Status :: 6 - Mature",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: BSD License",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Topic :: Scientific/Engineering :: GIS",
+        "Typing :: Typed",
+]
+include = ["tilecloud_chain/py.typed"]
+
+[tool.poetry.scripts]
+tc-copy = "tilecloud.scripts.tc-copy:main"
+tc-delete = "tilecloud.scripts.tc-delete:main"
+tc-info = "tilecloud.scripts.tc-info:main"
+tc-mask = "tilecloud.scripts.tc-mask:main"
+tc-mbtiles = "tilecloud.scripts.tc-mbtiles-create:main"
+tc-mbtiles-info = "tilecloud.scripts.tc-mbtiles-info:main"
+tc-redifined-bounds = "tilecloud.scripts.tc-refine-bounds:main"
+tc-viewer = "tilecloud.scripts.tc-viewer:main"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.11"
+azure-storage-blob = { version = "12.8.1", optional = true }
+azure-identity = { version = "1.10.0", optional = true }
+boto3 = { version = "1.24.14", optional = true }
+bottle = "0.12.21"
+c2cwsgiutils = { version = "5.0.0", extras = [ "broadcast" ], optional = true}
+Pillow = "9.1.1"
+pyproj = "3.3.1"
+pyramid = { version = "2.0", optional = true }
+requests = "2.28.0"
+redis = { version = "4.3.3", optional = true }
+
+[tool.poetry.extras]
+azure = [ "azure-storage-blob", "azure-identity" ]
+aws = [ "boto3" ]
+wsgi = [ "pyramid" ]
+redis = [ "redis", "c2cwsgiutils" ]
+all = [ "azure-storage-blob", "azure-identity", "boto3", "pyramid", "redis", "c2cwsgiutils" ]
+
+[tool.poetry.dev-dependencies]
+prospector = { version = "1.7.7", extras = [
+    "with_bandit",
+    "with_mypy",
+    "with_pyroma"
+] }
+pylint = "2.14.1"
+mypy = "0.961"
+flake8 = "4.0.1"
+pytest = "7.1.2"
+pytest-cov = "3.0.0"
+types-boto = "2.49.15"
+types-redis = "4.2.6"
+types-requests = "2.27.30"
+pycairo = "1.21.0"
+Shapely = "1.8.2"
+
+[build-system]
+requires = [
+  "poetry-core>=1.0.0",
+  "poetry-dynamic-versioning",
+  "poetry-plugin-tweak-dependencies-version"
+]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry-dynamic-versioning]
+enable = true # disable on Docker
+vcs = "git"
+pattern = "^((?P<epoch>\\d+)!)?(?P<base>\\d+(\\.\\d+)*)"
+
+[tool.poetry-plugin-tweak-dependencies-version]
+default = "present"

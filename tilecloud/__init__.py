@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # pylint: disable=import-outside-toplevel
 
-from builtins import filter as ifilter
 import collections
-from functools import reduce
-from itertools import islice
 import logging
-from operator import attrgetter
 import os.path
 import re
+from builtins import filter as ifilter
+from functools import reduce
+from itertools import islice
+from operator import attrgetter
 from typing import Any, Dict, Iterable, Iterator, Optional, Tuple, Union, cast
 
 
@@ -626,7 +626,7 @@ class TileStore:
         """
         raise NotImplementedError
 
-    def get(self, tiles: Iterable[Tile]) -> Iterator[Optional[Tile]]:
+    def get(self, tiles: Iterable[Optional[Tile]]) -> Iterator[Optional[Tile]]:
         """
         Add data to each of ``tiles``.
 

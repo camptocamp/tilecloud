@@ -1,22 +1,21 @@
 #!/usr/bin/env python
 
-from itertools import imap
 import logging
-from optparse import OptionParser
 import os.path
 import sys
+from optparse import OptionParser
 
 from tilecloud import BoundingPyramid, TileStore, consume
 from tilecloud.filter.logger import Logger
 from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 
 
-def main(argv):
-    logger = logging.getLogger(os.path.basename(argv[0]))
+def main():
+    logger = logging.getLogger(os.path.basename(sys.argv[0]))
     option_parser = OptionParser()
     option_parser.add_option("-b", "--bounding-pyramid", metavar="BOUNDING-PYRAMID")
     option_parser.add_option("-v", "--verbose", action="store_true")
-    options, args = option_parser.parse_args(argv[1:])
+    options, args = option_parser.parse_args()
     if options.verbose:
         logging.basicConfig(level=logging.INFO)
     if options.bounding_pyramid:
@@ -31,9 +30,9 @@ def main(argv):
             tilestream = tilestore.list()
         tilestream = tilestore.delete(tilestream)
         if options.verbose:
-            tilestream = imap(Logger(logger, logging.INFO, "%(tilecoord)s"), tilestream)
+            tilestream = map(Logger(logger, logging.INFO, "%(tilecoord)s"), tilestream)
         consume(tilestream, None)
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    sys.exit(main())

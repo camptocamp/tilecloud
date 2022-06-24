@@ -1,5 +1,5 @@
 from collections import deque
-from typing import Callable, Deque, Iterable, Iterator, Optional, Tuple
+from typing import Callable, Deque, Iterator, Optional, Tuple
 
 from tilecloud import Tile, TileGrid, TileStore
 from tilecloud.grid.quad import QuadTileGrid
@@ -12,7 +12,7 @@ class RenderingTheWorldTileStore(TileStore):
 
     def __init__(
         self,
-        subdivide: Callable[[Tile], Iterable[Tile]],
+        subdivide: Callable[[Tile], bool],
         tilegrid: Optional[TileGrid] = None,
         queue: Optional[Deque[Tile]] = None,
         seeds: Tuple[Tile, ...] = (),
