@@ -15,7 +15,3 @@ checks:
 publish:
   docker:
     images: []
-  pypi:
-    versions:
-      - version_tag
-      - version_branch
