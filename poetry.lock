@@ -16,7 +16,7 @@ name = "async-timeout"
 version = "4.0.2"
 description = "Timeout context manager for asyncio programs"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [[package]]
@@ -46,7 +46,7 @@ name = "azure-core"
 version = "1.24.1"
 description = "Microsoft Azure Core Library for Python"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -59,7 +59,7 @@ name = "azure-identity"
 version = "1.10.0"
 description = "Microsoft Azure Identity Library for Python"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -71,16 +71,16 @@ six = ">=1.12.0"
 
 [[package]]
 name = "azure-storage-blob"
-version = "12.12.0"
+version = "12.8.1"
 description = "Microsoft Azure Blob Storage Client Library for Python"
 category = "main"
-optional = false
-python-versions = ">=3.6"
+optional = true
+python-versions = "*"
 
 [package.dependencies]
-azure-core = ">=1.23.1,<2.0.0"
+azure-core = ">=1.10.0,<2.0.0"
 cryptography = ">=2.1.4"
-msrest = ">=0.6.21"
+msrest = ">=0.6.18"
 
 [[package]]
 name = "bandit"
@@ -103,14 +103,14 @@ yaml = ["pyyaml"]
 
 [[package]]
 name = "boto3"
-version = "1.24.15"
+version = "1.24.14"
 description = "The AWS SDK for Python"
 category = "main"
-optional = false
+optional = true
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.15,<1.28.0"
+botocore = ">=1.27.14,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -119,10 +119,10 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.15"
+version = "1.27.17"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
-optional = false
+optional = true
 python-versions = ">= 3.7"
 
 [package.dependencies]
@@ -166,8 +166,11 @@ name = "c2cwsgiutils"
 version = "5.0.0"
 description = "Common utilities for Camptocamp WSGI applications"
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
+
+[package.dependencies]
+redis = {version = "*", optional = true, markers = "extra == \"broadcast\""}
 
 [package.extras]
 broadcast = ["redis"]
@@ -187,7 +190,7 @@ name = "cffi"
 version = "1.15.0"
 description = "Foreign Function Interface for Python calling C code."
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.dependencies]
@@ -231,7 +234,7 @@ name = "cryptography"
 version = "37.0.3"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -250,7 +253,7 @@ name = "deprecated"
 version = "1.2.13"
 description = "Python @deprecated decorator to deprecate old python classes, functions or methods."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.dependencies]
@@ -337,7 +340,7 @@ name = "hupper"
 version = "1.10.3"
 description = "Integrated process monitor for developing and reloading daemons."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 
 [package.extras]
@@ -365,7 +368,7 @@ name = "isodate"
 version = "0.6.1"
 description = "An ISO 8601 date/time/duration parser and formatter"
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.dependencies]
@@ -390,7 +393,7 @@ name = "jmespath"
 version = "1.0.1"
 description = "JSON Matching Expressions"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [[package]]
@@ -414,7 +417,7 @@ name = "msal"
 version = "1.18.0"
 description = "The Microsoft Authentication Library (MSAL) for Python library enables your app to access the Microsoft Cloud by supporting authentication of users with Microsoft Azure Active Directory accounts (AAD) and Microsoft Accounts (MSA) using industry standard OAuth2 and OpenID Connect."
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.dependencies]
@@ -427,7 +430,7 @@ name = "msal-extensions"
 version = "1.0.0"
 description = "Microsoft Authentication Library extensions (MSAL EX) provides a persistence API that can save your data on disk, encrypted on Windows, macOS and Linux. Concurrent data access will be coordinated by a file lock mechanism."
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.dependencies]
@@ -442,7 +445,7 @@ name = "msrest"
 version = "0.7.1"
 description = "AutoRest swagger generator Python client runtime."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -486,7 +489,7 @@ name = "oauthlib"
 version = "3.2.0"
 description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.extras]
@@ -510,7 +513,7 @@ name = "pastedeploy"
 version = "2.1.1"
 description = "Load, configure, and compose WSGI applications and servers"
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.extras]
@@ -564,7 +567,7 @@ name = "plaster"
 version = "1.0"
 description = "A loader interface around multiple config file formats."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 
 [package.extras]
@@ -576,7 +579,7 @@ name = "plaster-pastedeploy"
 version = "0.7"
 description = "A loader implementing the PasteDeploy syntax to be used by plaster."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 
 [package.dependencies]
@@ -615,7 +618,7 @@ name = "portalocker"
 version = "2.4.0"
 description = "Wraps the portalocker recipe for easy usage"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.5"
 
 [package.dependencies]
@@ -691,7 +694,7 @@ name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
@@ -729,7 +732,7 @@ name = "pyjwt"
 version = "2.4.0"
 description = "JSON Web Token implementation in Python"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -842,7 +845,7 @@ name = "pyramid"
 version = "2.0"
 description = "The Pyramid Web Framework, a Pylons project"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -917,7 +920,7 @@ name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
 category = "main"
-optional = false
+optional = true
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 
 [package.dependencies]
@@ -928,7 +931,7 @@ name = "pywin32"
 version = "304"
 description = "Python for Window Extensions"
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [[package]]
@@ -944,7 +947,7 @@ name = "redis"
 version = "4.3.3"
 description = "Python client for Redis database and key-value store"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -979,7 +982,7 @@ name = "requests-oauthlib"
 version = "1.3.1"
 description = "OAuthlib authentication support for Requests."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.dependencies]
@@ -1005,7 +1008,7 @@ name = "s3transfer"
 version = "0.6.0"
 description = "An Amazon S3 Transfer Manager"
 category = "main"
-optional = false
+optional = true
 python-versions = ">= 3.7"
 
 [package.dependencies]
@@ -1043,7 +1046,7 @@ name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
@@ -1102,7 +1105,7 @@ name = "translationstring"
 version = "1.4"
 description = "Utility library for i18n relied on by various Repoze and Pyramid packages"
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.extras]
@@ -1180,7 +1183,7 @@ name = "venusian"
 version = "3.0.0"
 description = "A library for deferring decorator actions"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.5"
 
 [package.extras]
@@ -1192,7 +1195,7 @@ name = "webob"
 version = "1.8.7"
 description = "WSGI request and response object"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*"
 
 [package.extras]
@@ -1212,7 +1215,7 @@ name = "zope.deprecation"
 version = "4.4.0"
 description = "Zope Deprecation Infrastructure"
 category = "main"
-optional = false
+optional = true
 python-versions = "*"
 
 [package.extras]
@@ -1224,7 +1227,7 @@ name = "zope.interface"
 version = "5.4.0"
 description = "Interfaces for Python"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.extras]
@@ -1270,20 +1273,20 @@ azure-identity = [
     {file = "azure_identity-1.10.0-py3-none-any.whl", hash = "sha256:b386f1ccbea6a48b9ab7e7f162adc456793c345193a7c1a713959562b08dcbbd"},
 ]
 azure-storage-blob = [
-    {file = "azure-storage-blob-12.12.0.zip", hash = "sha256:f6daf07d1ca86d189ae15c9b1859dff5b7127bf24a07a4bbe41e0b81e01d62f7"},
-    {file = "azure_storage_blob-12.12.0-py3-none-any.whl", hash = "sha256:1eac4c364309ccc193c80ee26c78d25dfbf10926b1309095a448a7a0388526eb"},
+    {file = "azure-storage-blob-12.8.1.zip", hash = "sha256:eb37b50ddfb6e558b29f6c8c03b0666514e55d6170bf4624e7261a3af93c6401"},
+    {file = "azure_storage_blob-12.8.1-py2.py3-none-any.whl", hash = "sha256:e74c2c49fd04b80225f5b9734f1dbd417d89f280abfedccced3ac21509e1659d"},
 ]
 bandit = [
     {file = "bandit-1.7.4-py3-none-any.whl", hash = "sha256:412d3f259dab4077d0e7f0c11f50f650cc7d10db905d98f6520a95a18049658a"},
     {file = "bandit-1.7.4.tar.gz", hash = "sha256:2d63a8c573417bae338962d4b9b06fbc6080f74ecd955a092849e1e65c717bd2"},
 ]
 boto3 = [
-    {file = "boto3-1.24.15-py3-none-any.whl", hash = "sha256:42485c7c53eda9e49106d49a6bc222062428969dd27164fe346b1433d6de74ee"},
-    {file = "boto3-1.24.15.tar.gz", hash = "sha256:c13ef01bd6c8872e68141060bd046a3baa979e96524391efc880dfde4ed64e11"},
+    {file = "boto3-1.24.14-py3-none-any.whl", hash = "sha256:490f5e88f5551b33ae3019a37412158b76426d63d1fb910968ade9b6a024e5fe"},
+    {file = "boto3-1.24.14.tar.gz", hash = "sha256:e284705da36faa668c715ae1f74ebbff4320dbfbe3a733df3a8ab076d1ed1226"},
 ]
 botocore = [
-    {file = "botocore-1.27.15-py3-none-any.whl", hash = "sha256:aaa019265dfea61c5355a207b14283161002d4d94e0eb85194dd04f3bdba48be"},
-    {file = "botocore-1.27.15.tar.gz", hash = "sha256:3799d5c8642b29b347418eb26d42e541d0dc24faa5e62bc8b3812722ab2bf139"},
+    {file = "botocore-1.27.17-py3-none-any.whl", hash = "sha256:baf60b803ffd7b1dbc9c93dd2049fe2372699e4c993c9d33713667acdea64d1f"},
+    {file = "botocore-1.27.17.tar.gz", hash = "sha256:af9d44592b4d0d6509b355b2ec5cb14fd23eadf7c33d13b880266dede22759ac"},
 ]
 bottle = [
     {file = "bottle-0.12.21-py3-none-any.whl", hash = "sha256:6e1c9817019dae3a8c20adacaf09035251798d2ae2fcc8ce43157ee72965f257"},
