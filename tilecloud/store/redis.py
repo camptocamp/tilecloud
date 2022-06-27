@@ -1,6 +1,7 @@
 import logging
 import os
 import socket
+import time
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Set, Tuple, Union
 
 from c2cwsgiutils import stats
@@ -49,6 +50,7 @@ class RedisTileStore(TileStore):
         connection_kwargs = connection_kwargs or {}
 
         if sentinels is not None:
+            logger.debug("Initialize using sentinels")
             sentinel = redis.sentinel.Sentinel(
                 sentinels, sentinel_kwargs=sentinel_kwargs, **connection_kwargs
             )
@@ -86,43 +88,49 @@ class RedisTileStore(TileStore):
     def list(self) -> Iterator[Tile]:
         count = 0
         while True:
-            queues = self._master.xreadgroup(
-                groupname=STREAM_GROUP,
-                consumername=CONSUMER_NAME,
-                streams={self._name: ">"},
-                count=1,
-                block=round(self._timeout_ms),
-            )
-            logger.debug("Get %d new elements", len(queues))
+            try:
+                logger.debug("Wait for new tiles")
+                queues = self._master.xreadgroup(
+                    groupname=STREAM_GROUP,
+                    consumername=CONSUMER_NAME,
+                    streams={self._name: ">"},
+                    count=1,
+                    block=round(self._timeout_ms),
+                )
+                logger.debug("Get %d new elements", len(queues))
 
-            if not queues:
-                queues = self._claim_olds()
-                if queues is None:
-                    stats.set_gauge(["redis", self._name_str, "nb_messages"], 0)
-                    stats.set_gauge(["redis", self._name_str, "pending"], 0)
-                if queues is None and self._stop_if_empty:
-                    break
-            if queues:
-                for redis_message in queues:
-                    queue_name, queue_messages = redis_message
-                    assert queue_name == self._name
-                    for message in queue_messages:
-                        id_, body = message
-                        try:
-                            tile = decode_message(body[b"message"], from_redis=True, sqs_message=id_)
-                            yield tile
-                        except Exception:
-                            logger.warning("Failed decoding the Redis message", exc_info=True)
-                            stats.increment_counter(["redis", self._name_str, "decode_error"])
-                        count += 1
+                if not queues:
+                    queues = self._claim_olds()
+                    if queues is None:
+                        stats.set_gauge(["redis", self._name_str, "nb_messages"], 0)
+                        stats.set_gauge(["redis", self._name_str, "pending"], 0)
+                    if queues is None and self._stop_if_empty:
+                        break
+                if queues:
+                    for redis_message in queues:
+                        queue_name, queue_messages = redis_message
+                        assert queue_name == self._name
+                        for message in queue_messages:
+                            id_, body = message
+                            try:
+                                tile = decode_message(body[b"message"], from_redis=True, sqs_message=id_)
+                                yield tile
+                            except Exception:
+                                logger.warning("Failed decoding the Redis message", exc_info=True)
+                                stats.increment_counter(["redis", self._name_str, "decode_error"])
+                            count += 1
 
-                if count % 10 == 0:
-                    stats.set_gauge(
-                        ["redis", self._name_str, "nb_messages"],
-                        self._slave.xlen(name=self._name),
-                    )
-                    pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore
-                    stats.set_gauge(["redis", self._name_str, "pending"], pending["pending"])
+                    if count % 10 == 0:
+                        stats.set_gauge(
+                            ["redis", self._name_str, "nb_messages"],
+                            self._slave.xlen(name=self._name),
+                        )
+                        pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore
+                        stats.set_gauge(["redis", self._name_str, "pending"], pending["pending"])
+            except redis.exceptions.TimeoutError:
+                logger.warning("Failed reading Redis messages", exc_info=True)
+                stats.increment_counter(["redis", self._name_str, "read_error"])
+                time.sleep(1)
 
     def put_one(self, tile: Tile) -> Tile:
         try:
