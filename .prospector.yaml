@@ -12,6 +12,7 @@ pylint:
     - too-many-branches
     - too-many-arguments
     - too-many-locals
+    - too-many-nested-blocks
     - too-few-public-methods
     - wrong-import-order
     - no-else-return
