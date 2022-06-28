@@ -4,6 +4,7 @@ checks:
     audit.yaml: False
     rebuild.yaml: False
   versions: False
+  black: false
 
 publish:
   docker:
