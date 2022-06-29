@@ -26,6 +26,7 @@ jobs:
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --upgrade pip
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Checks
@@ -37,4 +38,7 @@ jobs:
 
       - name: Publish
         run: c2cciutils-publish
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
+        if: |
+          env.HAS_SECRETS == 'HAS_SECRETS'
+          && github.event_name == 'push'
+          && ( github.ref_type == 'tag' || github.ref_name == 'master' )
