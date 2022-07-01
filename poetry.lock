@@ -1113,7 +1113,7 @@ docs = ["Sphinx (>=1.3.1)", "docutils", "pylons-sphinx-themes"]
 
 [[package]]
 name = "types-boto"
-version = "2.49.15"
+version = "2.49.16"
 description = "Typing stubs for boto"
 category = "dev"
 optional = false
@@ -1245,7 +1245,7 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "69bd797f9a2e8ce654428b99c385bf840493aaf3c630a923356d6e76e4465dda"
+content-hash = "02884fad04d415b9107fd77187550099249ea86ac68d5191ecc8bb466cac9ab5"
 
 [metadata.files]
 astroid = [
@@ -1907,8 +1907,8 @@ translationstring = [
     {file = "translationstring-1.4.tar.gz", hash = "sha256:bf947538d76e69ba12ab17283b10355a9ecfbc078e6123443f43f2107f6376f3"},
 ]
 types-boto = [
-    {file = "types-boto-2.49.15.tar.gz", hash = "sha256:bd73558d7f3f4ae556de29056753956ad352854a1fa659d38d3d8a5b3c351841"},
-    {file = "types_boto-2.49.15-py3-none-any.whl", hash = "sha256:709c20dc9f8b53bd9b254cc3e8ca0ee1e17d964caa9bab0db97c65cc1ce1621a"},
+    {file = "types-boto-2.49.16.tar.gz", hash = "sha256:88ea2e8b948069f95e69c43f736198343d183d121cfed59f07218f04c09253c3"},
+    {file = "types_boto-2.49.16-py3-none-any.whl", hash = "sha256:204f0a976b212358ffd2009dd8bc6c425be6ce6ee958cb9c638f434f765c4cbc"},
 ]
 types-redis = [
     {file = "types-redis-4.2.6.tar.gz", hash = "sha256:d6adc77185cf40b300816767a64c0ee9ee0b21dc174e8e5c23b7e83d43189cb8"},
