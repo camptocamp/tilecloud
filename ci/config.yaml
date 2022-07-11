@@ -14,7 +14,7 @@ checks:
   codespell:
     ignore_re:
       - (.*/)?poetry\.lock
-      - github-changelog-generator\.cache/.*
+      - .github/changelog-generator-cache/.*
 
 publish:
   docker:
