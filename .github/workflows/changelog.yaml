@@ -29,10 +29,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           configureSections: ${{ steps.config.outputs.config }}
-          cacheFile: github-changelog-generator.cache
+          cacheFile: .github/changelog-generator-cache
 
       - run: c2cciutils-checks --fix --check=prettier
-      - run: git add CHANGELOG.md github-changelog-generator.cache
+      - run: git add CHANGELOG.md .github/changelog-generator-cache
       - run: git config --global user.email "ci@example.com"
       - run: git config --global user.name "CI"
       - run: git commit -m "Update the changelog"
