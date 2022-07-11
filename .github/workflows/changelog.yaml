@@ -30,7 +30,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           configureSections: ${{ steps.config.outputs.config }}
           cacheFile: github-changelog-generator.cache
-          sinceTag: 1.6.0
+          sinceTag: 1.8.0
 
       - run: c2cciutils-checks --fix --check=prettier
       - run: git add CHANGELOG.md github-changelog-generator.cache
