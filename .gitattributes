@@ -2,3 +2,4 @@
 .gitmodules text whitespace=indent-with-non-tab,tabwidth=2
 Makefile text whitespace=indent-with-non-tab,tabwidth=2
 *.rst tex conflict-marker-size=100
+[0-9a-f]* binary
