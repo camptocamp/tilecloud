@@ -4,9 +4,24 @@
 
 [Full Changelog](https://github.com/camptocamp/tilecloud/compare/1.8.2...HEAD)
 
+#### :bug: Bug Fixes
+
+- \[Backport master\] \[Backport 1.8\] Fix will not start when Redis is not directly available [\#1308](https://github.com/camptocamp/tilecloud/pull/1308) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
+
 #### :books: Documentation
 
 - Add generated changelog [\#1317](https://github.com/camptocamp/tilecloud/pull/1317) ([sbrunner](https://github.com/sbrunner))
+
+#### :wrench: Build, CI, Tests, Code style
+
+- Update the changelog [\#1324](https://github.com/camptocamp/tilecloud/pull/1324) ([github-actions[bot]](https://github.com/apps/github-actions))
+- Set the cache as binary [\#1323](https://github.com/camptocamp/tilecloud/pull/1323) ([sbrunner](https://github.com/sbrunner))
+- Modernize the package [\#1303](https://github.com/camptocamp/tilecloud/pull/1303) ([sbrunner](https://github.com/sbrunner))
+- Add pip upgrade [\#1296](https://github.com/camptocamp/tilecloud/pull/1296) ([sbrunner](https://github.com/sbrunner))
+- Don't run 2 CI jobs in a pull request [\#1295](https://github.com/camptocamp/tilecloud/pull/1295) ([sbrunner](https://github.com/sbrunner))
+- Configure Renovate [\#1292](https://github.com/camptocamp/tilecloud/pull/1292) ([sbrunner](https://github.com/sbrunner))
+- Improve typing [\#1245](https://github.com/camptocamp/tilecloud/pull/1245) ([gberaudo](https://github.com/gberaudo))
+- Create new version [\#1126](https://github.com/camptocamp/tilecloud/pull/1126) ([sbrunner](https://github.com/sbrunner))
 
 #### :package: Dependencies update
 
@@ -130,13 +145,13 @@
 - Bump boto3 from 1.21.16 to 1.21.17 [\#1170](https://github.com/camptocamp/tilecloud/pull/1170) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump types-boto from 2.49.7 to 2.49.9 [\#1169](https://github.com/camptocamp/tilecloud/pull/1169) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump c2cciutils from 1.2.dev20220309073059 to 1.2.dev20220309162621 [\#1168](https://github.com/camptocamp/tilecloud/pull/1168) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump prospector\[with\_bandit,with\_mypy\] from 1.7.6 to 1.7.7 [\#1166](https://github.com/camptocamp/tilecloud/pull/1166) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prospector\[with_bandit,with_mypy\] from 1.7.6 to 1.7.7 [\#1166](https://github.com/camptocamp/tilecloud/pull/1166) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.21.15 to 1.21.16 [\#1165](https://github.com/camptocamp/tilecloud/pull/1165) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump c2cciutils from 1.2.dev20220304093002 to 1.2.dev20220309073059 [\#1164](https://github.com/camptocamp/tilecloud/pull/1164) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.21.14 to 1.21.15 [\#1163](https://github.com/camptocamp/tilecloud/pull/1163) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.21.13 to 1.21.14 [\#1162](https://github.com/camptocamp/tilecloud/pull/1162) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.21.12 to 1.21.13 [\#1161](https://github.com/camptocamp/tilecloud/pull/1161) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump prospector\[with\_bandit,with\_mypy\] from 1.7.5 to 1.7.6 [\#1160](https://github.com/camptocamp/tilecloud/pull/1160) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prospector\[with_bandit,with_mypy\] from 1.7.5 to 1.7.6 [\#1160](https://github.com/camptocamp/tilecloud/pull/1160) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump c2cciutils from 1.2.dev20220302121825 to 1.2.dev20220304093002 [\#1159](https://github.com/camptocamp/tilecloud/pull/1159) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.21.11 to 1.21.12 [\#1158](https://github.com/camptocamp/tilecloud/pull/1158) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.21.10 to 1.21.11 [\#1157](https://github.com/camptocamp/tilecloud/pull/1157) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -145,9 +160,9 @@
 - Bump azure-identity from 1.7.1 to 1.8.0 [\#1154](https://github.com/camptocamp/tilecloud/pull/1154) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.21.8 to 1.21.9 [\#1153](https://github.com/camptocamp/tilecloud/pull/1153) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump c2cciutils from 1.2.dev20220215091734 to 1.2.dev20220301083327 [\#1152](https://github.com/camptocamp/tilecloud/pull/1152) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump prospector\[with\_bandit,with\_mypy\] from 1.7.4 to 1.7.5 [\#1151](https://github.com/camptocamp/tilecloud/pull/1151) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prospector\[with_bandit,with_mypy\] from 1.7.4 to 1.7.5 [\#1151](https://github.com/camptocamp/tilecloud/pull/1151) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.21.7 to 1.21.8 [\#1150](https://github.com/camptocamp/tilecloud/pull/1150) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump prospector\[with\_bandit,with\_mypy\] from 1.6.0 to 1.7.4 [\#1149](https://github.com/camptocamp/tilecloud/pull/1149) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prospector\[with_bandit,with_mypy\] from 1.6.0 to 1.7.4 [\#1149](https://github.com/camptocamp/tilecloud/pull/1149) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.21.6 to 1.21.7 [\#1148](https://github.com/camptocamp/tilecloud/pull/1148) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump types-redis from 4.1.16 to 4.1.17 [\#1146](https://github.com/camptocamp/tilecloud/pull/1146) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.21.4 to 1.21.6 [\#1145](https://github.com/camptocamp/tilecloud/pull/1145) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -170,17 +185,6 @@
 - Bump c2cciutils from 1.2.dev20220207125831 to 1.2.dev20220209105112 [\#1128](https://github.com/camptocamp/tilecloud/pull/1128) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.49 to 1.20.50 [\#1127](https://github.com/camptocamp/tilecloud/pull/1127) ([dependabot[bot]](https://github.com/apps/dependabot))
 
-**Merged pull requests:**
-
-- Set the cache as binary [\#1323](https://github.com/camptocamp/tilecloud/pull/1323) ([sbrunner](https://github.com/sbrunner))
-- \[Backport master\] \[Backport 1.8\] Fix will not start when Redis is not directly available [\#1308](https://github.com/camptocamp/tilecloud/pull/1308) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
-- Modernize the package [\#1303](https://github.com/camptocamp/tilecloud/pull/1303) ([sbrunner](https://github.com/sbrunner))
-- Add pip upgrade [\#1296](https://github.com/camptocamp/tilecloud/pull/1296) ([sbrunner](https://github.com/sbrunner))
-- Don't run 2 CI jobs in a pull request [\#1295](https://github.com/camptocamp/tilecloud/pull/1295) ([sbrunner](https://github.com/sbrunner))
-- Configure Renovate [\#1292](https://github.com/camptocamp/tilecloud/pull/1292) ([sbrunner](https://github.com/sbrunner))
-- Improve typing [\#1245](https://github.com/camptocamp/tilecloud/pull/1245) ([gberaudo](https://github.com/gberaudo))
-- Create new version [\#1126](https://github.com/camptocamp/tilecloud/pull/1126) ([sbrunner](https://github.com/sbrunner))
-
 ## [1.8.2](https://github.com/camptocamp/tilecloud/tree/1.8.2) (2022-06-29)
 
 [Full Changelog](https://github.com/camptocamp/tilecloud/compare/1.8.1...1.8.2)
@@ -196,6 +200,25 @@
 ## [1.8.0](https://github.com/camptocamp/tilecloud/tree/1.8.0) (2022-02-07)
 
 [Full Changelog](https://github.com/camptocamp/tilecloud/compare/1.7.0...1.8.0)
+
+#### :bug: Bug Fixes
+
+- Fix Azure blob storage [\#1052](https://github.com/camptocamp/tilecloud/pull/1052) ([sbrunner](https://github.com/sbrunner))
+- Azure: More available properties, don't use .net API [\#867](https://github.com/camptocamp/tilecloud/pull/867) ([sbrunner](https://github.com/sbrunner))
+- \[Backport master\] Client creation is not thread safe [\#808](https://github.com/camptocamp/tilecloud/pull/808) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
+- \[Backport master\] botocore.client.SQS is not a real class [\#794](https://github.com/camptocamp/tilecloud/pull/794) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
+
+#### :books: Documentation
+
+- Fix old documentation [\#982](https://github.com/camptocamp/tilecloud/pull/982) ([sbrunner](https://github.com/sbrunner))
+
+#### :wrench: Build, CI, Tests, Code style
+
+- chore : use --no-cache-dir flag to pip in dockerfiles to save space [\#1070](https://github.com/camptocamp/tilecloud/pull/1070) ([Rajpratik71](https://github.com/Rajpratik71))
+- \[Backport master\] The Tile is optional [\#875](https://github.com/camptocamp/tilecloud/pull/875) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
+- Upgrade with pyupgrade [\#860](https://github.com/camptocamp/tilecloud/pull/860) ([sbrunner](https://github.com/sbrunner))
+- \[Backport master\] Fix some types [\#828](https://github.com/camptocamp/tilecloud/pull/828) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
+- Some fix for typing [\#817](https://github.com/camptocamp/tilecloud/pull/817) ([sbrunner](https://github.com/sbrunner))
 
 #### :package: Dependencies update
 
@@ -229,7 +252,7 @@
 - Bump types-redis from 4.1.8 to 4.1.9 [\#1098](https://github.com/camptocamp/tilecloud/pull/1098) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump c2cciutils from 1.1.dev20220105162844 to 1.1.dev20220119105226 [\#1097](https://github.com/camptocamp/tilecloud/pull/1097) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.37 to 1.20.38 [\#1096](https://github.com/camptocamp/tilecloud/pull/1096) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump prospector\[with\_bandit,with\_mypy\] from 1.5.3.1 to 1.6.0 [\#1095](https://github.com/camptocamp/tilecloud/pull/1095) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prospector\[with_bandit,with_mypy\] from 1.5.3.1 to 1.6.0 [\#1095](https://github.com/camptocamp/tilecloud/pull/1095) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.35 to 1.20.37 [\#1094](https://github.com/camptocamp/tilecloud/pull/1094) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.34 to 1.20.35 [\#1093](https://github.com/camptocamp/tilecloud/pull/1093) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump types-requests from 2.27.6 to 2.27.7 [\#1092](https://github.com/camptocamp/tilecloud/pull/1092) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -271,13 +294,13 @@
 - Bump boto3 from 1.20.22 to 1.20.23 [\#1054](https://github.com/camptocamp/tilecloud/pull/1054) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump c2cciutils from 1.1.dev20211125140927 to 1.1.dev20211209145632 [\#1053](https://github.com/camptocamp/tilecloud/pull/1053) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.21 to 1.20.22 [\#1051](https://github.com/camptocamp/tilecloud/pull/1051) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump prospector\[with\_bandit,with\_mypy\] from 1.5.3 to 1.5.3.1 [\#1050](https://github.com/camptocamp/tilecloud/pull/1050) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prospector\[with_bandit,with_mypy\] from 1.5.3 to 1.5.3.1 [\#1050](https://github.com/camptocamp/tilecloud/pull/1050) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.20 to 1.20.21 [\#1049](https://github.com/camptocamp/tilecloud/pull/1049) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump twine from 3.7.0 to 3.7.1 [\#1048](https://github.com/camptocamp/tilecloud/pull/1048) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump prospector\[with\_bandit,with\_mypy\] from 1.5.2 to 1.5.3 [\#1047](https://github.com/camptocamp/tilecloud/pull/1047) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prospector\[with_bandit,with_mypy\] from 1.5.2 to 1.5.3 [\#1047](https://github.com/camptocamp/tilecloud/pull/1047) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.19 to 1.20.20 [\#1046](https://github.com/camptocamp/tilecloud/pull/1046) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.18 to 1.20.19 [\#1045](https://github.com/camptocamp/tilecloud/pull/1045) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump prospector\[with\_bandit,with\_mypy\] from 1.5.1 to 1.5.2 [\#1044](https://github.com/camptocamp/tilecloud/pull/1044) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prospector\[with_bandit,with_mypy\] from 1.5.1 to 1.5.2 [\#1044](https://github.com/camptocamp/tilecloud/pull/1044) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump twine from 3.6.0 to 3.7.0 [\#1043](https://github.com/camptocamp/tilecloud/pull/1043) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.13 to 1.20.18 [\#1042](https://github.com/camptocamp/tilecloud/pull/1042) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump types-redis from 4.0.0 to 4.0.3 [\#1041](https://github.com/camptocamp/tilecloud/pull/1041) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -297,6 +320,7 @@
 - Bump boto3 from 1.20.5 to 1.20.7 [\#1022](https://github.com/camptocamp/tilecloud/pull/1022) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.4 to 1.20.5 [\#1021](https://github.com/camptocamp/tilecloud/pull/1021) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump types-redis from 3.5.12 to 3.5.16 [\#1020](https://github.com/camptocamp/tilecloud/pull/1020) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump boto3 from 1.20.3 to 1.20.4 [\#1019](https://github.com/camptocamp/tilecloud/pull/1019) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.2 to 1.20.3 [\#1018](https://github.com/camptocamp/tilecloud/pull/1018) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump types-requests from 2.25.12 to 2.26.0 [\#1017](https://github.com/camptocamp/tilecloud/pull/1017) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.20.0 to 1.20.2 [\#1016](https://github.com/camptocamp/tilecloud/pull/1016) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -517,19 +541,6 @@
 - Generate KML layer in tc-viewer [\#22](https://github.com/camptocamp/tilecloud/issues/22)
 - Tune MBTilesTileStore timeout [\#19](https://github.com/camptocamp/tilecloud/issues/19)
 - Add Reprojector [\#9](https://github.com/camptocamp/tilecloud/issues/9)
-
-**Merged pull requests:**
-
-- chore : use --no-cache-dir flag to pip in dockerfiles to save space [\#1070](https://github.com/camptocamp/tilecloud/pull/1070) ([Rajpratik71](https://github.com/Rajpratik71))
-- Fix Azure blob storage [\#1052](https://github.com/camptocamp/tilecloud/pull/1052) ([sbrunner](https://github.com/sbrunner))
-- Fix old documentation [\#982](https://github.com/camptocamp/tilecloud/pull/982) ([sbrunner](https://github.com/sbrunner))
-- \[Backport master\] The Tile is optional [\#875](https://github.com/camptocamp/tilecloud/pull/875) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
-- Azure: More available properties, don't use .net API [\#867](https://github.com/camptocamp/tilecloud/pull/867) ([sbrunner](https://github.com/sbrunner))
-- Upgrade with pyupgrade [\#860](https://github.com/camptocamp/tilecloud/pull/860) ([sbrunner](https://github.com/sbrunner))
-- \[Backport master\] Fix some types [\#828](https://github.com/camptocamp/tilecloud/pull/828) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
-- Some fix for typing [\#817](https://github.com/camptocamp/tilecloud/pull/817) ([sbrunner](https://github.com/sbrunner))
-- \[Backport master\] Client creation is not thread safe [\#808](https://github.com/camptocamp/tilecloud/pull/808) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
-- \[Backport master\] botocore.client.SQS is not a real class [\#794](https://github.com/camptocamp/tilecloud/pull/794) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
 
 ## [1.7.0](https://github.com/camptocamp/tilecloud/tree/1.7.0) (2021-12-15)
 
@@ -844,7 +855,7 @@
 
 **Merged pull requests:**
 
-- Remove brocken travis image [\#502](https://github.com/camptocamp/tilecloud/pull/502) ([sbrunner](https://github.com/sbrunner))
+- Remove broken Travis image [\#502](https://github.com/camptocamp/tilecloud/pull/502) ([sbrunner](https://github.com/sbrunner))
 - Create codeql-analysis.yml [\#499](https://github.com/camptocamp/tilecloud/pull/499) ([sbrunner](https://github.com/sbrunner))
 - Use prospector code check [\#493](https://github.com/camptocamp/tilecloud/pull/493) ([sbrunner](https://github.com/sbrunner))
 - Be able to use Redis sentinel [\#487](https://github.com/camptocamp/tilecloud/pull/487) ([sbrunner](https://github.com/sbrunner))
@@ -996,7 +1007,7 @@
 - Add dependabot config [\#398](https://github.com/camptocamp/tilecloud/pull/398) ([sbrunner](https://github.com/sbrunner))
 - Use GitHub actions [\#396](https://github.com/camptocamp/tilecloud/pull/396) ([sbrunner](https://github.com/sbrunner))
 - GitHub actions [\#394](https://github.com/camptocamp/tilecloud/pull/394) ([sbrunner](https://github.com/sbrunner))
-- Increase the frequency of nb\_messages stats [\#380](https://github.com/camptocamp/tilecloud/pull/380) ([pvalsecc](https://github.com/pvalsecc))
+- Increase the frequency of nb_messages stats [\#380](https://github.com/camptocamp/tilecloud/pull/380) ([pvalsecc](https://github.com/pvalsecc))
 - Reduce memory usage for S3. [\#369](https://github.com/camptocamp/tilecloud/pull/369) ([pvalsecc](https://github.com/pvalsecc))
 - Replace Travis by CircleCI [\#352](https://github.com/camptocamp/tilecloud/pull/352) ([sbrunner](https://github.com/sbrunner))
 
@@ -1311,9 +1322,9 @@
 - S3: can now set CacheControl when putting tiles [\#96](https://github.com/camptocamp/tilecloud/pull/96) ([pvalsecc](https://github.com/pvalsecc))
 - Codestyle from Codacy [\#94](https://github.com/camptocamp/tilecloud/pull/94) ([sbrunner](https://github.com/sbrunner))
 - Fix master/slave and logging [\#93](https://github.com/camptocamp/tilecloud/pull/93) ([sbrunner](https://github.com/sbrunner))
-- Better WMS errors handeling [\#92](https://github.com/camptocamp/tilecloud/pull/92) ([sbrunner](https://github.com/sbrunner))
+- Better WMS errors handling [\#92](https://github.com/camptocamp/tilecloud/pull/92) ([sbrunner](https://github.com/sbrunner))
 - Save tile metadata to SQS [\#91](https://github.com/camptocamp/tilecloud/pull/91) ([alexbrault](https://github.com/alexbrault))
-- Use passed-in on\_empty function in SQSTileStore [\#90](https://github.com/camptocamp/tilecloud/pull/90) ([alexbrault](https://github.com/alexbrault))
+- Use passed-in on_empty function in SQSTileStore [\#90](https://github.com/camptocamp/tilecloud/pull/90) ([alexbrault](https://github.com/alexbrault))
 
 ## [0.5.0.dev7](https://github.com/camptocamp/tilecloud/tree/0.5.0.dev7) (2018-02-09)
 
@@ -1416,19 +1427,19 @@
 
 - Incrase the logging for the URL get [\#73](https://github.com/camptocamp/tilecloud/pull/73) ([sbrunner](https://github.com/sbrunner))
 - Add Python 3 support [\#72](https://github.com/camptocamp/tilecloud/pull/72) ([sbrunner](https://github.com/sbrunner))
-- Remove nose dependencie from setup\_requires [\#70](https://github.com/camptocamp/tilecloud/pull/70) ([sbrunner](https://github.com/sbrunner))
+- Remove nose dependencies from setup_requires [\#70](https://github.com/camptocamp/tilecloud/pull/70) ([sbrunner](https://github.com/sbrunner))
 - Add support for temp. IAM credentials for S3 access [\#69](https://github.com/camptocamp/tilecloud/pull/69) ([ckaenzig](https://github.com/ckaenzig))
 - Allows to set the projection on mapnik store [\#68](https://github.com/camptocamp/tilecloud/pull/68) ([sbrunner](https://github.com/sbrunner))
 - Fix egg case [\#67](https://github.com/camptocamp/tilecloud/pull/67) ([sbrunner](https://github.com/sbrunner))
 - Should be possible to add some additional argument in WMS layout [\#66](https://github.com/camptocamp/tilecloud/pull/66) ([sbrunner](https://github.com/sbrunner))
-- Add missing content\_type on filesystem.get\_one [\#65](https://github.com/camptocamp/tilecloud/pull/65) ([sbrunner](https://github.com/sbrunner))
+- Add missing content_type on filesystem.get_one [\#65](https://github.com/camptocamp/tilecloud/pull/65) ([sbrunner](https://github.com/sbrunner))
 - Don't tc-copy missing tiles? [\#64](https://github.com/camptocamp/tilecloud/pull/64) ([Fil](https://github.com/Fil))
 - Pillow and pep8 [\#63](https://github.com/camptocamp/tilecloud/pull/63) ([sbrunner](https://github.com/sbrunner))
-- delete\_one shouldn't fail if the tile don't exists on bsddb tile store [\#62](https://github.com/camptocamp/tilecloud/pull/62) ([sbrunner](https://github.com/sbrunner))
+- delete_one shouldn't fail if the tile don't exists on bsddb tile store [\#62](https://github.com/camptocamp/tilecloud/pull/62) ([sbrunner](https://github.com/sbrunner))
 - Mode 'binary' is required when reading/writing tiles on Windows [\#61](https://github.com/camptocamp/tilecloud/pull/61) ([asaunier](https://github.com/asaunier))
 - Test to figure out if resolutions are long instead of integer [\#60](https://github.com/camptocamp/tilecloud/pull/60) ([asaunier](https://github.com/asaunier))
-- Add missing return tile on put\_one in SQS store [\#59](https://github.com/camptocamp/tilecloud/pull/59) ([sbrunner](https://github.com/sbrunner))
-- Add missing content\_type to metatile splitter [\#58](https://github.com/camptocamp/tilecloud/pull/58) ([sbrunner](https://github.com/sbrunner))
+- Add missing return tile on put_one in SQS store [\#59](https://github.com/camptocamp/tilecloud/pull/59) ([sbrunner](https://github.com/sbrunner))
+- Add missing content_type to metatile splitter [\#58](https://github.com/camptocamp/tilecloud/pull/58) ([sbrunner](https://github.com/sbrunner))
 - Use pillow in place of PIL. [\#57](https://github.com/camptocamp/tilecloud/pull/57) ([sbrunner](https://github.com/sbrunner))
 - Now it's possible to have tilecorrds from the top left corner. [\#56](https://github.com/camptocamp/tilecloud/pull/56) ([sbrunner](https://github.com/sbrunner))
 - Allows to drop empty UTFGrid tiles. [\#55](https://github.com/camptocamp/tilecloud/pull/55) ([sbrunner](https://github.com/sbrunner))
@@ -1470,9 +1481,7 @@
 - Add FindFirstTileStore [\#16](https://github.com/camptocamp/tilecloud/pull/16) ([fredj](https://github.com/fredj))
 - Add openstreetmap attribution. [\#12](https://github.com/camptocamp/tilecloud/pull/12) ([fredj](https://github.com/fredj))
 - Leaflet view for tc-viewer [\#10](https://github.com/camptocamp/tilecloud/pull/10) ([fredj](https://github.com/fredj))
-- content\_type and co. [\#2](https://github.com/camptocamp/tilecloud/pull/2) ([fredj](https://github.com/fredj))
+- content_type and co. [\#2](https://github.com/camptocamp/tilecloud/pull/2) ([fredj](https://github.com/fredj))
 - Remove unused imports and var \(pyflakes\) [\#1](https://github.com/camptocamp/tilecloud/pull/1) ([fredj](https://github.com/fredj))
 
-
-
-\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*
+\* _This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)_
