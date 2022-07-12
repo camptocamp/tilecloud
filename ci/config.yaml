@@ -11,10 +11,6 @@ checks:
   prospector_config:
     properties:
       doc-warnings: false
-  codespell:
-    ignore_re:
-      - (.*/)?poetry\.lock
-      - .github/changelog-generator-cache/.*
 
 publish:
   docker:
