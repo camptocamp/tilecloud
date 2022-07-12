@@ -3,7 +3,7 @@ version: '2.1'
 
 services:
   redis:
-    image: redis:5
+    image: redis:7
 
   test:
     build: .
