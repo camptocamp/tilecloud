@@ -103,14 +103,14 @@ yaml = ["pyyaml"]
 
 [[package]]
 name = "boto3"
-version = "1.24.56"
+version = "1.24.61"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.56,<1.28.0"
+botocore = ">=1.27.61,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -1134,7 +1134,7 @@ types-six = "*"
 
 [[package]]
 name = "types-redis"
-version = "4.3.17"
+version = "4.3.18"
 description = "Typing stubs for redis"
 category = "dev"
 optional = false
@@ -1255,7 +1255,7 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "a421a618773d4edf3e366fb3137f3dc4783a8c7a11c04e94fb2f3430383ce8ca"
+content-hash = "543ee1f493aab9e3e4610c7f3cb5ed1fdb30af2cebc92aaa358fb49887b8067a"
 
 [metadata.files]
 astroid = [
@@ -1290,8 +1290,8 @@ bandit = [
     {file = "bandit-1.7.4.tar.gz", hash = "sha256:2d63a8c573417bae338962d4b9b06fbc6080f74ecd955a092849e1e65c717bd2"},
 ]
 boto3 = [
-    {file = "boto3-1.24.56-py3-none-any.whl", hash = "sha256:09fb94008bd1f2566ef79ec7d8dd7a233b5da67f3b2536e30432eb8e88022d4d"},
-    {file = "boto3-1.24.56.tar.gz", hash = "sha256:9fab8acec76008797be4671d514f39f1163ba044c0a0bce8d5afe8b52cbd5550"},
+    {file = "boto3-1.24.61-py3-none-any.whl", hash = "sha256:ec1aa3f4c2b68da1a9c01e175086f5f6b1b8b67780fa569ab8875be5bb3fd5ae"},
+    {file = "boto3-1.24.61.tar.gz", hash = "sha256:b72496c7eaa45afbdfa48a7c648c3211342582d91c8c1b7330d09c18242132d1"},
 ]
 botocore = [
     {file = "botocore-1.27.61-py3-none-any.whl", hash = "sha256:535c8e97ed28a38fd09dd8f4735195e761bbee54e4c6021f3a709a97b1287dd6"},
@@ -1966,8 +1966,8 @@ types-boto = [
     {file = "types_boto-2.49.17-py3-none-any.whl", hash = "sha256:d639c1306a8f8e19e06a486d30c7aeadc82e0a84a3996745ce95cd185fe0d1d5"},
 ]
 types-redis = [
-    {file = "types-redis-4.3.17.tar.gz", hash = "sha256:03b023c08acf344f4f0821cc1c7e4dbecb7b17bc5483927c3e73d80f7fe1768e"},
-    {file = "types_redis-4.3.17-py3-none-any.whl", hash = "sha256:a34c4e7aafa4b2fb9090d3a7f3ad0ac969089c7b4a05c21dff593a0c37405916"},
+    {file = "types-redis-4.3.18.tar.gz", hash = "sha256:2260532c157d4f64f6e266de67b0aaa1979cfb969e409a16445ec6976c4a1de6"},
+    {file = "types_redis-4.3.18-py3-none-any.whl", hash = "sha256:ba4dffd5f804af849ddd5399164abd04fbf87fa5295680d89ccec010c66bb110"},
 ]
 types-requests = [
     {file = "types-requests-2.28.9.tar.gz", hash = "sha256:feaf581bd580497a47fe845d506fa3b91b484cf706ff27774e87659837de9962"},
