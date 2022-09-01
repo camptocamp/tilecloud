@@ -103,14 +103,14 @@ yaml = ["pyyaml"]
 
 [[package]]
 name = "boto3"
-version = "1.24.61"
+version = "1.24.64"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.61,<1.28.0"
+botocore = ">=1.27.64,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -119,7 +119,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.61"
+version = "1.27.64"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -1255,7 +1255,7 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "543ee1f493aab9e3e4610c7f3cb5ed1fdb30af2cebc92aaa358fb49887b8067a"
+content-hash = "3bbd46dd742d727faca41f8efdb8949b2698f5731e3e618275b229d22ff45d71"
 
 [metadata.files]
 astroid = [
@@ -1290,12 +1290,12 @@ bandit = [
     {file = "bandit-1.7.4.tar.gz", hash = "sha256:2d63a8c573417bae338962d4b9b06fbc6080f74ecd955a092849e1e65c717bd2"},
 ]
 boto3 = [
-    {file = "boto3-1.24.61-py3-none-any.whl", hash = "sha256:ec1aa3f4c2b68da1a9c01e175086f5f6b1b8b67780fa569ab8875be5bb3fd5ae"},
-    {file = "boto3-1.24.61.tar.gz", hash = "sha256:b72496c7eaa45afbdfa48a7c648c3211342582d91c8c1b7330d09c18242132d1"},
+    {file = "boto3-1.24.64-py3-none-any.whl", hash = "sha256:232ce2e82cf7d79f3ec02d301fd370a8e21ede81d5be3d9edf182ad10dc24e30"},
+    {file = "boto3-1.24.64.tar.gz", hash = "sha256:932edb4373cca0062521a236af46d80115598d3056c7356f00fee26db25efcd7"},
 ]
 botocore = [
-    {file = "botocore-1.27.61-py3-none-any.whl", hash = "sha256:535c8e97ed28a38fd09dd8f4735195e761bbee54e4c6021f3a709a97b1287dd6"},
-    {file = "botocore-1.27.61.tar.gz", hash = "sha256:99012965e2409665c7d86706862c5a141e01e1c4d2c81cb9409a44200ee59631"},
+    {file = "botocore-1.27.64-py3-none-any.whl", hash = "sha256:670aec1c6f201a06ad7fbf252485629f4cd17e63e31dea5b67accb4d08b5f2fa"},
+    {file = "botocore-1.27.64.tar.gz", hash = "sha256:25793c7e13d989ba27bbca83ea5e19a4ee1cf7ddbab2c0ab3d63461e64e9be50"},
 ]
 bottle = [
     {file = "bottle-0.12.23-py3-none-any.whl", hash = "sha256:9f1c363257c590bd34db5fad4693a7f06ff4217e9ad18337451de69c25137127"},
@@ -1901,6 +1901,7 @@ shapely = [
     {file = "Shapely-1.8.4-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:79da29fde8ad2ca791b324f2cc3e75093573f69488ade7b524f79d781b042699"},
     {file = "Shapely-1.8.4-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:eac2d08c0a02dccffd7f836901ea1d1b0f8e7ff3878b2c7a45443f0a34e7f087"},
     {file = "Shapely-1.8.4-cp310-cp310-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:007f0d51d045307dc3addd1c318d18f450c565c8ea96ea41304e020ca34d85b7"},
+    {file = "Shapely-1.8.4-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:04f416aa8ca9480b5cd74d2184fe43d4196a5941046661f7be27fe5c10f89ede"},
     {file = "Shapely-1.8.4-cp310-cp310-win32.whl", hash = "sha256:f6801a33897fb54ce39d5e841214192ecf95f4ddf8458d17e196a314fefe43bb"},
     {file = "Shapely-1.8.4-cp310-cp310-win_amd64.whl", hash = "sha256:e018163500109ab4c9ad51d018ba28abb1aed5b0451476859e189fbb00c46c7b"},
     {file = "Shapely-1.8.4-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:687520cf1db1fac2970cca5eb2ea037c1862b2e6938a514f9f6106c9d4ac0445"},
@@ -1918,6 +1919,7 @@ shapely = [
     {file = "Shapely-1.8.4-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:1f071175777f87d9220c24e4576dcf972b14f93dffd05a1d72ee0555dfa2a799"},
     {file = "Shapely-1.8.4-cp38-cp38-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:7855ac13c5a951bcef1f3834d1affeeacea42a4abd2c0f46b341229b350f2406"},
     {file = "Shapely-1.8.4-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:d7a6fd1329f75e290b858e9faeef15ae76d7ea05a02648fe216fec3c3bed4eb0"},
+    {file = "Shapely-1.8.4-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:20c40085835fbd5b12566b9b0a6d718b0b6a4d308ff1fff5b19d7cf29f75cc77"},
     {file = "Shapely-1.8.4-cp38-cp38-win32.whl", hash = "sha256:41e1395bb3865e42ca3dec857669ed3ab90806925fce38c47d7f92bd4276f7cd"},
     {file = "Shapely-1.8.4-cp38-cp38-win_amd64.whl", hash = "sha256:34765b0495c6297adb95d7de8fc62790f8eaf8e7fb96260dd644cf11d37b3d21"},
     {file = "Shapely-1.8.4-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:53d453f40e5b1265b8806ac7e5f3ce775b758e5c42c24239e3d8de6e861b7699"},
@@ -1925,6 +1927,7 @@ shapely = [
     {file = "Shapely-1.8.4-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:033b9eaf50c9de4c87b0d1ffa532edcf7420b70a329c630431da50071be939d9"},
     {file = "Shapely-1.8.4-cp39-cp39-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:b1756c28a48a61e5581720171a89d69ae303d5faffc58efef0dab498e16a50f1"},
     {file = "Shapely-1.8.4-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:a352f00637dda1354c549b602d9dcc69a7048d5d64dcdaf3b5e702d0bf5faad2"},
+    {file = "Shapely-1.8.4-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b70463ef505f509809b92ffb1202890a1236ce9f21666020de289fed911fdeaf"},
     {file = "Shapely-1.8.4-cp39-cp39-win32.whl", hash = "sha256:5b77a7fd5bbf051a640d25db85fc062d245ef03cd80081321b6b87213a8b0892"},
     {file = "Shapely-1.8.4-cp39-cp39-win_amd64.whl", hash = "sha256:5d629bcf68b45dfdfd85cc0dc37f5325d4ce9341b235f16969c1a76599476e84"},
     {file = "Shapely-1.8.4.tar.gz", hash = "sha256:a195e51caafa218291f2cbaa3fef69fd3353c93ec4b65b2a4722c4cf40c3198c"},
