@@ -14,6 +14,10 @@
 
 #### :wrench: Build, CI, Tests, Code style
 
+- Update the Renovate configuration [\#1356](https://github.com/camptocamp/tilecloud/pull/1356) ([sbrunner](https://github.com/sbrunner))
+- Remove Dependabot configuration [\#1355](https://github.com/camptocamp/tilecloud/pull/1355) ([sbrunner](https://github.com/sbrunner))
+- Fix the changelog cache [\#1330](https://github.com/camptocamp/tilecloud/pull/1330) ([sbrunner](https://github.com/sbrunner))
+- Update the changelog [\#1325](https://github.com/camptocamp/tilecloud/pull/1325) ([github-actions[bot]](https://github.com/apps/github-actions))
 - Update the changelog [\#1324](https://github.com/camptocamp/tilecloud/pull/1324) ([github-actions[bot]](https://github.com/apps/github-actions))
 - Set the cache as binary [\#1323](https://github.com/camptocamp/tilecloud/pull/1323) ([sbrunner](https://github.com/sbrunner))
 - Modernize the package [\#1303](https://github.com/camptocamp/tilecloud/pull/1303) ([sbrunner](https://github.com/sbrunner))
@@ -25,6 +29,20 @@
 
 #### :package: Dependencies update
 
+- Update dependency poetry-plugin-tweak-dependencies-version to v1 [\#1354](https://github.com/camptocamp/tilecloud/pull/1354) ([renovate[bot]](https://github.com/apps/renovate))
+- Lock file maintenance [\#1353](https://github.com/camptocamp/tilecloud/pull/1353) ([renovate[bot]](https://github.com/apps/renovate))
+- Update all patch versions \(patch\) [\#1352](https://github.com/camptocamp/tilecloud/pull/1352) ([renovate[bot]](https://github.com/apps/renovate))
+- Lock file maintenance [\#1347](https://github.com/camptocamp/tilecloud/pull/1347) ([renovate[bot]](https://github.com/apps/renovate))
+- Update all patch versions \(patch\) [\#1346](https://github.com/camptocamp/tilecloud/pull/1346) ([renovate[bot]](https://github.com/apps/renovate))
+- Update all patch versions \(patch\) [\#1345](https://github.com/camptocamp/tilecloud/pull/1345) ([renovate[bot]](https://github.com/apps/renovate))
+- Update all patch versions \(patch\) [\#1344](https://github.com/camptocamp/tilecloud/pull/1344) ([renovate[bot]](https://github.com/apps/renovate))
+- Lock file maintenance [\#1343](https://github.com/camptocamp/tilecloud/pull/1343) ([renovate[bot]](https://github.com/apps/renovate))
+- Lock file maintenance [\#1342](https://github.com/camptocamp/tilecloud/pull/1342) ([renovate[bot]](https://github.com/apps/renovate))
+- Update all patch versions \(patch\) [\#1341](https://github.com/camptocamp/tilecloud/pull/1341) ([renovate[bot]](https://github.com/apps/renovate))
+- Update all patch versions \(patch\) [\#1332](https://github.com/camptocamp/tilecloud/pull/1332) ([renovate[bot]](https://github.com/apps/renovate))
+- Lock file maintenance [\#1331](https://github.com/camptocamp/tilecloud/pull/1331) ([renovate[bot]](https://github.com/apps/renovate))
+- Update github/codeql-action action to v2 [\#1322](https://github.com/camptocamp/tilecloud/pull/1322) ([renovate[bot]](https://github.com/apps/renovate))
+- Update dependency redis to v7 [\#1321](https://github.com/camptocamp/tilecloud/pull/1321) ([renovate[bot]](https://github.com/apps/renovate))
 - Lock file maintenance [\#1320](https://github.com/camptocamp/tilecloud/pull/1320) ([renovate[bot]](https://github.com/apps/renovate))
 - Update all minor versions \(minor\) [\#1319](https://github.com/camptocamp/tilecloud/pull/1319) ([renovate[bot]](https://github.com/apps/renovate))
 - Update all patch versions \(patch\) [\#1318](https://github.com/camptocamp/tilecloud/pull/1318) ([renovate[bot]](https://github.com/apps/renovate))
