@@ -12,3 +12,4 @@
 *.mbtiles
 *.png
 *.pyc
+/.github/changelog-generator-cache
