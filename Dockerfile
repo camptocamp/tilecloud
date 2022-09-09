@@ -29,4 +29,5 @@ WORKDIR /app
 
 RUN --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/poetry,target=/poetry \
-    IP_NO_BINARY=shapely python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt
+    IP_NO_BINARY=shapely python3 -m pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements-dev.txt \
+    && python3 -m pip freeze > /requirements.txt
