@@ -25,5 +25,13 @@
       groupName: 'all minor versions',
       automerge: true,
     },
+    /** Group Poetry packages */
+    {
+      matchPackageNames: ['poetry', 'poetry-core'],
+      groupName: 'Poetry',
+      automerge: true,
+      separateMajorMinor: false,
+      separateMinorPatch: false,
+    },
   ],
 }
