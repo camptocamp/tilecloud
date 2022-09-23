@@ -7,7 +7,7 @@ Welcome to TileCloud's documentation!
 =====================================
 
 TileCloud is a powerful utility for generating, managing, transforming,
-visualising and map tiles in multiple formats.  It can create, read update,
+visualizing and map tiles in multiple formats.  It can create, read update,
 delete tiles in multiple back ends, called *TileStores*. Existing TileStores
 include:
 

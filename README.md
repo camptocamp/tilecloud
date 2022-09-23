@@ -4,7 +4,7 @@ A powerful utility for generating, managing, transforming, and visualizing map t
 
 ## Introduction
 
-TileCloud is a powerful utility for generating, managing, transforming, visualising and map tiles in multiple
+TileCloud is a powerful utility for generating, managing, transforming, visualizing and map tiles in multiple
 formats. It can create, read update, delete tiles in multiple back ends, called TileStores. Existing
 TileStores include:
 
@@ -99,7 +99,7 @@ debug tile layer:
 
     $ ./tc-viewer tiles.openstreetmap_org geography-class.mbtiles tiles.debug.black
 
-You'll need to point your browser at <http://localhost:8080/> and choose your favourite library.
+You'll need to point your browser at <http://localhost:8080/> and choose your favorite library.
 
 `tc-info` and `tc-viewer` are utility programs. Normally you use TileCloud by writing short Python programs
 that connect the TileCloud's modules to perform the action that you want.
@@ -194,8 +194,8 @@ just use:
 (`prefix/%(z)d/%(x)d/%(y)d.jpg`) is a template describing the layout of the tiles in S3. It's a normal Python
 format string: `%(x)d` means substitute the tile's `x` coordinate as a decimal integer.
 
-You can pass the same `s3://` URL to `tc-viewer`. This allows you to visualise your tiles stored in S3 with
-your favourite mapping library. For example:
+You can pass the same `s3://` URL to `tc-viewer`. This allows you to visualize your tiles stored in S3 with
+your favorite mapping library. For example:
 
     $ ./tc-viewer s3://bucket/prefix/%(z)d/%(x)d/%(y)d.jpg
 
@@ -253,7 +253,7 @@ Note that there is no file extension. `tc-viewer` will automatically set the cor
 encoding headers if it can determine them, and, failing this, most browsers will figure it out for themselves.
 
 For convenience, `tc-viewer` serves everything in the `static` directory under the URL `/static`. This can be
-used to serve your favourite mapping library and/or application code directly for testing purposes.
+used to serve your favorite mapping library and/or application code directly for testing purposes.
 
 By default, `tc-viewer` will use [Tornado](http://www.tornadoweb.org/) as a web server, if it is available,
 otherwise it will fall back to [WSGIRef](http://docs.python.org/library/wsgiref.html). Tornado has reasonably
@@ -274,7 +274,7 @@ generic tile server. It should only be used in development or demonstration envi
 ## Comparing mapping libraries
 
 `tc-viewer` supports most popular web mapping libraries out-of-the box. This can be very useful for quick,
-practical comparisons. If your favourite mapping library is missing, please submit an
+practical comparisons. If your favorite mapping library is missing, please submit an
 [issue](https://github.com/camptocamp/tilecloud/issues), or, even better, a [pull
 request](https://github.com/camptocamp/tilecloud/pulls).
 
