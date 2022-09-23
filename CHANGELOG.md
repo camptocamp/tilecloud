@@ -632,7 +632,7 @@
 - Use c2cciutils - publish to GitHub Container Registry [\#641](https://github.com/camptocamp/tilecloud/pull/641) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
 - Auto merge when the workflows is on success [\#630](https://github.com/camptocamp/tilecloud/pull/630) ([sbrunner](https://github.com/sbrunner))
 - \[Backport master\] Use Ubuntu 20.04 [\#628](https://github.com/camptocamp/tilecloud/pull/628) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
-- \[Backport master\] Use secret defined in organisation [\#626](https://github.com/camptocamp/tilecloud/pull/626) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
+- \[Backport master\] Use secret defined in organization [\#626](https://github.com/camptocamp/tilecloud/pull/626) ([c2c-bot-gis-ci](https://github.com/c2c-bot-gis-ci))
 - Add Azure blob storage [\#557](https://github.com/camptocamp/tilecloud/pull/557) ([sbrunner](https://github.com/sbrunner))
 - Fix c2cwsgiutils version [\#528](https://github.com/camptocamp/tilecloud/pull/528) ([sbrunner](https://github.com/sbrunner))
 - Create venv with Python3 in a dedicated folder [\#495](https://github.com/camptocamp/tilecloud/pull/495) ([arnaud-morvan](https://github.com/arnaud-morvan))
