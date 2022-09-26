@@ -171,7 +171,7 @@ test_images = ["scikit-image"]
 
 [[package]]
 name = "certifi"
-version = "2022.9.14"
+version = "2022.9.24"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
@@ -406,14 +406,14 @@ python-versions = "*"
 
 [[package]]
 name = "msal"
-version = "1.18.0"
+version = "1.19.0"
 description = "The Microsoft Authentication Library (MSAL) for Python library enables your app to access the Microsoft Cloud by supporting authentication of users with Microsoft Azure Active Directory accounts (AAD) and Microsoft Accounts (MSA) using industry standard OAuth2 and OpenID Connect."
 category = "main"
 optional = true
 python-versions = "*"
 
 [package.dependencies]
-cryptography = ">=0.6,<40"
+cryptography = ">=0.6,<41"
 PyJWT = {version = ">=1.0.0,<3", extras = ["crypto"]}
 requests = ">=2.0.0,<3"
 
@@ -1042,7 +1042,7 @@ yaml = ["pyyaml"]
 
 [[package]]
 name = "setuptools"
-version = "65.3.0"
+version = "65.4.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
@@ -1176,7 +1176,7 @@ types-urllib3 = "<1.27"
 
 [[package]]
 name = "types-six"
-version = "1.16.19"
+version = "1.16.20"
 description = "Typing stubs for six"
 category = "dev"
 optional = false
@@ -1346,8 +1346,8 @@ c2cwsgiutils = [
     {file = "c2cwsgiutils-5.1.5-py3-none-any.whl", hash = "sha256:bfe7950cc303626b0dc0c29bbd684632aa985cc457727928741eb543b396b33b"},
 ]
 certifi = [
-    {file = "certifi-2022.9.14-py3-none-any.whl", hash = "sha256:e232343de1ab72c2aa521b625c80f699e356830fd0e2c620b465b304b17b0516"},
-    {file = "certifi-2022.9.14.tar.gz", hash = "sha256:36973885b9542e6bd01dea287b2b4b3b21236307c56324fcc3f1160f2d655ed5"},
+    {file = "certifi-2022.9.24-py3-none-any.whl", hash = "sha256:90c1a32f1d68f940488354e36370f6cca89f0f106db09518524c88d6ed83f382"},
+    {file = "certifi-2022.9.24.tar.gz", hash = "sha256:0d9c601124e5a6ba9712dbc60d9c53c21e34f5f641fe83002317394311bdce14"},
 ]
 cffi = [
     {file = "cffi-1.15.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:a66d3508133af6e8548451b25058d5812812ec3798c886bf38ed24a98216fab2"},
@@ -1603,8 +1603,8 @@ mccabe = [
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
 msal = [
-    {file = "msal-1.18.0-py2.py3-none-any.whl", hash = "sha256:9c10e6cb32e0b6b8eaafc1c9a68bc3b2ff71505e0c5b8200799582d8b9f22947"},
-    {file = "msal-1.18.0.tar.gz", hash = "sha256:576af55866038b60edbcb31d831325a1bd8241ed272186e2832968fd4717d202"},
+    {file = "msal-1.19.0-py2.py3-none-any.whl", hash = "sha256:2206b44a739918b3ba0ee1bacd904e548fc91706cada9f1673b763c8d5f3364e"},
+    {file = "msal-1.19.0.tar.gz", hash = "sha256:65e329d69cbfe48bb3dd3236b1ef8e4cc91f869637606c184e227e86d2b0629d"},
 ]
 msal-extensions = [
     {file = "msal-extensions-1.0.0.tar.gz", hash = "sha256:c676aba56b0cce3783de1b5c5ecfe828db998167875126ca4b47dc6436451354"},
@@ -1950,8 +1950,8 @@ setoptconf-tmp = [
     {file = "setoptconf_tmp-0.3.1-py3-none-any.whl", hash = "sha256:76035d5cd1593d38b9056ae12d460eca3aaa34ad05c315b69145e138ba80a745"},
 ]
 setuptools = [
-    {file = "setuptools-65.3.0-py3-none-any.whl", hash = "sha256:2e24e0bec025f035a2e72cdd1961119f557d78ad331bb00ff82efb2ab8da8e82"},
-    {file = "setuptools-65.3.0.tar.gz", hash = "sha256:7732871f4f7fa58fb6bdcaeadb0161b2bd046c85905dbaa066bdcbcc81953b57"},
+    {file = "setuptools-65.4.0-py3-none-any.whl", hash = "sha256:c2d2709550f15aab6c9110196ea312f468f41cd546bceb24127a1be6fdcaeeb1"},
+    {file = "setuptools-65.4.0.tar.gz", hash = "sha256:a8f6e213b4b0661f590ccf40de95d28a177cd747d098624ad3f69c40287297e9"},
 ]
 Shapely = [
     {file = "Shapely-1.8.4-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:6702a5df484ca92bbd1494b5945dd7d6b8f6caab13ca9f6240e64034a114fa13"},
@@ -2038,8 +2038,8 @@ types-requests = [
     {file = "types_requests-2.28.11-py3-none-any.whl", hash = "sha256:af5f55e803cabcfb836dad752bd6d8a0fc8ef1cd84243061c0e27dee04ccf4fd"},
 ]
 types-six = [
-    {file = "types-six-1.16.19.tar.gz", hash = "sha256:5bd851a00d761c5b5df78a379cb174a9aa63defc8d967600bbb37df607099ed2"},
-    {file = "types_six-1.16.19-py3-none-any.whl", hash = "sha256:c9892951c3fd39e193aa35952049c48b31b56bd9c0bf104eb9735de030f20c8d"},
+    {file = "types-six-1.16.20.tar.gz", hash = "sha256:550ce95de763370a7d9e32b2fce51f6c1edc81c1bfd2249b8f2cd44e1fd30b1b"},
+    {file = "types_six-1.16.20-py3-none-any.whl", hash = "sha256:57c01d7ae41ba953ffe955be548dd46073c0562e76a0ea305419af9f8ac02e84"},
 ]
 types-urllib3 = [
     {file = "types-urllib3-1.26.24.tar.gz", hash = "sha256:a1b3aaea7dda3eb1b51699ee723aadd235488e4dc4648e030f09bc429ecff42f"},
