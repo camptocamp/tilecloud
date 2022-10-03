@@ -95,14 +95,14 @@ yaml = ["PyYAML"]
 
 [[package]]
 name = "boto3"
-version = "1.24.80"
+version = "1.24.84"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.80,<1.28.0"
+botocore = ">=1.27.84,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -1138,14 +1138,11 @@ docs = ["Sphinx (>=1.3.1)", "docutils", "pylons-sphinx-themes"]
 
 [[package]]
 name = "types-boto"
-version = "2.49.17"
+version = "2.49.18"
 description = "Typing stubs for boto"
 category = "dev"
 optional = false
 python-versions = "*"
-
-[package.dependencies]
-types-six = "*"
 
 [[package]]
 name = "types-cryptography"
@@ -1157,7 +1154,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-redis"
-version = "4.3.20"
+version = "4.3.21"
 description = "Typing stubs for redis"
 category = "dev"
 optional = false
@@ -1173,14 +1170,6 @@ python-versions = "*"
 
 [package.dependencies]
 types-urllib3 = "<1.27"
-
-[[package]]
-name = "types-six"
-version = "1.16.21"
-description = "Typing stubs for six"
-category = "dev"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "types-urllib3"
@@ -1295,7 +1284,7 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "b8ef4deb2b2224ef4b34dac745c8c8b62c7c7a6c16a0604eedb3c7b691950781"
+content-hash = "8360b7a5b0d212603bec5eb6e0fd54f08457f202fbfe89e05ccdc2f0a826f617"
 
 [metadata.files]
 astroid = [
@@ -1327,8 +1316,8 @@ bandit = [
     {file = "bandit-1.7.4.tar.gz", hash = "sha256:2d63a8c573417bae338962d4b9b06fbc6080f74ecd955a092849e1e65c717bd2"},
 ]
 boto3 = [
-    {file = "boto3-1.24.80-py3-none-any.whl", hash = "sha256:0c5732a78f75ff3e2692e6ed1765c5c9d4960ba0e8b0694066864b86f9537350"},
-    {file = "boto3-1.24.80.tar.gz", hash = "sha256:c686295e7829cf54127f7ab9c20088cc7b2a7d24768fcf355aebffa65879e2c9"},
+    {file = "boto3-1.24.84-py3-none-any.whl", hash = "sha256:be151711bbb4db53e85dd5bbe506002ce6f2f21fc4e45fcf6d2cf356d32cc4c6"},
+    {file = "boto3-1.24.84.tar.gz", hash = "sha256:6194763348545bb1669ce8d03ba104be1ba822daa184613aa10b9303a6a79017"},
 ]
 botocore = [
     {file = "botocore-1.27.84-py3-none-any.whl", hash = "sha256:da15026329706caf83323d84996f5ff5c527837347633fca9b3b1be0efa60841"},
@@ -2023,24 +2012,20 @@ translationstring = [
     {file = "translationstring-1.4.tar.gz", hash = "sha256:bf947538d76e69ba12ab17283b10355a9ecfbc078e6123443f43f2107f6376f3"},
 ]
 types-boto = [
-    {file = "types-boto-2.49.17.tar.gz", hash = "sha256:7a7df004a05e58c60468a4f69a0d7e6a38b303f7f567ea4f518d6c53d7f3371a"},
-    {file = "types_boto-2.49.17-py3-none-any.whl", hash = "sha256:d639c1306a8f8e19e06a486d30c7aeadc82e0a84a3996745ce95cd185fe0d1d5"},
+    {file = "types-boto-2.49.18.tar.gz", hash = "sha256:e857119c23a15767b21ca6814ca18be22d8ee59d13253b1ea3bdda622ea931d1"},
+    {file = "types_boto-2.49.18-py3-none-any.whl", hash = "sha256:192620119ee9acb4ee98b9c73dcb9ceb839362add888c7f15de7e08757cbc5c4"},
 ]
 types-cryptography = [
     {file = "types-cryptography-3.3.23.tar.gz", hash = "sha256:b85c45fd4d3d92e8b18e9a5ee2da84517e8fff658e3ef5755c885b1c2a27c1fe"},
     {file = "types_cryptography-3.3.23-py3-none-any.whl", hash = "sha256:913b3e66a502edbf4bfc3bb45e33ab476040c56942164a7ff37bd1f0ef8ef783"},
 ]
 types-redis = [
-    {file = "types-redis-4.3.20.tar.gz", hash = "sha256:74ed02945470ddea2dd21447c185dabb3169e5a5328d26b25cf3547d949b8e04"},
-    {file = "types_redis-4.3.20-py3-none-any.whl", hash = "sha256:b22e0f5a18b98b6a197dd403daed52a22cb76f50e3cbd7ddc539196af52ec23e"},
+    {file = "types-redis-4.3.21.tar.gz", hash = "sha256:fd017a6733af193d14f1bb29b4ff79c0abc906e8654158d17aba457a6381afe2"},
+    {file = "types_redis-4.3.21-py3-none-any.whl", hash = "sha256:cca7e17e3efb5dfdc7c9841bd5963fdd717ab68c4d2d8c6f49a9175fe2f29ce4"},
 ]
 types-requests = [
     {file = "types-requests-2.28.11.tar.gz", hash = "sha256:7ee827eb8ce611b02b5117cfec5da6455365b6a575f5e3ff19f655ba603e6b4e"},
     {file = "types_requests-2.28.11-py3-none-any.whl", hash = "sha256:af5f55e803cabcfb836dad752bd6d8a0fc8ef1cd84243061c0e27dee04ccf4fd"},
-]
-types-six = [
-    {file = "types-six-1.16.21.tar.gz", hash = "sha256:562b036de1a837eafe164827c5c53d7a8d703a44bb211642932dcd59e9e0f7c9"},
-    {file = "types_six-1.16.21-py3-none-any.whl", hash = "sha256:e4428b56da2505b5de228a3b5603561fa98571540fd75a90306eed8b3016ddf4"},
 ]
 types-urllib3 = [
     {file = "types-urllib3-1.26.25.tar.gz", hash = "sha256:5aef0e663724eef924afa8b320b62ffef2c1736c1fa6caecfc9bc6c8ae2c3def"},
