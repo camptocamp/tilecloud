@@ -92,7 +92,7 @@ class AzureStorageBlobTileStore(TileStore):
             try:
                 blob = self.container_client.get_blob_client(blob=key_name)
                 blob.upload_blob(
-                    tile.data,  # type: ignore
+                    tile.data,
                     overwrite=True,
                     content_settings=ContentSettings(  # type: ignore
                         content_type=tile.content_type,
