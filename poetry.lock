@@ -66,16 +66,16 @@ six = ">=1.12.0"
 
 [[package]]
 name = "azure-storage-blob"
-version = "12.13.1"
+version = "12.14.0"
 description = "Microsoft Azure Blob Storage Client Library for Python"
 category = "main"
 optional = true
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
-azure-core = ">=1.23.1,<2.0.0"
+azure-core = ">=1.24.2,<2.0.0"
 cryptography = ">=2.1.4"
-msrest = ">=0.6.21"
+msrest = ">=0.7.1"
 
 [[package]]
 name = "bandit"
@@ -1288,7 +1288,7 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "5b0d132494dcf997e1cc9ab2ae242e7c7483a64de23ce8e89507447c8b17f103"
+content-hash = "6f670466c9a72f612fa7e21608d1d3cbd0ca99c66816b4c42081e3305e204b48"
 
 [metadata.files]
 astroid = [
@@ -1312,8 +1312,8 @@ azure-identity = [
     {file = "azure_identity-1.11.0-py3-none-any.whl", hash = "sha256:f5eb0035ac9ceca26658b30bb2a375755c4cda61d0e3fd236b0e52ade2cb0995"},
 ]
 azure-storage-blob = [
-    {file = "azure-storage-blob-12.13.1.zip", hash = "sha256:899c4b8e2671812d2cf78f107556a27dbb128caaa2bb06094e72a3d5836740af"},
-    {file = "azure_storage_blob-12.13.1-py3-none-any.whl", hash = "sha256:726b86f733dc76218ce45b7a3254b61ba4f0cc3d68b7621be4985248c92ee483"},
+    {file = "azure-storage-blob-12.14.0.zip", hash = "sha256:a72dd9923e4b38a552f2bc1749d1fa5b820f497a8fb3cd2d77e7045bbe87bb4d"},
+    {file = "azure_storage_blob-12.14.0-py3-none-any.whl", hash = "sha256:073c9e99154975644b32ed5c900832d8aa3c041b972b2f34ef269760d023e69b"},
 ]
 bandit = [
     {file = "bandit-1.7.4-py3-none-any.whl", hash = "sha256:412d3f259dab4077d0e7f0c11f50f650cc7d10db905d98f6520a95a18049658a"},
