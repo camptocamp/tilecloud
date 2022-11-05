@@ -54,7 +54,7 @@ tc-viewer = "tilecloud.scripts.tc-viewer:main"
 python = ">=3.8,<3.11"
 azure-storage-blob = { version = "12.14.1", optional = true }
 azure-identity = { version = "1.11.0", optional = true }
-boto3 = { version = "1.25.4", optional = true }
+boto3 = { version = "1.25.5", optional = true }
 bottle = "0.12.23"
 c2cwsgiutils = { version = "5.1.5", extras = ["broadcast"], optional = true }
 Pillow = "9.3.0"
