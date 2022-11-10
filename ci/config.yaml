@@ -1,10 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/c2cciutils/master/c2cciutils/schema.json
 
 checks:
-  required_workflows:
-    clean.yaml: False
-    audit.yaml: False
-    rebuild.yaml: False
+  required_workflows: False
   versions: False
   prospector_config:
     properties:
