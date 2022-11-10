@@ -10,7 +10,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 class AzureStorageBlobTileStore(TileStore):
-    """Tiles stored in Azure storge blob"""
+    """Tiles stored in Azure storage blob"""
 
     def __init__(
         self,
