@@ -1,11 +1,6 @@
 checks:
-  required_workflows:
-    clean.yaml: False
-    audit.yaml: False
-    rebuild.yaml: False
-  versions:
-    audit: False
-    rebuild: False
+  required_workflows: False
+  versions: False
 
 publish:
   docker:
