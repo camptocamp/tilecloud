@@ -51,7 +51,7 @@ aio = ["aiohttp (>=3.0)"]
 
 [[package]]
 name = "azure-identity"
-version = "1.11.0"
+version = "1.12.0"
 description = "Microsoft Azure Identity Library for Python"
 category = "main"
 optional = true
@@ -1279,7 +1279,7 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "b757bd27b699064df905781a5047f0722993fb3f75484c02fb177be826a260fc"
+content-hash = "d01050028d0f9157c511b18ef49e71cc69727ac84987844fbfa58eaab0036c3c"
 
 [metadata.files]
 astroid = [
@@ -1299,8 +1299,8 @@ azure-core = [
     {file = "azure_core-1.26.1-py3-none-any.whl", hash = "sha256:726ffd1ded04a2c1cb53f9d9155cbb05ac5c1c2a29af4ef622e93e1c0a8bc92b"},
 ]
 azure-identity = [
-    {file = "azure-identity-1.11.0.zip", hash = "sha256:c3fc800af58b857e7faf0e310376e5ef10f5dad5090914cc42ffa6d7d23b6729"},
-    {file = "azure_identity-1.11.0-py3-none-any.whl", hash = "sha256:f5eb0035ac9ceca26658b30bb2a375755c4cda61d0e3fd236b0e52ade2cb0995"},
+    {file = "azure-identity-1.12.0.zip", hash = "sha256:7f9b1ae7d97ea7af3f38dd09305e19ab81a1e16ab66ea186b6579d85c1ca2347"},
+    {file = "azure_identity-1.12.0-py3-none-any.whl", hash = "sha256:2a58ce4a209a013e37eaccfd5937570ab99e9118b3e1acf875eed3a85d541b92"},
 ]
 azure-storage-blob = [
     {file = "azure-storage-blob-12.14.1.zip", hash = "sha256:860d4d82985a4bfc7d3271e71275af330f54f330a754355435a7ba749ccde997"},
