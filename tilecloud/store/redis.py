@@ -148,7 +148,7 @@ class RedisTileStore(TileStore):
         # Once consumed from redis, we don't have to delete the tile from the queue.
         assert hasattr(tile, "from_redis")
         assert hasattr(tile, "sqs_message")
-        assert tile.from_redis is True  # type: ignore
+        assert tile.from_redis is True
         self._master.xack(self._name, STREAM_GROUP, tile.sqs_message)  # type: ignore
         self._master.xdel(self._name, tile.sqs_message)  # type: ignore
         return tile

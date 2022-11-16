@@ -44,7 +44,7 @@ class ZipTileStore(TileStore):
         if tile is None:
             return None
         if hasattr(tile, "zipinfo"):
-            tile.data = self.zipfile.read(tile.zipinfo)  # type: ignore
+            tile.data = self.zipfile.read(tile.zipinfo)
         else:
             filename = self.layout.filename(tile.tilecoord, tile.metadata)
             tile.data = self.zipfile.read(filename)
