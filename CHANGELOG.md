@@ -539,7 +539,6 @@
 - Bump boto3 from 1.16.9 to 1.16.10 [\#613](https://github.com/camptocamp/tilecloud/pull/613) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.16.8 to 1.16.9 [\#612](https://github.com/camptocamp/tilecloud/pull/612) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.16.7 to 1.16.8 [\#611](https://github.com/camptocamp/tilecloud/pull/611) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump pytest from 6.1.1 to 6.1.2 [\#610](https://github.com/camptocamp/tilecloud/pull/610) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.16.6 to 1.16.7 [\#609](https://github.com/camptocamp/tilecloud/pull/609) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.16.5 to 1.16.6 [\#608](https://github.com/camptocamp/tilecloud/pull/608) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump boto3 from 1.16.4 to 1.16.5 [\#607](https://github.com/camptocamp/tilecloud/pull/607) ([dependabot[bot]](https://github.com/apps/dependabot))
