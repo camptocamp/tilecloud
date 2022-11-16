@@ -1,0 +1,47 @@
+name: Audit
+
+on:
+  schedule:
+    - cron: '30 2 * * *'
+
+jobs:
+  audit:
+    runs-on: ubuntu-22.04
+    name: Audit
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        branch:
+          - '1.3'
+          - '1.4'
+          - '1.5'
+          - '1.6'
+          - '1.8'
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.branch }}
+          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+
+      - run: python3 -m venv ~/.venv
+      - run: ~/.venv/bin/pip install --pre c2cciutils[audit]
+      - run: python3 -m pip install --pre c2cciutils[audit]
+
+      - name: Audit
+        run: ~/.venv/bin/c2cciutils-audit --branch=${{ matrix.branch }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Audit Snyk debug
+        run: ~/.venv/bin/c2cciutils-audit --branch=${{ matrix.branch }}
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DEBUG: '*snyk*'
