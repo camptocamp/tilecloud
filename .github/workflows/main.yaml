@@ -31,7 +31,6 @@ jobs:
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
-      - run: python3 -m pip install --user --upgrade pip
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
       - name: Checks
