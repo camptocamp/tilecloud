@@ -67,7 +67,7 @@ class SQSTileStore(TileStore):
 
     def delete_one(self, tile: Tile) -> Tile:
         assert hasattr(tile, "sqs_message")
-        tile.sqs_message.delete()  # type: ignore
+        tile.sqs_message.delete()
         delattr(tile, "sqs_message")
         return tile
 
