@@ -1,1 +1,3 @@
 c2cciutils==1.0.dev20201224081728
+pipenv>=2022.1.8 # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
