@@ -28,7 +28,7 @@ class AzureStorageBlobTileStore(TileStore):
         if client is None:
             if "AZURE_STORAGE_CONNECTION_STRING" in os.environ:
                 client = BlobServiceClient.from_connection_string(
-                    os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
+                    os.environ.get("AZURE_STORAGE_CONNECTION_STRING")  # type: ignore
                 )
             else:
                 client = BlobServiceClient(
@@ -46,7 +46,7 @@ class AzureStorageBlobTileStore(TileStore):
         if not tile:
             return False
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
-        return len(self.container_client.list_blobs(name_starts_with=key_name)) > 0
+        return len(self.container_client.list_blobs(name_starts_with=key_name)) > 0  # type: ignore
 
     def delete_one(self, tile: Tile) -> Tile:
         try:
@@ -62,7 +62,7 @@ class AzureStorageBlobTileStore(TileStore):
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         try:
             blob = self.container_client.get_blob_client(blob=key_name)
-            tile.data = blob.download_blob().readall()
+            tile.data = blob.download_blob().readall()  # type: ignore
             properties = blob.get_blob_properties()
             tile.content_encoding = properties.content_settings.content_encoding
             tile.content_type = properties.content_settings.content_type
@@ -90,9 +90,9 @@ class AzureStorageBlobTileStore(TileStore):
             try:
                 blob = self.container_client.get_blob_client(blob=key_name)
                 blob.upload_blob(
-                    tile.data,
+                    tile.data,  # type: ignore
                     overwrite=True,
-                    content_settings=ContentSettings(
+                    content_settings=ContentSettings(  # type: ignore
                         content_type=tile.content_type,
                         content_encoding=tile.content_encoding,
                         cache_control=self.cache_control,
