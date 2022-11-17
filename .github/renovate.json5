@@ -8,6 +8,7 @@
   prHourlyLimit: 0,
   prConcurrentLimit: 0,
   lockFileMaintenance: { enabled: true, automerge: true },
+  baseBranches: ['master', '1.3', '1.4', '1.5', '1.6', '1.8'],
   packageRules: [
     /** Automerge the patch, the minor and the dev dependency */
     {
@@ -33,6 +34,12 @@
       automerge: true,
       separateMajorMinor: false,
       separateMinorPatch: false,
+    },
+    /** Accept only the patch on the stabilization branches */
+    {
+      matchBaseBranches: ['/1\\..*/'],
+      matchUpdateTypes: ['major', 'minor', 'pin', 'digest', 'lockFileMaintenance', 'rollback', 'bump'],
+      enabled: false,
     },
   ],
 }
