@@ -1,6 +1,7 @@
 checks:
   required_workflows: False
   versions: False
+  black: false
 
 publish:
   docker:
