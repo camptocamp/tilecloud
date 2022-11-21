@@ -2,6 +2,9 @@ checks:
   required_workflows: False
   versions: False
   black: false
+  prospector_config: false
+  editorconfig: false
+  prettier: false
 
 publish:
   docker:
