@@ -583,7 +583,7 @@ tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "pa
 
 [[package]]
 name = "plaster"
-version = "1.1"
+version = "1.1.2"
 description = "A loader interface around multiple config file formats."
 category = "main"
 optional = true
@@ -1713,8 +1713,8 @@ pillow = [
     {file = "Pillow-9.3.0.tar.gz", hash = "sha256:c935a22a557a560108d780f9a0fc426dd7459940dc54faa49d83249c8d3e760f"},
 ]
 plaster = [
-    {file = "plaster-1.1-py2.py3-none-any.whl", hash = "sha256:50a76cfa6a283f712660110fb82e254f5444b99a2df5837426eea0b8b47bbd5e"},
-    {file = "plaster-1.1.tar.gz", hash = "sha256:136c09ecbd2a8eab1544fb8513cbd77a32f6e7052b1034fe53856bf74a172faa"},
+    {file = "plaster-1.1.2-py2.py3-none-any.whl", hash = "sha256:42992ab1f4865f1278e2ad740e8ad145683bb4022e03534265528f0c23c0df2d"},
+    {file = "plaster-1.1.2.tar.gz", hash = "sha256:f8befc54bf8c1147c10ab40297ec84c2676fa2d4ea5d6f524d9436a80074ef98"},
 ]
 plaster-pastedeploy = [
     {file = "plaster_pastedeploy-1.0.1-py2.py3-none-any.whl", hash = "sha256:ad3550cc744648969ed3b810f33c9344f515ee8d8a8cec18e8f2c4a643c2181f"},
