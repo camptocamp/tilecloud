@@ -34,7 +34,7 @@ jobs:
       - run: python3 -m venv ~/.venv
       - run: ~/.venv/bin/pip install --pre c2cciutils[audit]
       - run: python3 -m pip install --pre c2cciutils[audit]
-      
+
       - name: Check .tool-versions file existence
         id: tool-versions
         uses: andstor/file-existence-action@v2
