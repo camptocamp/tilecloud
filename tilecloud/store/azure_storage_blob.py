@@ -80,7 +80,7 @@ class AzureStorageBlobTileStore(TileStore):
                 blob = self.client.get_blob_client(container=self.container_name, blob=key_name)
                 blob.upload_blob(
                     tile.data,
-                    content_settings=azure.storage.blob.ContentSettings(
+                    content_settings=azure.storage.blob.ContentSettings(  # type: ignore
                         content_type=tile.content_type,
                         content_encoding=tile.content_encoding,
                         cache_control=self.cache_control,
