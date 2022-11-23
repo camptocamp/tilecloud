@@ -1,7 +1,7 @@
-azure-storage-blob==12.8.1
+azure-storage-blob==12.13.0
 boto3==1.17.112
 bottle==0.12.23
 c2cwsgiutils[broadcast]>=4.0.1
-Pillow==8.2.0
+Pillow==9.3.0
 pyproj==3.0.1
 pyramid==2.0
