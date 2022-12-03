@@ -54,7 +54,7 @@ tc-viewer = "tilecloud.scripts.tc-viewer:main"
 python = ">=3.8,<3.11"
 azure-storage-blob = { version = "12.14.1", optional = true }
 azure-identity = { version = "1.12.0", optional = true }
-boto3 = { version = "1.26.16", optional = true }
+boto3 = { version = "1.26.22", optional = true }
 bottle = "0.12.23"
 c2cwsgiutils = { version = "5.1.5", extras = ["broadcast"], optional = true }
 Pillow = "9.3.0"
@@ -75,7 +75,7 @@ prospector = { version = "1.7.7", extras = ["with_bandit", "with_mypy", "with_py
 pytest = "7.2.0"
 pytest-cov = "4.0.0"
 types-boto = "2.49.18.3"
-types-redis = "4.3.21.5"
+types-redis = "4.3.21.6"
 types-requests = "2.28.11.5"
 pycairo = "1.22.0"
 Shapely = "1.8.5.post1"
