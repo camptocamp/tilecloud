@@ -48,7 +48,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
       - name: Audit Snyk debug
-        run: ~/.venv/bin/c2cciutils-audit --branch=${{ matrix.branch }} || false
+        run: ~/.venv/bin/c2cciutils-audit --branch=${{ matrix.branch }} || true
         if: failure()
         env:
           GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
