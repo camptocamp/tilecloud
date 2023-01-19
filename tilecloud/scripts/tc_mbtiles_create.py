@@ -16,7 +16,7 @@ from tilecloud.store.mbtiles import MBTilesTileStore
 from tilecloud.store.s3 import S3TileStore
 
 
-def main():
+def main() -> None:
     tilelayouts = {"i3d": I3DTileLayout, "osm": OSMTileLayout}
     tilestores = "filesystem log s3".split()
     option_parser = OptionParser()

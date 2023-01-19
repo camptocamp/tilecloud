@@ -9,7 +9,7 @@ from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 from tilecloud.store.mask import MaskTileStore
 
 
-def main():
+def main() -> None:
     option_parser = OptionParser()
     option_parser.add_option("--bounds", metavar="BOUNDS")
     option_parser.add_option("--limit", metavar="LIMIT", type=int)

@@ -8,7 +8,7 @@ from optparse import OptionParser
 from tilecloud import BoundingPyramid, TileStore
 
 
-def main():
+def main() -> None:
     option_parser = OptionParser()
     option_parser.add_option("-b", "--bounding-pyramid", metavar="BOUNDING-PYRAMID")
     option_parser.add_option("-r", "--relative", action="store_true")

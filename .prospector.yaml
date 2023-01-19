@@ -2,6 +2,9 @@ strictness: veryhigh
 doc-warnings: false
 max-line-length: 110
 
+ignore-patterns:
+  - ^tilecloud/scripts/tc_.*.py
+
 pylint:
   options:
     max-line-length: 110

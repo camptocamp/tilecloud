@@ -21,7 +21,6 @@ clean:
 docs: ## Make the documentation
 	make -C docs html
 
-
 .PHONY: prospector
 prospector:
 	prospector --output=pylint --die-on-tool-error

@@ -29,7 +29,7 @@ BOUNDING_PYRAMID_SQL = textwrap.dedent(
 )
 
 
-def main():
+def main() -> None:
     option_parser = OptionParser()
     option_parser.add_option("-m", "--metadata", action="store_true")
     option_parser.add_option("-t", "--tiles", choices=("bounding-pyramid", "count", "list"))
