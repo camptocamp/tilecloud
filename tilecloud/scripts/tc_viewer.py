@@ -124,7 +124,7 @@ def index():
     return dict(debug=bottle.request.GET.get("debug"))
 
 
-def main():
+def main() -> None:
     option_parser = OptionParser()
     option_parser.add_option("--cache", action="store_true")
     option_parser.add_option("--debug", action="store_true", default=False)

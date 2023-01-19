@@ -27,7 +27,7 @@ def detect_edge(tilestore, z, first, last, other, horizontal, up):
     return last
 
 
-def main():
+def main() -> None:
     option_parser = OptionParser()
     option_parser.add_option("-b", "--bounds", metavar="BOUNDING-PYRAMID")
     option_parser.add_option("-r", "--relative", action="store_true")

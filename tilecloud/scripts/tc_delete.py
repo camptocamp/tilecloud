@@ -10,7 +10,7 @@ from tilecloud.filter.logger import Logger
 from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
 
 
-def main():
+def main() -> None:
     logger = logging.getLogger(os.path.basename(sys.argv[0]))
     option_parser = OptionParser()
     option_parser.add_option("-b", "--bounding-pyramid", metavar="BOUNDING-PYRAMID")
