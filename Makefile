@@ -10,7 +10,7 @@ help: ## Display this help message
 		awk 'BEGIN {FS = ":.*?## "}; {printf "	%-20s%s\n", $$1, $$2}'
 
 .PHONY: all
-all: test prospector docs
+all: tests prospector docs
 
 .PHONY: clean
 clean:

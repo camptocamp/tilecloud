@@ -1,6 +1,7 @@
 import logging
 import os
 import socket
+import sys
 import time
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Set, Tuple, Union
 
@@ -39,6 +40,8 @@ class RedisTileStore(TileStore):
         max_retries: int = 5,
         max_errors_age: int = 24 * 3600,
         max_errors_nb: int = 100,
+        pending_count: int = 10,
+        pending_max_count: int = sys.maxsize,
         sentinels: Optional[List[Tuple[str, int]]] = None,
         service_name: str = "mymaster",
         sentinel_kwargs: Any = None,
@@ -67,12 +70,17 @@ class RedisTileStore(TileStore):
         self._max_retries = max_retries
         self._max_errors_age = max_errors_age
         self._max_errors_nb = max_errors_nb
+        self._pending_count = pending_count
+        self._pending_max_count = pending_max_count
         if not name.startswith("queue_"):
             name = "queue_" + name
         self._name_str = name
         self._name = name.encode("utf-8")
         self._errors_name = self._name + b"_errors"
         try:
+            logger.debug(
+                "Create the Redis stream name: %s, group name: %s, id: 0-0, MKSTREAM", name, STREAM_GROUP
+            )
             self._master.xgroup_create(name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
         except redis.ResponseError as e:
             if "BUSYGROUP" not in str(e):
@@ -88,7 +96,14 @@ class RedisTileStore(TileStore):
         count = 0
         while True:
             try:
-                logger.debug("Wait for new tiles")
+                logger.debug(
+                    "Wait for new tiles, group name: %s, consumer name: %s, streams: %s, count: 1, "
+                    "block: %s",
+                    STREAM_GROUP,
+                    CONSUMER_NAME,
+                    self._name,
+                    round(self._timeout_ms),
+                )
                 queues = self._master.xreadgroup(
                     groupname=STREAM_GROUP,
                     consumername=CONSUMER_NAME,
@@ -99,12 +114,12 @@ class RedisTileStore(TileStore):
                 logger.debug("Get %d new elements", len(queues))
 
                 if not queues:
-                    queues = self._claim_olds()
-                    if queues is None:
+                    queues, has_pendings = self._claim_olds()
+                    if not has_pendings:
                         stats.set_gauge(["redis", self._name_str, "nb_messages"], 0)
                         stats.set_gauge(["redis", self._name_str, "pending"], 0)
-                    if queues is None and self._stop_if_empty:
-                        break
+                        if self._stop_if_empty:
+                            break
                 if queues:
                     for redis_message in queues:
                         queue_name, queue_messages = redis_message
@@ -133,6 +148,9 @@ class RedisTileStore(TileStore):
 
     def put_one(self, tile: Tile) -> Tile:
         try:
+            logger.debug(
+                "Add tile to the Redis stream name: %s, fields: %s", self._name, encode_message(tile)
+            )
             self._master.xadd(name=self._name, fields={"message": encode_message(tile)})
         except Exception as e:
             logger.warning("Failed sending Redis message", exc_info=True)
@@ -149,7 +167,14 @@ class RedisTileStore(TileStore):
         assert hasattr(tile, "from_redis")
         assert hasattr(tile, "sqs_message")
         assert tile.from_redis is True
+        logger.debug(
+            "Acknowledge tile from Redis stream name: %s, group name: %s, sqs message: %s",
+            self._name,
+            STREAM_GROUP,
+            tile.sqs_message,
+        )
         self._master.xack(self._name, STREAM_GROUP, tile.sqs_message)  # type: ignore
+        logger.debug("Delete tile from Redis stream name: %s, sqs message: %s", self._name, tile.sqs_message)
         self._master.xdel(self._name, tile.sqs_message)  # type: ignore
         return tile
 
@@ -157,46 +182,80 @@ class RedisTileStore(TileStore):
         """
         Used only by tests.
         """
+        logger.debug("Delete all tiles from Redis stream name: %s", self._name)
         self._master.xtrim(name=self._name, maxlen=0)
         # xtrim doesn't empty the group claims. So we have to delete and re-create groups
+        logger.debug("Delete all tiles from Redis stream name: %s, group name: %s", self._name, STREAM_GROUP)
         self._master.xgroup_destroy(name=self._name, groupname=STREAM_GROUP)  # type: ignore
+        logger.debug(
+            "Create the Redis stream name: %s, group name: %s, id: 0-0, MKSTREAM", self._name, STREAM_GROUP
+        )
         self._master.xgroup_create(name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
+        logger.debug(
+            "Delete all tiles from Redis stream name: %s, group name: %s", self._errors_name, STREAM_GROUP
+        )
         self._master.xtrim(name=self._errors_name, maxlen=0)
 
-    def _claim_olds(self) -> Optional[Iterable[Tuple[bytes, Any]]]:
+    def _claim_olds(self) -> Tuple[Iterable[Tuple[bytes, Any]], bool]:
         logger.debug("Claim old's")
-        pendings = self._master.xpending_range(
-            name=self._name, groupname=STREAM_GROUP, min="-", max="+", count=10
-        )
-        if not pendings:
-            logger.debug("Empty pendings")
-            # None means there is nothing pending at all
-            return None
-        to_steal = []
-        to_drop = []
-        for pending in pendings:
+        to_steal: List[int] = []
+        to_drop: List[int] = []
+        min_ = 1
+        has_pendings = False
+        while len(to_steal) + len(to_drop) < self._pending_count:
+            if min_ > self._pending_max_count:
+                break
             logger.debug(
-                "Pending for %d, threshold %d", int(pending["time_since_delivered"]), self._pending_timeout_ms
+                "Get pending messages, name: %s, group name: %s, min: %d, max: +, count: %d",
+                self._name,
+                STREAM_GROUP,
+                min_,
+                self._pending_count,
             )
-            if int(pending["time_since_delivered"]) >= self._pending_timeout_ms:
-                id_ = pending["message_id"]
-                nb_retries = int(pending["times_delivered"])
-                if nb_retries < self._max_retries:
-                    logger.info(
-                        "A message has been pending for too long. Stealing it (retry #%d): %s",
-                        nb_retries,
-                        id_,
-                    )
-                    to_steal.append(id_)
-                else:
-                    logger.warning(
-                        "A message has been pending for too long and retried too many times. Dropping it: %s",
-                        id_,
-                    )
-                    to_drop.append(id_)
+            pendings = self._master.xpending_range(
+                name=self._name, groupname=STREAM_GROUP, min=min_, max="+", count=self._pending_count
+            )
+            if not pendings:
+                logger.debug("Empty pending")
+                # None means there is nothing pending
+                break
+            min_ += self._pending_count
+            has_pendings = True
+
+            for pending in pendings:
+                logger.debug(
+                    "Pending for %d, threshold %d",
+                    int(pending["time_since_delivered"]),
+                    self._pending_timeout_ms,
+                )
+                if int(pending["time_since_delivered"]) >= self._pending_timeout_ms:
+                    id_ = pending["message_id"]
+                    nb_retries = int(pending["times_delivered"])
+                    if nb_retries < self._max_retries:
+                        logger.info(
+                            "A message has been pending for too long. Stealing it (retry #%d): %s",
+                            nb_retries,
+                            id_,
+                        )
+                        to_steal.append(id_)
+                    else:
+                        logger.warning(
+                            "A message has been pending for too long and retried too many times. "
+                            "Dropping it: %s",
+                            id_,
+                        )
+                        to_drop.append(id_)
 
         logger.debug("%d elements to drop", len(to_drop))
         if to_drop:
+            logger.debug(
+                "Claim old's name: %s, group name: %s, consumer name: %s, min idle time: %d, message ids: %s",
+                self._name,
+                STREAM_GROUP,
+                CONSUMER_NAME,
+                self._pending_timeout_ms,
+                to_drop,
+            )
             drop_messages = self._master.xclaim(  # type: ignore
                 name=self._name,
                 groupname=STREAM_GROUP,
@@ -205,10 +264,23 @@ class RedisTileStore(TileStore):
                 message_ids=to_drop,
             )
             drop_ids = [drop_message[0] for drop_message in drop_messages]
+            logger.debug(
+                "Acknowledge old's name: %s, group name: %s, message ids: %s",
+                self._name,
+                STREAM_GROUP,
+                drop_ids,
+            )
             self._master.xack(self._name, STREAM_GROUP, *drop_ids)  # type: ignore
+            logger.debug("Delete old's name: %s, message ids: %s", self._name, drop_ids)
             self._master.xdel(self._name, *drop_ids)  # type: ignore
             for _, drop_message in drop_messages:
                 tile = decode_message(drop_message[b"message"])
+                logger.debug(
+                    "Add to errors name: %s, tile coord: %s, max len: %s",
+                    self._errors_name,
+                    tile.tilecoord,
+                    self._max_errors_nb,
+                )
                 self._master.xadd(
                     name=self._errors_name,
                     fields=dict(tilecoord=str(tile.tilecoord)),
@@ -218,6 +290,14 @@ class RedisTileStore(TileStore):
 
         logger.debug("%d elements to steal", len(to_steal))
         if to_steal:
+            logger.debug(
+                "Claim old's name: %s, group name: %s, consumer name: %s, min idle time: %d, message ids: %s",
+                self._name,
+                STREAM_GROUP,
+                CONSUMER_NAME,
+                self._pending_timeout_ms,
+                to_steal,
+            )
             messages = self._master.xclaim(  # type: ignore
                 name=self._name,
                 groupname=STREAM_GROUP,
@@ -226,10 +306,10 @@ class RedisTileStore(TileStore):
                 message_ids=to_steal,
             )
             stats.increment_counter(["redis", self._name_str, "stolen"], len(to_steal))
-            return [(self._name, messages)]
+            return [(self._name, messages)], has_pendings
         else:
             # Empty means there are pending jobs, but they are not old enough to be stolen
-            return []
+            return [], has_pendings
 
     def get_status(self) -> Dict[str, Union[str, int]]:
         """
@@ -260,6 +340,6 @@ class RedisTileStore(TileStore):
             else:
                 tiles_in_error.add(error_message[b"tilecoord"].decode())
         if old_errors:
-            logger.info("Deleting %d old errors", len(old_errors))
+            logger.info("Deleting %d old errors, name: %s", len(old_errors), self._errors_name)
             self._master.xdel(self._errors_name, *old_errors)  # type: ignore
         return tiles_in_error
