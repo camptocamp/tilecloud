@@ -49,7 +49,7 @@ tc-mask = "tilecloud.scripts.tc_mask:main"
 tc-mbtiles = "tilecloud.scripts.tc_mbtiles_create:main"
 tc-mbtiles-info = "tilecloud.scripts.tc_mbtiles_info:main"
 tc-redifined-bounds = "tilecloud.scripts.tc_refine_bounds:main"
-tc-viewer = "tilecloud.scripts.tc-viewer:main"
+tc-viewer = "tilecloud.scripts.tc_viewer:main"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
