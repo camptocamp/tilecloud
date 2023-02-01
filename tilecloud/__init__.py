@@ -778,7 +778,7 @@ class TileStore:
             return RedisTileStore(name)
         _, ext = os.path.splitext(name)
         if ext == ".bsddb":
-            import bsddb  # pylint: disable=import-error
+            import bsddb
 
             from tilecloud.store.bsddb import BSDDBTileStore
 
