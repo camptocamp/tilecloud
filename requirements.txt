@@ -4,6 +4,6 @@ bottle==0.12.23
 c2cwsgiutils[broadcast]>=4.0.1
 Pillow==9.3.0
 pyproj==3.0.1
-pyramid==2.0
+pyramid==2.0.1
 certifi>=2022.12.7 # not directly required, pinned by Snyk to avoid a vulnerability
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
