@@ -283,7 +283,7 @@ class RedisTileStore(TileStore):
                 )
                 self._master.xadd(
                     name=self._errors_name,
-                    fields=dict(tilecoord=str(tile.tilecoord)),
+                    fields={"tilecoord": str(tile.tilecoord)},
                     maxlen=self._max_errors_nb,
                 )
             stats.increment_counter(["redis", self._name_str, "dropped"], len(to_drop))
