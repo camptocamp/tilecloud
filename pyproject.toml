@@ -22,7 +22,7 @@ description = "Tools for managing tiles"
 readme = "README.md"
 authors = ["Camptocamp <info@camptocamp.com>"]
 repository = "https://github.com/camptocamp/tilecloud"
-license = "BSD"
+license = "BSD-2-Clause"
 keywords = ["gis", "tilecloud"]
 packages = [{ include = "tilecloud" }]
 classifiers = [
