@@ -27,7 +27,7 @@ class TemplateTileLayout(RETileLayout):
         RETileLayout.__init__(self, pattern, filename_re)
 
     def filename(self, tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
-        return self.template % dict(z=tilecoord.z, x=tilecoord.x, y=tilecoord.y)
+        return self.template % {"z": tilecoord.z, "x": tilecoord.x, "y": tilecoord.y}
 
     @staticmethod
     def _tilecoord(match: Match[str]) -> TileCoord:
