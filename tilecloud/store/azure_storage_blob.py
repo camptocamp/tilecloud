@@ -78,6 +78,7 @@ class AzureStorageBlobTileStore(TileStore):
 
         for blob in self.container_client.list_blobs(name_starts_with=prefix):
             try:
+                assert isinstance(blob.name, str)
                 tilecoord = self.tilelayout.tilecoord(blob.name)
             except ValueError:
                 continue
