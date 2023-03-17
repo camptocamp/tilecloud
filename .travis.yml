@@ -22,30 +22,30 @@ matrix:
         - REDIS_URL=redis://localhost:6379
 
 install:
-- pip install --upgrade pip
-- (python --version | grep -q " 3.5" && pip install "c2cwsgiutils<3") || true
-- pip install -r requirements.txt
-- pip install -r dev-requirements.txt
+  - pip install --upgrade pip
+  - (python --version | grep -q " 3.5" && pip install "c2cwsgiutils<3") || true
+  - pip install -r requirements.txt
+  - pip install -r dev-requirements.txt
 
 script:
-- make pep8
-- make pyflakes
-- make test
-- if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
+  - make pep8
+  - make pyflakes
+  - make test
+  - if [ ${TRAVIS_PULL_REQUEST} != "false" ] ; then git diff --check ${TRAVIS_BRANCH} -- ; fi
 
 after_success:
-# Report coverage results to coveralls.io
-- pip install coveralls
-- coveralls
+  # Report coverage results to coveralls.io
+  - pip install coveralls
+  - coveralls
 
 deploy:
-- provider: pypi
-  user: sbrunner
-  password:
-    secure: fautIIg6a5PRs9/sDzblOjxVcaaa9G5T5mRWv3QkopjG0juu2y/OSJ9NGiQYYt87R2ho/JbgxNx2LVQyHuJdR0/ZECmN2praDyXfP//QFbGMq02yTEWwFWQ2zF24AT+yHvx4vgU4gH3V8B+6xpLslSWu/zN1Ba1pmIWGlmzrOeM=
-  skip_cleanup: true
-  distributions: sdist bdist_wheel
-  on:
-    tags: true
-    python: 3.6
-    condition: "${TRAVIS_TAG} == `python setup.py --version`"
+  - provider: pypi
+    user: sbrunner
+    password:
+      secure: fautIIg6a5PRs9/sDzblOjxVcaaa9G5T5mRWv3QkopjG0juu2y/OSJ9NGiQYYt87R2ho/JbgxNx2LVQyHuJdR0/ZECmN2praDyXfP//QFbGMq02yTEWwFWQ2zF24AT+yHvx4vgU4gH3V8B+6xpLslSWu/zN1Ba1pmIWGlmzrOeM=
+    skip_cleanup: true
+    distributions: sdist bdist_wheel
+    on:
+      tags: true
+      python: 3.6
+      condition: "${TRAVIS_TAG} == `python setup.py --version`"
