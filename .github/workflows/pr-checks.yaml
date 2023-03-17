@@ -3,12 +3,12 @@ name: Pull request check
 on:
   pull_request:
     types:
-      - opened
-      - reopened
-      - labeled
-      - unlabeled
-      - edit
-      - synchronize
+    - opened
+    - reopened
+    - labeled
+    - unlabeled
+    - edit
+    - synchronize
 
 env:
   POETRY_DYNAMIC_VERSIONING_BYPASS: 0.0.0
@@ -20,13 +20,14 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v3
+    - run: pip install --upgrade attrs
+    - uses: actions/checkout@v3
 
-      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
-      - run: python3 -m pip install --user --pre c2cciutils[pr_checks]
+    - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+    - run: python3 -m pip install --user --pre c2cciutils[pr_checks]
 
-      - name: Check pull request
-        run: c2cciutils-pull-request-checks
-        env:
-          GITHUB_EVENT: ${{ toJson(github) }}
-          GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+    - name: Check pull request
+      run: c2cciutils-pull-request-checks
+      env:
+        GITHUB_EVENT: ${{ toJson(github) }}
+        GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
