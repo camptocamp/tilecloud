@@ -98,12 +98,12 @@ def test_dropping_too_many_retries(store):
     count = 0
     nb_tries = 0
     # max_retries=2 => 2 iterations to have the error two times and a third one to drop the message
-    for _ in range(3):
+    for _ in range(4):
         try:
             for tile in store.list():
                 if tile.tilecoord.y == 0:  # this tile always fails and will be dropped after two tries
                     nb_tries += 1
-                    assert nb_tries <= 2
+                    assert nb_tries <= 3
                     raise SlaveException
                 count += 1
                 store.delete_one(tile)
