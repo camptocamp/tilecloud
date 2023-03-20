@@ -231,7 +231,7 @@ class RedisTileStore(TileStore):
                 if int(pending["time_since_delivered"]) >= self._pending_timeout_ms:
                     id_ = pending["message_id"]
                     nb_retries = int(pending["times_delivered"])
-                    if nb_retries < self._max_retries:
+                    if nb_retries <= self._max_retries:
                         logger.info(
                             "A message has been pending for too long. Stealing it (retry #%d): %s",
                             nb_retries,
