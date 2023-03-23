@@ -3,6 +3,7 @@
 checks:
   versions: false
 
+  codespell: false
 publish:
   docker:
     images: []

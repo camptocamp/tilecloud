@@ -5,3 +5,94 @@ repos:
       - id: prettier
         additional_dependencies:
           - prettier@2.8.4
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: detect-private-key
+      - id: check-merge-conflict
+      - id: check-ast
+      - id: debug-statements
+      - id: check-toml
+      - id: check-yaml
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+  - repo: https://github.com/sbrunner/hooks
+    rev: 0.3.2
+    hooks:
+      - id: copyright
+      - id: poetry-check
+        additional_dependencies:
+          - poetry==1.3.2 # pypi
+      - id: poetry-lock
+        additional_dependencies:
+          - poetry==1.3.2 # pypi
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.2
+    hooks:
+      - id: codespell
+        exclude: ^(.*/)?poetry\.lock$
+        args:
+          - --ignore-words=.github/spell-ignore-words.txt
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.2
+    hooks:
+      - id: shellcheck
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      - id: git-check
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.20.0
+    hooks:
+      - id: check-github-actions
+      - id: check-github-workflows
+      - id: check-jsonschema
+        name: Check GitHub Workflows set timeout-minutes
+        files: ^\.github/workflows/[^/]+$
+        types:
+          - yaml
+        args:
+          - --builtin-schema
+          - github-workflows-require-timeout
+      - id: check-renovate
+        additional_dependencies:
+          - pyjson5==1.6.2 # pypi
+  - repo: https://github.com/sirwart/ripsecrets
+    rev: v0.1.5
+    hooks:
+      - id: ripsecrets
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.0.0
+    hooks:
+      - id: autoflake
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.3.1
+    hooks:
+      - id: pyupgrade
+        args:
+          - --py38-plus
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+  - repo: https://github.com/psf/black
+    rev: 22.12.0
+    hooks:
+      - id: black
+  - repo: https://github.com/PyCQA/prospector
+    rev: v1.8.4
+    hooks:
+      - id: prospector
+        args:
+          - --tool=pydocstyle
+          - --die-on-tool-error
+          - --output-format=pylint
+ci:
+  autoupdate_schedule: quarterly
+  skip:
+    - copyright
+    - poetry-check
+    - poetry-lock
+    - ripsecrets
