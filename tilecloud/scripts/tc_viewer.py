@@ -141,9 +141,9 @@ def main() -> None:
         bottle.DEBUG = True
     if options.root:
         match = re.match(r"(\d+)/(\d+)/(\d+)\Z", options.root)
-        root = TileCoord(*map(int, match.groups()))
+        TileCoord(*map(int, match.groups()))
     else:
-        root = TileCoord(0, 0, 0)
+        TileCoord(0, 0, 0)
     if options.server is None:
         try:
             import tornado.httpserver

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # TileCloud documentation build configuration file, created by
 # sphinx-quickstart on Thu Apr 12 22:29:48 2012.
