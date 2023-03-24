@@ -8,11 +8,13 @@ fi
 python3 -m pip install --requirement=requirements-publish.txt
 
 echo Prepare .pypirc config
-echo "[distutils]" > ~/.pypirc
-echo "index-servers = pypi" >> ~/.pypirc
-echo "[pypi]" >> ~/.pypirc
-echo "username:${USERNAME}" >> ~/.pypirc
-echo "password:${PASSWORD}" >> ~/.pypirc
+{
+  echo "[distutils]"
+  echo "index-servers = pypi"
+  echo "[pypi]"
+  echo "username:${USERNAME}"
+  echo "password:${PASSWORD}"
+} > ~/.pypirc
 
 set -x
 

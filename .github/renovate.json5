@@ -13,6 +13,13 @@
     schedule: 'after 5pm on the first day of the month',
   },
   baseBranches: ['master', '1.6', '1.8'],
+  'pre-commit': { enabled: true },
+  regexManagers: [
+    {
+      fileMatch: ['^.pre-commit-config.yaml$'],
+      matchStrings: [" +- '?(?<depName>[^' @=]+)(@|==)(?<currentValue>[^' @=]+)'? # (?<datasource>.+)"],
+    },
+  ],
   packageRules: [
     /** Automerge the patch, the minor and the dev dependency */
     {
