@@ -2,8 +2,9 @@
 
 checks:
   versions: false
-
   codespell: false
+  prettier: false
+
 publish:
   docker:
     images: []

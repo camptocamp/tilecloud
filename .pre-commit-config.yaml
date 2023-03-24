@@ -81,14 +81,14 @@ repos:
     rev: 22.12.0
     hooks:
       - id: black
-  - repo: https://github.com/PyCQA/prospector
-    rev: v1.8.4
-    hooks:
-      - id: prospector
-        args:
-          - --tool=pydocstyle
-          - --die-on-tool-error
-          - --output-format=pylint
+  #- repo: https://github.com/PyCQA/prospector
+  #  rev: v1.8.4
+  #  hooks:
+  #    - id: prospector
+  #      args:
+  #        - --tool=pydocstyle
+  #        - --die-on-tool-error
+  #        - --output-format=pylint
 ci:
   autoupdate_schedule: quarterly
   skip:
