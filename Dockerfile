@@ -1,4 +1,4 @@
-FROM osgeo/gdal:3.2.0 as base-all
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.6.2 as base-all
 LABEL maintainer Camptocamp "info@camptocamp.com"
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
