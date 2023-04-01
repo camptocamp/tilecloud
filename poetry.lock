@@ -133,18 +133,18 @@ yaml = ["PyYAML"]
 
 [[package]]
 name = "boto3"
-version = "1.26.82"
+version = "1.26.104"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.26.82-py3-none-any.whl", hash = "sha256:f618f2e8a4b9d5cb9f05d3a5628ca2afa4bcd3e8b4b8413d11dea0f4c4480b3c"},
-    {file = "boto3-1.26.82.tar.gz", hash = "sha256:f50c048b4f3223dd57afb6eee1189ef9a472bf0ed9b26ff9db65ec13275c4414"},
+    {file = "boto3-1.26.104-py3-none-any.whl", hash = "sha256:308c5a8293d9b76e74921f4d945be19cc467b92e5f128df1db76e31c71345bb3"},
+    {file = "boto3-1.26.104.tar.gz", hash = "sha256:bcd09f16bdf3d71ab7d0fab20e97242f09c63f4cea0943329521ab35a950f900"},
 ]
 
 [package.dependencies]
-botocore = ">=1.29.82,<1.30.0"
+botocore = ">=1.29.104,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -153,14 +153,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.82"
+version = "1.29.104"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.82-py3-none-any.whl", hash = "sha256:b31e86f9b51eced5506a0f6038370fe8c1355000379610def1bb9e91cae9e77e"},
-    {file = "botocore-1.29.82.tar.gz", hash = "sha256:913ca09a184cf4428f05838afc631c4fb93f3b173871b69d66230fd14656a3a1"},
+    {file = "botocore-1.29.104-py3-none-any.whl", hash = "sha256:932bfbf580a2ae53f471df4bfbebce531985ee27468cf7c37d7ccfb3cf8bc9e4"},
+    {file = "botocore-1.29.104.tar.gz", hash = "sha256:7e7a01cef10b1daa9cb01ec25a15e831e7359fc43d1b591359710f203c3620a8"},
 ]
 
 [package.dependencies]
@@ -173,14 +173,14 @@ crt = ["awscrt (==0.16.9)"]
 
 [[package]]
 name = "bottle"
-version = "0.12.24"
+version = "0.12.25"
 description = "Fast and simple WSGI-framework for small web-applications."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "bottle-0.12.24-py3-none-any.whl", hash = "sha256:fa88c66413ab07b5046545ac6e47a967d582143aef87f2c0fb0ef571d9977b5e"},
-    {file = "bottle-0.12.24.tar.gz", hash = "sha256:2480121a73e87380989b77e32bd2092d190e7ea7d71e6f1b8f7af7eab9d54ea3"},
+    {file = "bottle-0.12.25-py3-none-any.whl", hash = "sha256:d6f15f9d422670b7c073d63bd8d287b135388da187a0f3e3c19293626ce034ea"},
+    {file = "bottle-0.12.25.tar.gz", hash = "sha256:e1a9c94970ae6d710b3fb4526294dfeb86f2cb4a81eff3a4b98dc40fb0e5e021"},
 ]
 
 [[package]]
@@ -209,14 +209,14 @@ virtualenv = ["virtualenv (>=20.0.35)"]
 
 [[package]]
 name = "c2cwsgiutils"
-version = "5.2.1"
+version = "5.2.2"
 description = "Common utilities for Camptocamp WSGI applications"
 category = "main"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "c2cwsgiutils-5.2.1-py3-none-any.whl", hash = "sha256:29c0351d4b7557b8765f8a112ddb4eb0c74838c8fc79ffad30c80d38cfe3f5b7"},
-    {file = "c2cwsgiutils-5.2.1.tar.gz", hash = "sha256:2416285a393d042bd64558d2ad5eca9dccd460b2360d9a2d7e1d32b123810cd1"},
+    {file = "c2cwsgiutils-5.2.2-py3-none-any.whl", hash = "sha256:19c1c10cac135b822f732d3df3de3162cdc4636ba485f1aa8ad05564b973fa9b"},
+    {file = "c2cwsgiutils-5.2.2.tar.gz", hash = "sha256:9ca220f920e96c3405d7908b57e419b9b3033aaf2c254c3c55ebd0dead0c0fc0"},
 ]
 
 [package.dependencies]
@@ -1559,14 +1559,14 @@ test = ["setuptools (>=60)", "zest.releaser[recommended]"]
 
 [[package]]
 name = "pytest"
-version = "7.2.1"
+version = "7.2.2"
 description = "pytest: simple powerful testing with Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pytest-7.2.1-py3-none-any.whl", hash = "sha256:c7c6ca206e93355074ae32f7403e8ea12163b1163c976fee7d4d84027c162be5"},
-    {file = "pytest-7.2.1.tar.gz", hash = "sha256:d45e0952f3727241918b8fd0f376f5ff6b301cc0777c6f9a556935c92d8a7d42"},
+    {file = "pytest-7.2.2-py3-none-any.whl", hash = "sha256:130328f552dcfac0b1cec75c12e3f005619dc5f874f0a06e8ff7263f0ee6225e"},
+    {file = "pytest-7.2.2.tar.gz", hash = "sha256:c99ab0c73aceb050f68929bc93af19ab6db0558791c6a0715723abe9d0ade9d4"},
 ]
 
 [package.dependencies]
@@ -1969,14 +1969,14 @@ files = [
 
 [[package]]
 name = "types-boto"
-version = "2.49.18.6"
+version = "2.49.18.7"
 description = "Typing stubs for boto"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-boto-2.49.18.6.tar.gz", hash = "sha256:305b2073dfdc8539f24779b471adde7872238b8206c6ff5eb1a22b4587ed92ef"},
-    {file = "types_boto-2.49.18.6-py3-none-any.whl", hash = "sha256:d63bdea70af91ff88f735f995ea74c6543a1e61247aee218f6c050c3fb663cba"},
+    {file = "types-boto-2.49.18.7.tar.gz", hash = "sha256:5adb9a3c5e5c1d200caaa0b487913539b12dba44107bdbe24b513b1bc5af41cb"},
+    {file = "types_boto-2.49.18.7-py3-none-any.whl", hash = "sha256:1033490903e9ae5d680e5d020a2d2812f2cedc54a5a4f52bd50515311f4dc2d6"},
 ]
 
 [[package]]
@@ -1996,14 +1996,14 @@ cryptography = ">=35.0.0"
 
 [[package]]
 name = "types-redis"
-version = "4.5.1.4"
+version = "4.5.4.1"
 description = "Typing stubs for redis"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-redis-4.5.1.4.tar.gz", hash = "sha256:7660178754d60a4cfacf5b33ee063aa0625311791c62075cd936136627a3f7bf"},
-    {file = "types_redis-4.5.1.4-py3-none-any.whl", hash = "sha256:4ad21473605b9e1f96162b1298383dcbc73daa3bec2abe1fd3e81d077753f9ab"},
+    {file = "types-redis-4.5.4.1.tar.gz", hash = "sha256:bf04192f415b2b42ecefd70bb4b91eb0352e48f2716a213e038e35c096a639c2"},
+    {file = "types_redis-4.5.4.1-py3-none-any.whl", hash = "sha256:2db530f54facec3149147bfe61d5ac24f5fe4e871823d95a601cd2c1d775d8a0"},
 ]
 
 [package.dependencies]
@@ -2012,14 +2012,14 @@ types-pyOpenSSL = "*"
 
 [[package]]
 name = "types-requests"
-version = "2.28.11.15"
+version = "2.28.11.17"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-requests-2.28.11.15.tar.gz", hash = "sha256:fc8eaa09cc014699c6b63c60c2e3add0c8b09a410c818b5ac6e65f92a26dde09"},
-    {file = "types_requests-2.28.11.15-py3-none-any.whl", hash = "sha256:a05e4c7bc967518fba5789c341ea8b0c942776ee474c7873129a61161978e586"},
+    {file = "types-requests-2.28.11.17.tar.gz", hash = "sha256:0d580652ce903f643f8c3b494dd01d29367ea57cea0c7ad7f65cf3169092edb0"},
+    {file = "types_requests-2.28.11.17-py3-none-any.whl", hash = "sha256:cc1aba862575019306b2ed134eb1ea994cab1c887a22e18d3383e6dd42e9789b"},
 ]
 
 [package.dependencies]
@@ -2266,4 +2266,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.11"
-content-hash = "bf54ed97efe84c430fa62e721209b7eebde534bf7283b66d2fed7f6469ab4dd4"
+content-hash = "fa39cbdf7871ea654f7d9be885abf8d03b24a8026c9fcfd43ea215f11bb7ed76"
