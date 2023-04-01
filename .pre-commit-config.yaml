@@ -19,7 +19,7 @@ repos:
       - id: trailing-whitespace
       - id: mixed-line-ending
   - repo: https://github.com/sbrunner/hooks
-    rev: 0.3.2
+    rev: 0.5.0
     hooks:
       - id: copyright
       - id: poetry-check
@@ -44,7 +44,7 @@ repos:
     hooks:
       - id: git-check
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.20.0
+    rev: 0.22.0
     hooks:
       - id: check-github-actions
       - id: check-github-workflows
