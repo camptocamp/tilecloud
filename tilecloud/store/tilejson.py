@@ -17,7 +17,6 @@ from tilecloud.store.url import URLTileStore
 
 
 class TileJSONTileStore(URLTileStore):
-
     KEYS = "name description version attribution template legend center".split()
 
     def __init__(self, tile_json: str, urls_key: str = "tiles", **kwargs: Any):
