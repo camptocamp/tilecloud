@@ -37,7 +37,7 @@ jobs:
         uses: andstor/file-existence-action@v2
         with:
           files: .tool-versions
-      - uses: asdf-vm/actions/install@v1
+      - uses: asdf-vm/actions/install@v2
         if: steps.tool-versions.outputs.files_exists == 'true'
       - run: cat /tmp/python-build.*.log
         if: failure()
