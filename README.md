@@ -138,20 +138,20 @@ demonstrated by a few examples:
 
 `4/10/20:15/25`
 
-:   This corresponds to a range of tiles with z=4, x=10..15 and y=20..25
+: This corresponds to a range of tiles with z=4, x=10..15 and y=20..25
 
 `4/10/20:+5/+5`
 
-:   This is the same range (z=4, x=10..15, y=20..25) but expressed using relative sizes.
+: This is the same range (z=4, x=10..15, y=20..25) but expressed using relative sizes.
 
 `4/10/20:5/15/20`
 
-:   This is the same range of tiles above, but also includes all the tiles at level z=5 which overlap the
-    above range. TileCloud uses the tile grid to calculate which tiles from level z=5 to include.
+: This is the same range of tiles above, but also includes all the tiles at level z=5 which overlap the
+above range. TileCloud uses the tile grid to calculate which tiles from level z=5 to include.
 
 `4/10/20:+1/+5/+5`
 
-:   This represents the range same as the previous example using a relative `maxz`.
+: This represents the range same as the previous example using a relative `maxz`.
 
 # Quick tile generation
 
@@ -172,7 +172,7 @@ Equally, `tc-copy` can be used to download multiple tiles:
     $ ./tc-copy --bounding-pyramid 4/0/0:0/16/16 tiles.openstreetmap_org osm-up-to-z4.mbtiles
 
 Here we downloaded zoom levels 0 to 4 of the OpenStreetMap tiles into a local MBTiles file. The
-`--bounding-pyramid` option is required because otherwise we would download *all* OpenStreetMap tiles -- which
+`--bounding-pyramid` option is required because otherwise we would download _all_ OpenStreetMap tiles -- which
 might take some time (and also contravene OpenStreetMap's tile usage policy). Note that, by default, `tc-copy`
 won't overwrite tiles if they already exist in the destination. This means that you can interrupt the above
 command and restart it, and it will resume where it was interrupted. If you want to overwrite tiles in the
