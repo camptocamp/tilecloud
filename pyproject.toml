@@ -61,7 +61,7 @@ c2cwsgiutils = { version = "5.2.2", extras = ["broadcast"], optional = true }
 Pillow = "9.5.0"
 pyproj = "3.5.0"
 pyramid = { version = "2.0.1", optional = true }
-requests = "2.29.0"
+requests = "2.31.0"
 redis = { version = "4.5.4", optional = true }
 
 [tool.poetry.extras]
