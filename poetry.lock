@@ -51,20 +51,20 @@ aio = ["aiohttp (>=3.0)"]
 
 [[package]]
 name = "azure-identity"
-version = "1.12.0"
+version = "1.13.0"
 description = "Microsoft Azure Identity Library for Python"
 category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "azure-identity-1.12.0.zip", hash = "sha256:7f9b1ae7d97ea7af3f38dd09305e19ab81a1e16ab66ea186b6579d85c1ca2347"},
-    {file = "azure_identity-1.12.0-py3-none-any.whl", hash = "sha256:2a58ce4a209a013e37eaccfd5937570ab99e9118b3e1acf875eed3a85d541b92"},
+    {file = "azure-identity-1.13.0.zip", hash = "sha256:c931c27301ffa86b07b4dcf574e29da73e3deba9ab5d1fe4f445bb6a3117e260"},
+    {file = "azure_identity-1.13.0-py3-none-any.whl", hash = "sha256:bd700cebb80cd9862098587c29d8677e819beca33c62568ced6d5a8e5e332b82"},
 ]
 
 [package.dependencies]
 azure-core = ">=1.11.0,<2.0.0"
 cryptography = ">=2.5"
-msal = ">=1.12.0,<2.0.0"
+msal = ">=1.20.0,<2.0.0"
 msal-extensions = ">=0.3.0,<2.0.0"
 six = ">=1.12.0"
 
@@ -1179,14 +1179,14 @@ tests = ["pytest (>=5.4.1)", "pytest-cov (>=2.8.1)", "pytest-mypy (>=0.8.0)", "p
 
 [[package]]
 name = "prospector"
-version = "1.9.0"
+version = "1.10.2"
 description = "Prospector is a tool to analyse Python code by aggregating the result of other tools."
 category = "dev"
 optional = false
 python-versions = ">=3.7.2,<4.0"
 files = [
-    {file = "prospector-1.9.0-py3-none-any.whl", hash = "sha256:c24011019e48b54745dc0f5d3d25e9d6b19750129996c134253c2f1eed9d45ac"},
-    {file = "prospector-1.9.0.tar.gz", hash = "sha256:599f31516f857d785058773875e9358702ad653e65461e8cad44134d8ee17b1f"},
+    {file = "prospector-1.10.2-py3-none-any.whl", hash = "sha256:3bfe103c28bb821cca84926ca31357fbfd32405e4bf8c34ca2e55885684557e4"},
+    {file = "prospector-1.10.2.tar.gz", hash = "sha256:cc8f09e79bdd32247edddf05b666940e88ad96338a84f5717b1e8c0678337821"},
 ]
 
 [package.dependencies]
@@ -1208,14 +1208,15 @@ pylint-flask = "0.6"
 pylint-plugin-utils = ">=0.7,<0.8"
 pyroma = {version = ">=2.4", optional = true, markers = "extra == \"with_pyroma\" or extra == \"with_everything\""}
 PyYAML = "*"
-requirements-detector = ">=1.0.3"
+requirements-detector = ">=1.2.0"
 setoptconf-tmp = ">=0.3.1,<0.4.0"
 toml = ">=0.10.2,<0.11.0"
 
 [package.extras]
 with-bandit = ["bandit (>=1.5.1)"]
-with-everything = ["bandit (>=1.5.1)", "mypy (>=0.600)", "pyroma (>=2.4)", "vulture (>=1.5)"]
+with-everything = ["bandit (>=1.5.1)", "mypy (>=0.600)", "pyright (>=1.1.3)", "pyroma (>=2.4)", "vulture (>=1.5)"]
 with-mypy = ["mypy (>=0.600)"]
+with-pyright = ["pyright (>=1.1.3)"]
 with-pyroma = ["pyroma (>=2.4)"]
 with-vulture = ["vulture (>=1.5)"]
 
@@ -1561,14 +1562,14 @@ testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "no
 
 [[package]]
 name = "pytest-cov"
-version = "4.0.0"
+version = "4.1.0"
 description = "Pytest plugin for measuring coverage."
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "pytest-cov-4.0.0.tar.gz", hash = "sha256:996b79efde6433cdbd0088872dbc5fb3ed7fe1578b68cdbba634f14bb8dd0470"},
-    {file = "pytest_cov-4.0.0-py3-none-any.whl", hash = "sha256:2feb1b751d66a8bd934e5edfa2e961d11309dc37b73b0eabe73b5945fee20f6b"},
+    {file = "pytest-cov-4.1.0.tar.gz", hash = "sha256:3904b13dfbfec47f003b8e77fd5b589cd11904a21ddf1ab38a64f204d6a10ef6"},
+    {file = "pytest_cov-4.1.0-py3-none-any.whl", hash = "sha256:6ba70b9e97e69fcc3fb45bfeab2d0a138fb65c4d0d6a41ef33983ad114be8c3a"},
 ]
 
 [package.dependencies]
@@ -2022,18 +2023,18 @@ types-pyOpenSSL = "*"
 
 [[package]]
 name = "types-requests"
-version = "2.29.0.0"
+version = "2.31.0.1"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-requests-2.29.0.0.tar.gz", hash = "sha256:c86f4a955d943d2457120dbe719df24ef0924e11177164d10a0373cf311d7b4d"},
-    {file = "types_requests-2.29.0.0-py3-none-any.whl", hash = "sha256:4cf6e323e856c779fbe8815bb977a5bf5d6c5034713e4c17ff2a9a20610f5b27"},
+    {file = "types-requests-2.31.0.1.tar.gz", hash = "sha256:3de667cffa123ce698591de0ad7db034a5317457a596eb0b4944e5a9d9e8d1ac"},
+    {file = "types_requests-2.31.0.1-py3-none-any.whl", hash = "sha256:afb06ef8f25ba83d59a1d424bd7a5a939082f94b94e90ab5e6116bd2559deaa3"},
 ]
 
 [package.dependencies]
-types-urllib3 = "<1.27"
+types-urllib3 = "*"
 
 [[package]]
 name = "types-urllib3"
@@ -2270,4 +2271,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.11"
-content-hash = "3826d9d8e61234af2a00ac4d6b3c0769309e651573fc3d0773930e31afdee00f"
+content-hash = "e1e2e47bc86e1ec82d9d0a29103ea9a92699543388e9887c0ffeed97ce4b1d74"
