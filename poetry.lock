@@ -115,18 +115,18 @@ yaml = ["PyYAML"]
 
 [[package]]
 name = "boto3"
-version = "1.26.124"
+version = "1.26.145"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.26.124-py3-none-any.whl", hash = "sha256:ec53175eaf818dfe1eec33f7e165eca957744c1d8a82047a9efbcce9547e5cc9"},
-    {file = "boto3-1.26.124.tar.gz", hash = "sha256:4847855cfa4ff272eb66cf1fc9542068ada6d4816d56573cc9cafde51962d0ef"},
+    {file = "boto3-1.26.145-py3-none-any.whl", hash = "sha256:77e8fa7c257f9ed8bfe0c3ffc2ccc47b1cfa27058f99415b6003699d1202e0c0"},
+    {file = "boto3-1.26.145.tar.gz", hash = "sha256:30f8ab1cf89d5864a80ba2d5eb5316dbd2a63c9469877e0cffb522630438aa85"},
 ]
 
 [package.dependencies]
-botocore = ">=1.29.124,<1.30.0"
+botocore = ">=1.29.145,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -135,14 +135,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.124"
+version = "1.29.145"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.124-py3-none-any.whl", hash = "sha256:cbcbd5b084952d332d7b8170577f10509e3e7b3b6abbc2920b1c27e93ad2ab25"},
-    {file = "botocore-1.29.124.tar.gz", hash = "sha256:ebe8a83dd1db18180774ce45b1911959c60bb1843ea0db610231495527a3518a"},
+    {file = "botocore-1.29.145-py3-none-any.whl", hash = "sha256:264a3f19ed280d80711b7e278be09acff7ed379a96432fdf179b4e6e3a687e6a"},
+    {file = "botocore-1.29.145.tar.gz", hash = "sha256:65e2a2b1cc70583225f87d6d63736215f93c6234721967bdab872270ba7a1f45"},
 ]
 
 [package.dependencies]
@@ -1669,18 +1669,18 @@ files = [
 
 [[package]]
 name = "redis"
-version = "4.5.4"
+version = "4.5.5"
 description = "Python client for Redis database and key-value store"
 category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "redis-4.5.4-py3-none-any.whl", hash = "sha256:2c19e6767c474f2e85167909061d525ed65bea9301c0770bb151e041b7ac89a2"},
-    {file = "redis-4.5.4.tar.gz", hash = "sha256:73ec35da4da267d6847e47f68730fdd5f62e2ca69e3ef5885c6a78a9374c3893"},
+    {file = "redis-4.5.5-py3-none-any.whl", hash = "sha256:77929bc7f5dab9adf3acba2d3bb7d7658f1e0c2f1cafe7eb36434e751c471119"},
+    {file = "redis-4.5.5.tar.gz", hash = "sha256:dc87a0bdef6c8bfe1ef1e1c40be7034390c2ae02d92dcd0c7ca1729443899880"},
 ]
 
 [package.dependencies]
-async-timeout = {version = ">=4.0.2", markers = "python_version <= \"3.11.2\""}
+async-timeout = {version = ">=4.0.2", markers = "python_full_version <= \"3.11.2\""}
 
 [package.extras]
 hiredis = ["hiredis (>=1.0.0)"]
@@ -1979,14 +1979,14 @@ files = [
 
 [[package]]
 name = "types-boto"
-version = "2.49.18.7"
+version = "2.49.18.8"
 description = "Typing stubs for boto"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-boto-2.49.18.7.tar.gz", hash = "sha256:5adb9a3c5e5c1d200caaa0b487913539b12dba44107bdbe24b513b1bc5af41cb"},
-    {file = "types_boto-2.49.18.7-py3-none-any.whl", hash = "sha256:1033490903e9ae5d680e5d020a2d2812f2cedc54a5a4f52bd50515311f4dc2d6"},
+    {file = "types-boto-2.49.18.8.tar.gz", hash = "sha256:ea1dbf0f9e635b94ca7f95c68b6b29e40d84a8921e9a24afd18e54669a9897e0"},
+    {file = "types_boto-2.49.18.8-py3-none-any.whl", hash = "sha256:543cdd08db6c17e2749d66d6d2ede069a9719df2bb16fa9a072a52f74d783d83"},
 ]
 
 [[package]]
@@ -2006,14 +2006,14 @@ cryptography = ">=35.0.0"
 
 [[package]]
 name = "types-redis"
-version = "4.5.4.1"
+version = "4.5.5.2"
 description = "Typing stubs for redis"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-redis-4.5.4.1.tar.gz", hash = "sha256:bf04192f415b2b42ecefd70bb4b91eb0352e48f2716a213e038e35c096a639c2"},
-    {file = "types_redis-4.5.4.1-py3-none-any.whl", hash = "sha256:2db530f54facec3149147bfe61d5ac24f5fe4e871823d95a601cd2c1d775d8a0"},
+    {file = "types-redis-4.5.5.2.tar.gz", hash = "sha256:2fe82f374d9dddf007deaf23d81fddcfd9523d9522bf11523c5c43bc5b27099e"},
+    {file = "types_redis-4.5.5.2-py3-none-any.whl", hash = "sha256:bf8692252038dbe03b007ca4fde87d3ae8e10610854a6858e3bf5d01721a7c4b"},
 ]
 
 [package.dependencies]
@@ -2270,4 +2270,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.11"
-content-hash = "22e59a21e10347b2672cbf62fbb356f940fb6e8e602d41ea8547e787a3b37cca"
+content-hash = "3826d9d8e61234af2a00ac4d6b3c0769309e651573fc3d0773930e31afdee00f"
