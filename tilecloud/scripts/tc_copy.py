@@ -6,10 +6,8 @@ import random
 import sys
 from optparse import OptionParser
 
-from c2cwsgiutils import stats
-
 from tilecloud import BoundingPyramid, TileStore, consume
-from tilecloud.filter.benchmark import Benchmark, StatsdCountErrors, StatsdCountTiles
+from tilecloud.filter.benchmark import Benchmark, StatsCountErrors, StatsCountTiles
 from tilecloud.filter.consistenthash import EveryNth
 from tilecloud.filter.contenttype import ContentTypeAdder
 from tilecloud.filter.error import (
@@ -41,10 +39,7 @@ def main() -> None:
     option_parser.add_option("-o", "--overwrite", action="store_true")
     option_parser.add_option("-r", "--rate-limit", metavar="HZ", type=float)
     option_parser.add_option("--randomize", action="store_true")
-    option_parser.add_option("--statsd", action="store_true")
-    option_parser.add_option("--statsd-host", default="127.0.0.1", metavar="HOST")
-    option_parser.add_option("--statsd-port", default=8125, metavar="PORT", type=int)
-    option_parser.add_option("--statsd-prefix", default="tc-copy-", metavar="PREFIX")
+    option_parser.add_option("--stats", action="store_true")
     option_parser.add_option("-v", "--verbose", action="store_true")
     options, args = option_parser.parse_args()
     if options.verbose:
@@ -56,13 +51,6 @@ def main() -> None:
         bounding_pyramid = BoundingPyramid.from_string(options.bounding_pyramid)
     else:
         bounding_pyramid = None
-
-    if options.statsd:
-        statsd_settings = {
-            "c2c.statsd_address": options.statsd_host + ":" + options.statsd_port,
-            "c2c.statsd_prefix": options.statsd_prefix,
-        }
-        stats.init_backends(statsd_settings)
 
     benchmark = Benchmark() if options.benchmark else None
     if options.generate:
@@ -96,8 +84,8 @@ def main() -> None:
                 if options.benchmark:
                     tilestream = map(benchmark.sample("generate-%d" % (i,)), tilestream)
             tilestream = map(LogErrors(logger, logging.ERROR, "%(tilecoord)s: %(error)s"), tilestream)
-            if options.statsd:
-                tilestream = map(StatsdCountErrors(), tilestream)
+            if options.stats:
+                tilestream = map(StatsCountErrors(), tilestream)
             if options.maximum_consecutive_errors:
                 tilestream = map(MaximumConsecutiveErrors(options.maximum_consecutive_errors), tilestream)
             if options.maximum_error_rate:
@@ -116,8 +104,8 @@ def main() -> None:
                     tilestream = map(benchmark.sample("delete"), tilestream)
             if options.verbose:
                 tilestream = map(Logger(logger, logging.INFO, "%(tilecoord)s"), tilestream)
-            if options.statsd:
-                tilestream = map(StatsdCountTiles(), tilestream)
+            if options.stats:
+                tilestream = map(StatsCountTiles(), tilestream)
             consume(tilestream, options.limit)
     finally:
         logging.basicConfig(level=logging.INFO)

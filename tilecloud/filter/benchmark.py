@@ -1,9 +1,13 @@
 import math
+import time
 from typing import Callable, Dict, Optional
 
-from c2cwsgiutils import stats
+from prometheus_client import Counter
 
 from tilecloud import Tile
+
+_TILES_COUNTER = Counter("tilecloud_tiles", "Number of tiles")
+_TILES_ERROR_COUINTER = Counter("tilecloud_tiles_errors", "Number of tiles in error")
 
 
 class Statistics:
@@ -60,26 +64,26 @@ class Benchmark:
         def callback(tile: Tile) -> Tile:
             if tile:
                 if hasattr(tile, self.attr):
-                    timer = getattr(tile, self.attr)
-                    delta_t = timer.stop()
+                    start = getattr(tile, self.attr)
+                    delta_t = time.perf_counter() - start
                     if statistics:
                         statistics.add(delta_t)
                 else:
-                    setattr(tile, self.attr, stats.timer([key]))
+                    setattr(tile, self.attr, time.perf_counter())
             return tile
 
         return callback
 
 
-class StatsdCountTiles:
+class StatsCountTiles:
     def __call__(self, tile: Tile) -> Tile:
         if tile:
-            stats.increment_counter(["tiles"])
+            _TILES_COUNTER.inc()
         return tile
 
 
-class StatsdCountErrors:
+class StatsCountErrors:
     def __call__(self, tile: Tile) -> Tile:
         if tile and tile.error:
-            stats.increment_counter(["errors"])
+            _TILES_ERROR_COUINTER.inc()
         return tile
