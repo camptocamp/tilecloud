@@ -6,7 +6,7 @@ import time
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Set, Tuple, Union
 
 import redis.sentinel
-from c2cwsgiutils import stats
+from prometheus_client import Counter, Gauge
 
 from tilecloud import Tile, TileStore
 from tilecloud.store.queue import decode_message, encode_message
@@ -20,6 +20,13 @@ STREAM_GROUP = "tilecloud"
 CONSUMER_NAME = socket.gethostname() + "-" + str(os.getpid())
 
 logger = logging.getLogger(__name__)
+
+_NB_MESSAGE_COUNTER = Gauge("tilecloud_redis_nb_messages", "Number of messages in Redis", ["name"])
+_PENDING_COUNTER = Gauge("tilecloud_redis_pending", "Number of pending messages in Redis", ["name"])
+_DECODE_ERROR_COUNTER = Counter("tilecloud_redis_decode_error", "Number of decode errors on Redis", ["name"])
+_READ_ERROR_COUNTER = Counter("tilecloud_redis_read_error", "Number of read errors on Redis", ["name"])
+_DROPPED_COUNTER = Counter("tilecloud_redis_dropped", "Number of dropped messages on Redis", ["name"])
+_STOLEN_COUNTER = Counter("tilecloud_redis_stolen", "Number of stolen messages on Redis", ["name"])
 
 
 class RedisTileStore(TileStore):
@@ -116,8 +123,8 @@ class RedisTileStore(TileStore):
                 if not queues:
                     queues, has_pendings = self._claim_olds()
                     if not has_pendings:
-                        stats.set_gauge(["redis", self._name_str, "nb_messages"], 0)
-                        stats.set_gauge(["redis", self._name_str, "pending"], 0)
+                        _NB_MESSAGE_COUNTER.labels(self._name_str).set(0)
+                        _PENDING_COUNTER.labels(self._name_str).set(0)
                         if self._stop_if_empty:
                             break
                 if queues:
@@ -131,19 +138,19 @@ class RedisTileStore(TileStore):
                                 yield tile
                             except Exception:
                                 logger.warning("Failed decoding the Redis message", exc_info=True)
-                                stats.increment_counter(["redis", self._name_str, "decode_error"])
+                                _DECODE_ERROR_COUNTER.labels(self._name_str).inc()
                             count += 1
 
                     if count % 10 == 0:
-                        stats.set_gauge(
-                            ["redis", self._name_str, "nb_messages"],
-                            self._slave.xlen(name=self._name),
+                        _NB_MESSAGE_COUNTER.labels(self._name_str).set(self._slave.xlen(self._name))
+                        pending = self._slave.xpending(  # type: ignore[no-untyped-call]
+                            self._name,
+                            STREAM_GROUP,
                         )
-                        pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore
-                        stats.set_gauge(["redis", self._name_str, "pending"], pending["pending"])
+                        _PENDING_COUNTER.labels(self._name_str).set(pending["pending"])
             except redis.exceptions.TimeoutError:
                 logger.warning("Failed reading Redis messages", exc_info=True)
-                stats.increment_counter(["redis", self._name_str, "read_error"])
+                _READ_ERROR_COUNTER.labels(self._name_str).inc()
                 time.sleep(1)
 
     def put_one(self, tile: Tile) -> Tile:
@@ -286,7 +293,7 @@ class RedisTileStore(TileStore):
                     fields={"tilecoord": str(tile.tilecoord)},
                     maxlen=self._max_errors_nb,
                 )
-            stats.increment_counter(["redis", self._name_str, "dropped"], len(to_drop))
+            _DROPPED_COUNTER.labels(self._name_str).inc(len(to_drop))
 
         logger.debug("%d elements to steal", len(to_steal))
         if to_steal:
@@ -305,7 +312,7 @@ class RedisTileStore(TileStore):
                 min_idle_time=self._pending_timeout_ms,
                 message_ids=to_steal,
             )
-            stats.increment_counter(["redis", self._name_str, "stolen"], len(to_steal))
+            _STOLEN_COUNTER.labels(self._name_str).inc(len(to_steal))
             return [(self._name, messages)], has_pendings
         else:
             # Empty means there are pending jobs, but they are not old enough to be stolen
@@ -319,7 +326,7 @@ class RedisTileStore(TileStore):
         pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore
         tiles_in_error = self._get_errors()
 
-        stats.set_gauge(["redis", self._name_str, "nb_messages"], nb_messages)
+        _NB_MESSAGE_COUNTER.labels(self._name_str).set(nb_messages)
         return {
             "Approximate number of tiles to generate": nb_messages,
             "Approximate number of generating tiles": pending["pending"],
