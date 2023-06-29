@@ -1,2 +1,5 @@
 c2cciutils[checks,publish]==1.5.3
 pre-commit==3.3.2
+cryptography>=41.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
+requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
