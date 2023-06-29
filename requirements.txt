@@ -4,3 +4,4 @@ poetry-plugin-tweak-dependencies-version==1.4.0
 poetry-dynamic-versioning==0.22.0
 pip==23.1.2
 requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability
+certifi>=2022.12.7 # not directly required, pinned by Snyk to avoid a vulnerability
