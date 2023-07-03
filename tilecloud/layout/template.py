@@ -1,5 +1,6 @@
 import re
-from typing import Any, Match, Optional
+from re import Match
+from typing import Any, Optional
 
 from tilecloud import TileCoord
 from tilecloud.layout.re_ import RETileLayout

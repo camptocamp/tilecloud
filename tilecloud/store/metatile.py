@@ -1,5 +1,6 @@
+from collections.abc import Iterable, Iterator
 from io import BytesIO
-from typing import Any, Iterable, Iterator, Optional
+from typing import Any, Optional
 
 from PIL import Image
 

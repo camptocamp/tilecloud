@@ -3,7 +3,8 @@ import os
 import socket
 import sys
 import time
-from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, List, Optional, Set, Tuple, Union
+from collections.abc import Iterable, Iterator
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 import redis.sentinel
 from prometheus_client import Counter, Gauge
@@ -49,7 +50,7 @@ class RedisTileStore(TileStore):
         max_errors_nb: int = 100,
         pending_count: int = 10,
         pending_max_count: int = sys.maxsize,
-        sentinels: Optional[List[Tuple[str, int]]] = None,
+        sentinels: Optional[list[tuple[str, int]]] = None,
         service_name: str = "mymaster",
         sentinel_kwargs: Any = None,
         connection_kwargs: Any = None,
@@ -203,10 +204,10 @@ class RedisTileStore(TileStore):
         )
         self._master.xtrim(name=self._errors_name, maxlen=0)
 
-    def _claim_olds(self) -> Tuple[Iterable[Tuple[bytes, Any]], bool]:
+    def _claim_olds(self) -> tuple[Iterable[tuple[bytes, Any]], bool]:
         logger.debug("Claim old's")
-        to_steal: List[int] = []
-        to_drop: List[int] = []
+        to_steal: list[int] = []
+        to_drop: list[int] = []
         min_ = 1
         has_pendings = False
         while len(to_steal) + len(to_drop) < self._pending_count:
@@ -318,7 +319,7 @@ class RedisTileStore(TileStore):
             # Empty means there are pending jobs, but they are not old enough to be stolen
             return [], has_pendings
 
-    def get_status(self) -> Dict[str, Union[str, int]]:
+    def get_status(self) -> dict[str, Union[str, int]]:
         """
         Returns a map of stats.
         """
@@ -333,7 +334,7 @@ class RedisTileStore(TileStore):
             "Tiles in error": ", ".join(tiles_in_error),
         }
 
-    def _get_errors(self) -> Set[str]:
+    def _get_errors(self) -> set[str]:
         now, now_us = self._slave.time()
         old_timestamp = (now - self._max_errors_age) * 1000 + now_us / 1000
 

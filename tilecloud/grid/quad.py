@@ -1,5 +1,6 @@
+from collections.abc import Iterable, Iterator
 from itertools import count
-from typing import Iterable, Iterator, Optional, Tuple
+from typing import Optional
 
 from tilecloud import Bounds, TileCoord, TileGrid
 
@@ -7,7 +8,7 @@ from tilecloud import Bounds, TileCoord, TileGrid
 class QuadTileGrid(TileGrid):
     def __init__(
         self,
-        max_extent: Optional[Tuple[float, float, float, float]] = None,
+        max_extent: Optional[tuple[float, float, float, float]] = None,
         tile_size: Optional[int] = None,
         max_zoom: Optional[int] = None,
         flip_y: bool = False,
@@ -22,7 +23,7 @@ class QuadTileGrid(TileGrid):
             yield TileCoord(tilecoord.z + 1, 2 * tilecoord.x, 2 * tilecoord.y + 1)
             yield TileCoord(tilecoord.z + 1, 2 * tilecoord.x + 1, 2 * tilecoord.y + 1)
 
-    def extent(self, tilecoord: TileCoord, border: float = 0) -> Tuple[float, float, float, float]:
+    def extent(self, tilecoord: TileCoord, border: float = 0) -> tuple[float, float, float, float]:
         y = tilecoord.y
         if not self.flip_y:
             y = (1 << tilecoord.z) - y - tilecoord.n
@@ -41,7 +42,7 @@ class QuadTileGrid(TileGrid):
         )
         return (minx, miny, maxx, maxy)
 
-    def fill_down(self, z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
+    def fill_down(self, z: int, bounds: tuple[Bounds, Bounds]) -> tuple[Bounds, Bounds]:
         xbounds, ybounds = bounds
         assert xbounds.start is not None
         assert xbounds.stop is not None
@@ -49,7 +50,7 @@ class QuadTileGrid(TileGrid):
         assert ybounds.stop is not None
         return (Bounds(2 * xbounds.start, 2 * xbounds.stop), Bounds(2 * ybounds.start, 2 * ybounds.stop))
 
-    def fill_up(self, z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
+    def fill_up(self, z: int, bounds: tuple[Bounds, Bounds]) -> tuple[Bounds, Bounds]:
         assert z > 0
         xbounds, ybounds = bounds
         assert xbounds.start is not None

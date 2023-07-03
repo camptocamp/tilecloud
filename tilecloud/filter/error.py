@@ -1,7 +1,7 @@
 """
 This module includes filters for dealing with errors in tiles.
 """
-from typing import List, Optional
+from typing import Optional
 
 from tilecloud import Tile
 from tilecloud.filter.logger import Logger
@@ -13,7 +13,7 @@ class CollectErrors:
     """
 
     def __init__(self) -> None:
-        self.errors: List[Tile] = []
+        self.errors: list[Tile] = []
 
     def __call__(self, tile: Tile) -> Tile:
         if tile and tile.error:

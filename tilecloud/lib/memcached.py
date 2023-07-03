@@ -1,6 +1,6 @@
 import re
 import socket
-from typing import Optional, Tuple
+from typing import Optional
 
 
 class MemcachedError(RuntimeError):
@@ -24,7 +24,7 @@ class MemcachedClient:
         else:
             raise MemcachedError(line)
 
-    def get(self, key: str) -> Tuple[Optional[int], Optional[bytes], Optional[int]]:
+    def get(self, key: str) -> tuple[Optional[int], Optional[bytes], Optional[int]]:
         self.writeline(f"get {key}".encode())
         line = self.readline()
         if line == b"END":

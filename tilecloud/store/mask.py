@@ -1,4 +1,5 @@
-from typing import Any, Iterator, Optional, Tuple
+from collections.abc import Iterator
+from typing import Any, Optional
 
 import PIL.Image
 
@@ -10,7 +11,7 @@ class MaskTileStore(TileStore):
     A black and white image representing present and absent tiles.
     """
 
-    def __init__(self, z: int, bounds: Tuple[Bounds, Bounds], file: Optional[str] = None, **kwargs: Any):
+    def __init__(self, z: int, bounds: tuple[Bounds, Bounds], file: Optional[str] = None, **kwargs: Any):
         TileStore.__init__(self, **kwargs)
         self.z = z
         self.xbounds, self.ybounds = bounds

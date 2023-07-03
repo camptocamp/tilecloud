@@ -1,6 +1,8 @@
+import builtins
 import logging
 import time
-from typing import Any, Callable, Dict, Iterable, Iterator, List
+from collections.abc import Iterable, Iterator
+from typing import Any, Callable
 
 import botocore.client
 import botocore.exceptions
@@ -94,9 +96,9 @@ class SQSTileStore(TileStore):
             if len(buffered_tiles) > 0:
                 self._send_buffer(buffered_tiles)
 
-    def _send_buffer(self, tiles: List[Tile]) -> None:
+    def _send_buffer(self, tiles: builtins.list[Tile]) -> None:
         try:
-            messages: List[Dict[str, Any]] = [
+            messages: list[dict[str, Any]] = [
                 {"Id": str(i), "MessageBody": encode_message(tile)} for i, tile in enumerate(tiles)
             ]
             response = self.queue.send_messages(Entries=messages)
@@ -109,7 +111,7 @@ class SQSTileStore(TileStore):
             for tile in tiles:
                 tile.error = e
 
-    def get_status(self) -> Dict[str, str]:
+    def get_status(self) -> dict[str, str]:
         """
         Returns a map of stats.
         """

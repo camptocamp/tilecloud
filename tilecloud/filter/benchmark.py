@@ -1,6 +1,6 @@
 import math
 import time
-from typing import Callable, Dict, Optional
+from typing import Callable, Optional
 
 from prometheus_client import Counter
 
@@ -49,7 +49,7 @@ class Statistics:
 class Benchmark:
     def __init__(self, attr: str = "benchmark"):
         self.attr = attr
-        self.statisticss: Dict[str, Statistics] = {}
+        self.statisticss: dict[str, Statistics] = {}
 
     def sample(self, key: Optional[str] = None) -> Callable[[Tile], Tile]:
         if key:

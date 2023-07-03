@@ -1,5 +1,6 @@
 import re
-from typing import IO, Any, Iterator
+from collections.abc import Iterator
+from typing import IO, Any
 
 from tilecloud import Tile, TileStore
 from tilecloud.layout.re_ import RETileLayout

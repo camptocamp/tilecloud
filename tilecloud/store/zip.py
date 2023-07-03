@@ -2,8 +2,9 @@ import os.path
 import re
 import zipfile
 from collections import defaultdict
+from collections.abc import Iterator
 from datetime import datetime
-from typing import Any, Dict, Iterator, Optional
+from typing import Any, Optional
 
 from tilecloud import Tile, TileLayout, TileStore
 from tilecloud.layout.osm import OSMTileLayout
@@ -17,7 +18,7 @@ class ZipTileStore(TileStore):
         TileStore.__init__(self, **kwargs)
         self.zipfile = zipfile
         if layout is None:
-            extension_count: Dict[str, int] = defaultdict(int)
+            extension_count: dict[str, int] = defaultdict(int)
             for name in self.zipfile.namelist():
                 extension_count[os.path.splitext(name)[1]] += 1
             for extension, _ in sorted(
