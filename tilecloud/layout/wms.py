@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 from urllib.parse import urlencode
 
 from tilecloud import TileCoord, TileGrid, TileLayout
@@ -13,7 +13,7 @@ class WMSTileLayout(TileLayout):
         format: str,
         tilegrid: TileGrid,
         border: int = 0,
-        params: Optional[Dict[str, str]] = None,
+        params: Optional[dict[str, str]] = None,
     ) -> None:
         if params is None:
             params = {}

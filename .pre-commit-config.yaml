@@ -64,15 +64,15 @@ repos:
     hooks:
       - id: ripsecrets
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.1.1
+    rev: v2.2.0
     hooks:
       - id: autoflake
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.4.1
+    rev: v3.8.0
     hooks:
       - id: pyupgrade
         args:
-          - --py38-plus
+          - --py39-plus
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:

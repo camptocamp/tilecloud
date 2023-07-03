@@ -1,11 +1,11 @@
 from functools import reduce
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, Optional
 
 from tilecloud import Tile, TileStore
 
 
 class FilteredTileStore(TileStore):
-    def __init__(self, tilestore: TileStore, filters: List[Callable[[Optional[Tile]], Tile]], **kwargs: Any):
+    def __init__(self, tilestore: TileStore, filters: list[Callable[[Optional[Tile]], Tile]], **kwargs: Any):
         TileStore.__init__(self, **kwargs)
         self.tilestore = tilestore
         self.filters = filters

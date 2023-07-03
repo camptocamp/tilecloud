@@ -1,6 +1,7 @@
 import logging
 import threading
-from typing import Any, Iterator, Optional, cast
+from collections.abc import Iterator
+from typing import Any, Optional, cast
 
 import boto3
 import botocore.client

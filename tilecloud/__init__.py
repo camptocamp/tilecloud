@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 # pylint: disable=import-outside-toplevel
 
+import builtins
 import collections
 import logging
 import os.path
 import re
 from builtins import filter as ifilter
+from collections.abc import Iterable, Iterator
 from functools import reduce
 from itertools import islice
 from operator import attrgetter
-from typing import Any, Dict, Iterable, Iterator, Optional, Tuple, Union, cast
+from typing import Any, Optional, Union, cast
 
 
 def cmp(a: Any, b: Any) -> int:
@@ -149,7 +151,7 @@ class Bounds:
 
 class BoundingPyramid:
     def __init__(
-        self, bounds: Optional[Dict[int, Tuple[Bounds, Bounds]]] = None, tilegrid: Optional[Any] = None
+        self, bounds: Optional[dict[int, tuple[Bounds, Bounds]]] = None, tilegrid: Optional[Any] = None
     ) -> None:
         self.bounds = bounds or {}
         self.tilegrid = tilegrid
@@ -196,7 +198,7 @@ class BoundingPyramid:
             self.bounds[tilecoord.z] = (Bounds(tilecoord.x), Bounds(tilecoord.y))
         return self
 
-    def add_bounds(self, z: int, bounds: Tuple[Bounds, Bounds]) -> None:
+    def add_bounds(self, z: int, bounds: tuple[Bounds, Bounds]) -> None:
         if z in self.bounds:
             self.bounds[z][0].update(bounds[0])
             self.bounds[z][1].update(bounds[1])
@@ -204,7 +206,7 @@ class BoundingPyramid:
             self.bounds[z] = bounds
 
     def fill(
-        self, zs: Optional[Iterable[int]] = None, extent: Optional[Tuple[float, float, float, float]] = None
+        self, zs: Optional[Iterable[int]] = None, extent: Optional[tuple[float, float, float, float]] = None
     ) -> None:
         if zs is None:
             assert self.tilegrid is not None
@@ -253,7 +255,7 @@ class BoundingPyramid:
                     y += n
                 x += n
 
-    def zget(self, z: int) -> Tuple[Bounds, Bounds]:
+    def zget(self, z: int) -> tuple[Bounds, Bounds]:
         """
         Return the tuple (xbounds, ybounds) at level z.
         """
@@ -327,7 +329,7 @@ class Tile:
         content_encoding: Optional[Any] = None,
         content_type: Optional[str] = None,
         data: Optional[bytes] = None,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Optional[dict[str, str]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -379,7 +381,7 @@ class Tile:
         return " ".join([f"{k}={self.metadata[k]}" for k in sorted(self.metadata.keys())])
 
     @property
-    def __dict2__(self) -> Dict[str, Any]:
+    def __dict2__(self) -> dict[str, Any]:
         result = {}
         result.update(self.__dict__)
         result["formated_metadata"] = self.formated_metadata
@@ -462,7 +464,7 @@ class TileCoord:
     def metatilecoord(self, n: int = 8) -> "TileCoord":
         return TileCoord(self.z, n * (self.x // n), n * (self.y // n), n)
 
-    def tuple(self) -> Tuple[int, int, int, int]:
+    def tuple(self) -> tuple[int, int, int, int]:
         return (self.z, self.x, self.y, self.n)
 
     @classmethod
@@ -474,7 +476,7 @@ class TileCoord:
         return cls(int(x), int(y), int(z), int(n) if n else 1)
 
     @classmethod
-    def from_tuple(cls, tpl: Tuple[int, int, int]) -> "TileCoord":
+    def from_tuple(cls, tpl: builtins.tuple[int, int, int]) -> "TileCoord":
         return cls(*tpl)
 
 
@@ -485,7 +487,7 @@ class TileGrid:
 
     def __init__(
         self,
-        max_extent: Optional[Tuple[float, float, float, float]] = None,
+        max_extent: Optional[tuple[float, float, float, float]] = None,
         tile_size: Optional[float] = None,
         flip_y: bool = False,
     ) -> None:
@@ -499,16 +501,16 @@ class TileGrid:
         """
         raise NotImplementedError
 
-    def extent(self, tilecoord: TileCoord, border: float = 0) -> Tuple[float, float, float, float]:
+    def extent(self, tilecoord: TileCoord, border: float = 0) -> tuple[float, float, float, float]:
         """
         Returns the extent of the tile at tilecoord.
         """
         raise NotImplementedError
 
-    def fill_down(self, z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
+    def fill_down(self, z: int, bounds: tuple[Bounds, Bounds]) -> tuple[Bounds, Bounds]:
         raise NotImplementedError
 
-    def fill_up(self, z: int, bounds: Tuple[Bounds, Bounds]) -> Tuple[Bounds, Bounds]:
+    def fill_up(self, z: int, bounds: tuple[Bounds, Bounds]) -> tuple[Bounds, Bounds]:
         raise NotImplementedError
 
     def parent(self, tilecoord: TileCoord) -> Optional[TileCoord]:

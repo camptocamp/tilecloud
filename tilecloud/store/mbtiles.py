@@ -2,8 +2,9 @@
 
 import mimetypes
 import sqlite3
+from collections.abc import Iterator
 from sqlite3 import Connection
-from typing import Any, Iterator, Optional, Tuple
+from typing import Any, Optional
 
 from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
 from tilecloud.lib.sqlite3_ import SQLiteDict, query
@@ -49,20 +50,20 @@ class Tiles(SQLiteDict):
         self.tilecoord_in_topleft = tilecoord_in_topleft
         SQLiteDict.__init__(self, *args, **kwargs)
 
-    def _packitem(self, key: TileCoord, value: Optional[bytes]) -> Tuple[int, int, int, Optional[memoryview]]:
+    def _packitem(self, key: TileCoord, value: Optional[bytes]) -> tuple[int, int, int, Optional[memoryview]]:
         y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1
         return (key.z, key.x, y, sqlite3.Binary(value) if value is not None else None)
 
-    def _packkey(self, key: TileCoord) -> Tuple[int, int, int]:
+    def _packkey(self, key: TileCoord) -> tuple[int, int, int]:
         y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1
         return (key.z, key.x, y)
 
-    def _unpackitem(self, row: Tuple[int, int, int, bytes]) -> Tuple[TileCoord, bytes]:
+    def _unpackitem(self, row: tuple[int, int, int, bytes]) -> tuple[TileCoord, bytes]:
         z, x, y, data = row
         y = y if self.tilecoord_in_topleft else (1 << z) - y - 1
         return (TileCoord(z, x, y), data)
 
-    def _unpackkey(self, row: Tuple[int, int, int]) -> TileCoord:
+    def _unpackkey(self, row: tuple[int, int, int]) -> TileCoord:
         z, x, y = row
         y = y if self.tilecoord_in_topleft else (1 << z) - y - 1
         return TileCoord(z, x, y)

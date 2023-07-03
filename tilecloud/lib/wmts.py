@@ -1,5 +1,5 @@
 from math import ceil
-from typing import Dict, List, Tuple, TypedDict, cast
+from typing import TypedDict, cast
 
 from bottle import jinja2_template
 from pyproj import Proj, transform
@@ -9,9 +9,9 @@ from tilecloud.lib.wmts_get_capabilities_template import wmts_get_capabilities_t
 METERS_PER_UNIT = {"feet": 3.28084, "meters": 1, "degrees": 111118.752, "inch": 39.3700787}
 
 
-def to_wsg84(srs: str, x: float, y: float) -> Tuple[float, float]:
+def to_wsg84(srs: str, x: float, y: float) -> tuple[float, float]:
     return cast(
-        Tuple[float, float], transform(Proj(init=srs.lower()), Proj(proj="latlong", datum="WGS84"), x, y)
+        tuple[float, float], transform(Proj(init=srs.lower()), Proj(proj="latlong", datum="WGS84"), x, y)
     )
 
 
@@ -19,8 +19,8 @@ class TileMatrixSet(TypedDict):
     name: str
     srs: str
     units: str
-    resolutions: List[float]
-    bbox: Tuple[float, float, float, float]
+    resolutions: list[float]
+    bbox: tuple[float, float, float, float]
     tile_size: int
     yorigin: str
 
@@ -39,11 +39,11 @@ class Matrix(TypedDict):
 
 class MatrixSet(TypedDict):
     crs: str
-    matrices: List[Matrix]
+    matrices: list[Matrix]
 
 
-def matrix_sets(tile_matrix_set: TileMatrixSet) -> Dict[str, MatrixSet]:
-    sets: Dict[str, MatrixSet] = {}
+def matrix_sets(tile_matrix_set: TileMatrixSet) -> dict[str, MatrixSet]:
+    sets: dict[str, MatrixSet] = {}
     tile_size = int(tile_matrix_set["tile_size"])
     units = tile_matrix_set["units"]
     matrix_set: MatrixSet = {"crs": tile_matrix_set["srs"].replace(":", "::"), "matrices": []}
@@ -76,11 +76,11 @@ class Layer(TypedDict):
     extension: str
     dimension_key: str
     dimension_default: str
-    dimension_values: List[str]
+    dimension_values: list[str]
     matrix_set: str
 
 
-def get_capabilities(layers: List[Layer], tile_matrix_set: TileMatrixSet, wmts_gettile: str) -> str:
+def get_capabilities(layers: list[Layer], tile_matrix_set: TileMatrixSet, wmts_gettile: str) -> str:
     """
     layers is an array of dict that contains:
 

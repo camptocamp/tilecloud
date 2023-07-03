@@ -1,6 +1,6 @@
-from collections.abc import MutableMapping
+from collections.abc import Iterator, KeysView, MutableMapping
 from sqlite3 import Connection, Cursor
-from typing import TYPE_CHECKING, Any, Iterator, KeysView, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 from tilecloud import TileCoord
 
@@ -64,28 +64,28 @@ class SQLiteDict(Base):
     def iteritems(self) -> Iterator[Cursor]:
         return map(self._unpackitem, query(self.connection, self.ITERITEMS_SQL))  # type: ignore
 
-    def itervalues(self) -> Iterator[Tuple[bytes]]:
+    def itervalues(self) -> Iterator[tuple[bytes]]:
         return map(self._unpackvalue, query(self.connection, self.ITERVALUES_SQL))  # type: ignore
 
     def keys(self) -> KeysView[str]:
         return set(iter(self))  # type: ignore
 
-    def _packitem(self, key: TileCoord, value: Optional[bytes]) -> Tuple[int, int, int, Optional[memoryview]]:
+    def _packitem(self, key: TileCoord, value: Optional[bytes]) -> tuple[int, int, int, Optional[memoryview]]:
         return (key, value)  # type: ignore
 
-    def _packkey(self, key: TileCoord) -> Tuple[int, int, int]:
+    def _packkey(self, key: TileCoord) -> tuple[int, int, int]:
         return (key,)  # type: ignore
 
     @staticmethod
-    def _packvalue(value: Any) -> Tuple[Any]:  # pragma: no cover
+    def _packvalue(value: Any) -> tuple[Any]:  # pragma: no cover
         return (value,)
 
-    def _unpackitem(self, row: Tuple[int, int, int, bytes]) -> Tuple[TileCoord, bytes]:  # pragma: no cover
+    def _unpackitem(self, row: tuple[int, int, int, bytes]) -> tuple[TileCoord, bytes]:  # pragma: no cover
         return row  # type: ignore
 
-    def _unpackkey(self, row: Tuple[int, int, int]) -> TileCoord:
+    def _unpackkey(self, row: tuple[int, int, int]) -> TileCoord:
         return row[0]  # type: ignore
 
     @staticmethod
-    def _unpackvalue(row: Tuple[bytes]) -> bytes:
+    def _unpackvalue(row: tuple[bytes]) -> bytes:
         return row[0]

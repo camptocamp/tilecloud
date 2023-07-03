@@ -1,4 +1,5 @@
-from typing import Callable, Dict, Iterable, List, Optional, Tuple
+from collections.abc import Iterable
+from typing import Callable, Optional
 
 from tilecloud import TileCoord, TileLayout
 
@@ -34,10 +35,10 @@ class WMTSTileLayout(TileLayout):
         elif self.url and self.url[-1] != "/":
             self.url += "/"
 
-    def filename(self, tilecoord: TileCoord, metadata: Optional[Dict[str, str]] = None) -> str:
+    def filename(self, tilecoord: TileCoord, metadata: Optional[dict[str, str]] = None) -> str:
         metadata = {} if metadata is None else metadata
         # Careful the order is important for the REST request encoding
-        query: List[Tuple[str, str]] = []
+        query: list[tuple[str, str]] = []
         if self.request_encoding == "KVP":
             query.extend([("Service", "WMTS"), ("Request", "GetTile"), ("Format", self.format)])
 

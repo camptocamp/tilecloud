@@ -1,5 +1,5 @@
 from json import dumps
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from tilecloud import Tile, TileGrid, TileStore
 
@@ -24,7 +24,7 @@ class MapnikTileStore(TileStore):
         image_buffer: int = 0,
         output_format: str = "png256",
         resolution: int = 2,
-        layers_fields: Optional[Dict[str, List[str]]] = None,
+        layers_fields: Optional[dict[str, list[str]]] = None,
         drop_empty_utfgrid: bool = False,
         proj4_literal: Optional[str] = None,
         **kwargs: Any,

@@ -1,4 +1,4 @@
-from typing import Match, Pattern
+from re import Match, Pattern
 
 from tilecloud import TileCoord, TileLayout
 

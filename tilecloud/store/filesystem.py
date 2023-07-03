@@ -1,7 +1,8 @@
 import errno
 import os
 import os.path
-from typing import Any, Iterator, Optional
+from collections.abc import Iterator
+from typing import Any, Optional
 
 from tilecloud import Tile, TileLayout, TileStore
 

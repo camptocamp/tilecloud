@@ -1,13 +1,12 @@
 import os
 from subprocess import call  # nosec
 from tempfile import NamedTemporaryFile
-from typing import List
 
 from tilecloud import Tile
 
 
 class OptiPNG:
-    def __init__(self, options: List[str], arg0: str = "/usr/bin/optipng"):
+    def __init__(self, options: list[str], arg0: str = "/usr/bin/optipng"):
         self.args = [arg0, "-q"] + list(options)
 
     def __call__(self, tile: Tile) -> Tile:

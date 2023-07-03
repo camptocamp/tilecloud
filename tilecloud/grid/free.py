@@ -1,5 +1,6 @@
+from collections.abc import Iterator, Sequence
 from math import floor
-from typing import Iterator, List, Optional, Sequence, Tuple, Union
+from typing import Optional, Union
 
 from tilecloud import TileCoord, TileGrid
 
@@ -8,7 +9,7 @@ class FreeTileGrid(TileGrid):
     def __init__(
         self,
         resolutions: Sequence[Union[int, float]],
-        max_extent: Optional[Union[Tuple[int, int, int, int], Tuple[float, float, float, float]]] = None,
+        max_extent: Optional[Union[tuple[int, int, int, int], tuple[float, float, float, float]]] = None,
         tile_size: Optional[float] = None,
         scale: int = 1,
         flip_y: bool = False,
@@ -18,8 +19,8 @@ class FreeTileGrid(TileGrid):
         assert all(isinstance(r, (int, float)) for r in resolutions)
         self.resolutions = resolutions
         self.scale = float(scale)
-        self.parent_zs: List[Optional[int]] = []
-        self.child_zs: List[List[int]] = []
+        self.parent_zs: list[Optional[int]] = []
+        self.child_zs: list[list[int]] = []
         for i, resolution in enumerate(self.resolutions):
             for parent in range(i - 1, -1, -1):
                 if self.resolutions[parent] % resolution == 0:
@@ -40,7 +41,7 @@ class FreeTileGrid(TileGrid):
                         y = round(factor * tilecoord.y + j)
                         yield TileCoord(child_z, x, y)
 
-    def extent(self, tilecoord: TileCoord, border: float = 0) -> Tuple[float, float, float, float]:
+    def extent(self, tilecoord: TileCoord, border: float = 0) -> tuple[float, float, float, float]:
         assert self.max_extent
         y: float = tilecoord.y
         if not self.flip_y:
