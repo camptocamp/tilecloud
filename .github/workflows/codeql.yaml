@@ -1,4 +1,3 @@
----
 name: CodeQL scanning
 
 on:
@@ -10,7 +9,7 @@ env:
 jobs:
   codeql:
     name: CodeQL scanning
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
 
     steps:
