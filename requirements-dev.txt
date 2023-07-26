@@ -3,6 +3,6 @@ pylint==2.12.2
 pytest==7.1.3
 pytest-cov==3.0.0
 mypy==0.950
-types-boto==2.49.18.8
+types-boto==2.49.18.9
 types-redis==4.2.8
 types-requests==2.27.31
