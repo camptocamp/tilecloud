@@ -1158,6 +1158,17 @@ with-pyroma = ["pyroma (>=2.4)"]
 with-vulture = ["vulture (>=1.5)"]
 
 [[package]]
+name = "prospector-profile-duplicated"
+version = "0.1.0"
+description = "Profile that can be used to disable the duplicated or conflict rules between Prospector and other tools"
+optional = false
+python-versions = "*"
+files = [
+    {file = "prospector_profile_duplicated-0.1.0-py2.py3-none-any.whl", hash = "sha256:d9c8679736bb2f2310b0faec3f6955d63388abc594e293a3e82e43ae0315991c"},
+    {file = "prospector_profile_duplicated-0.1.0.tar.gz", hash = "sha256:144baaa10101a28834d68552ff0b1714c08f22c8a7e9506e02ccc8584a28943c"},
+]
+
+[[package]]
 name = "pycairo"
 version = "1.24.0"
 description = "Python interface for cairo"
@@ -2150,4 +2161,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "ded1f771360c04a67589472a7b0c626b1b7671f12a4c0b1c2b6fb240d9bcd5de"
+content-hash = "16d4324f0b55ff64c43c219894748831d5d70bf421c2ad8e75b8b386b442220b"
