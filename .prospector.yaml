@@ -1,3 +1,5 @@
+inherits:
+  - duplicated
 strictness: veryhigh
 doc-warnings: false
 max-line-length: 110
@@ -17,7 +19,6 @@ pylint:
     - too-many-locals
     - too-many-nested-blocks
     - too-few-public-methods
-    - wrong-import-order
     - no-else-return
     - abstract-method
     - invalid-name
@@ -27,7 +28,6 @@ pylint:
 
 pycodestyle:
   disable:
-    - E203
     - E501
 
 mypy:
