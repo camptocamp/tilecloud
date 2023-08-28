@@ -45,14 +45,14 @@ class RedisTileStore(TileStore):
 
         if sentinels is not None:
             logger.debug("Initialize using sentinels")
-            sentinel = redis.sentinel.Sentinel(
+            sentinel = redis.sentinel.Sentinel(  # type: ignore
                 sentinels, sentinel_kwargs=sentinel_kwargs, **connection_kwargs
             )
-            self._master = sentinel.master_for(service_name)
-            self._slave = sentinel.slave_for(service_name)
+            self._master = sentinel.master_for(service_name)  # type: ignore
+            self._slave = sentinel.slave_for(service_name)  # type: ignore
         else:
             assert url is not None
-            self._master = redis.Redis.from_url(url, **connection_kwargs)
+            self._master = redis.Redis.from_url(url, **connection_kwargs)  # type: ignore
             self._slave = self._master
 
         self._stop_if_empty = stop_if_empty
