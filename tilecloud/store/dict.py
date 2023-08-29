@@ -23,8 +23,7 @@ class DictTileStore(TileStore):
         if tile and tile.tilecoord in self.tiles:
             tile.__dict__.update(self.tiles[tile.tilecoord])
             return tile
-        else:
-            return None
+        return None
 
     def list(self) -> Iterator[Tile]:
         for tilecoord in self.tiles.keys():

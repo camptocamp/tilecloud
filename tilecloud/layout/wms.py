@@ -1,7 +1,7 @@
 from typing import Any, Optional
 from urllib.parse import urlencode
 
-from tilecloud import TileCoord, TileGrid, TileLayout
+from tilecloud import NotSupportedOperation, TileCoord, TileGrid, TileLayout
 
 
 class WMSTileLayout(TileLayout):
@@ -10,7 +10,7 @@ class WMSTileLayout(TileLayout):
         url: str,
         layers: str,
         srs: str,
-        format: str,
+        format_pattern: str,
         tilegrid: TileGrid,
         border: int = 0,
         params: Optional[dict[str, str]] = None,
@@ -22,8 +22,8 @@ class WMSTileLayout(TileLayout):
         self.border = border
         self.params = {
             "LAYERS": layers,
-            "FORMAT": format,
-            "TRANSPARENT": "TRUE" if format == "image/png" else "FALSE",
+            "FORMAT": format_pattern,
+            "TRANSPARENT": "TRUE" if format_pattern == "image/png" else "FALSE",
             "SERVICE": "WMS",
             "VERSION": "1.1.1",
             "REQUEST": "GetMap",
@@ -39,10 +39,13 @@ class WMSTileLayout(TileLayout):
         bbox = self.tilegrid.extent(tilecoord, self.border)
         size = tilecoord.n * self.tilegrid.tile_size + 2 * self.border
         params = self.params.copy()
-        for k, v in metadata.items():
+        for k, value in metadata.items():
             if k.startswith("dimension_"):
-                params[k[len("dimension_") :]] = v
+                params[k[len("dimension_") :]] = value
         params["BBOX"] = f"{bbox[0]:f},{bbox[1]:f},{bbox[2]:f},{bbox[3]:f}"
         params["WIDTH"] = str(size)
         params["HEIGHT"] = str(size)
         return self.url + "?" + urlencode(params)
+
+    def tilecoord(self, filename: str) -> TileCoord:
+        raise NotSupportedOperation()

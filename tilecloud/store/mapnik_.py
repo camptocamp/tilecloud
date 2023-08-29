@@ -1,7 +1,7 @@
 from json import dumps
 from typing import Any, Optional
 
-from tilecloud import Tile, TileGrid, TileStore
+from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 
 try:
     import mapnik2 as mapnik
@@ -70,9 +70,11 @@ class MapnikTileStore(TileStore):
 
         if self.output_format == "grid":
             grid = mapnik.Grid(self.tilegrid.tile_size, self.tilegrid.tile_size)
-            for n, l in enumerate(self.mapnik.layers):
-                if l.name in self.layers_fields:
-                    mapnik.render_layer(self.mapnik, grid, layer=n, fields=self.layers_fields[l.name])
+            for number, layer in enumerate(self.mapnik.layers):
+                if layer.name in self.layers_fields:
+                    mapnik.render_layer(
+                        self.mapnik, grid, layer=number, fields=self.layers_fields[layer.name]
+                    )
 
             encode = grid.encode("utf", resolution=self.resolution)
             if self.drop_empty_utfgrid and len(encode["data"].keys()) == 0:
@@ -80,8 +82,14 @@ class MapnikTileStore(TileStore):
             tile.data = dumps(encode).encode()
         else:
             # Render image with default Agg renderer
-            im = mapnik.Image(size, size)
-            mapnik.render(self.mapnik, im)
-            tile.data = im.tostring(self.output_format)
+            image = mapnik.Image(size, size)
+            mapnik.render(self.mapnik, image)
+            tile.data = image.tostring(self.output_format)
 
         return tile
+
+    def put_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()
+
+    def delete_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()

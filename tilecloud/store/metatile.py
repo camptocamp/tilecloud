@@ -4,13 +4,13 @@ from typing import Any, Optional
 
 from PIL import Image
 
-from tilecloud import Tile, TileStore
+from tilecloud import NotSupportedOperation, Tile, TileStore
 from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class MetaTileSplitterTileStore(TileStore):
-    def __init__(self, format: str, tile_size: int = 256, border: int = 0, **kwargs: Any) -> None:
-        self.format = format
+    def __init__(self, format_pattern: str, tile_size: int = 256, border: int = 0, **kwargs: Any) -> None:
+        self.format = format_pattern
         self.tile_size = tile_size
         self.border = border
         TileStore.__init__(self, **kwargs)
@@ -36,8 +36,12 @@ class MetaTileSplitterTileStore(TileStore):
                         )
                         continue
 
-                    x = self.border + (tilecoord.x - metatile.tilecoord.x) * self.tile_size
-                    y = self.border + (tilecoord.y - metatile.tilecoord.y) * self.tile_size
+                    x = (  # pylint: disable=invalid-name
+                        self.border + (tilecoord.x - metatile.tilecoord.x) * self.tile_size
+                    )
+                    y = (  # pylint: disable=invalid-name
+                        self.border + (tilecoord.y - metatile.tilecoord.y) * self.tile_size
+                    )
                     image = metaimage.crop((x, y, x + self.tile_size, y + self.tile_size))
                     bytes_io = BytesIO()
                     image.save(bytes_io, FORMAT_BY_CONTENT_TYPE[self.format])
@@ -48,3 +52,12 @@ class MetaTileSplitterTileStore(TileStore):
                         metadata=metatile.metadata,
                         metatile=metatile,
                     )
+
+    def get_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()
+
+    def put_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()
+
+    def delete_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()

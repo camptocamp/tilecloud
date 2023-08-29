@@ -63,10 +63,10 @@ class MergeFilter:
         assert tile.data is not None
         image = PIL.Image.open(BytesIO(tile.data))
         for tilestore in self.tilestores:
-            t = tilestore.get_one(Tile(tile.tilecoord))
-            if t is not None:
-                assert t.data is not None
-                image2 = PIL.Image.open(BytesIO(t.data))
+            sub_tile = tilestore.get_one(Tile(tile.tilecoord))
+            if sub_tile is not None:
+                assert sub_tile.data is not None
+                image2 = PIL.Image.open(BytesIO(sub_tile.data))
                 image.paste(image2, None, image2)
         content_type = self.content_type
         if content_type is None:
@@ -90,8 +90,8 @@ class PILImageFilter:
         Extra params passed to the PIL ``save`` function.
     """
 
-    def __init__(self, filter: Callable[[Tile], Tile], **kwargs: Any):
-        self.filter = filter
+    def __init__(self, filter_pattern: Callable[[Tile], Tile], **kwargs: Any):
+        self.filter = filter_pattern
         self.kwargs = kwargs
 
     def __call__(self, tile: Tile) -> Tile:

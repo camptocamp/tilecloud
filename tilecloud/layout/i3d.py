@@ -26,21 +26,21 @@ class I3DTileLayout(RETileLayout):
 
     @staticmethod
     def quadcode_from_tilecoord(tilecoord: TileCoord) -> str:
-        x, y = int(tilecoord.x), int(tilecoord.y)
+        x, y = int(tilecoord.x), int(tilecoord.y)  # pylint: disable=invalid-name
         result = ""
         for _ in range(0, tilecoord.z):
             result += "0123"[(x & 1) + ((y & 1) << 1)]
-            x >>= 1
-            y >>= 1
+            x >>= 1  # pylint: disable=invalid-name
+            y >>= 1  # pylint: disable=invalid-name
         return result[::-1]
 
     @staticmethod
     def tilecoord_from_quadcode(quadcode: str) -> TileCoord:
-        z, x, y = len(quadcode), 0, 0
-        for i, c in enumerate(quadcode):
+        z, x, y = len(quadcode), 0, 0  # pylint: disable=invalid-name
+        for i, code in enumerate(quadcode):
             mask = 1 << (z - i - 1)
-            if c in ["1", "3"]:
-                x |= mask
-            if c in ["2", "3"]:
-                y |= mask
+            if code in ["1", "3"]:
+                x |= mask  # pylint: disable=invalid-name
+            if code in ["2", "3"]:
+                y |= mask  # pylint: disable=invalid-name
         return TileCoord(z, x, y)

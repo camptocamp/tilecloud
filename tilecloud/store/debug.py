@@ -5,7 +5,7 @@ import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageFont
 
-from tilecloud import Tile, TileStore
+from tilecloud import NotSupportedOperation, Tile, TileStore
 from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
@@ -27,3 +27,9 @@ class DebugTileStore(TileStore):
         image.save(bytes_io, FORMAT_BY_CONTENT_TYPE[self.content_type])
         tile.data = bytes_io.getvalue()
         return tile
+
+    def put_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()
+
+    def delete_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()

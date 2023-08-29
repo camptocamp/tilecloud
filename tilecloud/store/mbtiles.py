@@ -51,21 +51,21 @@ class Tiles(SQLiteDict):
         SQLiteDict.__init__(self, *args, **kwargs)
 
     def _packitem(self, key: TileCoord, value: Optional[bytes]) -> tuple[int, int, int, Optional[memoryview]]:
-        y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1
+        y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1  # pylint: disable=invalid-name
         return (key.z, key.x, y, sqlite3.Binary(value) if value is not None else None)
 
     def _packkey(self, key: TileCoord) -> tuple[int, int, int]:
-        y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1
+        y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1  # pylint: disable=invalid-name
         return (key.z, key.x, y)
 
     def _unpackitem(self, row: tuple[int, int, int, bytes]) -> tuple[TileCoord, bytes]:
-        z, x, y, data = row
-        y = y if self.tilecoord_in_topleft else (1 << z) - y - 1
+        z, x, y, data = row  # pylint: disable=invalid-name
+        y = y if self.tilecoord_in_topleft else (1 << z) - y - 1  # pylint: disable=invalid-name
         return (TileCoord(z, x, y), data)
 
     def _unpackkey(self, row: tuple[int, int, int]) -> TileCoord:
-        z, x, y = row
-        y = y if self.tilecoord_in_topleft else (1 << z) - y - 1
+        z, x, y = row  # pylint: disable=invalid-name
+        y = y if self.tilecoord_in_topleft else (1 << z) - y - 1  # pylint: disable=invalid-name
         return TileCoord(z, x, y)
 
 
@@ -110,7 +110,9 @@ class MBTilesTileStore(TileStore):
 
     def get_cheap_bounding_pyramid(self) -> BoundingPyramid:
         bounds = {}
-        for z, xstart, xstop, ystart, ystop in query(self.connection, self.BOUNDING_PYRAMID_SQL):
+        for z, xstart, xstop, ystart, ystop in query(  # pylint: disable=invalid-name
+            self.connection, self.BOUNDING_PYRAMID_SQL
+        ):
             bounds[z] = (Bounds(xstart, xstop), Bounds(ystart, ystop))
         return BoundingPyramid(bounds)
 

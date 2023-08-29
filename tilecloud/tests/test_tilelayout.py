@@ -37,7 +37,7 @@ class TestWMTSTileLayout(unittest.TestCase):
             url="test",
             layer="layer",
             style="default",
-            format=".png",
+            format_pattern=".png",
             dimensions_name=("DATE",),
             tile_matrix_set="swissgrid",
             request_encoding="REST",
@@ -46,7 +46,7 @@ class TestWMTSTileLayout(unittest.TestCase):
             url="test",
             layer="layer",
             style="default",
-            format=".png",
+            format_pattern=".png",
             dimensions_name=("DATE",),
             tile_matrix_set="swissgrid",
             request_encoding="KVP",
@@ -54,7 +54,7 @@ class TestWMTSTileLayout(unittest.TestCase):
         self.rest_nourl = WMTSTileLayout(
             layer="layer",
             style="default",
-            format=".png",
+            format_pattern=".png",
             dimensions_name=("DATE",),
             tile_matrix_set="swissgrid",
             request_encoding="REST",
@@ -62,7 +62,7 @@ class TestWMTSTileLayout(unittest.TestCase):
         self.kvp_nourl = WMTSTileLayout(
             layer="layer",
             style="default",
-            format=".png",
+            format_pattern=".png",
             dimensions_name=("DATE",),
             tile_matrix_set="swissgrid",
             request_encoding="KVP",
@@ -104,7 +104,7 @@ class TestWMSTileLayout(unittest.TestCase):
             url="http://example.com/folder",
             layers="l1,l2",
             srs="EPSG:1000",
-            format="image/png",
+            format_pattern="image/png",
             tilegrid=self.tilegrid,
         )
         result = urlparse(layout.filename(TileCoord(0, 0, 0)))
@@ -128,7 +128,7 @@ class TestWMSTileLayout(unittest.TestCase):
             url="http://example.com/folder",
             layers="l1,l2",
             srs="EPSG:1000",
-            format="image/jpeg",
+            format_pattern="image/jpeg",
             tilegrid=self.tilegrid,
         )
         result = urlparse(layout.filename(TileCoord(0, 0, 0)))
@@ -152,7 +152,7 @@ class TestWMSTileLayout(unittest.TestCase):
             url="http://example.com/folder",
             layers="l1,l2",
             srs="EPSG:1000",
-            format="image/png",
+            format_pattern="image/png",
             tilegrid=self.tilegrid,
             border=10,
         )
@@ -178,7 +178,7 @@ class TestWMSTileLayout(unittest.TestCase):
             url="http://example.com/folder",
             layers="l1,l2",
             srs="EPSG:1000",
-            format="image/png",
+            format_pattern="image/png",
             tilegrid=self.tilegrid,
         )
         result = urlparse(layout.filename(TileCoord(2, 0, 0)))
@@ -202,7 +202,7 @@ class TestWMSTileLayout(unittest.TestCase):
             url="http://example.com/folder",
             layers="l1,l2",
             srs="EPSG:1000",
-            format="image/png",
+            format_pattern="image/png",
             tilegrid=self.tilegrid,
         )
         result = urlparse(layout.filename(TileCoord(1, 0, 0, 2)))
@@ -226,7 +226,7 @@ class TestWMSTileLayout(unittest.TestCase):
             url="http://example.com/folder",
             layers="l1,l2",
             srs="EPSG:1000",
-            format="image/png",
+            format_pattern="image/png",
             tilegrid=self.tilegrid,
             border=5,
         )
@@ -251,7 +251,7 @@ class TestWMSTileLayout(unittest.TestCase):
             url="http://example.com/folder",
             layers="l1,l2",
             srs="EPSG:1000",
-            format="image/png",
+            format_pattern="image/png",
             tilegrid=self.tilegrid,
             params={"TRANSPARENT": "FALSE", "PARAM": "Value", "FILTER": 'l1:"field" = ' "{PARAM}" ""},
         )

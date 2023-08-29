@@ -1,7 +1,7 @@
 from collections.abc import Iterable
 from typing import Callable, Optional
 
-from tilecloud import TileCoord, TileLayout
+from tilecloud import NotSupportedOperation, TileCoord, TileLayout
 
 
 class WMTSTileLayout(TileLayout):
@@ -10,7 +10,7 @@ class WMTSTileLayout(TileLayout):
         url: str = "",
         layer: Optional[str] = None,
         style: Optional[str] = None,
-        format: Optional[str] = None,
+        format_pattern: Optional[str] = None,
         tile_matrix_set: Optional[str] = None,
         tile_matrix: Callable[[int], str] = str,
         dimensions_name: Iterable[str] = (),
@@ -21,8 +21,8 @@ class WMTSTileLayout(TileLayout):
         self.layer = layer
         assert style is not None
         self.style = style
-        assert format is not None
-        self.format = format
+        assert format_pattern is not None
+        self.format = format_pattern
         assert tile_matrix_set is not None
         self.tile_matrix_set = tile_matrix_set
         self.tile_matrix = tile_matrix
@@ -57,5 +57,7 @@ class WMTSTileLayout(TileLayout):
         )
         if self.request_encoding == "KVP":
             return self.url + "&".join("=".join(p) for p in query)
-        else:
-            return self.url + "/".join(p[1] for p in query) + self.format
+        return self.url + "/".join(p[1] for p in query) + self.format
+
+    def tilecoord(self, filename: str) -> TileCoord:
+        raise NotSupportedOperation()

@@ -11,15 +11,15 @@ _TILES_ERROR_COUINTER = Counter("tilecloud_tiles_errors", "Number of tiles in er
 
 
 class Statistics:
-    def __init__(self, format: str = "%f"):
-        self.format = format
-        self.n = 0
+    def __init__(self, format_pattern: str = "%f"):
+        self.format = format_pattern
+        self.n = 0  # pylint: disable=invalid-name
         self.sum = 0.0
         self.sum_of_squares = 0.0
         self.minimum: Optional[float] = None
         self.maximum: Optional[float] = None
 
-    def add(self, x: float) -> None:
+    def add(self, x: float) -> None:  # pylint: disable=invalid-name
         self.n += 1
         self.sum += x
         self.sum_of_squares += x * x

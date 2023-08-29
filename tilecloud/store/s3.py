@@ -47,8 +47,7 @@ class S3TileStore(TileStore):
         except botocore.exceptions.ClientError as exc:
             if _get_status(exc) == 404:
                 return False
-            else:
-                raise
+            raise
 
     def delete_one(self, tile: Tile) -> Tile:
         try:
@@ -69,8 +68,7 @@ class S3TileStore(TileStore):
         except botocore.exceptions.ClientError as exc:
             if _get_status(exc) == 404:
                 return None
-            else:
-                tile.error = exc
+            tile.error = exc
         return tile
 
     def list(self) -> Iterator[Tile]:
