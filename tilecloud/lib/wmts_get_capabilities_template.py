@@ -1,4 +1,4 @@
-wmts_get_capabilities_template = """<?xml version="1.0" encoding="UTF-8"?>
+WMTS_GET_CAPABILITIES_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
 <Capabilities version="1.0.0" xmlns="http://www.opengis.net/wmts/1.0" xmlns:ows="http://www.opengis.net/ows/1.1"
               xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns:gml="http://www.opengis.net/gml"

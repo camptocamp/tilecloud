@@ -29,8 +29,7 @@ class DropErrors:
     def __call__(self, tile: Tile) -> Optional[Tile]:
         if not tile or tile.error:
             return None
-        else:
-            return tile
+        return tile
 
 
 class LogErrors(Logger):

@@ -55,7 +55,7 @@ class AzureStorageBlobTileStore(TileStore):
             if not self.dry_run:
                 blob = self.container_client.get_blob_client(blob=key_name)
                 blob.delete_blob()
-        except Exception as exc:
+        except Exception as exc:  # pylint: disable=broad-except
             tile.error = exc
         return tile
 
@@ -71,7 +71,7 @@ class AzureStorageBlobTileStore(TileStore):
             tile.content_type = properties.content_settings.content_type
         except ResourceNotFoundError:
             return None
-        except Exception as exc:
+        except Exception as exc:  # pylint: disable=broad-except
             LOGGER.exception(exc)
             tile.error = exc
         return tile
@@ -102,7 +102,7 @@ class AzureStorageBlobTileStore(TileStore):
                         cache_control=self.cache_control,
                     ),
                 )
-            except Exception as exc:
+            except Exception as exc:  # pylint: disable=broad-except
                 tile.error = exc
 
         return tile

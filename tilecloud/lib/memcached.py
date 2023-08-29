@@ -19,23 +19,22 @@ class MemcachedClient:
         line = self.readline()
         if line == b"DELETED":
             return True
-        elif line == b"NOT_FOUND":
+        if line == b"NOT_FOUND":
             return False
-        else:
-            raise MemcachedError(line)
+        raise MemcachedError(line)
 
     def get(self, key: str) -> tuple[Optional[int], Optional[bytes], Optional[int]]:
         self.writeline(f"get {key}".encode())
         line = self.readline()
         if line == b"END":
             return None, None, None
-        m = self.VALUE_RE.match(line)
-        if not m:
+        match = self.VALUE_RE.match(line)
+        if not match:
             raise MemcachedError(line)
-        assert m.group("key") == key.encode()
-        flags = int(m.group("flags"))
-        value = self.readvalue(int(m.group("bytes")))
-        cas = None if m.group("cas") is None else int(m.group("cas"))
+        assert match.group("key") == key.encode()
+        flags = int(match.group("flags"))
+        value = self.readvalue(int(match.group("bytes")))
+        cas = None if match.group("cas") is None else int(match.group("cas"))
         line = self.readline()
         if line != b"END":
             raise MemcachedError(line)
@@ -48,7 +47,7 @@ class MemcachedClient:
         if line != b"STORED":
             raise MemcachedError(line)
 
-    def readvalue(self, n: int) -> bytes:
+    def readvalue(self, n: int) -> bytes:  # pylint: disable=invalid-name
         while len(self.buffer) < n + 2:
             self.buffer += self.socket.recv(n + 2 - len(self.buffer))
         if self.buffer[n : n + 2] != b"\r\n":

@@ -20,8 +20,8 @@ class FilesystemTileStore(TileStore):
     def delete_one(self, tile: Tile) -> Tile:
         try:
             filename = self.tilelayout.filename(tile.tilecoord, tile.metadata)
-        except Exception as e:
-            tile.error = e
+        except Exception as exception:  # pylint: disable=broad-except
+            tile.error = exception
             return tile
         if os.path.exists(filename):
             os.remove(filename)
@@ -36,8 +36,8 @@ class FilesystemTileStore(TileStore):
     def get_one(self, tile: Tile) -> Optional[Tile]:
         try:
             filename = self.tilelayout.filename(tile.tilecoord, tile.metadata)
-        except Exception as e:
-            tile.error = e
+        except Exception as exception:  # pylint: disable=broad-except
+            tile.error = exception
             return tile
         try:
             with open(filename, "rb") as file:
@@ -45,11 +45,10 @@ class FilesystemTileStore(TileStore):
             if self.content_type is not None:
                 tile.content_type = self.content_type
             return tile
-        except OSError as e:
-            if e.errno == errno.ENOENT:
+        except OSError as exception:
+            if exception.errno == errno.ENOENT:
                 return None
-            else:
-                raise
+            raise
 
     def list(self) -> Iterator[Tile]:
         top = getattr(self.tilelayout, "prefix", ".")
@@ -64,8 +63,8 @@ class FilesystemTileStore(TileStore):
         assert isinstance(tile.data, bytes)
         try:
             filename = self.tilelayout.filename(tile.tilecoord, tile.metadata)
-        except Exception as e:
-            tile.error = e
+        except Exception as exception:  # pylint: disable=broad-except
+            tile.error = exception
             return tile
         dirname = os.path.dirname(filename)
         if not os.path.exists(dirname):

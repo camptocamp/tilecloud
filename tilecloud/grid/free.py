@@ -2,7 +2,7 @@ from collections.abc import Iterator, Sequence
 from math import floor
 from typing import Optional, Union
 
-from tilecloud import TileCoord, TileGrid
+from tilecloud import Bounds, NotSupportedOperation, TileCoord, TileGrid
 
 
 class FreeTileGrid(TileGrid):
@@ -36,21 +36,21 @@ class FreeTileGrid(TileGrid):
             for child_z in self.child_zs[tilecoord.z]:
                 factor = self.resolutions[tilecoord.z] / self.resolutions[child_z]
                 for i in range(0, int(factor)):
-                    x = round(factor * tilecoord.x + i)
+                    x = round(factor * tilecoord.x + i)  # pylint: disable=invalid-name
                     for j in range(0, int(factor)):
-                        y = round(factor * tilecoord.y + j)
+                        y = round(factor * tilecoord.y + j)  # pylint: disable=invalid-name
                         yield TileCoord(child_z, x, y)
 
     def extent(self, tilecoord: TileCoord, border: float = 0) -> tuple[float, float, float, float]:
         assert self.max_extent
-        y: float = tilecoord.y
+        y: float = tilecoord.y  # pylint: disable=invalid-name
         if not self.flip_y:
-            n = (
+            n = (  # pylint: disable=invalid-name
                 self.scale
                 * (self.max_extent[3] - self.max_extent[1])
                 / float(self.tile_size * self.resolutions[tilecoord.z])
             )
-            y = n - y - tilecoord.n
+            y = n - y - tilecoord.n  # pylint: disable=invalid-name
         minx = (
             self.max_extent[0]
             + (self.tile_size * tilecoord.x - border) * self.resolutions[tilecoord.z] / self.scale
@@ -72,36 +72,45 @@ class FreeTileGrid(TileGrid):
         parent_z = self.parent_zs[tilecoord.z]
         if parent_z is None:
             return None
-        else:
-            factor = self.resolutions[parent_z] / self.resolutions[tilecoord.z]
-            return TileCoord(parent_z, int(tilecoord.x // factor), int(tilecoord.y // factor))
+        factor = self.resolutions[parent_z] / self.resolutions[tilecoord.z]
+        return TileCoord(parent_z, int(tilecoord.x // factor), int(tilecoord.y // factor))
 
     def roots(self) -> Iterator[TileCoord]:
-        for z, parent_z in enumerate(self.parent_zs):
-            if parent_z is None:
-                x, s = 0, 0.0
+        for zoom, parent_zoom in enumerate(self.parent_zs):
+            if parent_zoom is None:
+                x, s = 0, 0.0  # pylint: disable=invalid-name
                 while s < self.resolutions[0]:
-                    y, t = 0, 0.0
+                    y, t = 0, 0.0  # pylint: disable=invalid-name
                     while t < self.resolutions[0]:
-                        yield TileCoord(z, x, y)
-                        y += 1
-                        t += self.resolutions[z]
-                    x += 1
-                    s += self.resolutions[z]
+                        yield TileCoord(zoom, x, y)
+                        y += 1  # pylint: disable=invalid-name
+                        t += self.resolutions[zoom]  # pylint: disable=invalid-name
+                    x += 1  # pylint: disable=invalid-name
+                    s += self.resolutions[zoom]  # pylint: disable=invalid-name
 
     def tilecoord(self, z: int, x: float, y: float) -> TileCoord:
-        tx = self.scale * (x - self.max_extent[0]) / (self.resolutions[z] * self.tile_size)
-        ty = self.scale * (y - self.max_extent[1]) / float(self.resolutions[z] * self.tile_size)
+        tx = (  # pylint: disable=invalid-name
+            self.scale * (x - self.max_extent[0]) / (self.resolutions[z] * self.tile_size)
+        )
+        ty = (  # pylint: disable=invalid-name
+            self.scale * (y - self.max_extent[1]) / float(self.resolutions[z] * self.tile_size)
+        )
 
         if not self.flip_y:
-            n = (
+            n = (  # pylint: disable=invalid-name
                 self.scale
                 * (self.max_extent[3] - self.max_extent[1])
                 / float(self.tile_size * self.resolutions[z])
             )
-            ty = n - ty
+            ty = n - ty  # pylint: disable=invalid-name
 
         return TileCoord(z, int(floor(tx)), int(floor(ty)))
 
     def zs(self) -> range:
         return range(len(self.resolutions))
+
+    def fill_up(self, z: int, bounds: tuple[Bounds, Bounds]) -> tuple[Bounds, Bounds]:
+        raise NotSupportedOperation()
+
+    def fill_down(self, z: int, bounds: tuple[Bounds, Bounds]) -> tuple[Bounds, Bounds]:
+        raise NotSupportedOperation()

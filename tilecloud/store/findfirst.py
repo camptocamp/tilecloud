@@ -1,7 +1,7 @@
 from collections.abc import Iterator
 from typing import Any, Optional
 
-from tilecloud import Tile, TileStore
+from tilecloud import NotSupportedOperation, Tile, TileStore
 
 
 class FindFirstTileStore(TileStore):
@@ -11,3 +11,9 @@ class FindFirstTileStore(TileStore):
 
     def get_one(self, tile: Tile) -> Optional[Tile]:
         return next(filter(None, (store.get_one(tile) for store in self.tilestores)), None)
+
+    def put_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()
+
+    def delete_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()

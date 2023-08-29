@@ -18,12 +18,11 @@ class EveryNth:
         ``n`` in the above calculation.
     """
 
-    def __init__(self, n: int, i: int) -> None:
-        self.n = n
+    def __init__(self, n: int, i: int) -> None:  # pylint: disable=invalid-name
+        self.n = n  # pylint: disable=invalid-name
         self.i = i
 
     def __call__(self, tile: Tile) -> Optional[Tile]:
         if hash(tile.tilecoord) % self.n == self.i:
             return tile
-        else:
-            return None
+        return None

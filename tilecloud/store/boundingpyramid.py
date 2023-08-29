@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from tilecloud import BoundingPyramid, Tile, TileStore
+from tilecloud import BoundingPyramid, NotSupportedOperation, Tile, TileStore
 
 
 class BoundingPyramidTileStore(TileStore):
@@ -15,8 +15,7 @@ class BoundingPyramidTileStore(TileStore):
     def get_one(self, tile: Tile) -> Optional[Tile]:
         if tile and tile.tilecoord in self.get_cheap_bounding_pyramid():
             return tile
-        else:
-            return None
+        return None
 
     def get_cheap_bounding_pyramid(self) -> BoundingPyramid:
         assert self.bounding_pyramid is not None
@@ -25,3 +24,6 @@ class BoundingPyramidTileStore(TileStore):
     def put_one(self, tile: Tile) -> Tile:
         self.get_cheap_bounding_pyramid().add(tile.tilecoord)
         return tile
+
+    def delete_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()

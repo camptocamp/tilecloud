@@ -8,7 +8,7 @@ from tilecloud import Tile, TileCoord, TileStore
 
 class BSDDBTileStore(TileStore):
     def __init__(self, db: bsddb.DB, **kwargs: Any):
-        self.db = db
+        self.db = db  # pylint: disable=invalid-name
         TileStore.__init__(self, **kwargs)
 
     def __contains__(self, tile: Tile) -> bool:

@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 import requests
 
-from tilecloud import Tile, TileLayout, TileStore
+from tilecloud import NotSupportedOperation, Tile, TileLayout, TileStore
 
 logger = logging.getLogger(__name__)
 
@@ -33,8 +33,8 @@ class URLTileStore(TileStore):
         tilelayout = self.tilelayouts[hash(tile.tilecoord) % len(self.tilelayouts)]
         try:
             url = tilelayout.filename(tile.tilecoord, tile.metadata)
-        except Exception as e:
-            tile.error = e
+        except Exception as exception:  # pylint: disable=broad-except
+            tile.error = exception
             return tile
 
         logger.info("GET %s", url)
@@ -60,6 +60,12 @@ class URLTileStore(TileStore):
 
             else:
                 tile.error = response.reason
-        except requests.exceptions.RequestException as e:
-            tile.error = e
+        except requests.exceptions.RequestException as exception:
+            tile.error = exception
         return tile
+
+    def put_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()
+
+    def delete_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()

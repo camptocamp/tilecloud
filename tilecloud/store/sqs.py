@@ -25,8 +25,7 @@ def maybe_stop(queue: "botocore.client.SQS") -> bool:
     if int(attributes["ApproximateNumberOfMessages"]) == 0:
         if int(attributes["ApproximateNumberOfMessagesNotVisible"]) == 0:
             return True
-        else:
-            time.sleep(int(attributes["VisibilityTimeout"]) / 4.0)
+        time.sleep(int(attributes["VisibilityTimeout"]) / 4.0)
     return False
 
 
@@ -63,7 +62,7 @@ class SQSTileStore(TileStore):
                     try:
                         tile = decode_message(sqs_message.body.encode("utf-8"), sqs_message=sqs_message)
                         yield tile
-                    except Exception:
+                    except Exception:  # pylint: disable=broad-except
                         logger.warning("Failed decoding the SQS message", exc_info=True)
                         sqs_message.delete()
 
@@ -78,9 +77,9 @@ class SQSTileStore(TileStore):
 
         try:
             self.queue.send_message(MessageBody=sqs_message)
-        except Exception as e:
+        except Exception as exception:  # pylint: disable=broad-except
             logger.warning("Failed sending SQS message", exc_info=True)
-            tile.error = e
+            tile.error = exception
         return tile
 
     def put(self, tiles: Iterable[Tile]) -> Iterator[Tile]:
@@ -106,10 +105,10 @@ class SQSTileStore(TileStore):
                 logger.warning("Failed sending SQS message: %s", failed["Message"])
                 pos = int(failed["Id"])
                 tiles[pos].error = failed["Message"]
-        except Exception as e:
+        except Exception as exception:  # pylint: disable=broad-except
             logger.warning("Failed sending SQS messages", exc_info=True)
             for tile in tiles:
-                tile.error = e
+                tile.error = exception
 
     def get_status(self) -> dict[str, str]:
         """

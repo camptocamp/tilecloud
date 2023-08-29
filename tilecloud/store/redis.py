@@ -90,8 +90,8 @@ class RedisTileStore(TileStore):
                 "Create the Redis stream name: %s, group name: %s, id: 0-0, MKSTREAM", name, STREAM_GROUP
             )
             self._master.xgroup_create(name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
-        except redis.ResponseError as e:
-            if "BUSYGROUP" not in str(e):
+        except redis.ResponseError as error:
+            if "BUSYGROUP" not in str(error):
                 raise
 
     def __contains__(self, tile: Tile) -> bool:
@@ -102,7 +102,7 @@ class RedisTileStore(TileStore):
 
     def list(self) -> Iterator[Tile]:
         count = 0
-        while True:
+        while True:  # pylint: disable=too-many-nested-blocks
             try:
                 logger.debug(
                     "Wait for new tiles, group name: %s, consumer name: %s, streams: %s, count: 1, "
@@ -137,7 +137,7 @@ class RedisTileStore(TileStore):
                             try:
                                 tile = decode_message(body[b"message"], from_redis=True, sqs_message=id_)
                                 yield tile
-                            except Exception:
+                            except Exception:  # pylint: disable=broad-except
                                 logger.warning("Failed decoding the Redis message", exc_info=True)
                                 _DECODE_ERROR_COUNTER.labels(self._name_str).inc()
                             count += 1
@@ -160,9 +160,9 @@ class RedisTileStore(TileStore):
                 "Add tile to the Redis stream name: %s, fields: %s", self._name, encode_message(tile)
             )
             self._master.xadd(name=self._name, fields={"message": encode_message(tile)})
-        except Exception as e:
+        except Exception as exception:  # pylint: disable=broad-except
             logger.warning("Failed sending Redis message", exc_info=True)
-            tile.error = e
+            tile.error = exception
         return tile
 
     def put(self, tiles: Iterable[Tile]) -> Iterator[Tile]:
@@ -315,9 +315,8 @@ class RedisTileStore(TileStore):
             )
             _STOLEN_COUNTER.labels(self._name_str).inc(len(to_steal))
             return [(self._name, messages)], has_pendings
-        else:
-            # Empty means there are pending jobs, but they are not old enough to be stolen
-            return [], has_pendings
+        # Empty means there are pending jobs, but they are not old enough to be stolen
+        return [], has_pendings
 
     def get_status(self) -> dict[str, Union[str, int]]:
         """

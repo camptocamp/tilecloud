@@ -13,15 +13,20 @@ from itertools import islice
 from operator import attrgetter
 from typing import Any, Optional, Union, cast
 
-
-def cmp(a: Any, b: Any) -> int:
-    return cast(bool, a > b) - cast(bool, a < b)
-
-
 logger = logging.getLogger(__name__)
 
 
-def consume(iterator: Iterator[Optional["Tile"]], n: Optional[int] = None) -> None:  # pragma: no cover
+class NotSupportedOperation(Exception):
+    pass
+
+
+def cmp(a: Any, b: Any) -> int:  # pylint: disable=invalid-name
+    return cast(bool, a > b) - cast(bool, a < b)
+
+
+def consume(
+    iterator: Iterator[Optional["Tile"]], n: Optional[int] = None  # pylint: disable=invalid-name
+) -> None:  # pragma: no cover
     """
     Advance the iterator n-steps ahead.
 
@@ -77,9 +82,8 @@ class Bounds:
         """
         if self.start is None:
             return False
-        else:
-            assert self.stop is not None
-            return self.start <= key < self.stop
+        assert self.stop is not None
+        return self.start <= key < self.stop
 
     def __len__(self) -> int:
         """
@@ -87,9 +91,8 @@ class Bounds:
         """
         if self.start is None:
             return 0
-        else:
-            assert self.stop is not None
-            return self.stop - self.start
+        assert self.stop is not None
+        return self.stop - self.start
 
     def __iter__(self) -> Iterator[int]:
         if self.start is not None:
@@ -99,8 +102,7 @@ class Bounds:
     def __repr__(self) -> str:  # pragma: no cover
         if self.start is None:
             return f"{self.__class__.__name__}(None)"
-        else:
-            return f"{self.__class__.__name__}({self.start}, {self.stop})"
+        return f"{self.__class__.__name__}({self.start}, {self.stop})"
 
     def add(self, value: int) -> "Bounds":
         """
@@ -141,12 +143,11 @@ class Bounds:
             assert other.start is not None
             assert other.stop is not None
             return Bounds(min(self.start, other.start), max(self.stop, other.stop))
-        elif self:
+        if self:
             return Bounds(self.start, self.stop)
-        elif other:
+        if other:
             return Bounds(other.start, other.stop)
-        else:
-            return Bounds()
+        return Bounds()
 
 
 class BoundingPyramid:
@@ -198,7 +199,7 @@ class BoundingPyramid:
             self.bounds[tilecoord.z] = (Bounds(tilecoord.x), Bounds(tilecoord.y))
         return self
 
-    def add_bounds(self, z: int, bounds: tuple[Bounds, Bounds]) -> None:
+    def add_bounds(self, z: int, bounds: tuple[Bounds, Bounds]) -> None:  # pylint: disable=invalid-name
         if z in self.bounds:
             self.bounds[z][0].update(bounds[0])
             self.bounds[z][1].update(bounds[1])
@@ -206,7 +207,9 @@ class BoundingPyramid:
             self.bounds[z] = bounds
 
     def fill(
-        self, zs: Optional[Iterable[int]] = None, extent: Optional[tuple[float, float, float, float]] = None
+        self,
+        zs: Optional[Iterable[int]] = None,  # pylint: disable=invalid-name
+        extent: Optional[tuple[float, float, float, float]] = None,
     ) -> None:
         if zs is None:
             assert self.tilegrid is not None
@@ -215,7 +218,7 @@ class BoundingPyramid:
         if extent is None:
             extent = self.tilegrid.max_extent
         minx, miny, maxx, maxy = extent
-        for z in zs:
+        for z in zs:  # pylint: disable=invalid-name
             self.add(self.tilegrid.tilecoord(z, minx, miny))
             self.add(self.tilegrid.tilecoord(z, maxx, maxy))
 
@@ -223,59 +226,59 @@ class BoundingPyramid:
         if start is None:
             start = max(self.bounds)
         assert self.tilegrid is not None
-        for z in range(start, bottom):
+        for z in range(start, bottom):  # pylint: disable=invalid-name
             self.add_bounds(z + 1, self.tilegrid.fill_down(z, self.bounds[z]))
 
     def fill_up(self, top: int = 0) -> None:
         assert self.tilegrid is not None
-        for z in range(max(self.bounds), top, -1):
+        for z in range(max(self.bounds), top, -1):  # pylint: disable=invalid-name
             self.add_bounds(z - 1, self.tilegrid.fill_up(z, self.bounds[z]))
 
     def iterbottomup(self) -> Iterator["TileCoord"]:
-        for z in reversed(sorted(self.bounds.keys())):
+        for z in reversed(sorted(self.bounds.keys())):  # pylint: disable=invalid-name
             yield from self.ziter(z)
 
     def itertopdown(self) -> Iterator["TileCoord"]:
-        for z in sorted(self.bounds.keys()):
+        for z in sorted(self.bounds.keys()):  # pylint: disable=invalid-name
             yield from self.ziter(z)
 
-    def metatilecoords(self, n: int = 8) -> Iterator["TileCoord"]:
-        for z in sorted(self.bounds.keys()):
+    def metatilecoords(self, n: int = 8) -> Iterator["TileCoord"]:  # pylint: disable=invalid-name
+        for z in sorted(self.bounds.keys()):  # pylint: disable=invalid-name
             xbounds, ybounds = self.bounds[z]
             assert xbounds.start is not None
             assert xbounds.stop is not None
             assert ybounds.start is not None
             assert ybounds.stop is not None
             metatilecoord = TileCoord(z, xbounds.start, ybounds.start).metatilecoord(n)
-            x = metatilecoord.x
+            x = metatilecoord.x  # pylint: disable=invalid-name
             while x < xbounds.stop:
-                y = metatilecoord.y
+                y = metatilecoord.y  # pylint: disable=invalid-name
                 while y < ybounds.stop:
                     yield TileCoord(z, x, y, n)
-                    y += n
-                x += n
+                    y += n  # pylint: disable=invalid-name
+                x += n  # pylint: disable=invalid-name
 
-    def zget(self, z: int) -> tuple[Bounds, Bounds]:
+    def zget(self, z: int) -> tuple[Bounds, Bounds]:  # pylint: disable=invalid-name
         """
         Return the tuple (xbounds, ybounds) at level z.
         """
         return self.bounds[z]
 
-    def ziter(self, z: int) -> Iterator["TileCoord"]:
+    def ziter(self, z: int) -> Iterator["TileCoord"]:  # pylint: disable=invalid-name
         """
         Generates every TileCoord in self at level z.
         """
         if z in self.bounds:
             xbounds, ybounds = self.bounds[z]
-            for x in xbounds:
-                for y in ybounds:
+            for x in xbounds:  # pylint: disable=invalid-name
+                for y in ybounds:  # pylint: disable=invalid-name
                     yield TileCoord(z, x, y)
 
-    def zs(self) -> Iterable[int]:
+    def zs(self) -> Iterable[int]:  # pylint: disable=invalid-name
         return self.bounds.keys()
 
     @classmethod
-    def from_string(cls, s: str) -> "BoundingPyramid":
+    def from_string(cls, s: str) -> "BoundingPyramid":  # pylint: disable=invalid-name
         match = re.match(
             r"(?P<z1>\d+)/(?P<x1>\d+)/(?P<y1>\d+):"
             + r"(?:(?P<plusz>\+)?(?P<z2>\d+)/)?"
@@ -285,26 +288,26 @@ class BoundingPyramid:
         )
         if not match:
             raise ValueError(f"invalid literal for {cls.__name__}.from_string(): {s}")
-        z1 = int(match.group("z1"))
-        x1 = int(match.group("x1"))
+        z1 = int(match.group("z1"))  # pylint: disable=invalid-name
+        x1 = int(match.group("x1"))  # pylint: disable=invalid-name
         if match.group("starx"):
-            x2 = 1 << z1
+            x2 = 1 << z1  # pylint: disable=invalid-name
         elif match.group("plusx"):
-            x2 = x1 + int(match.group("x2"))
+            x2 = x1 + int(match.group("x2"))  # pylint: disable=invalid-name
         else:
-            x2 = int(match.group("x2"))
-        y1 = int(match.group("y1"))
+            x2 = int(match.group("x2"))  # pylint: disable=invalid-name
+        y1 = int(match.group("y1"))  # pylint: disable=invalid-name
         if match.group("stary"):
-            y2 = 1 << z1
+            y2 = 1 << z1  # pylint: disable=invalid-name
         elif match.group("plusy"):
-            y2 = y1 + int(match.group("y2"))
+            y2 = y1 + int(match.group("y2"))  # pylint: disable=invalid-name
         else:
-            y2 = int(match.group("y2"))
+            y2 = int(match.group("y2"))  # pylint: disable=invalid-name
         result = cls({z1: (Bounds(x1, x2), Bounds(y1, y2))})
         if match.group("z2"):
-            z2 = int(match.group("z2"))
+            z2 = int(match.group("z2"))  # pylint: disable=invalid-name
             if match.group("plusz"):
-                z2 += z1
+                z2 += z1  # pylint: disable=invalid-name
             if z1 < z2:
                 result.fill_down(z2)
             elif z1 > z2:
@@ -314,7 +317,7 @@ class BoundingPyramid:
     @classmethod
     def full(cls, zmin: Optional[int] = None, zmax: Optional[int] = None) -> "BoundingPyramid":
         assert zmax is not None
-        zs = (zmax,) if zmin is None else range(zmin, zmax + 1)
+        zs = (zmax,) if zmin is None else range(zmin, zmax + 1)  # pylint: disable=invalid-name
         return cls({z: (Bounds(0, 1 << z), Bounds(0, 1 << z)) for z in zs})
 
 
@@ -393,7 +396,7 @@ class TileCoord:
     A tile coordinate.
     """
 
-    def __init__(self, z: int, x: int, y: int, n: int = 1) -> None:
+    def __init__(self, z: int, x: int, y: int, n: int = 1) -> None:  # pylint: disable=invalid-name
         """
         Construct a TileCoord.
 
@@ -404,10 +407,10 @@ class TileCoord:
             y: Y coordinate
             n: Tile size
         """
-        self.z = z
-        self.x = x
-        self.y = y
-        self.n = n
+        self.z = z  # pylint: disable=invalid-name
+        self.x = x  # pylint: disable=invalid-name
+        self.y = y  # pylint: disable=invalid-name
+        self.n = n  # pylint: disable=invalid-name
 
     def __cmp__(self, other: "TileCoord") -> int:
         """
@@ -449,8 +452,7 @@ class TileCoord:
         """
         if self.n == 1:
             return f"{self.__class__.__name__}({self.z}, {self.x}, {self.y})"
-        else:
-            return f"{self.__class__.__name__}({self.z}, {self.x}, {self.x}, {self.n})"
+        return f"{self.__class__.__name__}({self.z}, {self.x}, {self.x}, {self.n})"
 
     def __str__(self) -> str:
         """
@@ -458,21 +460,20 @@ class TileCoord:
         """
         if self.n == 1:
             return f"{self.z}/{self.x}/{self.y}"
-        else:
-            return f"{self.z}/{self.x}/{self.y}:+{self.n}/+{self.n}"
+        return f"{self.z}/{self.x}/{self.y}:+{self.n}/+{self.n}"
 
-    def metatilecoord(self, n: int = 8) -> "TileCoord":
+    def metatilecoord(self, n: int = 8) -> "TileCoord":  # pylint: disable=invalid-name
         return TileCoord(self.z, n * (self.x // n), n * (self.y // n), n)
 
     def tuple(self) -> tuple[int, int, int, int]:
         return (self.z, self.x, self.y, self.n)
 
     @classmethod
-    def from_string(cls, s: str) -> "TileCoord":
-        m = re.match(r"(\d+)/(\d+)/(\d+)(?::\+(\d+)/\+\4)?\Z", s)
-        if not m:
+    def from_string(cls, s: str) -> "TileCoord":  # pylint: disable=invalid-name
+        match = re.match(r"(\d+)/(\d+)/(\d+)(?::\+(\d+)/\+\4)?\Z", s)
+        if not match:
             raise ValueError(f"invalid literal for {cls.__name__}.from_string: {s}")
-        x, y, z, n = m.groups()
+        x, y, z, n = match.groups()  # pylint: disable=invalid-name
         return cls(int(x), int(y), int(z), int(n) if n else 1)
 
     @classmethod
@@ -507,10 +508,14 @@ class TileGrid:
         """
         raise NotImplementedError
 
-    def fill_down(self, z: int, bounds: tuple[Bounds, Bounds]) -> tuple[Bounds, Bounds]:
+    def fill_down(
+        self, z: int, bounds: tuple[Bounds, Bounds]  # pylint: disable=invalid-name
+    ) -> tuple[Bounds, Bounds]:
         raise NotImplementedError
 
-    def fill_up(self, z: int, bounds: tuple[Bounds, Bounds]) -> tuple[Bounds, Bounds]:
+    def fill_up(
+        self, z: int, bounds: tuple[Bounds, Bounds]  # pylint: disable=invalid-name
+    ) -> tuple[Bounds, Bounds]:
         raise NotImplementedError
 
     def parent(self, tilecoord: TileCoord) -> Optional[TileCoord]:
@@ -525,13 +530,13 @@ class TileGrid:
         """
         raise NotImplementedError
 
-    def tilecoord(self, z: int, x: float, y: float) -> TileCoord:
+    def tilecoord(self, z: int, x: float, y: float) -> TileCoord:  # pylint: disable=invalid-name
         """
         Returns the TileCoord for location (x, y) at level z.
         """
         raise NotImplementedError
 
-    def zs(self) -> Iterable[int]:
+    def zs(self) -> Iterable[int]:  # pylint: disable=invalid-name
         """
         Generates all zs.
         """
@@ -599,8 +604,7 @@ class TileStore:
         """
         if tile and self.bounding_pyramid:
             return tile.tilecoord in self.bounding_pyramid
-        else:
-            return False
+        return False
 
     def __len__(self) -> int:
         """

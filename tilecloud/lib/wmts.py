@@ -4,12 +4,12 @@ from typing import TypedDict, cast
 from bottle import jinja2_template
 from pyproj import Proj, transform
 
-from tilecloud.lib.wmts_get_capabilities_template import wmts_get_capabilities_template
+from tilecloud.lib.wmts_get_capabilities_template import WMTS_GET_CAPABILITIES_TEMPLATE
 
 METERS_PER_UNIT = {"feet": 3.28084, "meters": 1, "degrees": 111118.752, "inch": 39.3700787}
 
 
-def to_wsg84(srs: str, x: float, y: float) -> tuple[float, float]:
+def to_wsg84(srs: str, x: float, y: float) -> tuple[float, float]:  # pylint: disable=invalid-name
     return cast(
         tuple[float, float], transform(Proj(init=srs.lower()), Proj(proj="latlong", datum="WGS84"), x, y)
     )
@@ -101,7 +101,7 @@ def get_capabilities(layers: list[Layer], tile_matrix_set: TileMatrixSet, wmts_g
     return cast(
         str,
         jinja2_template(
-            wmts_get_capabilities_template,
+            WMTS_GET_CAPABILITIES_TEMPLATE,
             layers=layers,
             matrix_sets=matrix_sets(tile_matrix_set),
             wmts_gettile=wmts_gettile,

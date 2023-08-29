@@ -1,6 +1,6 @@
 from typing import Optional
 
-from tilecloud import Tile, TileGrid, TileStore
+from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 
 
 class SearchUpTileStore(TileStore):
@@ -21,8 +21,13 @@ class SearchUpTileStore(TileStore):
                 if new_tile is not None:
                     new_tile.tilecoord = tmp_tilecoord
                 return new_tile
-            else:
-                tilecoord = self.tilegrid.parent(test_tile.tilecoord)
-                assert tilecoord is not None
-                test_tile.tilecoord = tilecoord
+            tilecoord = self.tilegrid.parent(test_tile.tilecoord)
+            assert tilecoord is not None
+            test_tile.tilecoord = tilecoord
         return None
+
+    def put_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()
+
+    def delete_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()

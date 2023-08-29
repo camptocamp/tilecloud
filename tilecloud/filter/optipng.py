@@ -17,8 +17,8 @@ class OptiPNG:
                 ntf.close()
                 retcode = call(self.args + [ntf.name])  # nosec
                 if retcode == 0:
-                    with open(ntf.name, "rb") as f:
-                        tile.data = f.read()
+                    with open(ntf.name, "rb") as file:
+                        tile.data = file.read()
             finally:
                 try:
                     os.unlink(ntf.name)

@@ -6,7 +6,7 @@ from collections.abc import Iterator
 from datetime import datetime
 from typing import Any, Optional
 
-from tilecloud import Tile, TileLayout, TileStore
+from tilecloud import NotSupportedOperation, Tile, TileLayout, TileStore
 from tilecloud.layout.osm import OSMTileLayout
 from tilecloud.layout.wrapped import WrappedTileLayout
 
@@ -69,3 +69,6 @@ class ZipTileStore(TileStore):
         zipinfo.external_attr = 0o644 << 16
         self.zipfile.writestr(zipinfo, tile.data)
         return tile
+
+    def delete_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()

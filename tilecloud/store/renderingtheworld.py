@@ -2,7 +2,7 @@ from collections import deque
 from collections.abc import Iterator
 from typing import Callable, Deque, Optional
 
-from tilecloud import Tile, TileGrid, TileStore
+from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 from tilecloud.grid.quad import QuadTileGrid
 
 
@@ -41,3 +41,9 @@ class RenderingTheWorldTileStore(TileStore):
             for tilecoord in self.tilegrid.children(tile.tilecoord):  # type: ignore
                 self.queue.append(Tile(tilecoord))
         return tile
+
+    def get_one(self, tile: Tile) -> Optional[Tile]:
+        raise NotSupportedOperation()
+
+    def delete_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()

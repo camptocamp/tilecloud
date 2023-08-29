@@ -2,7 +2,7 @@ import re
 from collections.abc import Iterator
 from typing import IO, Any
 
-from tilecloud import Tile, TileStore
+from tilecloud import NotSupportedOperation, Tile, TileStore
 from tilecloud.layout.re_ import RETileLayout
 
 
@@ -31,3 +31,6 @@ class LogTileStore(TileStore):
     def put_one(self, tile: Tile) -> Tile:
         self.file.write(self.tilelayout.filename(tile.tilecoord, tile.metadata) + "\n")
         return tile
+
+    def delete_one(self, tile: Tile) -> Tile:
+        raise NotSupportedOperation()
