@@ -181,9 +181,9 @@ class RedisTileStore(TileStore):
             STREAM_GROUP,
             tile.sqs_message,
         )
-        self._master.xack(self._name, STREAM_GROUP, tile.sqs_message)  # type: ignore
+        self._master.xack(self._name, STREAM_GROUP, tile.sqs_message)  # type: ignore[no-untyped-call]
         logger.debug("Delete tile from Redis stream name: %s, sqs message: %s", self._name, tile.sqs_message)
-        self._master.xdel(self._name, tile.sqs_message)  # type: ignore
+        self._master.xdel(self._name, tile.sqs_message)
         return tile
 
     def delete_all(self) -> None:
@@ -194,7 +194,7 @@ class RedisTileStore(TileStore):
         self._master.xtrim(name=self._name, maxlen=0)
         # xtrim doesn't empty the group claims. So we have to delete and re-create groups
         logger.debug("Delete all tiles from Redis stream name: %s, group name: %s", self._name, STREAM_GROUP)
-        self._master.xgroup_destroy(name=self._name, groupname=STREAM_GROUP)  # type: ignore
+        self._master.xgroup_destroy(name=self._name, groupname=STREAM_GROUP)  # type: ignore[no-untyped-call]
         logger.debug(
             "Create the Redis stream name: %s, group name: %s, id: 0-0, MKSTREAM", self._name, STREAM_GROUP
         )
@@ -264,7 +264,7 @@ class RedisTileStore(TileStore):
                 self._pending_timeout_ms,
                 to_drop,
             )
-            drop_messages = self._master.xclaim(  # type: ignore
+            drop_messages = self._master.xclaim(  # type: ignore[no-untyped-call]
                 name=self._name,
                 groupname=STREAM_GROUP,
                 consumername=CONSUMER_NAME,
@@ -278,9 +278,9 @@ class RedisTileStore(TileStore):
                 STREAM_GROUP,
                 drop_ids,
             )
-            self._master.xack(self._name, STREAM_GROUP, *drop_ids)  # type: ignore
+            self._master.xack(self._name, STREAM_GROUP, *drop_ids)  # type: ignore[no-untyped-call]
             logger.debug("Delete old's name: %s, message ids: %s", self._name, drop_ids)
-            self._master.xdel(self._name, *drop_ids)  # type: ignore
+            self._master.xdel(self._name, *drop_ids)
             for _, drop_message in drop_messages:
                 tile = decode_message(drop_message[b"message"])
                 logger.debug(
@@ -306,7 +306,7 @@ class RedisTileStore(TileStore):
                 self._pending_timeout_ms,
                 to_steal,
             )
-            messages = self._master.xclaim(  # type: ignore
+            messages = self._master.xclaim(  # type: ignore[no-untyped-call]
                 name=self._name,
                 groupname=STREAM_GROUP,
                 consumername=CONSUMER_NAME,
@@ -323,7 +323,7 @@ class RedisTileStore(TileStore):
         Returns a map of stats.
         """
         nb_messages = self._slave.xlen(self._name)
-        pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore
+        pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore[no-untyped-call]
         tiles_in_error = self._get_errors()
 
         _NB_MESSAGE_COUNTER.labels(self._name_str).set(nb_messages)
@@ -348,5 +348,5 @@ class RedisTileStore(TileStore):
                 tiles_in_error.add(error_message[b"tilecoord"].decode())
         if old_errors:
             logger.info("Deleting %d old errors, name: %s", len(old_errors), self._errors_name)
-            self._master.xdel(self._errors_name, *old_errors)  # type: ignore
+            self._master.xdel(self._errors_name, *old_errors)
         return tiles_in_error
