@@ -58,13 +58,13 @@ repos:
           - github-workflows-require-timeout
       - id: check-renovate
         additional_dependencies:
-          - pyjson5==1.6.3 # pypi
+          - pyjson5==1.6.4 # pypi
   - repo: https://github.com/sirwart/ripsecrets
-    rev: v0.1.5
+    rev: v0.1.6
     hooks:
       - id: ripsecrets
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.2.0
+    rev: v2.2.1
     hooks:
       - id: autoflake
   - repo: https://github.com/asottile/pyupgrade
