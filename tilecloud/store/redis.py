@@ -52,7 +52,7 @@ class RedisTileStore(TileStore):
             self._slave = sentinel.slave_for(service_name)  # type: ignore
         else:
             assert url is not None
-            self._master = redis.Redis.from_url(url, **connection_kwargs)  # type: ignore
+            self._master = redis.Redis.from_url(url, **connection_kwargs)
             self._slave = self._master
 
         self._stop_if_empty = stop_if_empty
