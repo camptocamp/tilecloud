@@ -65,6 +65,7 @@ requests = "2.31.0"
 redis = { version = "4.5.5", optional = true }
 cryptography = "41.0.4"
 certifi = "2023.7.22"
+msal = "1.24.1"
 
 [tool.poetry.extras]
 azure = ["azure-storage-blob", "azure-identity"]
