@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         if: github.event_name == 'push' && github.ref_type == 'tag'
       - name: Create release
-        run: |
+        run: |-
           if [[ ${{ github.ref_name }} =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             gh release create ${{ github.ref_name }} --generate-notes || true
           fi
@@ -27,23 +27,25 @@ jobs:
 
       - name: Get Date
         id: get-date
-        run: |
-          echo "date=$(/bin/date -u "+%Y%m%d%H%M%S")" >> $GITHUB_OUTPUT
+        run: echo "date=$(/bin/date -u "+%Y%m%d%H%M%S")" >> $GITHUB_OUTPUT
       - uses: actions/cache@v3
         with:
           path: .cache
           key: automation-${{ steps.get-date.outputs.date }}
-          restore-keys: |
+          restore-keys: |+
             automation-
 
       - run: docker pull aeonphp/automation
       - name: Generate changelog
-        run: >
+        run: >-
           docker run --env=AEON_AUTOMATION_GH_TOKEN --rm --volume=$(pwd)/.cache:/cache aeonphp/automation
           changelog:generate:all
           ${{ github.repository }}
           --github-release-update
           --cache-path=/cache
+          --skip-from=dependabot-preview[bot]
+          --skip-from=dependabot[bot]
+          --skip-from=renovate[bot]
           -v
         env:
           AEON_AUTOMATION_GH_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
