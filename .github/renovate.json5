@@ -87,5 +87,11 @@
       groupName: 'dpkg',
       automerge: true,
     },
+    /** Disable types-request update on version <= 1.10 */
+    {
+      matchPackageNames: ['types-request'],
+      matchBaseBranches: ['1.6', '1.8', '1.10'],
+      enabled: false,
+    },
   ],
 }
