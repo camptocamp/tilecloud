@@ -46,20 +46,22 @@ class URLTileStore(TileStore):
             tile.content_type = response.headers.get("Content-Type")
             if response.status_code < 300:
                 if response.status_code != 200:
-                    tile.error = f"Unsupported status code {response.status_code}: {response.reason}"
+                    tile.error = (
+                        f"Unsupported status code {response.status_code}: {response.reason}\nURL: {url}"
+                    )
                 if tile.content_type:
                     if tile.content_type.startswith("image/"):
                         tile.data = response.content
                     else:
-                        tile.error = response.text
+                        tile.error = f"{response.text}\nURL: {url}"
                 else:
                     if self.allows_no_contenttype:
                         tile.data = response.content
                     else:
-                        tile.error = "The Content-Type header is missing"
+                        tile.error = f"The Content-Type header is missing\nURL: {url}"
 
             else:
-                tile.error = response.reason
+                tile.error = f"{response.reason}\nURL: {url}"
         except requests.exceptions.RequestException as exception:
             tile.error = exception
         return tile
