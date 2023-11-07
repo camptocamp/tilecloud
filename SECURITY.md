@@ -9,3 +9,4 @@
 | 1.7     | Unsupported     |
 | 1.8     | 23/06/2025      |
 | 1.10    | Best effort     |
+| 1.11    | Best effort     |
