@@ -3,3 +3,4 @@ poetry-plugin-export==1.6.0
 poetry-plugin-tweak-dependencies-version==1.5.1
 poetry-dynamic-versioning==1.1.1
 pip==23.3.1
+certifi>=2023.7.22 # not directly required, pinned by Snyk to avoid a vulnerability
