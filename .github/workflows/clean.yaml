@@ -1,0 +1,28 @@
+name: Clean docker hub tags
+
+on:
+  delete:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  clean:
+    runs-on: ubuntu-22.04
+    name: Clean docker hub tags
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+          patterns: docker
+
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+
+      - name: Clean Docker hub tags
+        run: c2cciutils-clean
