@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Auto reviews updates
-        uses: golfzaptw/action-auto-reviews-from-branches@master
+        uses: actions/github-script@v7
         with:
           script: |-
             github.rest.pulls.createReview({
