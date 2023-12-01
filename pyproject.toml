@@ -63,7 +63,7 @@ pyproj = "3.5.0"
 pyramid = "2.0.2"
 requests = "2.31.0"
 redis = { version = "4.5.5", optional = true }
-cryptography = "41.0.6"
+cryptography = "41.0.7"
 certifi = "2023.7.22"
 msal = "1.24.1"
 urllib3 = "1.26.18"
