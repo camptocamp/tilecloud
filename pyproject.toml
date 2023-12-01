@@ -52,7 +52,7 @@ tc-viewer = "tilecloud.scripts.tc_viewer:main"
 python = ">=3.9,<3.12"
 azure-storage-blob = { version = "12.18.3", optional = true }
 azure-identity = { version = "1.15.0", optional = true }
-boto3 = { version = "1.28.77", optional = true }
+boto3 = { version = "1.28.85", optional = true }
 bottle = "0.12.25"
 prometheus_client = { version = "0.18.0", optional = true }
 Pillow = "10.1.0"
@@ -60,7 +60,7 @@ pyproj = "3.6.1"
 pyramid = { version = "2.0.2", optional = true }
 requests = "2.31.0"
 redis = { version = "5.0.1", optional = true }
-cryptography = "41.0.6"
+cryptography = "41.0.7"
 
 [tool.poetry.extras]
 azure = ["azure-storage-blob", "azure-identity"]
@@ -77,8 +77,8 @@ prospector-profile-utils = "1.1.0"
 pytest = "7.4.3"
 pytest-cov = "4.1.0"
 types-boto = "2.49.18.9"
-types-redis = "4.6.0.9"
-types-requests = "2.31.0.2"
+types-redis = "4.6.0.11"
+types-requests = "2.31.0.10"
 pycairo = "1.25.1"
 Shapely = "2.0.2"
 

@@ -1,4 +1,4 @@
-c2cciutils[checks,publish]==1.6.11
+c2cciutils[checks,publish]==1.6.12
 pre-commit==3.5.0
 poetry-dynamic-versioning==1.1.1
 poetry-plugin-export==1.6.0
