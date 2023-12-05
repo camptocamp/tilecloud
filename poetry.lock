@@ -68,13 +68,13 @@ msal-extensions = ">=0.3.0,<2.0.0"
 
 [[package]]
 name = "azure-storage-blob"
-version = "12.18.3"
+version = "12.19.0"
 description = "Microsoft Azure Blob Storage Client Library for Python"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "azure-storage-blob-12.18.3.tar.gz", hash = "sha256:d8ced0deee3367fa3d4f3d1a03cd9edadf4440c0a371f503d623fa6c807554ee"},
-    {file = "azure_storage_blob-12.18.3-py3-none-any.whl", hash = "sha256:c278dde2ac41857a68d615c9f2b36d894ba877a7e84d62795603c7e79d0bb5e9"},
+    {file = "azure-storage-blob-12.19.0.tar.gz", hash = "sha256:26c0a4320a34a3c2a1b74528ba6812ebcb632a04cd67b1c7377232c4b01a5897"},
+    {file = "azure_storage_blob-12.19.0-py3-none-any.whl", hash = "sha256:7bbc2c9c16678f7a420367fef6b172ba8730a7e66df7f4d7a55d5b3c8216615b"},
 ]
 
 [package.dependencies]
@@ -111,32 +111,32 @@ yaml = ["PyYAML"]
 
 [[package]]
 name = "boto3"
-version = "1.28.77"
+version = "1.33.7"
 description = "The AWS SDK for Python"
 optional = true
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.28.77-py3-none-any.whl", hash = "sha256:c0899e54df362bea0ae329da59b0a00e4be5e220e99dc764802ed83cdfc4285c"},
-    {file = "boto3-1.28.77.tar.gz", hash = "sha256:1a47e5b8faea527bb2a40d0cf58faf0d09b5a46cf5658e2c5729479af20c96b8"},
+    {file = "boto3-1.33.7-py3-none-any.whl", hash = "sha256:d12467fb3a64d359b0bda0570a8163a5859fcac13e786f2a3db0392523178556"},
+    {file = "boto3-1.33.7.tar.gz", hash = "sha256:eed0f7df91066b6ac63a53d16459ac082458d57061bedf766135d9e1c2b75a6b"},
 ]
 
 [package.dependencies]
-botocore = ">=1.31.77,<1.32.0"
+botocore = ">=1.33.7,<1.34.0"
 jmespath = ">=0.7.1,<2.0.0"
-s3transfer = ">=0.7.0,<0.8.0"
+s3transfer = ">=0.8.2,<0.9.0"
 
 [package.extras]
 crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.31.77"
+version = "1.33.7"
 description = "Low-level, data-driven core of boto 3."
 optional = true
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.31.77-py3-none-any.whl", hash = "sha256:4c5c9562b5d1fb8355314ddf37142edf3f6abd7526f4a68cc1b6cd79bdda48ec"},
-    {file = "botocore-1.31.77.tar.gz", hash = "sha256:509168151f8a0e1b8296031a7fc7822d59d027865d3baa86917682b311a74d26"},
+    {file = "botocore-1.33.7-py3-none-any.whl", hash = "sha256:71ec0e85b996cf9def3dd8f4ca6cb4a9fd3a614aa4c9c7cbf33f2f68e1d0649a"},
+    {file = "botocore-1.33.7.tar.gz", hash = "sha256:b2299bc13bb8c0928edc98bf4594deb14cba2357536120f63772027a16ce7374"},
 ]
 
 [package.dependencies]
@@ -148,7 +148,7 @@ urllib3 = [
 ]
 
 [package.extras]
-crt = ["awscrt (==0.16.26)"]
+crt = ["awscrt (==0.19.17)"]
 
 [[package]]
 name = "bottle"
@@ -1120,13 +1120,13 @@ tests = ["pytest (>=5.4.1)", "pytest-cov (>=2.8.1)", "pytest-mypy (>=0.8.0)", "p
 
 [[package]]
 name = "prometheus-client"
-version = "0.18.0"
+version = "0.19.0"
 description = "Python client for the Prometheus monitoring system."
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "prometheus_client-0.18.0-py3-none-any.whl", hash = "sha256:8de3ae2755f890826f4b6479e5571d4f74ac17a81345fe69a6778fdb92579184"},
-    {file = "prometheus_client-0.18.0.tar.gz", hash = "sha256:35f7a8c22139e2bb7ca5a698e92d38145bc8dc74c1c0bf56f25cca886a764e17"},
+    {file = "prometheus_client-0.19.0-py3-none-any.whl", hash = "sha256:c88b1e6ecf6b41cd8fb5731c7ae919bf66df6ec6fafa555cd6c0e16ca169ae92"},
+    {file = "prometheus_client-0.19.0.tar.gz", hash = "sha256:4585b0d1223148c27a225b10dbec5ae9bc4c81a99a3fa80774fa6209935324e1"},
 ]
 
 [package.extras]
@@ -1176,24 +1176,24 @@ with-vulture = ["vulture (>=1.5)"]
 
 [[package]]
 name = "prospector-profile-duplicated"
-version = "0.3.0"
+version = "0.4.0"
 description = "Profile that can be used to disable the duplicated or conflict rules between Prospector and other tools"
 optional = false
 python-versions = "*"
 files = [
-    {file = "prospector_profile_duplicated-0.3.0-py2.py3-none-any.whl", hash = "sha256:5c9bc909c0bc024421bbd38e75015b56425769233aad31437c41835c8d3a34e7"},
-    {file = "prospector_profile_duplicated-0.3.0.tar.gz", hash = "sha256:142dd353a2e65f3c39c36eba7d1a5f4ffc3869381425bed43a47cc158a122a8a"},
+    {file = "prospector_profile_duplicated-0.4.0-py2.py3-none-any.whl", hash = "sha256:f648c2e81d3e4592143b678378278df6d309ae9e20bf9595b5777ee8bcdaf85d"},
+    {file = "prospector_profile_duplicated-0.4.0.tar.gz", hash = "sha256:862e332c9413aca07c2b747abf9275531cebdf82a0db887e99b63b2f424301da"},
 ]
 
 [[package]]
 name = "prospector-profile-utils"
-version = "1.1.0"
+version = "1.5.0"
 description = "Some utility Prospector profiles."
 optional = false
 python-versions = "*"
 files = [
-    {file = "prospector_profile_utils-1.1.0-py2.py3-none-any.whl", hash = "sha256:ff762e66c9b252191e8c7b944ee73a4b67957e9b9eb1db0af088510dc1791e26"},
-    {file = "prospector_profile_utils-1.1.0.tar.gz", hash = "sha256:4e589b4842cee70c04200a0d77e509909deedff9df76f2a0dfee145eb9327a66"},
+    {file = "prospector_profile_utils-1.5.0-py2.py3-none-any.whl", hash = "sha256:356a7f30a010fbd380a1aa6ad132c6534c956ee046e562ccbfbfdd88902089ab"},
+    {file = "prospector_profile_utils-1.5.0.tar.gz", hash = "sha256:10318a0fb0f01d24d8e635268b555841f086f8a04f9d7bb08685bc15093bf451"},
 ]
 
 [[package]]
@@ -1708,20 +1708,20 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "s3transfer"
-version = "0.7.0"
+version = "0.8.2"
 description = "An Amazon S3 Transfer Manager"
 optional = true
 python-versions = ">= 3.7"
 files = [
-    {file = "s3transfer-0.7.0-py3-none-any.whl", hash = "sha256:10d6923c6359175f264811ef4bf6161a3156ce8e350e705396a7557d6293c33a"},
-    {file = "s3transfer-0.7.0.tar.gz", hash = "sha256:fd3889a66f5fe17299fe75b82eae6cf722554edca744ca5d5fe308b104883d2e"},
+    {file = "s3transfer-0.8.2-py3-none-any.whl", hash = "sha256:c9e56cbe88b28d8e197cf841f1f0c130f246595e77ae5b5a05b69fe7cb83de76"},
+    {file = "s3transfer-0.8.2.tar.gz", hash = "sha256:368ac6876a9e9ed91f6bc86581e319be08188dc60d50e0d56308ed5765446283"},
 ]
 
 [package.dependencies]
-botocore = ">=1.12.36,<2.0a.0"
+botocore = ">=1.33.2,<2.0a.0"
 
 [package.extras]
-crt = ["botocore[crt] (>=1.20.29,<2.0a.0)"]
+crt = ["botocore[crt] (>=1.33.2,<2.0a.0)"]
 
 [[package]]
 name = "semver"
@@ -2229,4 +2229,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "358e5880bb85942ecaf8e9fd387ed063dfdd91d5801a38dc2800a4db8d33fc09"
+content-hash = "745c1fb765dbb3b197c66cc3a0e23104f752a033c0aec55b30511d884dac2952"
