@@ -102,7 +102,7 @@ class RedisTileStore(TileStore):
 
     def list(self) -> Iterator[Tile]:
         count = 0
-        while True:  # pylint: disable=too-many-nested-blocks
+        while True:
             try:
                 logger.debug(
                     "Wait for new tiles, group name: %s, consumer name: %s, streams: %s, count: 1, "
