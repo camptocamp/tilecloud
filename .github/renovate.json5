@@ -87,10 +87,10 @@
       groupName: 'dpkg',
       automerge: true,
     },
-    /** Disable types-request update on version <= 1.10 */
+    /** Disable types-request update on version <= 1.11 */
     {
       matchPackageNames: ['types-requests'],
-      matchBaseBranches: ['1.6', '1.8', '1.10'],
+      matchBaseBranches: ['1.6', '1.8', '1.10', '1.11'],
       enabled: false,
     },
     /** Disable update of Python version in pyproject.toml */
