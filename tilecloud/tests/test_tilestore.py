@@ -156,7 +156,7 @@ class TestMBTilesTileStore(unittest.TestCase):
         connection = sqlite3.connect(":memory:")
         tilestore = MBTilesTileStore(connection)
         self.assertEqual(len(tilestore), 0)
-        self.assertEqual(tilestore.get_one(Tile(TileCoord(0, 0, 0))), None)
+        self.assertEqual(tilestore.get_one(Tile(TileCoord(0, 0, 0))), Tile(TileCoord(0, 0, 0)))
 
 
 class TestNullTileStore(unittest.TestCase):

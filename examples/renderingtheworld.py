@@ -37,7 +37,7 @@ def main() -> None:
         url="http://v2.suite.opengeo.org/geoserver/gwc/service/wmts/",
         layer="medford:buildings",
         style="_null",
-        format="image/png",
+        format_pattern="image/png",
         tile_matrix_set="EPSG:900913",
         tile_matrix=lambda z: f"EPSG:900913:{z:d}",
     )

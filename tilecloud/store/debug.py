@@ -20,12 +20,15 @@ class DebugTileStore(TileStore):
         draw.line([(0, 255), (0, 0), (255, 0)], fill=self.color)
         text = str(tile.tilecoord)
         font = PIL.ImageFont.load_default()
-        width, height = font.getsize(text)
+        bbox = font.getbbox(text)
+        width = bbox[2] - bbox[0]
+        height = bbox[3] - bbox[1]
         draw.text((127 - width / 2, 127 - height / 2), text, fill=self.color, font=font)
         bytes_io = BytesIO()
         assert self.content_type is not None
         image.save(bytes_io, FORMAT_BY_CONTENT_TYPE[self.content_type])
         tile.data = bytes_io.getvalue()
+        tile.content_type = self.content_type
         return tile
 
     def put_one(self, tile: Tile) -> Tile:

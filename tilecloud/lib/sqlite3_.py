@@ -12,7 +12,7 @@ def query(connection: Connection, *args: Any) -> Cursor:
 
 
 if TYPE_CHECKING:
-    Base = MutableMapping[Union[str, TileCoord], bytes]
+    Base = MutableMapping[Union[str, TileCoord], Optional[bytes]]
 else:
     Base = MutableMapping
 
@@ -44,10 +44,10 @@ class SQLiteDict(Base):
         if self.commit:
             self.connection.commit()
 
-    def __getitem__(self, key: Union[str, TileCoord]) -> bytes:
+    def __getitem__(self, key: Union[str, TileCoord]) -> Optional[bytes]:
         row = query(self.connection, self.GETITEM_SQL, self._packkey(key)).fetchone()  # type: ignore
         if row is None:
-            raise KeyError(key)
+            return None
         return self._unpackvalue(row)
 
     def __iter__(self) -> Iterator[str]:
