@@ -10,13 +10,15 @@ import bottle
 from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
 from tilecloud.filter.contenttype import ContentTypeAdder
 
+_root = None
+
 
 @bottle.route("/tiles/<index:int>/tiles/<z:int>/<x:int>/<y:int><ext:re:.*>")
 def tile(index, z, x, y, ext):
     # FIXME check ext
     if len(tilestores) < index:
         bottle.abort(404)
-    tilecoord = TileCoord(z + root.z, x + root.x * (1 << z), y + root.y * (1 << z))
+    tilecoord = TileCoord(z + _root.z, x + _root.x * (1 << z), y + _root.y * (1 << z))
     if cache is not None and (index, z, x, y) in cache:
         tile = cache[(index, z, x, y)]
     else:
@@ -125,6 +127,8 @@ def index():
 
 
 def main() -> None:
+    global _root
+
     option_parser = OptionParser()
     option_parser.add_option("--cache", action="store_true")
     option_parser.add_option("--debug", action="store_true", default=False)
@@ -141,9 +145,9 @@ def main() -> None:
         bottle.DEBUG = True
     if options.root:
         match = re.match(r"(\d+)/(\d+)/(\d+)\Z", options.root)
-        TileCoord(*map(int, match.groups()))
+        _root = TileCoord(*map(int, match.groups()))
     else:
-        TileCoord(0, 0, 0)
+        _root = TileCoord(0, 0, 0)
     if options.server is None:
         try:
             import tornado.httpserver
@@ -162,6 +166,7 @@ def main() -> None:
     tilestores = [(os.path.basename(arg), TileStore.load(arg)) for arg in args]
     content_type_adder = ContentTypeAdder()
 
+    bottle.TEMPLATE_PATH.append(os.path.join(os.path.dirname(os.path.dirname(__file__)), "views"))
     bottle.run(
         host=options.host,
         port=options.port,

@@ -46,57 +46,51 @@ Example tasks that TileCloud makes easy include:
 
 TileCloud depends on some Python modules. It's easiest to install them with `pip` in a `virtualenv`:
 
-    $ python3 -m venv .venv
-    $ . .venv/bin/activate
-    $ pip install -r requirements.txt
+    $ pip install poetry
+    $ poetry install
 
 For a quick demo, run
 
-    $ ./tc-viewer --root=3/4/2 'http://gsp2.apple.com/tile?api=1&style=slideshow&layers=default&lang=en_GB&z=%(z)d&x=%(x)d&y=%(y)d&v=9'
+    $ poetry run tc-viewer --root=3/4/2 'http://gsp2.apple.com/tile?api=1&style=slideshow&layers=default&lang=en_GB&z=%(z)d&x=%(x)d&y=%(y)d&v=9'
 
 and point your browser at <http://localhost:8080/>. Type `Ctrl-C` to terminate `tc-viewer`.
 
-Next, download an example MBTiles file from [MapBox](http://mapbox.com/), such as [Geography
-Class](http://tiles.mapbox.com/mapbox/map/geography-class). We can quickly find out more about this tile set
+Next, download an example MBTiles file from [MapBox](http://mapbox.com/), such as [OSM map](https://wiki.openstreetmap.org/wiki/MBTiles#Offline-Karten). We can quickly find out more about this tile set
 with the `tc-info` command. For example, to count the number of tiles:
 
-    $ ./tc-info -t count geography-class.mbtiles
-    87381
+    $ poetry run tc-info -t count OSM-OpenCPN2-MagellanStrait.mbtiles
+    51672
 
 To calculate the bounding pyramid:
 
-    $ ./tc-info -t bounding-pyramid -r geography-class.mbtiles
-    0/0/0:+1/+1
-    1/0/0:+2/+2
-    2/0/0:+4/+4
-    3/0/0:+8/+8
-    4/0/0:+16/+16
-    5/0/0:+32/+32
-    6/0/0:+64/+64
-    7/0/0:+128/+128
-    8/0/0:+256/+256
+    $ poetry run tc-info -t bounding-pyramid -r OSM-OpenCPN2-MagellanStrait.mbtiles
+    8/72/168:+16/+16
+    10/296/680:+40/+32
+    12/1184/2728:+144/+104
+    14/4760/10935:+536/+393
+    16/19048/43760:+2112/+1552
 
 To check for missing tiles against a bounding pyramid:
 
-    $ ./tc-info -b 0/0/0:8/*/* -t completion geography-class.mbtiles
-    0 1/1 (100%)
-    1 4/4 (100%)
-    2 16/16 (100%)
-    3 64/64 (100%)
-    4 256/256 (100%)
-    5 1024/1024 (100%)
-    6 4096/4096 (100%)
-    7 16384/16384 (100%)
-    8 65536/65536 (100%)
+    $ poetry run tc-info -b 8/72/168:16/*/* -t completion OSM-OpenCPN2-MagellanStrait.mbtiles
+    8 256/65536 (0%)
+    9 0/262144 (0%)
+    10 832/1048576 (0%)
+    11 0/4194304 (0%)
+    12 4392/16777216 (0%)
+    13 0/67108864 (0%)
+    14 21408/268435456 (0%)
+    15 0/1073741824 (0%)
+    16 24784/4294967296 (0%)
 
 This shows, for each zoom level, the number of tiles at that zoom level, the total number of tiles expected at
-that zoom level for the specified bounding pyramid (`0/0/0:8/*/*` means all tiles from level 0 to level 8),
+that zoom level for the specified bounding pyramid (`8/0/0:16/*/*` means all tiles from level 8 to level 16),
 and a percentage completion. This can be useful for checking that a tile set is complete.
 
 Now, display this MBTiles tile set on top of the [OpenStreetMap](http://www.openstreetmap.org/) tiles and a
 debug tile layer:
 
-    $ ./tc-viewer tiles.openstreetmap_org geography-class.mbtiles tiles.debug.black
+    $ poetry run tc-viewer tiles.openstreetmap_org OSM-OpenCPN2-MagellanStrait.mbtiles tiles.debug.black
 
 You'll need to point your browser at <http://localhost:8080/> and choose your favorite library.
 
@@ -105,7 +99,7 @@ that connect the TileCloud's modules to perform the action that you want.
 
 As a first example, run the following:
 
-    $ PYTHONPATH=. examples/download.py
+    $ poetry run examples/download.py
 
 This will download a few tiles from [OpenStreetMap](http://www.openstreetmap.org/) and save them in a local
 MBTiles file called `local.mbtiles`. Look at the source code to `examples/download.py` to see how it works. If
@@ -114,7 +108,7 @@ automatically resume where it left off.
 
 Once you have downloaded a few tiles, you can view them directly with `tc-viewer`:
 
-    $ ./tc-viewer --root=4/8/5 local.mbtiles tiles.debug.black
+    $ poetry run tc-viewer --root=4/8/5 local.mbtiles tiles.debug.black
 
 Point your browser at <http://localhost:8080> as usual. The `--root` option to `tc-viewer` instructs the
 viewer to start at a defined tile, rather than at 0/0/0, so you don't have to zoom in to find the tiles that
@@ -166,7 +160,7 @@ effect of generating tiles, then it functions as a quick tile generation utility
 To convert from one tile format to another, just copy from source to destination. For example, to convert an
 MBTiles file in to a ZIP file, just run:
 
-    $ ./tc-copy geography-class.mbtiles geography-class.zip
+    $ poetry run tc-copy OSM-OpenCPN2-MagellanStrait.mbtiles geography-class.zip
 
 You can check this worked with `unzip`:
 
@@ -174,7 +168,7 @@ You can check this worked with `unzip`:
 
 Equally, `tc-copy` can be used to download multiple tiles:
 
-    $ ./tc-copy --bounding-pyramid 4/0/0:0/16/16 tiles.openstreetmap_org osm-up-to-z4.mbtiles
+    $ poetry run tc-copy --bounding-pyramid 4/0/0:0/16/16 tiles.openstreetmap_org osm-up-to-z4.mbtiles
 
 Here we downloaded zoom levels 0 to 4 of the OpenStreetMap tiles into a local MBTiles file. The
 `--bounding-pyramid` option is required because otherwise we would download _all_ OpenStreetMap tiles -- which
@@ -186,7 +180,7 @@ destination then pass the `--overwrite` option to `tc-copy`.
 In the same way, `tc-copy` can also be used to upload tiles. For example, to upload an MBTiles file to S3,
 just use:
 
-    $ ./tc-copy osm-up-to-z4.mbtiles s3://bucket/prefix/%(z)d/%(x)d/%(y)d.jpg
+    $ poetry run tc-copy osm-up-to-z4.mbtiles s3://bucket/prefix/%(z)d/%(x)d/%(y)d.jpg
 
 `bucket` is the name of your S3 bucket. You'll need to have set the `AWS_ACCESS_KEY_ID` and
 `AWS_SECRET_ACCESS_KEY` environment variables to have permission to upload to S3. The rest of the destination
@@ -196,7 +190,7 @@ format string: `%(x)d` means substitute the tile's `x` coordinate as a decimal i
 You can pass the same `s3://` URL to `tc-viewer`. This allows you to visualize your tiles stored in S3 with
 your favorite mapping library. For example:
 
-    $ ./tc-viewer s3://bucket/prefix/%(z)d/%(x)d/%(y)d.jpg
+    $ poetry run tc-viewer s3://bucket/prefix/%(z)d/%(x)d/%(y)d.jpg
 
 Here, `tc-viewer` is acting as a proxy, serving tiles stored in S3 over HTTP, bypassing any caches or access
 controls (assuming you have the correct credentials, of course). This allows you to visualize the exact tiles
@@ -208,12 +202,12 @@ At [FOSS4G-NA](http://foss4g-na.org/), [MapBox](http://mapbox.com/) presented an
 [rendering the world](http://mapbox.com/blog/rendering-the-world/). TileCloud supports the subdivision
 strategy. To run the demo, execute:
 
-    $ python examples/renderingtheworld.py
+    $ poetry run examples/renderingtheworld.py
 
 This will generate tiles from a WMTS tile server and save them in a local MBTiles tiles. When the above
 command is complete, you can see the bounding pyramid of the generated tiles:
 
-    $ ./tc-info -t bounding-pyramid -r medford_buildings.mbtiles
+    $ poetry run tc-info -t bounding-pyramid -r medford_buildings.mbtiles
     0/0/0:+1/+1
     1/0/0:+1/+1
     2/0/1:+1/+1
@@ -245,7 +239,7 @@ off-line demos. The TileStores passed as arguments to `tc-viewer` are available 
 where `{index}` is the index of the TileStore on the command line (starting from 0 for the first tile store),
 and `{z}`, `{x}` and `{y}` are the components of the tile coordinate. The second `tiles` in the URL is present
 to work around assumptions made by OpenWebGlobe. This layout is directly usable by most mapping libraries, see
-the code in `views/*.tpl` for examples. The host and port can be set with the `--host` and `--port` command
+the code in `tilecloud/views/*.tpl` for examples. The host and port can be set with the `--host` and `--port` command
 line options, respectively.
 
 Note that there is no file extension. `tc-viewer` will automatically set the correct content type and content

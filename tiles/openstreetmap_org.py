@@ -3,9 +3,10 @@ from tilecloud.store.url import URLTileStore
 
 tilestore = URLTileStore(
     (
-        TemplateTileLayout(f"http://{server!s}.tile.openstreetmap.org/%(z)d/%(x)d/%(y)d.png")
+        TemplateTileLayout(f"https://{server!s}.tile.openstreetmap.org/%(z)d/%(x)d/%(y)d.png")
         for server in "abc"
     ),
     attribution="&copy; OpenStreetMap contributors, CC-BY-SA",
     content_type="image/png",
+    headers={"User-Agent": "TileCloud"},
 )
