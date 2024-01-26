@@ -11,8 +11,8 @@ env:
 
 jobs:
   backport:
-    runs-on: ubuntu-22.04
     name: Backport
+    runs-on: ubuntu-22.04
     timeout-minutes: 5
 
     steps:

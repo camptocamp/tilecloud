@@ -6,8 +6,8 @@ on:
 
 jobs:
   audit:
-    runs-on: ubuntu-22.04
     name: Audit
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
 
     strategy:
@@ -46,13 +46,23 @@ jobs:
         if: failure()
       - run: python --version
 
-      - name: Audit
+      - name: Snyk audit
         run: ~/.venv/bin/c2cciutils-audit --branch=${{ matrix.branch }}
         env:
           GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-      - name: Audit Snyk debug
+      - name: Debug Snyk audit
         run: ~/.venv/bin/c2cciutils-audit --branch=${{ matrix.branch }} || true
-        if: failure()
         env:
           GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
           DEBUG: '*snyk*'
+        if: failure()
+      - name: Check ci/dpkg-versions.yaml file existence
+        id: dpkg-versions
+        uses: andstor/file-existence-action@v2
+        with:
+          files: ci/dpkg-versions.yaml
+      - name: Update dpkg packages versions
+        run: ~/.venv/bin/c2cciutils-docker-versions-update --branch=${{ matrix.branch }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+        if: steps.dpkg-versions.outputs.files_exists == 'true'
