@@ -5,9 +5,7 @@ on:
     types:
       - opened
       - reopened
-      - labeled
-      - unlabeled
-      - edit
+      - edited
       - synchronize
 
 jobs:
@@ -15,8 +13,10 @@ jobs:
     name: Pull request check
     runs-on: ubuntu-20.04
     timeout-minutes: 5
+    if: github.event.pull_request.user.login != 'renovate[bot]'
 
     steps:
+      - run: pip install --upgrade attrs
       - uses: actions/checkout@v3
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
