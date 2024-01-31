@@ -5,9 +5,7 @@ on:
     types:
       - opened
       - reopened
-      - labeled
-      - unlabeled
-      - edit
+      - edited
       - synchronize
 
 env:
