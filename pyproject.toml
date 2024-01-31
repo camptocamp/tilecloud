@@ -64,7 +64,7 @@ pyramid = "2.0.2"
 requests = "2.31.0"
 redis = "4.4.4"
 certifi = "2023.7.22"
-cryptography = "41.0.7"
+cryptography = "42.0.2"
 msal = "1.24.1"
 urllib3 = "1.26.18"
 
