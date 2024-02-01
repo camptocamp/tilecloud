@@ -1,6 +1,7 @@
 """
 This module includes filters for dealing with errors in tiles.
 """
+
 from typing import Optional
 
 from tilecloud import Tile
