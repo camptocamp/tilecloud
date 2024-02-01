@@ -65,7 +65,7 @@ jobs:
               }
             `)
         if: |-
-          github.event.pull_request.user.login == 'c2c-bot-gis-ci'
+          github.event.pull_request.user.login == 'c2c-bot-gis-ci-2'
           && startsWith(github.head_ref, 'snyk-fix/')
           && (github.event.action == 'opened'
             || github.event.action == 'reopened')
@@ -89,7 +89,7 @@ jobs:
               });
             }
         if: |-
-          github.event.pull_request.user.login == 'c2c-bot-gis-ci'
+          github.event.pull_request.user.login == 'c2c-bot-gis-ci-2'
           && (startsWith(github.head_ref, 'snyk-fix/')
             || startsWith(github.head_ref, 'dpkg-update/'))
           && github.event.action == 'closed'
