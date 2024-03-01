@@ -1,7 +1,7 @@
-poetry==1.3.1
+poetry==1.3.2
 poetry-plugin-export==1.2.0
 poetry-plugin-tweak-dependencies-version==1.2.1
-poetry-dynamic-versioning==0.21.3
+poetry-dynamic-versioning==0.21.5
 pip==23.3.2
 requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability
 urllib3>=1.26.18 # not directly required, pinned by Snyk to avoid a vulnerability
