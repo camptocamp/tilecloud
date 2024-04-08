@@ -28,7 +28,7 @@ class MaskTileStore(TileStore):
             assert self.image.size == (self.width, self.height)
         else:
             self.image = PIL.Image.new("1", (self.width, self.height))
-        self.pixels = self.image.load()
+        self.pixels = self.image.load()  # type: ignore[no-untyped-call]
 
     def delete_one(self, tile: Tile) -> Tile:
         assert self.xbounds.start is not None
