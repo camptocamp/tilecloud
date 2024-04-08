@@ -20,7 +20,9 @@ class DebugTileStore(TileStore):
         draw.line([(0, 255), (0, 0), (255, 0)], fill=self.color)
         text = str(tile.tilecoord)
         font = PIL.ImageFont.load_default()
-        width, height = font.getsize(text)
+        bbox = font.getbbox(text)  # type: ignore[no-untyped-call]
+        width = bbox[2] - bbox[0]
+        height = bbox[3] - bbox[1]
         draw.text((127 - width / 2, 127 - height / 2), text, fill=self.color, font=font)
         bytes_io = BytesIO()
         assert self.content_type is not None
