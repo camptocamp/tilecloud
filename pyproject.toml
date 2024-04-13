@@ -61,6 +61,7 @@ pyramid = { version = "2.0.2", optional = true }
 requests = "2.31.0"
 redis = { version = "5.0.3", optional = true }
 cryptography = "42.0.5"
+idna = "3.7"
 
 [tool.poetry.extras]
 azure = ["azure-storage-blob", "azure-identity"]
