@@ -59,7 +59,7 @@ Pillow = "10.3.0"
 pyproj = "3.6.1"
 pyramid = { version = "2.0.2", optional = true }
 requests = "2.31.0"
-redis = { version = "5.0.3", optional = true }
+redis = { version = "5.0.4", optional = true }
 cryptography = "42.0.5"
 idna = "3.7"
 
@@ -78,10 +78,10 @@ prospector-profile-utils = "1.1.0"
 pytest = "7.4.4"
 pytest-cov = "4.1.0"
 types-boto = "2.49.18.20240205"
-types-redis = "4.6.0.20240311"
+types-redis = "4.6.0.20240425"
 types-requests = "2.31.0.6"
 pycairo = "1.25.1"
-Shapely = "2.0.3"
+Shapely = "2.0.4"
 
 [build-system]
 requires = [
