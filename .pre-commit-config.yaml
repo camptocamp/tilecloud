@@ -60,7 +60,7 @@ repos:
         additional_dependencies:
           - pyjson5==1.6.6 # pypi
   - repo: https://github.com/sirwart/ripsecrets
-    rev: v0.1.7
+    rev: v0.1.8
     hooks:
       - id: ripsecrets
   - repo: https://github.com/PyCQA/autoflake
