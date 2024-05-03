@@ -97,7 +97,7 @@ class PILImageFilter:
     def __call__(self, tile: Tile) -> Tile:
         assert tile.data is not None
         image = PIL.Image.open(BytesIO(tile.data))
-        image = image.filter(self.filter)
+        image = image.filter(self.filter)  # type: ignore[no-untyped-call]
         bytes_io = BytesIO()
         assert tile.content_type is not None
         image.save(bytes_io, FORMAT_BY_CONTENT_TYPE.get(tile.content_type, "PNG"), **self.kwargs)
