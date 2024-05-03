@@ -80,7 +80,7 @@ types-redis = "4.6.0.20240425"
 types-requests = "2.31.0.2"
 pycairo = "1.26.0"
 Shapely = "2.0.4"
-urllib3 = "1.26.18" # Lock the used version to avoid lock issue
+urllib3 = "2.2.1" # Lock the used version to avoid lock issue
 
 [build-system]
 requires = [
