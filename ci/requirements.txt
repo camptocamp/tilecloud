@@ -6,3 +6,4 @@ certifi>=2022.12.7 # not directly required, pinned by Snyk to avoid a vulnerabil
 cryptography>=39.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
 requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability
 pygments>=2.15.0 # not directly required, pinned by Snyk to avoid a vulnerability
+tqdm>=4.66.3 # not directly required, pinned by Snyk to avoid a vulnerability
