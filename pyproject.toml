@@ -61,9 +61,9 @@ prometheus_client = { version = "0.17.1", optional = true }
 Pillow = "10.3.0"
 pyproj = "3.5.0"
 pyramid = "2.0.2"
-requests = "2.32.0"
+requests = "2.32.2"
 redis = { version = "4.5.5", optional = true }
-cryptography = "42.0.6"
+cryptography = "42.0.7"
 certifi = "2023.7.22"
 msal = "1.24.1"
 urllib3 = "1.26.18"
