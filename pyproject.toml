@@ -61,7 +61,7 @@ c2cwsgiutils = { version = "5.1.7", extras = ["broadcast"], optional = true }
 Pillow = "10.3.0"
 pyproj = "3.4.1"
 pyramid = "2.0.2"
-requests = "2.31.0"
+requests = "2.32.0"
 redis = "4.4.4"
 certifi = "2023.7.22"
 cryptography = "42.0.6"
