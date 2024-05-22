@@ -8,5 +8,5 @@ pyramid==2.0.2
 certifi>=2022.12.7 # not directly required, pinned by Snyk to avoid a vulnerability
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
 cryptography>=39.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
-requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability
+requests>=2.32.0 # not directly required, pinned by Snyk to avoid a vulnerability
 urllib3==1.26.18 # version 2.x didn't work with current botocore version
