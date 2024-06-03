@@ -8,6 +8,7 @@ doc-warnings: false
 
 ignore-patterns:
   - ^tilecloud/scripts/tc_.*.py
+  - ^examples/.*.py
 
 pylint:
   disable:
