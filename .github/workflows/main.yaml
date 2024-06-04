@@ -63,3 +63,11 @@ jobs:
           env.HAS_SECRETS == 'HAS_SECRETS'
           && github.event_name == 'push'
           && ( github.ref_type == 'tag' || github.ref_name == 'master' )
+      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
+        if: failure()
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Update dpkg versions list.patch
+          path: /tmp/dpkg-versions.patch
+          retention-days: 1
+        if: failure()
