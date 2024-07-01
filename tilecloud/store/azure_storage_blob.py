@@ -5,7 +5,7 @@ from typing import Any, Optional
 
 from azure.core.exceptions import ResourceNotFoundError
 from azure.identity import DefaultAzureCredential
-from azure.storage.blob import BlobServiceClient, ContentSettings
+from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
 
 from tilecloud import Tile, TileLayout, TileStore
 
@@ -19,25 +19,34 @@ class AzureStorageBlobTileStore(TileStore):
 
     def __init__(
         self,
-        container: str,
         tilelayout: TileLayout,
+        container: Optional[str] = None,
         dry_run: bool = False,
         cache_control: Optional[str] = None,
-        client: Optional[BlobServiceClient] = None,
+        container_client: Optional[ContainerClient] = None,
         **kwargs: Any,
     ):
-        if client is None:
+        if container_client is None:
             if "AZURE_STORAGE_CONNECTION_STRING" in os.environ:
-                client = BlobServiceClient.from_connection_string(
+                assert container is not None
+                self.container_client = BlobServiceClient.from_connection_string(
                     os.environ["AZURE_STORAGE_CONNECTION_STRING"]
+                ).get_container_client(container=container)
+            elif "AZURE_STORAGE_BLOB_CONTAINER_URL" in os.environ:
+                self.container_client = ContainerClient.from_container_url(
+                    os.environ["AZURE_STORAGE_BLOB_CONTAINER_URL"]
                 )
+                if os.environ.get("AZURE_STORAGE_BLOB_VALIDATE_CONTAINER_NAME", "false").lower() == "true":
+                    assert container == self.container_client.container_name
             else:
-                client = BlobServiceClient(
+                assert container is not None
+                self.container_client = BlobServiceClient(
                     account_url=os.environ["AZURE_STORAGE_ACCOUNT_URL"],
                     credential=DefaultAzureCredential(),
-                )
+                ).get_container_client(container=container)
+        else:
+            self.container_client = container_client
 
-        self.container_client = client.get_container_client(container=container)
         self.tilelayout = tilelayout
         self.dry_run = dry_run
         self.cache_control = cache_control
