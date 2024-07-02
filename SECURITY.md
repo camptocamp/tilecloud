@@ -11,3 +11,4 @@
 | 1.9     | Best effort     |
 | 1.10    | Best effort     |
 | 1.11    | Best effort     |
+| 1.12    | Best effort     |
