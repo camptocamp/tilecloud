@@ -9,7 +9,7 @@ from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettin
 
 from tilecloud import Tile, TileLayout, TileStore
 
-LOGGER = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
 
 
 class AzureStorageBlobTileStore(TileStore):
@@ -56,15 +56,18 @@ class AzureStorageBlobTileStore(TileStore):
         if not tile:
             return False
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
-        return len(self.container_client.list_blobs(name_starts_with=key_name)) > 0  # type: ignore
+        blob = self.container_client.get_blob_client(blob=key_name)
+        return blob.exists()
 
     def delete_one(self, tile: Tile) -> Tile:
         try:
             key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
             if not self.dry_run:
                 blob = self.container_client.get_blob_client(blob=key_name)
-                blob.delete_blob()
+                if blob.exists():
+                    blob.delete_blob()
         except Exception as exc:  # pylint: disable=broad-except
+            _LOGGER.exception(exc)
             tile.error = exc
         return tile
 
@@ -72,16 +75,16 @@ class AzureStorageBlobTileStore(TileStore):
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         try:
             blob = self.container_client.get_blob_client(blob=key_name)
+            if not blob.exists():
+                return None
             data = blob.download_blob().readall()
             assert isinstance(data, bytes) or data is None
             tile.data = data
             properties = blob.get_blob_properties()
             tile.content_encoding = properties.content_settings.content_encoding
             tile.content_type = properties.content_settings.content_type
-        except ResourceNotFoundError:
-            return None
         except Exception as exc:  # pylint: disable=broad-except
-            LOGGER.exception(exc)
+            _LOGGER.exception(exc)
             tile.error = exc
         return tile
 
@@ -112,6 +115,7 @@ class AzureStorageBlobTileStore(TileStore):
                     ),
                 )
             except Exception as exc:  # pylint: disable=broad-except
+                _LOGGER.exception(exc)
                 tile.error = exc
 
         return tile
