@@ -63,10 +63,10 @@ pyproj = "3.4.1"
 pyramid = "2.0.2"
 requests = "2.32.3"
 redis = "4.4.4"
-certifi = "2023.7.22"
+certifi = "2024.7.4"
 cryptography = "42.0.8"
 msal = "1.24.1"
-urllib3 = "1.26.18"
+urllib3 = "1.26.19"
 idna = "3.7"
 
 [tool.poetry.extras]
