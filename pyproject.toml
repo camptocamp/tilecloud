@@ -63,6 +63,7 @@ redis = { version = "5.0.7", optional = true }
 cryptography = "42.0.8"
 idna = "3.7"
 urllib3 = "1.26.19"
+certifi = "2024.7.4"
 
 [tool.poetry.extras]
 azure = ["azure-storage-blob", "azure-identity"]
