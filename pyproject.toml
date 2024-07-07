@@ -60,6 +60,7 @@ pyproj = "3.6.1"
 pyramid = { version = "2.0.2", optional = true }
 requests = "2.32.2"
 redis = { version = "5.0.7", optional = true }
+certifi = "2024.7.4"
 
 [tool.poetry.extras]
 azure = ["azure-storage-blob", "azure-identity"]
