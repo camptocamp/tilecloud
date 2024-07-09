@@ -5,3 +5,4 @@ cryptography>=41.0.6 # not directly required, pinned by Snyk to avoid a vulnerab
 requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability
 idna>=3.7 # not directly required, pinned by Snyk to avoid a vulnerability
 urllib3>=1.26.19 # not directly required, pinned by Snyk to avoid a vulnerability
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
