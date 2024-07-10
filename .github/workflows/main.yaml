@@ -35,6 +35,18 @@ jobs:
 
       - name: Checks
         run: c2cciutils-checks
+      - run: c2cciutils-checks --fix
+        if: failure()
+      - run: git diff --patch > /tmp/c2cciutils-checks.patch || true
+        if: failure()
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Fix c2cciutils-checks.patch
+          path: /tmp/c2cciutils-checks.patch
+          retention-days: 1
+        if: failure()
+      - run: git reset --hard
+        if: failure()
 
       - name: Applications checks
         run: make checks
