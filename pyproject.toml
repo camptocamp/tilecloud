@@ -1,3 +1,9 @@
 [tool.black]
 line-length = 110
 target-version = ['py38']
+
+[tool.poetry]
+name = "tilecloud"
+version = "0.0.0"
+description = "Tools for managing tiles"
+authors = ["Camptocamp <info@camptocamp.com>"]
