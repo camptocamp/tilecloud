@@ -31,8 +31,8 @@ tests:
 
 .PHONY: build ## build the images for the checks
 build:
-	docker-compose build $(DOCKER_BUILD_ARG)
+	docker compose build $(DOCKER_BUILD_ARG)
 
 .PHONY: checks ## Run the checks
 checks: build
-	docker-compose up --exit-code-from test
+	docker compose up --exit-code-from test
