@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/c2cciutils/1.4.17/c2cciutils/schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/c2cciutils/1.4.18/c2cciutils/schema.json
 
 checks:
   versions: false
