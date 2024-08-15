@@ -61,6 +61,7 @@ pyramid = { version = "2.0.2", optional = true }
 requests = "2.32.3"
 redis = { version = "5.0.8", optional = true }
 certifi = "2024.7.4"
+webob = "1.8.8"
 
 [tool.poetry.extras]
 azure = ["azure-storage-blob", "azure-identity"]
