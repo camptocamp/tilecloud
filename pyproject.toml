@@ -58,8 +58,9 @@ prometheus_client = { version = "0.20.0", optional = true }
 Pillow = "10.3.0"
 pyproj = "3.6.1"
 pyramid = { version = "2.0.2", optional = true }
-requests = "2.31.0"
+requests = "2.32.2"
 redis = { version = "5.0.8", optional = true }
+cryptography = "43.0.1"
 
 [tool.poetry.extras]
 azure = ["azure-storage-blob", "azure-identity"]
