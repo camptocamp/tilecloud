@@ -12,7 +12,6 @@
     automerge: true,
     schedule: 'after 5pm on the first day of the month',
   },
-  baseBranches: ['1.6', '1.8', '1.9', '1.10', '1.11', '1.12', 'master'],
   'pre-commit': { enabled: true },
   regexManagers: [
     /** Do updates on pre-commit additional dependencies */
@@ -59,22 +58,10 @@
       automerge: true,
       matchDepNames: ['poetry', 'pip'],
     },
-    /** Accept only the patch on stabilization branches */
-    {
-      matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
-      matchUpdateTypes: ['major', 'minor', 'pin', 'digest', 'lockFileMaintenance', 'rollback', 'bump'],
-      enabled: false,
-    },
     /** Support the 4 parts of shellcheck-py version with a v prefix */
     {
       versioning: 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
       matchDepNames: ['shellcheck-py/shellcheck-py'],
-    },
-    /** Disable types-request update on version <= 1.11 */
-    {
-      matchBaseBranches: ['1.6', '1.8', '1.10', '1.11'],
-      enabled: false,
-      matchDepNames: ['types-requests'],
     },
     /** Disable update of Python version in pyproject.toml */
     {
