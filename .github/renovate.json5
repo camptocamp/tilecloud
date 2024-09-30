@@ -63,12 +63,6 @@
       versioning: 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
       matchDepNames: ['shellcheck-py/shellcheck-py'],
     },
-    /** Disable types-request update on version <= 1.11 */
-    {
-      matchBaseBranches: ['1.6', '1.8', '1.10', '1.11'],
-      enabled: false,
-      matchDepNames: ['types-requests'],
-    },
     /** Disable update of Python version in pyproject.toml */
     {
       matchFiles: ['pyproject.toml'],
