@@ -108,7 +108,7 @@ class AzureStorageBlobTileStore(TileStore):
                 blob.upload_blob(
                     tile.data,
                     overwrite=True,
-                    content_settings=ContentSettings(  # type: ignore
+                    content_settings=ContentSettings(
                         content_type=tile.content_type,
                         content_encoding=tile.content_encoding,
                         cache_control=self.cache_control,
