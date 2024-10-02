@@ -51,7 +51,7 @@ tc-viewer = "tilecloud.scripts.tc_viewer:main"
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
 azure-storage-blob = { version = "12.19.1", optional = true }
-azure-identity = { version = "1.16.1", optional = true }
+azure-identity = { version = "1.18.0", optional = true }
 boto3 = { version = "1.34.162", optional = true }
 bottle = "0.12.25"
 prometheus_client = { version = "0.20.0", optional = true }
