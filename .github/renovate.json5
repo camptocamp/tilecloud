@@ -40,6 +40,12 @@
       groupName: 'all patch versions',
       automerge: true,
     },
+    /** Group and auto merge the minor updates */
+    {
+      matchUpdateTypes: ['minor'],
+      groupName: 'all minor versions',
+      automerge: true,
+    },
     {
       matchDatasources: ['docker'],
       versioning: 'regex:^(?<compatibility>.*)-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)?$',
@@ -70,6 +76,11 @@
       matchFileNames: ['.github/**', '.pre-commit-config.yaml', 'ci/**'],
       groupName: 'CI dependencies',
       automerge: true,
+    },
+    /** Ungroup pycairo */
+    {
+      matchDepNames: ['pycairo'],
+      groupName: 'pycairo',
     },
   ],
 }
