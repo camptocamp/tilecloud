@@ -151,13 +151,13 @@ crt = ["awscrt (==0.21.5)"]
 
 [[package]]
 name = "bottle"
-version = "0.12.25"
+version = "0.13.1"
 description = "Fast and simple WSGI-framework for small web-applications."
 optional = false
 python-versions = "*"
 files = [
-    {file = "bottle-0.12.25-py3-none-any.whl", hash = "sha256:d6f15f9d422670b7c073d63bd8d287b135388da187a0f3e3c19293626ce034ea"},
-    {file = "bottle-0.12.25.tar.gz", hash = "sha256:e1a9c94970ae6d710b3fb4526294dfeb86f2cb4a81eff3a4b98dc40fb0e5e021"},
+    {file = "bottle-0.13.1-py2.py3-none-any.whl", hash = "sha256:d5e068ad0b4ed3422231ad59bd9ea646a141f57a9c90587212d63477ec04fe96"},
+    {file = "bottle-0.13.1.tar.gz", hash = "sha256:a48852dc7a051353d3e4de3dd5590cd25de370bcfd94a72237561e314ceb0c88"},
 ]
 
 [[package]]
@@ -2332,4 +2332,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "4adb73e7eeddbf53a9f6b48e9030086b0d5411844ef6673efa9503862e3a584d"
+content-hash = "9961ba5ff509a337f7535f8229309051f5b6e300382d6b8177809033909177fa"
