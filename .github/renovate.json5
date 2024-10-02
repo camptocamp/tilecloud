@@ -77,5 +77,10 @@
       groupName: 'CI dependencies',
       automerge: true,
     },
+    /** Ungroup pycairo */
+    {
+      matchDepNames: ['pycairo'],
+      groupName: 'pycairo',
+    },
   ],
 }
