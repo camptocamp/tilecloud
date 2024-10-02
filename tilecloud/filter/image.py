@@ -5,9 +5,10 @@ It requires the PIL lib.
 """
 
 from io import BytesIO
-from typing import Any, Callable, Optional
+from typing import Any, Optional
 
 import PIL.Image
+import PIL.ImageFilter
 
 from tilecloud import Tile, TileStore
 from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
@@ -90,14 +91,14 @@ class PILImageFilter:
         Extra params passed to the PIL ``save`` function.
     """
 
-    def __init__(self, filter_pattern: Callable[[Tile], Tile], **kwargs: Any):
-        self.filter = filter_pattern
+    def __init__(self, image_filter: PIL.ImageFilter.Filter, **kwargs: Any):
+        self.filter = image_filter
         self.kwargs = kwargs
 
     def __call__(self, tile: Tile) -> Tile:
         assert tile.data is not None
-        image = PIL.Image.open(BytesIO(tile.data))
-        image = image.filter(self.filter)  # type: ignore[no-untyped-call]
+        image_file = PIL.Image.open(BytesIO(tile.data))
+        image = image_file.filter(self.filter)
         bytes_io = BytesIO()
         assert tile.content_type is not None
         image.save(bytes_io, FORMAT_BY_CONTENT_TYPE.get(tile.content_type, "PNG"), **self.kwargs)

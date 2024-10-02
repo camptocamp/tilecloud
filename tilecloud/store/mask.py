@@ -1,7 +1,8 @@
 from collections.abc import Iterator
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 import PIL.Image
+import PIL.ImageFile
 
 from tilecloud import BoundingPyramid, Bounds, NotSupportedOperation, Tile, TileCoord, TileStore
 
@@ -10,6 +11,8 @@ class MaskTileStore(TileStore):
     """
     A black and white image representing present and absent tiles.
     """
+
+    image: Union[PIL.Image.Image, PIL.ImageFile.ImageFile]
 
     def __init__(self, z: int, bounds: tuple[Bounds, Bounds], file: Optional[str] = None, **kwargs: Any):
         TileStore.__init__(self, **kwargs)
@@ -29,7 +32,7 @@ class MaskTileStore(TileStore):
             assert self.image.size == (self.width, self.height)
         else:
             self.image = PIL.Image.new("1", (self.width, self.height))
-        self.pixels = self.image.load()  # type: ignore[no-untyped-call]
+        self.pixels = self.image.load()
 
     def delete_one(self, tile: Tile) -> Tile:
         assert self.xbounds.start is not None
@@ -38,7 +41,7 @@ class MaskTileStore(TileStore):
             x = tile.tilecoord.x - self.xbounds.start  # pylint: disable=invalid-name
             y = self.ybounds.stop - tile.tilecoord.y - 1  # pylint: disable=invalid-name
             if 0 <= x < self.width and 0 <= y < self.height:
-                self.pixels[x, y] = 0
+                self.pixels[x, y] = 0  # type: ignore[index]
         return tile
 
     def list(self) -> Iterator[Tile]:
@@ -46,7 +49,7 @@ class MaskTileStore(TileStore):
         assert self.ybounds.stop is not None
         for x in range(0, self.width):  # pylint: disable=invalid-name
             for y in range(0, self.height):  # pylint: disable=invalid-name
-                if self.pixels[x, y]:
+                if self.pixels[x, y]:  # type: ignore[index]
                     yield Tile(TileCoord(self.zoom, self.xbounds.start + x, self.ybounds.stop - y - 1))
 
     def put_one(self, tile: Tile) -> Tile:
@@ -55,10 +58,10 @@ class MaskTileStore(TileStore):
         x = tile.tilecoord.x - self.xbounds.start  # pylint: disable=invalid-name
         y = self.ybounds.stop - tile.tilecoord.y - 1  # pylint: disable=invalid-name
         if 0 <= x < self.width and 0 <= y < self.height:
-            self.pixels[x, y] = 1
+            self.pixels[x, y] = 1  # type: ignore[index]
         return tile
 
-    def save(self, file: str, format_pattern: type, **kwargs: Any) -> None:
+    def save(self, file: str, format_pattern: Optional[str], **kwargs: Any) -> None:
         self.image.save(file, format_pattern, **kwargs)
 
     def get_one(self, tile: Tile) -> Optional[Tile]:
