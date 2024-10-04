@@ -71,7 +71,7 @@ prometheus = ["prometheus_client"]
 all = ["azure-storage-blob", "azure-identity", "boto3", "pyramid", "redis", "prometheus_client"]
 
 [tool.poetry.group.dev.dependencies]
-prospector = { version = "1.10.3", extras = ["with_bandit", "with_mypy", "with_pyroma"] }
+prospector = { version = "1.11.0", extras = ["with_bandit", "with_mypy", "with_pyroma"] }
 prospector-profile-duplicated = "1.5.0"
 prospector-profile-utils = "1.7.2"
 pytest = "8.3.3"
