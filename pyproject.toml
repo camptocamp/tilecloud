@@ -52,7 +52,7 @@ tc-viewer = "tilecloud.scripts.tc_viewer:main"
 python = ">=3.10,<3.13"
 azure-storage-blob = { version = "12.23.1", optional = true }
 azure-identity = { version = "1.18.0", optional = true }
-boto3 = { version = "1.35.31", optional = true }
+boto3 = { version = "1.35.33", optional = true }
 bottle = "0.13.1"
 prometheus_client = { version = "0.21.0", optional = true }
 Pillow = "10.4.0"
@@ -77,7 +77,7 @@ prospector-profile-utils = "1.7.2"
 pytest = "8.3.3"
 pytest-cov = "5.0.0"
 types-boto = "2.49.18.20240806"
-types-redis = "4.6.0.20240903"
+types-redis = "4.6.0.20241004"
 types-requests = "2.32.0.20240914"
 pycairo = "1.26.1"
 Shapely = "2.0.6"
