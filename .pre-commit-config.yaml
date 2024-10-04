@@ -19,7 +19,7 @@ repos:
       - id: trailing-whitespace
       - id: mixed-line-ending
   - repo: https://github.com/sbrunner/hooks
-    rev: 1.1.0
+    rev: 1.1.1
     hooks:
       - id: copyright
       - id: poetry-check
@@ -95,6 +95,6 @@ repos:
       - id: jsonschema-validator
         files: ^ci/config\.yaml$
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 38.106.3
+    rev: 38.106.4
     hooks:
       - id: renovate-config-validator
