@@ -10,6 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 class URLTileStore(TileStore):
+    """A tile store that reads and writes tiles from a formatted URL."""
+
     def __init__(
         self,
         tilelayouts: Iterable[TileLayout],
@@ -27,9 +29,8 @@ class URLTileStore(TileStore):
     def get_one(self, tile: Tile) -> Optional[Tile]:
         if tile is None:
             return None
-        if self.bounding_pyramid is not None:
-            if tile.tilecoord not in self.bounding_pyramid:
-                return None
+        if self.bounding_pyramid is not None and tile.tilecoord not in self.bounding_pyramid:
+            return None
         tilelayout = self.tilelayouts[hash(tile.tilecoord) % len(self.tilelayouts)]
         try:
             url = tilelayout.filename(tile.tilecoord, tile.metadata)

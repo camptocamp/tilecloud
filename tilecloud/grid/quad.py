@@ -6,6 +6,12 @@ from tilecloud import Bounds, TileCoord, TileGrid
 
 
 class QuadTileGrid(TileGrid):
+    """
+    A quad tile grid.
+
+    Each tiles aer separate in exactly 4 tiles in the next zoom level.
+    """
+
     def __init__(
         self,
         max_extent: Optional[tuple[float, float, float, float]] = None,

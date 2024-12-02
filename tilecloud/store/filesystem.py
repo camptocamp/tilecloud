@@ -8,9 +8,7 @@ from tilecloud import Tile, TileLayout, TileStore
 
 
 class FilesystemTileStore(TileStore):
-    """
-    Tiles stored in a filesystem.
-    """
+    """Tiles stored in a filesystem."""
 
     def __init__(self, tilelayout: TileLayout, **kwargs: Any):
         TileStore.__init__(self, **kwargs)

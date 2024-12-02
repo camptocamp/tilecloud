@@ -63,32 +63,24 @@ repos:
     rev: v0.1.8
     hooks:
       - id: ripsecrets
-  - repo: https://github.com/PyCQA/autoflake
-    rev: v2.3.1
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.1
     hooks:
-      - id: autoflake
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.0
-    hooks:
-      - id: pyupgrade
+      - id: ruff-format
         args:
-          - --py39-plus
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
+          - --line-length=110
+  - repo: https://github.com/PyCQA/prospector
+    rev: v1.13.3
     hooks:
-      - id: isort
-  - repo: https://github.com/psf/black
-    rev: 24.10.0
-    hooks:
-      - id: black
-  #- repo: https://github.com/PyCQA/prospector
-  #  rev: v1.8.4
-  #  hooks:
-  #    - id: prospector
-  #      args:
-  #        - --tool=pydocstyle
-  #        - --die-on-tool-error
-  #        - --output-format=pylint
+      - id: prospector
+        args:
+          - --tool=ruff
+          - --die-on-tool-error
+          - --output-format=pylint
+        additional_dependencies:
+          - prospector-profile-duplicated==1.8.0 # pypi
+          - prospector-profile-utils==1.13.0 # pypi
+          - ruff==0.8.1 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 0.3.2
     hooks:

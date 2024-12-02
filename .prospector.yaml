@@ -1,10 +1,9 @@
 inherits:
   - duplicated
   - utils:base
+  - utils:fix
   - utils:no-design-checks
-
-strictness: veryhigh
-doc-warnings: false
+  - utils:unsafe
 
 ignore-patterns:
   - ^tilecloud/scripts/tc_.*.py
@@ -14,6 +13,7 @@ pylint:
   disable:
     - cyclic-import # see: https://github.com/PyCQA/pylint/issues/850
 
-bandit:
-  options:
-    config: .bandit.yaml
+ruff:
+  disable:
+    - D102 # Missing docstring in public method
+    - D107 # Missing docstring in `__init__`

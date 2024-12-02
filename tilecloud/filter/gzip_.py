@@ -28,9 +28,7 @@ class GzipCompressor:
 
 
 class GzipDecompressor:
-    """
-    Create a filter that decompresses a tile with gzip.
-    """
+    """Create a filter that decompresses a tile with gzip."""
 
     def __call__(self, tile: Tile) -> Tile:
         assert tile.data is not None

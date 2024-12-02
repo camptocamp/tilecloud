@@ -5,6 +5,8 @@ from tilecloud import Tile, TileStore
 
 
 class DictTileStore(TileStore):
+    """Tiles stored in a dictionary."""
+
     def __init__(self, tiles: Optional[Any] = None, **kwargs: Any) -> None:
         self.tiles = tiles or {}
         TileStore.__init__(self, **kwargs)
@@ -26,7 +28,7 @@ class DictTileStore(TileStore):
         return None
 
     def list(self) -> Iterator[Tile]:
-        for tilecoord in self.tiles.keys():
+        for tilecoord in self.tiles:
             yield Tile(tilecoord)
 
     def put_one(self, tile: Tile) -> Tile:

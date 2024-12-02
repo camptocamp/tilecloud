@@ -6,9 +6,7 @@ from tilecloud.layout.re_ import RETileLayout
 
 
 class WrappedTileLayout(TileLayout):
-    """
-    A tile layout with an option prefix and/or suffix.
-    """
+    """A tile layout with an option prefix and/or suffix."""
 
     def __init__(self, tilelayout: RETileLayout, prefix: str = "", suffix: str = "") -> None:
         self.tilelayout = tilelayout

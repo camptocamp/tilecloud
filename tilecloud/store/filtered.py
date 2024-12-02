@@ -5,6 +5,8 @@ from tilecloud import NotSupportedOperation, Tile, TileStore
 
 
 class FilteredTileStore(TileStore):
+    """A tile store that filter the tiles."""
+
     def __init__(self, tilestore: TileStore, filters: list[Callable[[Optional[Tile]], Tile]], **kwargs: Any):
         TileStore.__init__(self, **kwargs)
         self.tilestore = tilestore

@@ -9,6 +9,8 @@ from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class MetaTileSplitterTileStore(TileStore):
+    """A tile store that splits metatiles into tiles."""
+
     def __init__(self, format_pattern: str, tile_size: int = 256, border: int = 0, **kwargs: Any) -> None:
         self.format = format_pattern
         self.tile_size = tile_size

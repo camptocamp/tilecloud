@@ -4,10 +4,12 @@ from typing import Optional
 
 
 class MemcachedError(RuntimeError):
-    pass
+    """A memcached error."""
 
 
 class MemcachedClient:
+    """A simple memcached client."""
+
     VALUE_RE = re.compile(rb"VALUE\s+(?P<key>\S+)\s+(?P<flags>\d+)\s+(?P<bytes>\d+)(?:\s+(?P<cas>\d+))?\Z")
 
     def __init__(self, host: str = "localhost", port: int = 11211):

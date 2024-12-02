@@ -1,5 +1,5 @@
 """
-This module includes filters doing manipulations on the tile image.
+Module includes filters doing manipulations on the tile image.
 
 It requires the PIL lib.
 """

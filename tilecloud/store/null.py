@@ -4,9 +4,7 @@ from tilecloud import Tile, TileStore
 
 
 class NullTileStore(TileStore):
-    """
-    A TileStore that does nothing.
-    """
+    """A TileStore that does nothing."""
 
     def __contains__(self, tile: Tile) -> bool:
         return False

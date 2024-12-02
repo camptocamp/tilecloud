@@ -16,9 +16,7 @@ CLIENT_TIMEOUT = 60
 
 
 class S3TileStore(TileStore):
-    """
-    Tiles stored in Amazon S3.
-    """
+    """Tiles stored in Amazon S3."""
 
     def __init__(
         self,
@@ -30,7 +28,7 @@ class S3TileStore(TileStore):
         **kwargs: Any,
     ) -> None:
         self._s3_host = s3_host
-        self._client: Optional["botocore.client.S3"] = None
+        self._client: Optional[botocore.client.S3] = None
         self.bucket = bucket
         self.tilelayout = tilelayout
         self.dry_run = dry_run
@@ -111,6 +109,7 @@ def _get_status(s3_client_exception: botocore.exceptions.ClientError) -> int:
 
 
 def get_client(s3_host: Optional[str]) -> "botocore.client.S3":
+    """Get a client for S3."""
     config = botocore.config.Config(connect_timeout=CLIENT_TIMEOUT, read_timeout=CLIENT_TIMEOUT)
     with lock:
         return boto3.client(

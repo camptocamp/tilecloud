@@ -5,6 +5,8 @@ from tilecloud import Tile
 
 
 class RateLimit:
+    """Rate limit the number of tiles per second."""
+
     def __init__(self, rate: float):
         self.rate = rate
         self.count = 0

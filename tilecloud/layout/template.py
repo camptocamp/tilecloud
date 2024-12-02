@@ -7,6 +7,8 @@ from tilecloud.layout.re_ import RETileLayout
 
 
 class TemplateTileLayout(RETileLayout):
+    """Template for tile layout."""
+
     def __init__(self, template: str) -> None:
         self.template = template
         self.prefix = None

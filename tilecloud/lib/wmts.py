@@ -9,13 +9,13 @@ from tilecloud.lib.wmts_get_capabilities_template import WMTS_GET_CAPABILITIES_T
 METERS_PER_UNIT = {"feet": 3.28084, "meters": 1, "degrees": 111118.752, "inch": 39.3700787}
 
 
-def to_wsg84(srs: str, x: float, y: float) -> tuple[float, float]:  # pylint: disable=invalid-name
+def _to_wsg84(srs: str, x: float, y: float) -> tuple[float, float]:  # pylint: disable=invalid-name
     return cast(
         tuple[float, float], transform(Proj(init=srs.lower()), Proj(proj="latlong", datum="WGS84"), x, y)
     )
 
 
-class TileMatrixSet(TypedDict):
+class _TileMatrixSet(TypedDict):
     name: str
     srs: str
     units: str
@@ -25,7 +25,7 @@ class TileMatrixSet(TypedDict):
     yorigin: str
 
 
-class Matrix(TypedDict):
+class _Matrix(TypedDict):
     id: int
     tilewidth: int
     tileheight: int
@@ -37,16 +37,16 @@ class Matrix(TypedDict):
     topleft: str
 
 
-class MatrixSet(TypedDict):
+class _MatrixSet(TypedDict):
     crs: str
-    matrices: list[Matrix]
+    matrices: list[_Matrix]
 
 
-def matrix_sets(tile_matrix_set: TileMatrixSet) -> dict[str, MatrixSet]:
-    sets: dict[str, MatrixSet] = {}
+def _matrix_sets(tile_matrix_set: _TileMatrixSet) -> dict[str, _MatrixSet]:
+    sets: dict[str, _MatrixSet] = {}
     tile_size = int(tile_matrix_set["tile_size"])
     units = tile_matrix_set["units"]
-    matrix_set: MatrixSet = {"crs": tile_matrix_set["srs"].replace(":", "::"), "matrices": []}
+    matrix_set: _MatrixSet = {"crs": tile_matrix_set["srs"].replace(":", "::"), "matrices": []}
     for i, resolution in enumerate(tile_matrix_set["resolutions"]):
         col = int(ceil(((tile_matrix_set["bbox"][2] - tile_matrix_set["bbox"][0]) / tile_size) / resolution))
         row = int(ceil(((tile_matrix_set["bbox"][3] - tile_matrix_set["bbox"][1]) / tile_size) / resolution))
@@ -55,7 +55,7 @@ def matrix_sets(tile_matrix_set: TileMatrixSet) -> dict[str, MatrixSet]:
         else:
             maxy = tile_matrix_set["bbox"][1] + (row * tile_size * resolution)
 
-        matrix: Matrix = {
+        matrix: _Matrix = {
             "id": i,
             "tilewidth": tile_size,
             "tileheight": tile_size,
@@ -72,7 +72,9 @@ def matrix_sets(tile_matrix_set: TileMatrixSet) -> dict[str, MatrixSet]:
     return sets
 
 
-class Layer(TypedDict):
+class _Layer(TypedDict):
+    """Layer definition for the WMTS GetCapabilities XML."""
+
     extension: str
     dimension_key: str
     dimension_default: str
@@ -80,9 +82,11 @@ class Layer(TypedDict):
     matrix_set: str
 
 
-def get_capabilities(layers: list[Layer], tile_matrix_set: TileMatrixSet, wmts_gettile: str) -> str:
+def _get_capabilities(layers: list[_Layer], tile_matrix_set: _TileMatrixSet, wmts_gettile: str) -> str:
     """
-    layers is an array of dict that contains:
+    Generate the WMTS GetCapabilities XML.
+
+    Layers is an array of dict that contains:
 
     extension: the tiles extension like 'png'
         dimension_key: the used dimension key
@@ -103,7 +107,7 @@ def get_capabilities(layers: list[Layer], tile_matrix_set: TileMatrixSet, wmts_g
         jinja2_template(
             WMTS_GET_CAPABILITIES_TEMPLATE,
             layers=layers,
-            matrix_sets=matrix_sets(tile_matrix_set),
+            matrix_sets=_matrix_sets(tile_matrix_set),
             wmts_gettile=wmts_gettile,
             tile_matrix_set=tile_matrix_set["name"],
         ),

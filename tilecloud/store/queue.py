@@ -6,6 +6,7 @@ from tilecloud import Tile, TileCoord
 
 
 def encode_message(tile: Tile) -> str:
+    """Encode a tile to a string message."""
     metadata = dict(tile.metadata)
     if "sqs_message" in metadata:
         del metadata["sqs_message"]
@@ -21,6 +22,7 @@ def encode_message(tile: Tile) -> str:
 
 
 def decode_message(text: str, **kwargs: Any) -> Tile:
+    """Decode a tile from a string message."""
     body = json.loads(base64.b64decode(text).decode("utf-8"))
     z = body.get("z")  # pylint: disable=invalid-name
     x = body.get("x")  # pylint: disable=invalid-name

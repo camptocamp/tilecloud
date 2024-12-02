@@ -30,7 +30,7 @@ class MapnikTileStore(TileStore):
         **kwargs: Any,
     ):
         """
-        Constructs a MapnikTileStore.
+        Construct a MapnikTileStore.
 
             tilegrid: the tilegrid.
             mapfile: the file used to render the tiles.

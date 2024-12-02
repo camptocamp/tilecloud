@@ -12,9 +12,9 @@ from tilecloud.layout.wrapped import WrappedTileLayout
 
 
 class ZipTileStore(TileStore):
-    def __init__(
-        self, zipfile: zipfile.ZipFile, layout: Optional[TileLayout] = None, **kwargs: Any
-    ):  # pylint: disable=redefined-outer-name
+    """A tile store that reads and writes tiles from a zip file."""
+
+    def __init__(self, zipfile: zipfile.ZipFile, layout: Optional[TileLayout] = None, **kwargs: Any):  # pylint: disable=redefined-outer-name
         TileStore.__init__(self, **kwargs)
         self.zipfile = zipfile
         if layout is None:

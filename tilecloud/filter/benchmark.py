@@ -11,6 +11,8 @@ _TILES_ERROR_COUINTER = Counter("tilecloud_tiles_errors", "Number of tiles in er
 
 
 class Statistics:
+    """Compute statistics on a sequence of numbers."""
+
     def __init__(self, format_pattern: str = "%f"):
         self.format = format_pattern
         self.n = 0  # pylint: disable=invalid-name
@@ -47,6 +49,8 @@ class Statistics:
 
 
 class Benchmark:
+    """Create a filter for benchmarking tiles."""
+
     def __init__(self, attr: str = "benchmark"):
         self.attr = attr
         self.statisticss: dict[str, Statistics] = {}
@@ -76,6 +80,8 @@ class Benchmark:
 
 
 class StatsCountTiles:
+    """Create a filter for counting all tiles."""
+
     def __call__(self, tile: Tile) -> Tile:
         if tile:
             _TILES_COUNTER.inc()
@@ -83,6 +89,8 @@ class StatsCountTiles:
 
 
 class StatsCountErrors:
+    """Create a filter for counting all tiles with errors."""
+
     def __call__(self, tile: Tile) -> Tile:
         if tile and tile.error:
             _TILES_ERROR_COUINTER.inc()

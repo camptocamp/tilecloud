@@ -4,6 +4,8 @@ from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 
 
 class SearchUpTileStore(TileStore):
+    """A tile store that searches up the tile grid for a tile."""
+
     def __init__(self, tilestore: TileStore, tilegrid: TileGrid):
         super().__init__()
         self.tilestore = tilestore

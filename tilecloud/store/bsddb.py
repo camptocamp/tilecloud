@@ -7,6 +7,8 @@ from tilecloud import Tile, TileCoord, TileStore
 
 
 class BSDDBTileStore(TileStore):
+    """Tiles stored in a BSDDB database."""
+
     def __init__(self, db: bsddb.DB, **kwargs: Any):
         self.db = db  # pylint: disable=invalid-name
         TileStore.__init__(self, **kwargs)

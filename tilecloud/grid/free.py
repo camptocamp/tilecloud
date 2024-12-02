@@ -6,6 +6,12 @@ from tilecloud import Bounds, NotSupportedOperation, TileCoord, TileGrid
 
 
 class FreeTileGrid(TileGrid):
+    """
+    A free tile grid.
+
+    There is no correspondence between the tiles of the different zoom levels.
+    """
+
     def __init__(
         self,
         resolutions: Sequence[Union[int, float]],
