@@ -50,7 +50,7 @@ tc-viewer = "tilecloud.scripts.tc_viewer:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-azure-storage-blob = { version = "12.23.1", optional = true }
+azure-storage-blob = { version = "12.24.0", optional = true }
 azure-identity = { version = "1.19.0", optional = true }
 boto3 = { version = "1.35.71", optional = true }
 bottle = "0.13.2"
@@ -71,9 +71,9 @@ prometheus = ["prometheus_client"]
 all = ["azure-storage-blob", "azure-identity", "boto3", "pyramid", "redis", "prometheus_client"]
 
 [tool.poetry.group.dev.dependencies]
-prospector = { version = "1.12.1", extras = ["with_bandit", "with_mypy", "with_pyroma"] }
-prospector-profile-duplicated = "1.6.0"
-prospector-profile-utils = "1.9.1"
+prospector = { version = "1.13.3", extras = ["with_bandit", "with_mypy", "with_pyroma"] }
+prospector-profile-duplicated = "1.8.0"
+prospector-profile-utils = "1.12.2"
 pytest = "8.3.4"
 pytest-cov = "6.0.0"
 types-boto = "2.49.18.20241019"
