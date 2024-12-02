@@ -7,13 +7,11 @@ from sqlite3 import Connection
 from typing import Any, Optional
 
 from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
-from tilecloud.lib.sqlite3_ import SQLiteDict, query
+from tilecloud.lib.sqlite3_ import SQLiteDict, _query
 
 
 class Metadata(SQLiteDict):
-    """
-    A dict facade for the metadata table.
-    """
+    """A dict facade for the metadata table."""
 
     CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS metadata (name text, value text, PRIMARY KEY (name))"
     CONTAINS_SQL = "SELECT COUNT(*) FROM metadata WHERE name = ?"
@@ -27,9 +25,7 @@ class Metadata(SQLiteDict):
 
 
 class Tiles(SQLiteDict):
-    """
-    A dict facade for the tiles table.
-    """
+    """A dict facade for the tiles table."""
 
     CREATE_TABLE_SQL = (
         "CREATE TABLE IF NOT EXISTS tiles (zoom_level integer, tile_column integer, "
@@ -70,9 +66,7 @@ class Tiles(SQLiteDict):
 
 
 class MBTilesTileStore(TileStore):
-    """
-    A MBTiles tile store.
-    """
+    """A MBTiles tile store."""
 
     BOUNDING_PYRAMID_SQL = (
         "SELECT zoom_level, MIN(tile_column), MAX(tile_column) + 1, "
@@ -110,7 +104,7 @@ class MBTilesTileStore(TileStore):
 
     def get_cheap_bounding_pyramid(self) -> BoundingPyramid:
         bounds = {}
-        for z, xstart, xstop, ystart, ystop in query(  # pylint: disable=invalid-name
+        for z, xstart, xstop, ystart, ystop in _query(  # pylint: disable=invalid-name
             self.connection, self.BOUNDING_PYRAMID_SQL
         ):
             bounds[z] = (Bounds(xstart, xstop), Bounds(ystart, ystop))
@@ -133,6 +127,6 @@ class MBTilesTileStore(TileStore):
         return tile
 
     def set_metadata_zooms(self) -> None:
-        for minzoom, maxzoom in query(self.connection, self.SET_METADATA_ZOOMS_SQL):
+        for minzoom, maxzoom in _query(self.connection, self.SET_METADATA_ZOOMS_SQL):
             self.metadata["minzoom"] = minzoom
             self.metadata["maxzoom"] = maxzoom

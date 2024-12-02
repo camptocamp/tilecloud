@@ -5,6 +5,8 @@ from tilecloud import Tile, TileLayout, TileStore
 
 
 class MemcachedTileStore(TileStore):
+    """A tile store that create a tiles cache in a Memcached server."""
+
     def __init__(
         self,
         client: tilecloud.lib.memcached.MemcachedClient,

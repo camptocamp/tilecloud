@@ -6,6 +6,8 @@ from tilecloud import Tile
 
 
 class OptiPNG:
+    """Optimize PNG tiles with optipng."""
+
     def __init__(self, options: list[str], arg0: str = "/usr/bin/optipng"):
         self.args = [arg0, "-q"] + list(options)
 

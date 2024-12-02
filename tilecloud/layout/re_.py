@@ -4,6 +4,8 @@ from tilecloud import TileCoord, TileLayout
 
 
 class RETileLayout(TileLayout):
+    """Regular expression tile layout."""
+
     def __init__(self, pattern: str, filename_re: Pattern[str]) -> None:
         self.pattern = pattern
         self.filename_re = filename_re

@@ -31,9 +31,7 @@ _STOLEN_COUNTER = Counter("tilecloud_redis_stolen", "Number of stolen messages o
 
 
 class RedisTileStore(TileStore):
-    """
-    Redis queue.
-    """
+    """Redis queue."""
 
     _master: Redis
     _slave: Redis
@@ -187,9 +185,7 @@ class RedisTileStore(TileStore):
         return tile
 
     def delete_all(self) -> None:
-        """
-        Used only by tests.
-        """
+        """Delete the queue completely, used only by tests."""
         logger.debug("Delete all tiles from Redis stream name: %s", self._name)
         self._master.xtrim(name=self._name, maxlen=0)
         # xtrim doesn't empty the group claims. So we have to delete and re-create groups
@@ -319,9 +315,7 @@ class RedisTileStore(TileStore):
         return [], has_pendings
 
     def get_status(self) -> dict[str, Union[str, int]]:
-        """
-        Returns a map of stats.
-        """
+        """Get a map of stats."""
         nb_messages = self._slave.xlen(self._name)
         pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore[no-untyped-call]
         tiles_in_error = self._get_errors()

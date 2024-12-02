@@ -7,9 +7,7 @@ from tilecloud.layout.re_ import RETileLayout
 
 
 class I3DTileLayout(RETileLayout):
-    """
-    I3D (FHNW/OpenWebGlobe) tile layout.
-    """
+    """I3D (FHNW/OpenWebGlobe) tile layout."""
 
     PATTERN = r"(?:[0-3]{2}/)*[0-3]{1,2}"
     RE = re.compile(PATTERN + r"\Z")

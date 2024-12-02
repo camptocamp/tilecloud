@@ -7,9 +7,7 @@ from tilecloud.layout.re_ import RETileLayout
 
 
 class TileCacheDiskLayout(RETileLayout):
-    """
-    TileCache disk layout.
-    """
+    """TileCache disk layout."""
 
     PATTERN = r"[0-9]{2}(?:/[0-9]{3}){6}"
     RE = re.compile(r"([0-9]{2})/([0-9]{3})/([0-9]{3})/([0-9]{3})/([0-9]{3})/([0-9]{3})/([0-9]{3})")

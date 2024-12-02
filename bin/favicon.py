@@ -5,7 +5,7 @@ from shapely.geometry import Point, Polygon
 from shapely.ops import cascaded_union
 
 
-def box(minx: float, miny: float, maxx: float, maxy: float) -> Polygon:
+def _box(minx: float, miny: float, maxx: float, maxy: float) -> Polygon:
     return Polygon(((minx, miny), (maxx, miny), (maxx, maxy), (minx, maxy)))
 
 
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     GOLDEN_RATIO = (1 + math.sqrt(5)) / 2
 
     Y0 = int(3 - (2 + GOLDEN_RATIO) / 2) - 0.5
-    rectangle = box(1, Y0, 5, 2 + Y0)
+    rectangle = _box(1, Y0, 5, 2 + Y0)
     circle1 = Point(1, 1 + Y0).buffer(1)
     circle2 = Point(1 + 1 / GOLDEN_RATIO, 2 + Y0).buffer(1 / GOLDEN_RATIO)
     circle3 = Point(5 - GOLDEN_RATIO, 2 + Y0).buffer(GOLDEN_RATIO)

@@ -1,21 +1,19 @@
 from collections import deque
 from collections.abc import Iterator
-from typing import Callable, Deque, Optional
+from typing import Callable, Optional
 
 from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 from tilecloud.grid.quad import QuadTileGrid
 
 
 class RenderingTheWorldTileStore(TileStore):
-    """
-    http://mapbox.com/blog/rendering-the-world/
-    """
+    """https://mapbox.com/blog/rendering-the-world/."""
 
     def __init__(
         self,
         subdivide: Callable[[Tile], bool],
         tilegrid: Optional[TileGrid] = None,
-        queue: Optional[Deque[Tile]] = None,
+        queue: Optional[deque[Tile]] = None,
         seeds: tuple[Tile, ...] = (),
     ):
         super().__init__()

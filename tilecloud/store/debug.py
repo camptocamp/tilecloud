@@ -10,6 +10,8 @@ from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class DebugTileStore(TileStore):
+    """A tile store that generates a debug image."""
+
     def __init__(self, color: tuple[int, int, int] = (0, 0, 0), **kwargs: Any):
         TileStore.__init__(self, content_type="image/png", **kwargs)
         self.color = color

@@ -4,13 +4,18 @@ from typing import Any, Optional, Union
 import PIL.Image
 import PIL.ImageFile
 
-from tilecloud import BoundingPyramid, Bounds, NotSupportedOperation, Tile, TileCoord, TileStore
+from tilecloud import (
+    BoundingPyramid,
+    Bounds,
+    NotSupportedOperation,
+    Tile,
+    TileCoord,
+    TileStore,
+)
 
 
 class MaskTileStore(TileStore):
-    """
-    A black and white image representing present and absent tiles.
-    """
+    """A black and white image representing present and absent tiles."""
 
     image: Union[PIL.Image.Image, PIL.ImageFile.ImageFile]
 

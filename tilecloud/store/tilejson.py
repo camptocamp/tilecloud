@@ -1,5 +1,5 @@
-# FIXME port to requests
-# FIXME rename url1 and url2 to url when pyflakes grows a second brain cell
+# FIXME port to requests  # pylint: disable=fixme
+# FIXME rename url1 and url2 to url when pyflakes grows a second brain cell  # pylint: disable=fixme
 # https://github.com/mapbox/TileJSON
 
 import json
@@ -17,11 +17,13 @@ from tilecloud.store.url import URLTileStore
 
 
 class TileJSONTileStore(URLTileStore):
+    """A tile store for tiles in JSON data."""
+
     KEYS = "name description version attribution template legend center".split()
 
     def __init__(self, tile_json: str, urls_key: str = "tiles", **kwargs: Any):
-        # FIXME schema
-        # FIXME version 1.0.0 support
+        # FIXME schema  # pylint: disable=fixme
+        # FIXME version 1.0.0 support  # pylint: disable=fixme
         tile = json.loads(tile_json)
         assert "tiles" in tile
         assert isinstance(tile["tiles"], list)

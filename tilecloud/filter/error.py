@@ -1,6 +1,4 @@
-"""
-This module includes filters for dealing with errors in tiles.
-"""
+"""Module includes filters for dealing with errors in tiles."""
 
 from typing import Optional
 
@@ -9,9 +7,7 @@ from tilecloud.filter.logger import Logger
 
 
 class CollectErrors:
-    """
-    Create a filter for collecting tiles with errors in an attribute called ``errors``.
-    """
+    """Create a filter for collecting tiles with errors in an attribute called ``errors``."""
 
     def __init__(self) -> None:
         self.errors: list[Tile] = []
@@ -23,9 +19,7 @@ class CollectErrors:
 
 
 class DropErrors:
-    """
-    Create a filter for dropping all tiles with errors.
-    """
+    """Create a filter for dropping all tiles with errors."""
 
     def __call__(self, tile: Tile) -> Optional[Tile]:
         if not tile or tile.error:
@@ -34,9 +28,7 @@ class DropErrors:
 
 
 class LogErrors(Logger):
-    """
-    Create a filter for logging all tiles with errors.
-    """
+    """Create a filter for logging all tiles with errors."""
 
     def __call__(self, tile: Optional[Tile]) -> Optional[Tile]:
         if tile and tile.error:
@@ -46,7 +38,9 @@ class LogErrors(Logger):
 
 class MaximumConsecutiveErrors:
     """
-    Create a filter that raises a :class:`TooManyErrors` exception when there are ``max_consecutive_errors``
+    Create a filter that limit the consecutive errors.
+
+    Raises a :class:`TooManyErrors` exception when there are ``max_consecutive_errors``
     consecutive errors.
 
         max_consecutive_errors:
@@ -70,13 +64,14 @@ class MaximumConsecutiveErrors:
 
 class MaximumErrorRate:
     """
-    Create a filter that raises a :class:`TooManyErrors` exception when the total error rate exceeds
-    ``max_error_rate``.
+    Create a filter that limit the error rate.
 
-        max_error_rate:
+    Raises a :class:`TooManyErrors` exception when the total error rate exceeds ``max_error_rate``.
+
+    max_error_rate:
        The maximum error rate. Once exceeded a :class:`TooManyErrors`
        exception is raised.
-        min_tiles:
+    min_tiles:
        The minimum number of received tiles before a :class:`TooManyErrors`
        exception can be raised. Defaults to 8.
     """
@@ -121,6 +116,4 @@ class MaximumErrors:
 
 
 class TooManyErrors(RuntimeError):
-    """
-    TooManyErrors exception class.
-    """
+    """TooManyErrors exception class."""

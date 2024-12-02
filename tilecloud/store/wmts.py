@@ -6,6 +6,8 @@ from tilecloud.store.url import URLTileStore
 
 
 class WMTSTileStore(URLTileStore):
+    """A tile store that reads and writes tiles in WMTS format."""
+
     def __init__(
         self,
         url: str = "",

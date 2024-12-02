@@ -7,9 +7,7 @@ from tilecloud.layout.re_ import RETileLayout
 
 
 class LogTileStore(TileStore):
-    """
-    Generates all tile coordinates matching the specified layout from file.
-    """
+    """Generates all tile coordinates matching the specified layout from file."""
 
     def __init__(self, tilelayout: RETileLayout, file: IO[str], **kwargs: Any):
         TileStore.__init__(self, **kwargs)
@@ -21,7 +19,7 @@ class LogTileStore(TileStore):
         return tile
 
     def list(self) -> Iterator[Tile]:
-        # FIXME warn that this consumes file
+        # FIXME warn that this consumes file  # pylint: disable=fixme
         filename_re = re.compile(self.tilelayout.pattern)
         for line in self.file:
             match = filename_re.search(line)

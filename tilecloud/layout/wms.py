@@ -5,6 +5,8 @@ from tilecloud import NotSupportedOperation, TileCoord, TileGrid, TileLayout
 
 
 class WMSTileLayout(TileLayout):
+    """WMS tile layout."""
+
     def __init__(
         self,
         url: str,
