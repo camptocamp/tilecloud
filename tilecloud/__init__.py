@@ -452,7 +452,7 @@ class TileCoord:
         """
         if self.n == 1:
             return f"{self.__class__.__name__}({self.z}, {self.x}, {self.y})"
-        return f"{self.__class__.__name__}({self.z}, {self.x}, {self.x}, {self.n})"
+        return f"{self.__class__.__name__}({self.z}, {self.x}, {self.y}, {self.n})"
 
     def __str__(self) -> str:
         """
