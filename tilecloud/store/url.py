@@ -42,6 +42,7 @@ class URLTileStore(TileStore):
         try:
             response = self.session.get(url)
             if response.status_code in (404, 204):
+                logger.debug("Got empty tile from %s: %s", url, response.status_code)
                 return None
             tile.content_encoding = response.headers.get("Content-Encoding")
             tile.content_type = response.headers.get("Content-Type")
