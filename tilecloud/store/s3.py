@@ -98,7 +98,7 @@ class S3TileStore(TileStore):
                     ACL="public-read", Body=tile.data, Key=key_name, Bucket=self.bucket, **args
                 )
             except botocore.exceptions.ClientError as exc:
-                _LOGGER.warning("Error while putting tile %s", tile, exec_info=True)
+                _LOGGER.warning("Error while putting tile %s", tile, exc_info=True)
                 tile.error = exc
         return tile
 

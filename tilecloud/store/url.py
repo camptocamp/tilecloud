@@ -34,7 +34,7 @@ class URLTileStore(TileStore):
         try:
             url = tilelayout.filename(tile.tilecoord, tile.metadata)
         except Exception as exception:  # pylint: disable=broad-except
-            _LOGGER.warning("Error while getting tile %s", tile, exec_info=True)
+            _LOGGER.warning("Error while getting tile %s", tile, exc_info=True)
             tile.error = exception
             return tile
 
@@ -65,7 +65,7 @@ class URLTileStore(TileStore):
             else:
                 tile.error = f"URL: {url}\n{response.status_code}: {response.reason}\n{response.text}"
         except requests.exceptions.RequestException as exception:
-            _LOGGER.warning("Error while getting tile %s", tile, exec_info=True)
+            _LOGGER.warning("Error while getting tile %s", tile, exc_info=True)
             tile.error = exception
         return tile
 
