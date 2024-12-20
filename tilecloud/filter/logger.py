@@ -21,3 +21,9 @@ class Logger:
             variables.update(tile.tilecoord.__dict__)
             self.logger.log(self.level, self.msgformat, variables, *self.args, **self.kwargs)
         return tile
+
+    def __str__(self) -> str:
+        return f"{self.logger.name}({self.level},  {self.msgformat})"
+
+    def __repr__(self) -> str:
+        return self.__str__()

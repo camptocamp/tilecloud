@@ -6,7 +6,7 @@ import requests
 
 from tilecloud import NotSupportedOperation, Tile, TileLayout, TileStore
 
-logger = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
 
 
 class URLTileStore(TileStore):
@@ -35,14 +35,15 @@ class URLTileStore(TileStore):
         try:
             url = tilelayout.filename(tile.tilecoord, tile.metadata)
         except Exception as exception:  # pylint: disable=broad-except
+            _LOGGER.warning("Error while getting tile %s", tile, exc_info=True)
             tile.error = exception
             return tile
 
-        logger.info("GET %s", url)
+        _LOGGER.info("GET %s", url)
         try:
             response = self.session.get(url)
             if response.status_code in (404, 204):
-                logger.debug("Got empty tile from %s: %s", url, response.status_code)
+                _LOGGER.debug("Got empty tile from %s: %s", url, response.status_code)
                 return None
             tile.content_encoding = response.headers.get("Content-Encoding")
             tile.content_type = response.headers.get("Content-Type")
@@ -65,6 +66,7 @@ class URLTileStore(TileStore):
             else:
                 tile.error = f"URL: {url}\n{response.status_code}: {response.reason}\n{response.text}"
         except requests.exceptions.RequestException as exception:
+            _LOGGER.warning("Error while getting tile %s", tile, exc_info=True)
             tile.error = exception
         return tile
 

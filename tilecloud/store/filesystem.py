@@ -1,10 +1,13 @@
 import errno
+import logging
 import os
 import os.path
 from collections.abc import Iterator
 from typing import Any, Optional
 
 from tilecloud import Tile, TileLayout, TileStore
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class FilesystemTileStore(TileStore):
@@ -19,6 +22,7 @@ class FilesystemTileStore(TileStore):
         try:
             filename = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         except Exception as exception:  # pylint: disable=broad-except
+            _LOGGER.warning("Error while deleting tile %s", tile, exc_info=True)
             tile.error = exception
             return tile
         if os.path.exists(filename):
@@ -35,6 +39,7 @@ class FilesystemTileStore(TileStore):
         try:
             filename = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         except Exception as exception:  # pylint: disable=broad-except
+            _LOGGER.warning("Error while getting tile %s", tile, exc_info=True)
             tile.error = exception
             return tile
         try:
@@ -62,6 +67,7 @@ class FilesystemTileStore(TileStore):
         try:
             filename = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         except Exception as exception:  # pylint: disable=broad-except
+            _LOGGER.warning("Error while putting tile %s", tile, exc_info=True)
             tile.error = exception
             return tile
         dirname = os.path.dirname(filename)
