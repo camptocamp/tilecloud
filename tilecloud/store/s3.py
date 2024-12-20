@@ -96,12 +96,7 @@ class S3TileStore(TileStore):
                     ACL="public-read", Body=tile.data, Key=key_name, Bucket=self.bucket, **args
                 )
             except botocore.exceptions.ClientError as exc:
-<<<<<<< HEAD
                 _LOGGER.warning("Error while putting tile %s", tile, exc_info=True)
-||||||| parent of e8cfa682 (Better error reporting in logs)
-=======
-                _LOGGER.warning("Error while putting tile %s", tile, exec_info=True)
->>>>>>> e8cfa682 (Better error reporting in logs)
                 tile.error = exc
         return tile
 
@@ -117,17 +112,9 @@ def _get_status(s3_client_exception: botocore.exceptions.ClientError) -> int:
 
 
 def get_client(s3_host: Optional[str]) -> "botocore.client.S3":
-<<<<<<< HEAD
     """Get a client for S3."""
     config = botocore.config.Config(connect_timeout=_CLIENT_TIMEOUT, read_timeout=_CLIENT_TIMEOUT)
     with _LOCK:
-||||||| parent of e8cfa682 (Better error reporting in logs)
-    config = botocore.config.Config(connect_timeout=CLIENT_TIMEOUT, read_timeout=CLIENT_TIMEOUT)
-    with lock:
-=======
-    config = botocore.config.Config(connect_timeout=_CLIENT_TIMEOUT, read_timeout=_CLIENT_TIMEOUT)
-    with _LOCK:
->>>>>>> e8cfa682 (Better error reporting in logs)
         return boto3.client(
             "s3", endpoint_url=(f"https://{s3_host}/") if s3_host is not None else None, config=config
         )
