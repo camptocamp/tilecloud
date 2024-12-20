@@ -10,15 +10,15 @@ import botocore.exceptions
 from tilecloud import Tile, TileStore
 from tilecloud.store.queue import decode_message, encode_message
 
-BATCH_SIZE = 10  # max Amazon allows
-logger = logging.getLogger(__name__)
+_BATCH_SIZE = 10  # max Amazon allows
+_LOGGER = logging.getLogger(__name__)
 
 
 def maybe_stop(queue: "botocore.client.SQS") -> bool:
     try:
         queue.load()
     except botocore.exceptions.EndpointConnectionError:
-        logger.warning("Error fetching SQS attributes", exc_info=True)
+        _LOGGER.warning("Error fetching SQS attributes", exc_info=True)
         return True
 
     attributes = queue.attributes
@@ -49,9 +49,9 @@ class SQSTileStore(TileStore):
     def list(self) -> Iterator[Tile]:
         while True:
             try:
-                sqs_messages = self.queue.receive_messages(MaxNumberOfMessages=BATCH_SIZE)
+                sqs_messages = self.queue.receive_messages(MaxNumberOfMessages=_BATCH_SIZE)
             except botocore.exceptions.EndpointConnectionError:
-                logger.warning("Error fetching SQS messages", exc_info=True)
+                _LOGGER.warning("Error fetching SQS messages", exc_info=True)
                 sqs_messages = []
 
             if not sqs_messages:
@@ -63,7 +63,7 @@ class SQSTileStore(TileStore):
                         tile = decode_message(sqs_message.body.encode("utf-8"), sqs_message=sqs_message)
                         yield tile
                     except Exception:  # pylint: disable=broad-except
-                        logger.warning("Failed decoding the SQS message", exc_info=True)
+                        _LOGGER.warning("Failed decoding the SQS message", exc_info=True)
                         sqs_message.delete()
 
     def delete_one(self, tile: Tile) -> Tile:
@@ -78,7 +78,7 @@ class SQSTileStore(TileStore):
         try:
             self.queue.send_message(MessageBody=sqs_message)
         except Exception as exception:  # pylint: disable=broad-except
-            logger.warning("Failed sending SQS message", exc_info=True)
+            _LOGGER.warning("Failed sending SQS message", exc_info=True)
             tile.error = exception
         return tile
 
@@ -87,7 +87,7 @@ class SQSTileStore(TileStore):
         try:
             for tile in tiles:
                 buffered_tiles.append(tile)
-                if len(buffered_tiles) >= BATCH_SIZE:
+                if len(buffered_tiles) >= _BATCH_SIZE:
                     self._send_buffer(buffered_tiles)
                     buffered_tiles = []
                 yield tile
@@ -102,11 +102,11 @@ class SQSTileStore(TileStore):
             ]
             response = self.queue.send_messages(Entries=messages)
             for failed in response.get("Failed", []):
-                logger.warning("Failed sending SQS message: %s", failed["Message"])
+                _LOGGER.warning("Failed sending SQS message: %s", failed["Message"])
                 pos = int(failed["Id"])
                 tiles[pos].error = failed["Message"]
         except Exception as exception:  # pylint: disable=broad-except
-            logger.warning("Failed sending SQS messages", exc_info=True)
+            _LOGGER.warning("Failed sending SQS messages", exc_info=True)
             for tile in tiles:
                 tile.error = exception
 
