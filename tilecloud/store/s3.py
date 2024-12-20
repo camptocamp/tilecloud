@@ -10,9 +10,9 @@ import botocore.exceptions
 
 from tilecloud import Tile, TileLayout, TileStore
 
-logger = logging.getLogger(__name__)
-lock = threading.Lock()
-CLIENT_TIMEOUT = 60
+_LOGGER = logging.getLogger(__name__)
+_LOCK = threading.Lock()
+_CLIENT_TIMEOUT = 60
 
 
 class S3TileStore(TileStore):
@@ -53,6 +53,7 @@ class S3TileStore(TileStore):
             if not self.dry_run:
                 self.client.delete_object(Bucket=self.bucket, Key=key_name)
         except botocore.exceptions.ClientError as exc:
+            _LOGGER.warning("Error while deleting tile %s", tile, exc_info=True)
             tile.error = exc
         return tile
 
@@ -66,6 +67,7 @@ class S3TileStore(TileStore):
         except botocore.exceptions.ClientError as exc:
             if _get_status(exc) == 404:
                 return None
+            _LOGGER.error("Error while getting tile %s", tile, exc_info=True)
             tile.error = exc
         return tile
 
@@ -94,6 +96,7 @@ class S3TileStore(TileStore):
                     ACL="public-read", Body=tile.data, Key=key_name, Bucket=self.bucket, **args
                 )
             except botocore.exceptions.ClientError as exc:
+                _LOGGER.warning("Error while putting tile %s", tile, exc_info=True)
                 tile.error = exc
         return tile
 
@@ -110,8 +113,8 @@ def _get_status(s3_client_exception: botocore.exceptions.ClientError) -> int:
 
 def get_client(s3_host: Optional[str]) -> "botocore.client.S3":
     """Get a client for S3."""
-    config = botocore.config.Config(connect_timeout=CLIENT_TIMEOUT, read_timeout=CLIENT_TIMEOUT)
-    with lock:
+    config = botocore.config.Config(connect_timeout=_CLIENT_TIMEOUT, read_timeout=_CLIENT_TIMEOUT)
+    with _LOCK:
         return boto3.client(
             "s3", endpoint_url=(f"https://{s3_host}/") if s3_host is not None else None, config=config
         )
