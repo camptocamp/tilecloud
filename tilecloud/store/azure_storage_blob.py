@@ -67,7 +67,7 @@ class AzureStorageBlobTileStore(TileStore):
                 if blob.exists():
                     blob.delete_blob()
         except Exception as exc:  # pylint: disable=broad-except
-            _LOGGER.exception(exc)
+            _LOGGER.warning("Failed to delete tile %s", tile.tilecoord, exc_info=exc)
             tile.error = exc
         return tile
 
@@ -84,7 +84,7 @@ class AzureStorageBlobTileStore(TileStore):
             tile.content_encoding = properties.content_settings.content_encoding
             tile.content_type = properties.content_settings.content_type
         except Exception as exc:  # pylint: disable=broad-except
-            _LOGGER.exception(exc)
+            _LOGGER.warning("Failed to get tile %s", tile.tilecoord, exc_info=exc)
             tile.error = exc
         return tile
 
@@ -115,7 +115,7 @@ class AzureStorageBlobTileStore(TileStore):
                     ),
                 )
             except Exception as exc:  # pylint: disable=broad-except
-                _LOGGER.exception(exc)
+                _LOGGER.warning("Failed to put tile %s", tile.tilecoord, exc_info=exc)
                 tile.error = exc
 
         return tile
