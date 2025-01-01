@@ -108,17 +108,17 @@ yaml = ["PyYAML"]
 
 [[package]]
 name = "boto3"
-version = "1.35.71"
+version = "1.35.90"
 description = "The AWS SDK for Python"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "boto3-1.35.71-py3-none-any.whl", hash = "sha256:e2969a246bb3208122b3c349c49cc6604c6fc3fc2b2f65d99d3e8ccd745b0c16"},
-    {file = "boto3-1.35.71.tar.gz", hash = "sha256:3ed7172b3d4fceb6218bb0ec3668c4d40c03690939c2fca4f22bb875d741a07f"},
+    {file = "boto3-1.35.90-py3-none-any.whl", hash = "sha256:b0874233057995a8f0c813f5b45a36c09630e74c43d7a7c64db2feef2915d493"},
+    {file = "boto3-1.35.90.tar.gz", hash = "sha256:dc56caaaab2157a4bfc109c88b50cd032f3ac66c06d17f8ee335b798eaf53e5c"},
 ]
 
 [package.dependencies]
-botocore = ">=1.35.71,<1.36.0"
+botocore = ">=1.35.90,<1.36.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.10.0,<0.11.0"
 
@@ -127,13 +127,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.35.71"
+version = "1.35.90"
 description = "Low-level, data-driven core of boto 3."
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "botocore-1.35.71-py3-none-any.whl", hash = "sha256:fc46e7ab1df3cef66dfba1633f4da77c75e07365b36f03bd64a3793634be8fc1"},
-    {file = "botocore-1.35.71.tar.gz", hash = "sha256:f9fa058e0393660c3fe53c1e044751beb64b586def0bd2212448a7c328b0cbba"},
+    {file = "botocore-1.35.90-py3-none-any.whl", hash = "sha256:51dcbe1b32e2ac43dac17091f401a00ce5939f76afe999081802009cce1e92e4"},
+    {file = "botocore-1.35.90.tar.gz", hash = "sha256:f007f58e8e3c1ad0412a6ddfae40ed92a7bca571c068cb959902bcf107f2ae48"},
 ]
 
 [package.dependencies]
@@ -485,7 +485,6 @@ files = [
     {file = "cryptography-44.0.0-cp37-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:761817a3377ef15ac23cd7834715081791d4ec77f9297ee694ca1ee9c2c7e5eb"},
     {file = "cryptography-44.0.0-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:3c672a53c0fb4725a29c303be906d3c1fa99c32f58abe008a82705f9ee96f40b"},
     {file = "cryptography-44.0.0-cp37-abi3-manylinux_2_34_aarch64.whl", hash = "sha256:4ac4c9f37eba52cb6fbeaf5b59c152ea976726b865bd4cf87883a7e7006cc543"},
-    {file = "cryptography-44.0.0-cp37-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:60eb32934076fa07e4316b7b2742fa52cbb190b42c2df2863dbc4230a0a9b385"},
     {file = "cryptography-44.0.0-cp37-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:ed3534eb1090483c96178fcb0f8893719d96d5274dfde98aa6add34614e97c8e"},
     {file = "cryptography-44.0.0-cp37-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:f3f6fdfa89ee2d9d496e2c087cebef9d4fcbb0ad63c40e821b39f74bf48d9c5e"},
     {file = "cryptography-44.0.0-cp37-abi3-win32.whl", hash = "sha256:eb33480f1bad5b78233b0ad3e1b0be21e8ef1da745d8d2aecbb20671658b9053"},
@@ -496,7 +495,6 @@ files = [
     {file = "cryptography-44.0.0-cp39-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:c5eb858beed7835e5ad1faba59e865109f3e52b3783b9ac21e7e47dc5554e289"},
     {file = "cryptography-44.0.0-cp39-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:f53c2c87e0fb4b0c00fa9571082a057e37690a8f12233306161c8f4b819960b7"},
     {file = "cryptography-44.0.0-cp39-abi3-manylinux_2_34_aarch64.whl", hash = "sha256:9e6fc8a08e116fb7c7dd1f040074c9d7b51d74a8ea40d4df2fc7aa08b76b9e6c"},
-    {file = "cryptography-44.0.0-cp39-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:9abcc2e083cbe8dde89124a47e5e53ec38751f0d7dfd36801008f316a127d7ba"},
     {file = "cryptography-44.0.0-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:d2436114e46b36d00f8b72ff57e598978b37399d2786fd39793c36c6d5cb1c64"},
     {file = "cryptography-44.0.0-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:a01956ddfa0a6790d594f5b34fc1bfa6098aca434696a03cfdbe469b8ed79285"},
     {file = "cryptography-44.0.0-cp39-abi3-win32.whl", hash = "sha256:eca27345e1214d1b9f9490d200f9db5a874479be914199194e746c893788d417"},
@@ -1172,13 +1170,13 @@ tests = ["pytest (>=5.4.1)", "pytest-cov (>=2.8.1)", "pytest-mypy (>=0.8.0)", "p
 
 [[package]]
 name = "prometheus-client"
-version = "0.21.0"
+version = "0.21.1"
 description = "Python client for the Prometheus monitoring system."
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "prometheus_client-0.21.0-py3-none-any.whl", hash = "sha256:4fa6b4dd0ac16d58bb587c04b1caae65b8c5043e85f778f42f5f632f6af2e166"},
-    {file = "prometheus_client-0.21.0.tar.gz", hash = "sha256:96c83c606b71ff2b0a433c98889d275f51ffec6c5e267de37c7a2b5c9aa9233e"},
+    {file = "prometheus_client-0.21.1-py3-none-any.whl", hash = "sha256:594b45c410d6f4f8888940fe80b5cc2521b305a1fafe1c58609ef715a001f301"},
+    {file = "prometheus_client-0.21.1.tar.gz", hash = "sha256:252505a722ac04b0456be05c05f75f45d760c2911ffc45f2a06bcaed9f3ae3fb"},
 ]
 
 [package.extras]
@@ -1228,13 +1226,13 @@ with-vulture = ["vulture (>=1.5)"]
 
 [[package]]
 name = "prospector-profile-duplicated"
-version = "1.8.0"
+version = "1.8.1"
 description = "Profile that can be used to disable the duplicated or conflict rules between Prospector and other tools"
 optional = false
 python-versions = "*"
 files = [
-    {file = "prospector_profile_duplicated-1.8.0-py2.py3-none-any.whl", hash = "sha256:c36ca647848739e1ca52cf220b00ba1fbdf7105217d5534a5bf2e65279ad6011"},
-    {file = "prospector_profile_duplicated-1.8.0.tar.gz", hash = "sha256:1565109b016fac05c61dbce38b952bfce3ff054d0c5493d1acad1fc8e9909704"},
+    {file = "prospector_profile_duplicated-1.8.1-py2.py3-none-any.whl", hash = "sha256:a3c23517b9749ea0e61cc9b23d1526752c1eeb6c899cd0d9ec1fa77b1f373a49"},
+    {file = "prospector_profile_duplicated-1.8.1.tar.gz", hash = "sha256:a08fa1f5aa77bdbc908b0c4f66b2bdb306aba10c44c5db51e389cd5cf79bda04"},
 ]
 
 [[package]]
@@ -1686,13 +1684,13 @@ files = [
 
 [[package]]
 name = "redis"
-version = "5.2.0"
+version = "5.2.1"
 description = "Python client for Redis database and key-value store"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "redis-5.2.0-py3-none-any.whl", hash = "sha256:ae174f2bb3b1bf2b09d54bf3e51fbc1469cf6c10aa03e21141f51969801a7897"},
-    {file = "redis-5.2.0.tar.gz", hash = "sha256:0b1087665a771b1ff2e003aa5bdd354f15a70c9e25d5a7dbf9c722c16528a7b0"},
+    {file = "redis-5.2.1-py3-none-any.whl", hash = "sha256:ee7e1056b9aea0f04c6c2ed59452947f34c4940ee025f5dd83e6a6418b6989e4"},
+    {file = "redis-5.2.1.tar.gz", hash = "sha256:16f2e22dff21d5125e8481515e386711a34cbec50f0e44413dd7d9c060a54e0f"},
 ]
 
 [package.dependencies]
@@ -2281,4 +2279,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "dd591de2933b9cd4fce5f263e5ede977439be2acbeda37d61d9d41511e73709d"
+content-hash = "ee3c64054026ba5d24c02982d6d2d178bb92691e2df98b0a0f2c500ba31f75f8"
