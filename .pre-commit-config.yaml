@@ -82,7 +82,7 @@ repos:
           - prospector-profile-utils==1.13.0 # pypi
           - ruff==0.8.1 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
-    rev: 0.3.2
+    rev: 1.0.0
     hooks:
       - id: jsonschema-validator
         files: ^ci/config\.yaml$
