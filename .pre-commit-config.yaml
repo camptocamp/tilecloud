@@ -58,13 +58,13 @@ repos:
           - github-workflows-require-timeout
       - id: check-renovate
         additional_dependencies:
-          - pyjson5==1.6.7 # pypi
+          - pyjson5==1.6.8 # pypi
   - repo: https://github.com/sirwart/ripsecrets
     rev: v0.1.8
     hooks:
       - id: ripsecrets
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.4
+    rev: v0.8.6
     hooks:
       - id: ruff-format
         args:
@@ -80,13 +80,13 @@ repos:
         additional_dependencies:
           - prospector-profile-duplicated==1.10.4 # pypi
           - prospector-profile-utils==1.15.1 # pypi
-          - ruff==0.8.4 # pypi
+          - ruff==0.8.6 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:
       - id: jsonschema-validator
         files: ^ci/config\.yaml$
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 39.91.0
+    rev: 39.91.4
     hooks:
       - id: renovate-config-validator
