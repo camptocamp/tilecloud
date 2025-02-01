@@ -24,10 +24,10 @@ repos:
       - id: copyright
       - id: poetry-check
         additional_dependencies:
-          - poetry==1.8.5 # pypi
+          - poetry==2.0.1 # pypi
       - id: poetry-lock
         additional_dependencies:
-          - poetry==1.8.5 # pypi
+          - poetry==2.0.1 # pypi
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
     hooks:
