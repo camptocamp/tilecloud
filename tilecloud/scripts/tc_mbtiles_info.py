@@ -48,10 +48,7 @@ def main() -> None:
                 cursor = connection.cursor()
                 cursor.execute(BOUNDING_PYRAMID_SQL)
                 for row in cursor:
-                    if row[5] == row[6]:
-                        extra = ""
-                    else:
-                        extra = " # %+d" % (row[5] - row[6])
+                    extra = "" if row[5] == row[6] else " # %+d" % (row[5] - row[6])
                     print("%d/%d/%d:%d/%d%s" % (row[0], row[1], row[2], row[3], row[4], extra))
             elif options.tiles == "list":
                 for key in Tiles(connection):

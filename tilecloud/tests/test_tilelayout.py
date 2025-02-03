@@ -253,14 +253,14 @@ class TestWMSTileLayout(unittest.TestCase):
             srs="EPSG:1000",
             format_pattern="image/png",
             tilegrid=self.tilegrid,
-            params={"TRANSPARENT": "FALSE", "PARAM": "Value", "FILTER": 'l1:"field" = ' "{PARAM}" ""},
+            params={"TRANSPARENT": "FALSE", "PARAM": "Value", "FILTER": 'l1:"field" = {PARAM}'},
         )
         result = urlparse(layout.filename(TileCoord(0, 0, 0)))
         assert result.netloc == "example.com"
         assert result.path == "/folder"
         query = parse_qs(result.query)
         assert query["PARAM"] == ["Value"]
-        assert query["FILTER"] == ['l1:"field" = ' "Value" ""]
+        assert query["FILTER"] == ['l1:"field" = Value']
         assert query["LAYERS"] == ["l1,l2"]
         assert query["FORMAT"] == ["image/png"]
         assert query["TRANSPARENT"] == ["FALSE"]
@@ -302,7 +302,7 @@ class TestTileCacheDiskLayout(unittest.TestCase):
         self.tilelayout = TileCacheDiskLayout()
 
     def test_filename(self) -> None:
-        assert "01/123/456/789/987/654/321" == self.tilelayout.filename(TileCoord(1, 123456789, 987654321))
+        assert self.tilelayout.filename(TileCoord(1, 123456789, 987654321)) == "01/123/456/789/987/654/321"
 
     def test_tilecoord(self) -> None:
         assert TileCoord(1, 123456789, 987654321) == self.tilelayout.tilecoord("01/123/456/789/987/654/321")

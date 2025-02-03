@@ -52,7 +52,7 @@ def test_list(store):
         assert messages["Approximate number of generating tiles"] == 1
         store.delete_one(tile)
 
-    assert 10 == count
+    assert count == 10
 
     messages = store.get_status()
     assert messages["Approximate number of tiles to generate"] == 0
@@ -79,7 +79,7 @@ def test_recovery_from_failing_slave(store):
         assert (y + 1) % 10 == tile.tilecoord.y
         count += 1
         store.delete_one(tile)
-    assert 10 == count
+    assert count == 10
 
     messages = store.get_status()
     assert messages["Approximate number of tiles to generate"] == 0
@@ -109,7 +109,7 @@ def test_dropping_too_many_retries(store):
                 store.delete_one(tile)
         except SlaveException:
             pass
-    assert 9 == count
+    assert count == 9
 
     # test we see the tile in the list of errors
     messages = store.get_status()
@@ -133,11 +133,11 @@ def test_put(store):
     for y, tile in enumerate(store.put(tiles)):
         assert y == tile.tilecoord.y
         count += 1
-    assert 20 == count
+    assert count == 20
 
     count = 0
     for y, tile in enumerate(store.list()):
         assert y == tile.tilecoord.y
         count += 1
         store.delete_one(tile)
-    assert 20 == count
+    assert count == 20
