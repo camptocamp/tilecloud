@@ -61,7 +61,7 @@ def openwebglobe_layersettings(index):
     elif content_type == "image/png":
         return dict(extent=extent, format="png", maxlod=maxlod, name=name, type="image")
     else:
-        assert False
+        raise AssertionError()
 
 
 @bottle.route("/openlayers")
@@ -103,10 +103,7 @@ def polymaps():
 @bottle.route("/openwebglobe")
 @bottle.view("openwebglobe")
 def openwebglobe():
-    if "q" in bottle.request.GET:
-        quality = float(bottle.request.GET.get("q"))
-    else:
-        quality = None
+    quality = float(bottle.request.GET.get("q")) if "q" in bottle.request.GET else None
     return dict(quality=quality, tilestores=tilestores)
 
 

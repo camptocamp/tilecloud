@@ -103,8 +103,7 @@ class RedisTileStore(TileStore):
         while True:
             try:
                 logger.debug(
-                    "Wait for new tiles, group name: %s, consumer name: %s, streams: %s, count: 1, "
-                    "block: %s",
+                    "Wait for new tiles, group name: %s, consumer name: %s, streams: %s, count: 1, block: %s",
                     STREAM_GROUP,
                     CONSUMER_NAME,
                     self._name,

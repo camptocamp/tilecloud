@@ -53,10 +53,7 @@ def main() -> None:
         bounding_pyramid = None
 
     benchmark = Benchmark() if options.benchmark else None
-    if options.generate:
-        generate = map(TileStore.load, options.generate)
-    else:
-        generate = ()
+    generate = map(TileStore.load, options.generate) if options.generate else ()
     try:
         output_tilestore = TileStore.load(args[-1])
         for arg in args[:-1]:
@@ -117,8 +114,7 @@ def main() -> None:
                 if key in benchmark.statisticss:
                     statistics = benchmark.statisticss[key]
                     logger.info(
-                        "%s: %s%s"
-                        % (
+                        "{}: {}{}".format(
                             key,
                             statistics,
                             f" ({1.0 / statistics.mean:.1f} tiles/s)" if statistics.n else "",

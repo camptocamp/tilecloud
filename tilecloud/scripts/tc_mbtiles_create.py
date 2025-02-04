@@ -45,7 +45,7 @@ def main() -> None:
     elif options.store == "s3":
         store = S3TileStore(options.bucket_name, tilelayout)
     else:
-        assert False
+        raise AssertionError()
     if options.bounds:
         bounds = BoundingPyramid.from_string(options.bounds)
         tilestream = BoundingPyramidTileStore(bounds).list()
