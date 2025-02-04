@@ -744,7 +744,7 @@ class TileStore:
 
             from tilecloud.store.bsddb import BSDDBTileStore
 
-            return BSDDBTileStore(bsddb.hashopen(name))
+            return BSDDBTileStore(bsddb.hashopen(name))  # pylint: disable=no-member
         if ext == ".mbtiles":
             import sqlite3
 

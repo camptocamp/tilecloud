@@ -28,7 +28,7 @@ class S3TileStore(TileStore):
         **kwargs: Any,
     ) -> None:
         self._s3_host = s3_host
-        self._client: Optional[botocore.client.S3] = None
+        self._client: Optional[botocore.client.S3] = None  # pylint: disable=no-member
         self.bucket = bucket
         self.tilelayout = tilelayout
         self.dry_run = dry_run

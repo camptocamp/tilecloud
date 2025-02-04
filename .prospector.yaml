@@ -11,7 +11,7 @@ ignore-patterns:
 
 pylint:
   options:
-    extension-pkg-allow-list: cairo, SQLiteDict
+    extension-pkg-allow-list: cairo
   disable:
     - cyclic-import # see: https://github.com/PyCQA/pylint/issues/850
 
