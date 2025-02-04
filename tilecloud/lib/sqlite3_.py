@@ -4,6 +4,9 @@ from typing import TYPE_CHECKING, Any, Optional, Union
 
 from tilecloud import TileCoord
 
+# For me this class can't works!
+# flake8: noqa
+
 
 def _query(connection: Connection, *args: Any) -> Cursor:
     cursor = connection.cursor()
@@ -28,51 +31,51 @@ class SQLiteDict(Base):
     ) -> None:
         self.connection = connection
         self.commit = commit
-        _query(self.connection, self.CREATE_TABLE_SQL)  # type: ignore
+        _query(self.connection, self.CREATE_TABLE_SQL)  # pylint: disable=no-member # type: ignore[attr-defined]
         if self.commit:
             self.connection.commit()
         # Convert a Dict to a Mapping
         self.update({k: v for k, v in kwargs.items()})  # pylint: disable=unnecessary-comprehension
 
-    def __contains__(self, key: Union[str, TileCoord]) -> bool:  # type: ignore
-        return _query(self.connection, self.CONTAINS_SQL, self._packkey(key)).fetchone()[0]  # type: ignore
+    def __contains__(self, key: Union[str, TileCoord]) -> bool:
+        return _query(self.connection, self.CONTAINS_SQL, self._packkey(key)).fetchone()[0]  # pylint: disable=no-member   # type: ignore[attr-defined]
 
     def __delitem__(self, key: Union[str, TileCoord]) -> None:
-        _query(self.connection, self.DELITEM_SQL, self._packkey(key))  # type: ignore
+        _query(self.connection, self.DELITEM_SQL, self._packkey(key))  # pylint: disable=no-member   # type: ignore[attr-defined]
         if self.commit:
             self.connection.commit()
 
     def __getitem__(self, key: Union[str, TileCoord]) -> Optional[bytes]:
-        row = _query(self.connection, self.GETITEM_SQL, self._packkey(key)).fetchone()  # type: ignore
+        row = _query(self.connection, self.GETITEM_SQL, self._packkey(key)).fetchone()  # pylint: disable=no-member   # type: ignore[attr-defined]
         if row is None:
             return None
         return self._unpackvalue(row)
 
     def __iter__(self) -> Iterator[str]:
-        return map(self._unpackkey, _query(self.connection, self.ITER_SQL))  # type: ignore
+        return map(self._unpackkey, _query(self.connection, self.ITER_SQL))  # pylint: disable=no-member   # type: ignore[attr-defined]
 
     def __len__(self) -> int:
-        return _query(self.connection, self.LEN_SQL).fetchone()[0]  # type: ignore
+        return _query(self.connection, self.LEN_SQL).fetchone()[0]  # pylint: disable=no-member   # type: ignore[attr-defined]
 
     def __setitem__(self, key: Union[str, TileCoord], value: Any) -> None:
-        _query(self.connection, self.SETITEM_SQL, self._packitem(key, value))  # type: ignore
+        _query(self.connection, self.SETITEM_SQL, self._packitem(key, value))  # pylint: disable=no-member   # type: ignore[attr-defined]
         if self.commit:
             self.connection.commit()
 
     def iteritems(self) -> Iterator[Cursor]:
-        return map(self._unpackitem, _query(self.connection, self.ITERITEMS_SQL))  # type: ignore
+        return map(self._unpackitem, _query(self.connection, self.ITERITEMS_SQL))  # pylint: disable=no-member   # type: ignore[attr-defined]
 
     def itervalues(self) -> Iterator[tuple[bytes]]:
-        return map(self._unpackvalue, _query(self.connection, self.ITERVALUES_SQL))  # type: ignore
+        return map(self._unpackvalue, _query(self.connection, self.ITERVALUES_SQL))  # pylint: disable=no-member   # type: ignore[attr-defined]
 
     def keys(self) -> KeysView[str]:
-        return set(iter(self))  # type: ignore
+        return set(iter(self))
 
     def _packitem(self, key: TileCoord, value: Optional[bytes]) -> tuple[int, int, int, Optional[memoryview]]:
-        return (key, value)  # type: ignore
+        return (key, value)
 
     def _packkey(self, key: TileCoord) -> tuple[int, int, int]:
-        return (key,)  # type: ignore
+        return (key,)
 
     @staticmethod
     def _packvalue(value: Any) -> tuple[Any]:  # pragma: no cover

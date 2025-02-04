@@ -10,6 +10,8 @@ ignore-patterns:
   - ^examples/.*.py
 
 pylint:
+  options:
+    extension-pkg-allow-list: cairo
   disable:
     - cyclic-import # see: https://github.com/PyCQA/pylint/issues/850
 

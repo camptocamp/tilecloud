@@ -79,7 +79,7 @@ class MBTilesTileStore(TileStore):
         self, connection: Connection, commit: bool = True, tilecoord_in_topleft: bool = False, **kwargs: Any
     ) -> None:
         self.connection = connection
-        self.metadata = Metadata(self.connection, commit)
+        self.metadata = Metadata(self.connection, commit)  # pylint: disable=no-member
         self.tiles = Tiles(tilecoord_in_topleft, self.connection, commit)
         if "content_type" not in kwargs and "format" in self.metadata:
             kwargs["content_type"] = mimetypes.types_map.get("." + self.metadata["format"])  # type: ignore

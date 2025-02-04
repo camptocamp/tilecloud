@@ -34,7 +34,7 @@ class TileJSONTileStore(URLTileStore):
             zmin, zmax = tile.get("minzoom", 0), tile.get("maxzoom", 22)
             if "bounds" in tile:
                 lonmin, latmin, lonmax, latmax = tile["bounds"]
-                bounding_pyramid = BoundingPyramid.from_wgs84(  # type: ignore
+                bounding_pyramid = BoundingPyramid.from_wgs84(  # type: ignore[attr-defined] # pylint: disable=no-member
                     zmin, zmax, lonmin, lonmax, latmin, latmax
                 )
             else:
