@@ -9,7 +9,7 @@ class QuadTileGrid(TileGrid):
     """
     A quad tile grid.
 
-    Each tiles aer separate in exactly 4 tiles in the next zoom level.
+    Each tiles are separate in exactly 4 tiles in the next zoom level.
     """
 
     def __init__(
