@@ -70,15 +70,13 @@ repos:
       - id: prospector
         args:
           - --profile=utils:pre-commit
-          - --profile=.prospector.yaml
           - --die-on-tool-error
           - --output-format=pylint
           - --profile=.prospector.yaml
-          - --profile=utils:autofix
         additional_dependencies:
-<<<<<<< HEAD
-          - prospector-profile-duplicated==1.10.5 # pypi
-          - prospector-profile-utils==1.22.3 # pypi
+          - prospector-profile-duplicated==1.10.4 # pypi
+          - prospector-profile-utils==1.17.0 # pypi
+          - ruff==0.9.4 # pypi
         exclude: |-
           (?x)(
             ^tests?/?
@@ -87,7 +85,6 @@ repos:
             |(^|/)test_[_a-zA-Z0-9]+.py$
             |(^|/)[_a-zA-Z0-9]+_tests?.py$
             |(^|/)tests?.py$
-            |^tilecloud/scripts/tc_.*\.py$
           )
       - id: prospector
         args:
@@ -95,27 +92,9 @@ repos:
           - --output-format=pylint
           - --profile=utils:tests
           - --profile=utils:pre-commit
-          - --profile=.prospector-tests.yaml
-        additional_dependencies:
-          - prospector-profile-utils==1.22.3 # pypi
-||||||| parent of c1241177 (CI updates)
-          - prospector-profile-duplicated==1.10.4 # pypi
-          - prospector-profile-utils==1.17.0 # pypi
-          - ruff==0.9.4 # pypi
-=======
-          - prospector-profile-duplicated==1.10.4 # pypi
-          - prospector-profile-utils==1.17.0 # pypi
-          - ruff==0.9.4 # pypi
-      - id: prospector
-        args:
-          - --die-on-tool-error
-          - --output-format=pylint
-          - --profile=utils:tests
-          - --profile=utils:autofix
         additional_dependencies:
           - prospector-profile-utils==1.20.2 # pypi
           - ruff==0.9.6 # pypi
->>>>>>> c1241177 (CI updates)
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:
