@@ -1,4 +1,3 @@
-from typing import Optional
 
 from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 
@@ -11,7 +10,7 @@ class SearchUpTileStore(TileStore):
         self.tilestore = tilestore
         self.tilegrid = tilegrid
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         if not tile:
             return None
         test_tile = Tile(tile.tilecoord)

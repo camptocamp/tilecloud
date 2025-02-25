@@ -1,6 +1,5 @@
 from collections.abc import Iterable, Iterator
 from itertools import count
-from typing import Optional
 
 from tilecloud import Bounds, TileCoord, TileGrid
 
@@ -14,9 +13,9 @@ class QuadTileGrid(TileGrid):
 
     def __init__(
         self,
-        max_extent: Optional[tuple[float, float, float, float]] = None,
-        tile_size: Optional[int] = None,
-        max_zoom: Optional[int] = None,
+        max_extent: tuple[float, float, float, float] | None = None,
+        tile_size: int | None = None,
+        max_zoom: int | None = None,
         flip_y: bool = False,
     ) -> None:
         TileGrid.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
@@ -68,7 +67,7 @@ class QuadTileGrid(TileGrid):
             Bounds(ybounds.start // 2, max(ybounds.stop // 2, 1)),
         )
 
-    def parent(self, tilecoord: TileCoord) -> Optional[TileCoord]:
+    def parent(self, tilecoord: TileCoord) -> TileCoord | None:
         if tilecoord.z == 0:
             return None
         return TileCoord(tilecoord.z - 1, int(tilecoord.x // 2), int(tilecoord.y // 2))

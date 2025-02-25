@@ -1,5 +1,5 @@
 import re
-from typing import Any, Optional
+from typing import Any
 
 from tilecloud import TileCoord, TileLayout
 from tilecloud.layout.re_ import RETileLayout
@@ -18,7 +18,7 @@ class WrappedTileLayout(TileLayout):
         filename_pattern = "".join((prefix_re, r"(", self.tilelayout.pattern, r")", suffix_re, r"\Z"))
         self.filename_re = re.compile(filename_pattern)
 
-    def filename(self, tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
+    def filename(self, tilecoord: TileCoord, metadata: Any | None = None) -> str:
         return "".join((self.prefix, self.tilelayout.filename(tilecoord, metadata), self.suffix))
 
     def tilecoord(self, filename: str) -> TileCoord:

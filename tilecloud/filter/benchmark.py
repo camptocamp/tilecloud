@@ -1,6 +1,6 @@
 import math
 import time
-from typing import Callable, Optional
+from collections.abc import Callable
 
 from prometheus_client import Counter
 
@@ -18,8 +18,8 @@ class Statistics:
         self.n = 0  # pylint: disable=invalid-name
         self.sum = 0.0
         self.sum_of_squares = 0.0
-        self.minimum: Optional[float] = None
-        self.maximum: Optional[float] = None
+        self.minimum: float | None = None
+        self.maximum: float | None = None
 
     def add(self, x: float) -> None:  # pylint: disable=invalid-name
         self.n += 1
@@ -36,7 +36,7 @@ class Statistics:
         return " ".join(result)
 
     @property
-    def mean(self) -> Optional[float]:
+    def mean(self) -> float | None:
         return self.sum / self.n if self.n else None
 
     @property
@@ -55,10 +55,10 @@ class Benchmark:
         self.attr = attr
         self.statisticss: dict[str, Statistics] = {}
 
-    def sample(self, key: Optional[str] = None) -> Callable[[Tile], Tile]:
+    def sample(self, key: str | None = None) -> Callable[[Tile], Tile]:
         if key:
             if key in self.statisticss:
-                statistics: Optional[Statistics] = self.statisticss[key]
+                statistics: Statistics | None = self.statisticss[key]
             else:
                 statistics = Statistics("%.3fs")
                 self.statisticss[key] = statistics

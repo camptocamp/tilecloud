@@ -1,6 +1,6 @@
 from collections.abc import Iterable, Iterator
 from io import BytesIO
-from typing import Any, Optional
+from typing import Any
 
 from PIL import Image
 
@@ -17,7 +17,7 @@ class MetaTileSplitterTileStore(TileStore):
         self.border = border
         TileStore.__init__(self, **kwargs)
 
-    def get(self, tiles: Iterable[Optional[Tile]]) -> Iterator[Tile]:
+    def get(self, tiles: Iterable[Tile | None]) -> Iterator[Tile]:
         for metatile in tiles:
             if not metatile:
                 continue

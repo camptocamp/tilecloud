@@ -1,6 +1,5 @@
 import re
 from re import Match
-from typing import Optional
 
 from tilecloud import TileCoord
 from tilecloud.layout.re_ import RETileLayout
@@ -15,7 +14,7 @@ class I3DTileLayout(RETileLayout):
     def __init__(self) -> None:
         RETileLayout.__init__(self, self.PATTERN, self.RE)
 
-    def filename(self, tilecoord: TileCoord, metadata: Optional[dict[str, str]] = None) -> str:
+    def filename(self, tilecoord: TileCoord, metadata: dict[str, str] | None = None) -> str:
         return "/".join(re.findall(r"[0-3]{1,2}", I3DTileLayout.quadcode_from_tilecoord(tilecoord)))
 
     @staticmethod

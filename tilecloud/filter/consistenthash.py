@@ -1,4 +1,3 @@
-from typing import Optional
 
 from tilecloud import Tile
 
@@ -22,7 +21,7 @@ class EveryNth:
         self.n = n  # pylint: disable=invalid-name
         self.i = i
 
-    def __call__(self, tile: Tile) -> Optional[Tile]:
+    def __call__(self, tile: Tile) -> Tile | None:
         if hash(tile.tilecoord) % self.n == self.i:
             return tile
         return None
