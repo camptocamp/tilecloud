@@ -1,5 +1,5 @@
 from io import BytesIO
-from typing import Any, Optional
+from typing import Any
 
 import PIL.Image
 import PIL.ImageDraw
@@ -16,7 +16,7 @@ class DebugTileStore(TileStore):
         TileStore.__init__(self, content_type="image/png", **kwargs)
         self.color = color
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         image = PIL.Image.new("RGBA", (256, 256), (0, 0, 0, 0))
         draw = PIL.ImageDraw.Draw(image)
         draw.line([(0, 255), (0, 0), (255, 0)], fill=self.color)

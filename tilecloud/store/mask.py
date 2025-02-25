@@ -1,5 +1,5 @@
 from collections.abc import Iterator
-from typing import Any, Optional, Union
+from typing import Any
 
 import PIL.Image
 import PIL.ImageFile
@@ -17,9 +17,9 @@ from tilecloud import (
 class MaskTileStore(TileStore):
     """A black and white image representing present and absent tiles."""
 
-    image: Union[PIL.Image.Image, PIL.ImageFile.ImageFile]
+    image: PIL.Image.Image | PIL.ImageFile.ImageFile
 
-    def __init__(self, z: int, bounds: tuple[Bounds, Bounds], file: Optional[str] = None, **kwargs: Any):
+    def __init__(self, z: int, bounds: tuple[Bounds, Bounds], file: str | None = None, **kwargs: Any):
         TileStore.__init__(self, **kwargs)
         self.zoom = z
         self.xbounds, self.ybounds = bounds
@@ -66,8 +66,8 @@ class MaskTileStore(TileStore):
             self.pixels[x, y] = 1  # type: ignore[index]
         return tile
 
-    def save(self, file: str, format_pattern: Optional[str], **kwargs: Any) -> None:
+    def save(self, file: str, format_pattern: str | None, **kwargs: Any) -> None:
         self.image.save(file, format_pattern, **kwargs)
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         raise NotSupportedOperation()

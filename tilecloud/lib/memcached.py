@@ -1,6 +1,5 @@
 import re
 import socket
-from typing import Optional
 
 
 class MemcachedError(RuntimeError):
@@ -25,7 +24,7 @@ class MemcachedClient:
             return False
         raise MemcachedError(line)
 
-    def get(self, key: str) -> tuple[Optional[int], Optional[bytes], Optional[int]]:
+    def get(self, key: str) -> tuple[int | None, bytes | None, int | None]:
         self.writeline(f"get {key}".encode())
         line = self.readline()
         if line == b"END":

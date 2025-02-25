@@ -1,5 +1,4 @@
-from collections.abc import Iterable
-from typing import Callable, Optional
+from collections.abc import Callable, Iterable
 
 from tilecloud import NotSupportedOperation, TileCoord, TileLayout
 
@@ -10,10 +9,10 @@ class WMTSTileLayout(TileLayout):
     def __init__(
         self,
         url: str = "",
-        layer: Optional[str] = None,
-        style: Optional[str] = None,
-        format_pattern: Optional[str] = None,
-        tile_matrix_set: Optional[str] = None,
+        layer: str | None = None,
+        style: str | None = None,
+        format_pattern: str | None = None,
+        tile_matrix_set: str | None = None,
         tile_matrix: Callable[[int], str] = str,
         dimensions_name: Iterable[str] = (),
         request_encoding: str = "KVP",
@@ -37,7 +36,7 @@ class WMTSTileLayout(TileLayout):
         elif self.url and self.url[-1] != "/":
             self.url += "/"
 
-    def filename(self, tilecoord: TileCoord, metadata: Optional[dict[str, str]] = None) -> str:
+    def filename(self, tilecoord: TileCoord, metadata: dict[str, str] | None = None) -> str:
         metadata = {} if metadata is None else metadata
         # Careful the order is important for the REST request encoding
         query: list[tuple[str, str]] = []
