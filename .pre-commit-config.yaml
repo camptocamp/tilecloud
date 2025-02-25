@@ -22,7 +22,7 @@ repos:
     rev: 1.3.0
     hooks:
       - id: copyright
-      - id: poetry-lock
+      - id: poetry2-lock
         additional_dependencies:
           - poetry==2.0.1 # pypi
       - id: canonicalize
@@ -113,7 +113,7 @@ repos:
           - --profile=utils:tests
           - --profile=utils:autofix
         additional_dependencies:
-          - prospector-profile-utils==1.20.2  # pypi
+          - prospector-profile-utils==1.20.2 # pypi
           - ruff==0.9.6 # pypi
 >>>>>>> c1241177 (CI updates)
   - repo: https://github.com/sbrunner/jsonschema-validator
