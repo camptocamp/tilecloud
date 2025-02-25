@@ -1,10 +1,3 @@
-[tool.ruff]
-target-version = "py310"
-line-length = 110
-
-[tool.ruff.lint.pydocstyle]
-convention = "numpy"
-
 [tool.poetry]
 name = "tilecloud"
 version = "0.0.0"
@@ -15,19 +8,7 @@ repository = "https://github.com/camptocamp/tilecloud"
 license = "BSD-2-Clause"
 keywords = ["gis", "tilecloud"]
 packages = [{ include = "tilecloud" }]
-classifiers = [
-    'Development Status :: 6 - Mature',
-    'Environment :: Console',
-    'Intended Audience :: Developers',
-    'License :: OSI Approved :: BSD License',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.10',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
-    'Topic :: Scientific/Engineering :: GIS',
-    'Typing :: Typed',
-]
+classifiers = ["Development Status :: 6 - Mature", "Environment :: Console", "Intended Audience :: Developers", "License :: OSI Approved :: BSD License", "Programming Language :: Python", "Programming Language :: Python :: 3", "Topic :: Scientific/Engineering :: GIS", "Typing :: Typed"]
 include = ["tilecloud_chain/py.typed"]
 
 [tool.poetry.scripts]
@@ -76,6 +57,23 @@ pycairo = "1.27.0"
 Shapely = "2.0.7"
 urllib3 = "2.3.0" # Lock the used version to avoid lock issue
 
+
+[tool.ruff]
+target-version = "py310"
+line-length = 110
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+[build-system]
+requires = [
+    "poetry-core>=1.3.0",
+    "poetry-dynamic-versioning",
+    "poetry-plugin-tweak-dependencies-version>=1.1.0",
+    "poetry-plugin-tweak-dependencies-version",
+    "poetry-plugin-drop-python-upper-constraint"
+]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
@@ -94,13 +92,3 @@ format-jinja = """
 
 [tool.poetry-plugin-tweak-dependencies-version]
 default = "present"
-
-[build-system]
-requires = [
-    "poetry-core>=1.3.0",
-    "poetry-dynamic-versioning",
-    "poetry-plugin-tweak-dependencies-version>=1.1.0",
-    "poetry-plugin-tweak-dependencies-version",
-    "poetry-plugin-drop-python-upper-constraint"
-]
-build-backend = "poetry.core.masonry.api"
