@@ -3,8 +3,6 @@ inherits:
   - utils:base
   - utils:fix
   - utils:no-design-checks
-  - utils:unsafe
-
 ignore-patterns:
   - ^tilecloud/scripts/tc_.*.py
   - ^examples/.*.py
