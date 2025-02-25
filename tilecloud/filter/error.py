@@ -1,6 +1,5 @@
 """Module includes filters for dealing with errors in tiles."""
 
-
 from tilecloud import Tile
 from tilecloud.filter.logger import Logger
 
