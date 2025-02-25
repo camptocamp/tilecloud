@@ -69,21 +69,29 @@ repos:
     hooks:
       - id: prospector
         args:
-          - --tool=ruff
+          - --profile=utils:pre-commit
           - --die-on-tool-error
           - --output-format=pylint
           - --profile=.prospector.yaml
-          - --profile=utils:autofix
         additional_dependencies:
           - prospector-profile-duplicated==1.10.4 # pypi
           - prospector-profile-utils==1.17.0 # pypi
           - ruff==0.9.4 # pypi
+        exclude: |-
+          (?x)(
+            ^tests?/?
+            |/tests?(/|$)
+            |.*/tests(/|$)
+            |(^|/)test_[_a-zA-Z0-9]+.py$
+            |(^|/)[_a-zA-Z0-9]+_tests?.py$
+            |(^|/)tests?.py$
+          )
       - id: prospector
         args:
           - --die-on-tool-error
           - --output-format=pylint
           - --profile=utils:tests
-          - --profile=utils:autofix
+          - --profile=utils:pre-commit
         additional_dependencies:
           - prospector-profile-utils==1.20.2 # pypi
           - ruff==0.9.6 # pypi
