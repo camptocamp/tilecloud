@@ -11,7 +11,7 @@ from collections.abc import Iterable, Iterator
 from functools import reduce
 from itertools import islice
 from operator import attrgetter
-from typing import Any, Optional, Union, cast
+from typing import Any, Optional, cast
 
 logger = logging.getLogger(__name__)
 

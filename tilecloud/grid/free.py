@@ -21,7 +21,7 @@ class FreeTileGrid(TileGrid):
     ) -> None:
         TileGrid.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         assert list(resolutions) == sorted(resolutions, reverse=True)
-        assert all(isinstance(r, (int, float)) for r in resolutions)
+        assert all(isinstance(r, int | float) for r in resolutions)
         self.resolutions = resolutions
         self.scale = float(scale)
         self.parent_zs: list[int | None] = []
