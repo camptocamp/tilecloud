@@ -44,7 +44,7 @@ repos:
     hooks:
       - id: git-check
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.31.1
+    rev: 0.31.2
     hooks:
       - id: check-github-actions
       - id: check-github-workflows
@@ -64,7 +64,7 @@ repos:
     hooks:
       - id: ripsecrets
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.4
+    rev: v0.9.9
     hooks:
       - id: ruff-format
         args:
@@ -80,7 +80,7 @@ repos:
         additional_dependencies:
           - prospector-profile-duplicated==1.10.4 # pypi
           - prospector-profile-utils==1.17.0 # pypi
-          - ruff==0.9.4 # pypi
+          - ruff==0.9.9 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:
