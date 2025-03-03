@@ -3,7 +3,6 @@ inherits:
   - utils:base
   - utils:fix
   - utils:no-design-checks
-  - utils:unsafe
 
 ignore-patterns:
   - ^tilecloud/scripts/tc_.*.py
@@ -15,7 +14,10 @@ pylint:
   disable:
     - cyclic-import # see: https://github.com/PyCQA/pylint/issues/850
 
+mypy:
+  options:
+    python-version: '3.10'
+
 ruff:
-  disable:
-    - D102 # Missing docstring in public method
-    - D107 # Missing docstring in `__init__`
+  options:
+    target-version: py310

@@ -1,5 +1,5 @@
-FROM ghcr.io/osgeo/gdal:ubuntu-small-3.10.2 as base-all
-LABEL maintainer Camptocamp "info@camptocamp.com"
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.10.2 AS base-all
+LABEL org.opencontainers.image.authors="Camptocamp <info@camptocamp.com>"
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
@@ -13,7 +13,7 @@ ENV PATH=/venv/bin:$PATH
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
-FROM base-all as poetry
+FROM base-all AS poetry
 
 # Install Poetry
 WORKDIR /poetry
@@ -27,7 +27,7 @@ ENV POETRY_DYNAMIC_VERSIONING_BYPASS=0.0.0
 RUN poetry export --extras=all --with=dev --output=/poetry/requirements-dev.txt
 
 # Base, the biggest thing is to install the Python packages
-FROM base-all as base
+FROM base-all AS base
 
 WORKDIR /app
 

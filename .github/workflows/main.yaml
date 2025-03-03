@@ -40,8 +40,8 @@ jobs:
           path: ~/.cache/pre-commit
           key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: "pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}\npre-commit-"
-      - run: pre-commit run --all-files
-      - run: git diff --exit-code --patch > /tmp/pre-commit.patch || true
+      - run: pre-commit run --all-files --color=always
+      - run: git diff --exit-code --patch > /tmp/pre-commit.patch; git diff --color; git reset --hard || true
         if: failure()
       - uses: actions/upload-artifact@v4
         with:
@@ -60,12 +60,14 @@ jobs:
         if: always()
 
       - name: Publish
-        run: c2cciutils-publish
+        run: tag-publish
         if: |
           env.HAS_SECRETS == 'HAS_SECRETS'
           && github.event_name == 'push'
           && ( github.ref_type == 'tag' || github.ref_name == 'master' )
-      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch; git diff --color; git reset --hard || true
         if: failure()
       - uses: actions/upload-artifact@v4
         with:
@@ -73,3 +75,7 @@ jobs:
           path: /tmp/dpkg-versions.patch
           retention-days: 1
         if: failure()
+permissions:
+  contents: write
+  packages: write
+  id-token: write
