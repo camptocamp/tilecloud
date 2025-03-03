@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 import tilecloud.lib.memcached
 from tilecloud import Tile, TileLayout, TileStore
@@ -25,7 +25,7 @@ class MemcachedTileStore(TileStore):
         flags, _, _ = self.client.get(self.tilelayout.filename(tile.tilecoord, tile.metadata))
         return flags is not None
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         flags, value, cas = self.client.get(self.tilelayout.filename(tile.tilecoord, tile.metadata))
         tile.memcached_flags = flags  # type: ignore
         tile.data = value

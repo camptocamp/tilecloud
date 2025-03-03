@@ -1,4 +1,3 @@
-from typing import Optional
 
 from tilecloud import Tile
 
@@ -12,7 +11,7 @@ class ContentTypeAdder:
         that the content type will be determined based on the tile data.
     """
 
-    def __init__(self, content_type: Optional[str] = None) -> None:
+    def __init__(self, content_type: str | None = None) -> None:
         self.content_type = content_type
 
     def __call__(self, tile: Tile) -> Tile:

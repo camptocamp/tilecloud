@@ -1,7 +1,7 @@
 import logging
 import os
 from collections.abc import Iterator
-from typing import Any, Optional
+from typing import Any
 
 from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
@@ -17,10 +17,10 @@ class AzureStorageBlobTileStore(TileStore):
     def __init__(
         self,
         tilelayout: TileLayout,
-        container: Optional[str] = None,
+        container: str | None = None,
         dry_run: bool = False,
-        cache_control: Optional[str] = None,
-        container_client: Optional[ContainerClient] = None,
+        cache_control: str | None = None,
+        container_client: ContainerClient | None = None,
         **kwargs: Any,
     ):
         if container_client is None:
@@ -68,7 +68,7 @@ class AzureStorageBlobTileStore(TileStore):
             tile.error = exc
         return tile
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         try:
             blob = self.container_client.get_blob_client(blob=key_name)

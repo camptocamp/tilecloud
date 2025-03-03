@@ -1,5 +1,4 @@
 import time
-from typing import Optional
 
 from tilecloud import Tile
 
@@ -10,7 +9,7 @@ class RateLimit:
     def __init__(self, rate: float):
         self.rate = rate
         self.count = 0
-        self.start: Optional[float] = None
+        self.start: float | None = None
 
     def __call__(self, tile: Tile) -> Tile:
         if tile:

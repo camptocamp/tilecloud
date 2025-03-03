@@ -1,6 +1,6 @@
 import logging
 from collections.abc import Iterable
-from typing import Any, Optional
+from typing import Any
 
 import requests
 
@@ -15,7 +15,7 @@ class URLTileStore(TileStore):
     def __init__(
         self,
         tilelayouts: Iterable[TileLayout],
-        headers: Optional[Any] = None,
+        headers: Any | None = None,
         allows_no_contenttype: bool = False,
         **kwargs: Any,
     ) -> None:
@@ -26,7 +26,7 @@ class URLTileStore(TileStore):
         if headers is not None:
             self.session.headers.update(headers)
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         if tile is None:
             return None
         if self.bounding_pyramid is not None and tile.tilecoord not in self.bounding_pyramid:

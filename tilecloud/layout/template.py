@@ -1,6 +1,6 @@
 import re
 from re import Match
-from typing import Any, Optional
+from typing import Any
 
 from tilecloud import TileCoord
 from tilecloud.layout.re_ import RETileLayout
@@ -29,7 +29,7 @@ class TemplateTileLayout(RETileLayout):
         filename_re = re.compile("".join(filename_patterns))
         RETileLayout.__init__(self, pattern, filename_re)
 
-    def filename(self, tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
+    def filename(self, tilecoord: TileCoord, metadata: Any | None = None) -> str:
         return self.template % {"z": tilecoord.z, "x": tilecoord.x, "y": tilecoord.y}
 
     @staticmethod

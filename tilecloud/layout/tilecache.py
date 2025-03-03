@@ -1,6 +1,6 @@
 import re
 from re import Match
-from typing import Any, Optional
+from typing import Any
 
 from tilecloud import TileCoord
 from tilecloud.layout.re_ import RETileLayout
@@ -15,7 +15,7 @@ class TileCacheDiskLayout(RETileLayout):
     def __init__(self) -> None:
         RETileLayout.__init__(self, self.PATTERN, self.RE)
 
-    def filename(self, tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
+    def filename(self, tilecoord: TileCoord, metadata: Any | None = None) -> str:
         zoom_string = f"{tilecoord.z:02d}"
         x_string = f"{tilecoord.x:09f}"
         y_string = f"{tilecoord.y:09f}"

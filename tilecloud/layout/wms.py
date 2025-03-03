@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import urlencode
 
 from tilecloud import NotSupportedOperation, TileCoord, TileGrid, TileLayout
@@ -15,7 +15,7 @@ class WMSTileLayout(TileLayout):
         format_pattern: str,
         tilegrid: TileGrid,
         border: int = 0,
-        params: Optional[dict[str, str]] = None,
+        params: dict[str, str] | None = None,
     ) -> None:
         if params is None:
             params = {}
@@ -36,7 +36,7 @@ class WMSTileLayout(TileLayout):
         if params.get("FILTER", None) is not None:
             self.params["FILTER"] = params["FILTER"].format(**params)
 
-    def filename(self, tilecoord: TileCoord, metadata: Optional[Any] = None) -> str:
+    def filename(self, tilecoord: TileCoord, metadata: Any | None = None) -> str:
         metadata = {} if metadata is None else metadata
         bbox = self.tilegrid.extent(tilecoord, self.border)
         size = tilecoord.n * self.tilegrid.tile_size + 2 * self.border

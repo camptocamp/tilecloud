@@ -1,6 +1,5 @@
 from collections.abc import Iterator, Sequence
 from math import floor
-from typing import Optional, Union
 
 from tilecloud import Bounds, NotSupportedOperation, TileCoord, TileGrid
 
@@ -14,9 +13,9 @@ class FreeTileGrid(TileGrid):
 
     def __init__(
         self,
-        resolutions: Sequence[Union[int, float]],
-        max_extent: Optional[Union[tuple[int, int, int, int], tuple[float, float, float, float]]] = None,
-        tile_size: Optional[float] = None,
+        resolutions: Sequence[int | float],
+        max_extent: tuple[int, int, int, int] | tuple[float, float, float, float] | None = None,
+        tile_size: float | None = None,
         scale: int = 1,
         flip_y: bool = False,
     ) -> None:
@@ -25,7 +24,7 @@ class FreeTileGrid(TileGrid):
         assert all(isinstance(r, (int, float)) for r in resolutions)
         self.resolutions = resolutions
         self.scale = float(scale)
-        self.parent_zs: list[Optional[int]] = []
+        self.parent_zs: list[int | None] = []
         self.child_zs: list[list[int]] = []
         for i, resolution in enumerate(self.resolutions):
             for parent in range(i - 1, -1, -1):
@@ -74,7 +73,7 @@ class FreeTileGrid(TileGrid):
         )
         return minx, miny, maxx, maxy
 
-    def parent(self, tilecoord: TileCoord) -> Optional[TileCoord]:
+    def parent(self, tilecoord: TileCoord) -> TileCoord | None:
         parent_z = self.parent_zs[tilecoord.z]
         if parent_z is None:
             return None

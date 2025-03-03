@@ -4,7 +4,7 @@ import socket
 import sys
 import time
 from collections.abc import Iterable, Iterator
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 import redis.sentinel
 from prometheus_client import Counter, Gauge
@@ -38,7 +38,7 @@ class RedisTileStore(TileStore):
 
     def __init__(
         self,
-        url: Optional[str] = None,
+        url: str | None = None,
         name: str = "tilecloud",
         stop_if_empty: bool = True,
         timeout: int = 5,
@@ -48,7 +48,7 @@ class RedisTileStore(TileStore):
         max_errors_nb: int = 100,
         pending_count: int = 10,
         pending_max_count: int = sys.maxsize,
-        sentinels: Optional[list[tuple[str, int]]] = None,
+        sentinels: list[tuple[str, int]] | None = None,
         service_name: str = "mymaster",
         sentinel_kwargs: Any = None,
         connection_kwargs: Any = None,
@@ -313,7 +313,7 @@ class RedisTileStore(TileStore):
         # Empty means there are pending jobs, but they are not old enough to be stolen
         return [], has_pendings
 
-    def get_status(self) -> dict[str, Union[str, int]]:
+    def get_status(self) -> dict[str, str | int]:
         """Get a map of stats."""
         nb_messages = self._slave.xlen(self._name)
         pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore[no-untyped-call]

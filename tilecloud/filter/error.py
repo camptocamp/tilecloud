@@ -1,6 +1,5 @@
 """Module includes filters for dealing with errors in tiles."""
 
-from typing import Optional
 
 from tilecloud import Tile
 from tilecloud.filter.logger import Logger
@@ -21,7 +20,7 @@ class CollectErrors:
 class DropErrors:
     """Create a filter for dropping all tiles with errors."""
 
-    def __call__(self, tile: Tile) -> Optional[Tile]:
+    def __call__(self, tile: Tile) -> Tile | None:
         if not tile or tile.error:
             return None
         return tile
@@ -30,7 +29,7 @@ class DropErrors:
 class LogErrors(Logger):
     """Create a filter for logging all tiles with errors."""
 
-    def __call__(self, tile: Optional[Tile]) -> Optional[Tile]:
+    def __call__(self, tile: Tile | None) -> Tile | None:
         if tile and tile.error:
             Logger.__call__(self, tile)
         return tile

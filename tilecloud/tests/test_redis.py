@@ -18,7 +18,7 @@ skip_no_redis = pytest.mark.skipif(
 )
 
 
-@pytest.fixture()
+@pytest.fixture
 def store():
     store = RedisTileStore(
         url,
@@ -30,7 +30,7 @@ def store():
         max_errors_age=1,
     )
     store.delete_all()
-    yield store
+    return store
 
 
 @skip_no_redis

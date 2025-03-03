@@ -4,7 +4,7 @@ import zipfile
 from collections import defaultdict
 from collections.abc import Iterator
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from tilecloud import NotSupportedOperation, Tile, TileLayout, TileStore
 from tilecloud.layout.osm import OSMTileLayout
@@ -14,7 +14,7 @@ from tilecloud.layout.wrapped import WrappedTileLayout
 class ZipTileStore(TileStore):
     """A tile store that reads and writes tiles from a zip file."""
 
-    def __init__(self, zipfile: zipfile.ZipFile, layout: Optional[TileLayout] = None, **kwargs: Any):  # pylint: disable=redefined-outer-name
+    def __init__(self, zipfile: zipfile.ZipFile, layout: TileLayout | None = None, **kwargs: Any):  # pylint: disable=redefined-outer-name
         TileStore.__init__(self, **kwargs)
         self.zipfile = zipfile
         if layout is None:
@@ -41,7 +41,7 @@ class ZipTileStore(TileStore):
         except KeyError:
             return False
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         if tile is None:
             return None
         if hasattr(tile, "zipinfo"):

@@ -1,5 +1,5 @@
 from collections.abc import Iterator
-from typing import Any, Optional
+from typing import Any
 
 from tilecloud import Tile, TileStore
 
@@ -7,7 +7,7 @@ from tilecloud import Tile, TileStore
 class DictTileStore(TileStore):
     """Tiles stored in a dictionary."""
 
-    def __init__(self, tiles: Optional[Any] = None, **kwargs: Any) -> None:
+    def __init__(self, tiles: Any | None = None, **kwargs: Any) -> None:
         self.tiles = tiles or {}
         TileStore.__init__(self, **kwargs)
 
@@ -21,7 +21,7 @@ class DictTileStore(TileStore):
         del self.tiles[tile.tilecoord]
         return tile
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         if tile and tile.tilecoord in self.tiles:
             tile.__dict__.update(self.tiles[tile.tilecoord])
             return tile

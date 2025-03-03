@@ -1,8 +1,8 @@
 import builtins
 import logging
 import time
-from collections.abc import Iterable, Iterator
-from typing import Any, Callable
+from collections.abc import Callable, Iterable, Iterator
+from typing import Any
 
 import botocore.client
 import botocore.exceptions

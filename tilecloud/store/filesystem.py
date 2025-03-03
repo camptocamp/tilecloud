@@ -3,7 +3,7 @@ import logging
 import os
 import os.path
 from collections.abc import Iterator
-from typing import Any, Optional
+from typing import Any
 
 from tilecloud import Tile, TileLayout, TileStore
 
@@ -35,7 +35,7 @@ class FilesystemTileStore(TileStore):
                 tile.data = file.read()
             yield tile
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         try:
             filename = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         except Exception as exception:  # pylint: disable=broad-except

@@ -4,7 +4,7 @@ import mimetypes
 import sqlite3
 from collections.abc import Iterator
 from sqlite3 import Connection
-from typing import Any, Optional
+from typing import Any
 
 from tilecloud import BoundingPyramid, Bounds, Tile, TileCoord, TileStore
 from tilecloud.lib.sqlite3_ import SQLiteDict, _query
@@ -46,7 +46,7 @@ class Tiles(SQLiteDict):
         self.tilecoord_in_topleft = tilecoord_in_topleft
         SQLiteDict.__init__(self, *args, **kwargs)
 
-    def _packitem(self, key: TileCoord, value: Optional[bytes]) -> tuple[int, int, int, Optional[memoryview]]:
+    def _packitem(self, key: TileCoord, value: bytes | None) -> tuple[int, int, int, memoryview | None]:
         y = key.y if self.tilecoord_in_topleft else (1 << key.z) - key.y - 1  # pylint: disable=invalid-name
         return (key.z, key.x, y, sqlite3.Binary(value) if value is not None else None)
 
@@ -110,7 +110,7 @@ class MBTilesTileStore(TileStore):
             bounds[z] = (Bounds(xstart, xstop), Bounds(ystart, ystop))
         return BoundingPyramid(bounds)
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         try:
             tile.data = self.tiles[tile.tilecoord]
         except KeyError:

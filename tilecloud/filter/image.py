@@ -5,7 +5,7 @@ It requires the PIL lib.
 """
 
 from io import BytesIO
-from typing import Any, Optional
+from typing import Any
 
 import PIL.Image
 import PIL.ImageFilter
@@ -55,7 +55,7 @@ class MergeFilter:
         other tile. Default is ``None``.
     """
 
-    def __init__(self, tilestores: list[TileStore], content_type: Optional[str] = None, **kwargs: Any):
+    def __init__(self, tilestores: list[TileStore], content_type: str | None = None, **kwargs: Any):
         self.tilestores = list(tilestores)
         self.content_type = content_type
         self.kwargs = kwargs

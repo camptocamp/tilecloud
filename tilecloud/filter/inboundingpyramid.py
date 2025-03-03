@@ -1,4 +1,3 @@
-from typing import Optional
 
 from tilecloud import BoundingPyramid, Tile
 
@@ -16,7 +15,7 @@ class InBoundingPyramid:
     def __init__(self, bounding_pyramid: BoundingPyramid):
         self.bounding_pyramid = bounding_pyramid
 
-    def __call__(self, tile: Tile) -> Optional[Tile]:
+    def __call__(self, tile: Tile) -> Tile | None:
         if tile is None or tile.tilecoord not in self.bounding_pyramid:
             return None
         return tile

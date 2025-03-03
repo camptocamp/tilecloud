@@ -1,5 +1,5 @@
 from collections.abc import Iterator
-from typing import Any, Optional
+from typing import Any
 
 import bsddb3 as bsddb  # pylint: disable=import-error
 
@@ -30,7 +30,7 @@ class BSDDBTileStore(TileStore):
             tile = Tile(TileCoord.from_string(key), content_type=self.content_type, data=data)
             yield tile
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         try:
             tile.content_type = self.content_type
             tile.data = self.db[str(tile.tilecoord).encode("utf-8")]
