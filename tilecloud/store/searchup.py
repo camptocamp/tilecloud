@@ -1,4 +1,3 @@
-
 from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 
 

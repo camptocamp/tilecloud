@@ -14,9 +14,7 @@ class FilteredTileStore(TileStore):
         self.filters = filters
 
     def get_one(self, tile: Tile) -> Tile | None:
-        def reduce_function(
-            tile: Tile | None, filter_pattern: Callable[[Tile | None], Tile]
-        ) -> Tile | None:
+        def reduce_function(tile: Tile | None, filter_pattern: Callable[[Tile | None], Tile]) -> Tile | None:
             return filter_pattern(tile)
 
         return reduce(reduce_function, self.filters, self.tilestore.get_one(tile))
