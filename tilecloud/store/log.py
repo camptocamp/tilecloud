@@ -9,7 +9,7 @@ from tilecloud.layout.re_ import RETileLayout
 class LogTileStore(TileStore):
     """Generates all tile coordinates matching the specified layout from file."""
 
-    def __init__(self, tilelayout: RETileLayout, file: IO[str], **kwargs: Any):
+    def __init__(self, tilelayout: RETileLayout, file: IO[str], **kwargs: Any) -> None:
         TileStore.__init__(self, **kwargs)
         self.tilelayout = tilelayout
         self.file = file
@@ -31,4 +31,4 @@ class LogTileStore(TileStore):
         return tile
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

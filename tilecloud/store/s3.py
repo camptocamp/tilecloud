@@ -1,7 +1,7 @@
 import logging
 import threading
 from collections.abc import Iterator
-from typing import Any, Optional, cast
+from typing import Any, cast
 
 import boto3
 import botocore.client
@@ -23,12 +23,12 @@ class S3TileStore(TileStore):
         bucket: str,
         tilelayout: TileLayout,
         dry_run: bool = False,
-        s3_host: Optional[Any] = None,
-        cache_control: Optional[Any] = None,
+        s3_host: Any | None = None,
+        cache_control: Any | None = None,
         **kwargs: Any,
     ) -> None:
         self._s3_host = s3_host
-        self._client: Optional[botocore.client.S3] = None  # pylint: disable=no-member
+        self._client: botocore.client.S3 | None = None  # pylint: disable=no-member
         self.bucket = bucket
         self.tilelayout = tilelayout
         self.dry_run = dry_run
@@ -57,7 +57,7 @@ class S3TileStore(TileStore):
             tile.error = exc
         return tile
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         key_name = self.tilelayout.filename(tile.tilecoord, tile.metadata)
         try:
             response = self.client.get_object(Bucket=self.bucket, Key=key_name)
@@ -93,7 +93,11 @@ class S3TileStore(TileStore):
         if not self.dry_run:
             try:
                 self.client.put_object(
-                    ACL="public-read", Body=tile.data, Key=key_name, Bucket=self.bucket, **args
+                    ACL="public-read",
+                    Body=tile.data,
+                    Key=key_name,
+                    Bucket=self.bucket,
+                    **args,
                 )
             except botocore.exceptions.ClientError as exc:
                 _LOGGER.warning("Error while putting tile %s", tile, exc_info=True)
@@ -111,10 +115,12 @@ def _get_status(s3_client_exception: botocore.exceptions.ClientError) -> int:
     return cast(int, s3_client_exception.response["ResponseMetadata"]["HTTPStatusCode"])
 
 
-def get_client(s3_host: Optional[str]) -> "botocore.client.S3":
+def get_client(s3_host: str | None) -> "botocore.client.S3":
     """Get a client for S3."""
     config = botocore.config.Config(connect_timeout=_CLIENT_TIMEOUT, read_timeout=_CLIENT_TIMEOUT)
     with _LOCK:
         return boto3.client(
-            "s3", endpoint_url=(f"https://{s3_host}/") if s3_host is not None else None, config=config
+            "s3",
+            endpoint_url=(f"https://{s3_host}/") if s3_host is not None else None,
+            config=config,
         )

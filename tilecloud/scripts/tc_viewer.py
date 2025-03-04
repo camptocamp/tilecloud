@@ -56,12 +56,11 @@ def openwebglobe_layersettings(index):
     content_type = getattr(tilestore, "content_type", "image/jpeg")
     if content_type == "application/json":
         return dict(extent=extent, maxlod=maxlod, name=name, type="elevation")
-    elif content_type == "image/jpeg" or tilestore.content_type is None:
+    if content_type == "image/jpeg" or tilestore.content_type is None:
         return dict(extent=extent, format="jpg", maxlod=maxlod, name=name, type="image")
-    elif content_type == "image/png":
+    if content_type == "image/png":
         return dict(extent=extent, format="png", maxlod=maxlod, name=name, type="image")
-    else:
-        raise AssertionError()
+    raise AssertionError
 
 
 @bottle.route("/openlayers")

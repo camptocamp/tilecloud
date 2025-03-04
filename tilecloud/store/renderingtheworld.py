@@ -1,6 +1,5 @@
 from collections import deque
-from collections.abc import Iterator
-from typing import Callable, Optional
+from collections.abc import Callable, Iterator
 
 from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 from tilecloud.grid.quad import QuadTileGrid
@@ -12,10 +11,10 @@ class RenderingTheWorldTileStore(TileStore):
     def __init__(
         self,
         subdivide: Callable[[Tile], bool],
-        tilegrid: Optional[TileGrid] = None,
-        queue: Optional[deque[Tile]] = None,
+        tilegrid: TileGrid | None = None,
+        queue: deque[Tile] | None = None,
         seeds: tuple[Tile, ...] = (),
-    ):
+    ) -> None:
         super().__init__()
         self.subdivide = subdivide
         self.tilegrid = tilegrid
@@ -40,8 +39,8 @@ class RenderingTheWorldTileStore(TileStore):
                 self.queue.append(Tile(tilecoord))
         return tile
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
-        raise NotSupportedOperation()
+    def get_one(self, tile: Tile) -> Tile | None:
+        raise NotSupportedOperation
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

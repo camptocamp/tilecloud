@@ -1,7 +1,5 @@
 """Module includes filters for dealing with errors in tiles."""
 
-from typing import Optional
-
 from tilecloud import Tile
 from tilecloud.filter.logger import Logger
 
@@ -21,7 +19,7 @@ class CollectErrors:
 class DropErrors:
     """Create a filter for dropping all tiles with errors."""
 
-    def __call__(self, tile: Tile) -> Optional[Tile]:
+    def __call__(self, tile: Tile) -> Tile | None:
         if not tile or tile.error:
             return None
         return tile
@@ -30,7 +28,7 @@ class DropErrors:
 class LogErrors(Logger):
     """Create a filter for logging all tiles with errors."""
 
-    def __call__(self, tile: Optional[Tile]) -> Optional[Tile]:
+    def __call__(self, tile: Tile | None) -> Tile | None:
         if tile and tile.error:
             Logger.__call__(self, tile)
         return tile
@@ -48,7 +46,7 @@ class MaximumConsecutiveErrors:
         exceeded a :class:`TooManyErrors` exception is raised.
     """
 
-    def __init__(self, max_consecutive_errors: int):
+    def __init__(self, max_consecutive_errors: int) -> None:
         self.max_consecutive_errors = max_consecutive_errors
         self.consecutive_errors = 0
 
@@ -76,7 +74,7 @@ class MaximumErrorRate:
        exception can be raised. Defaults to 8.
     """
 
-    def __init__(self, max_error_rate: float, min_tiles: int = 8):
+    def __init__(self, max_error_rate: float, min_tiles: int = 8) -> None:
         self.max_error_rate = max_error_rate
         self.min_tiles = min_tiles
         self.tile_count = 0
@@ -103,7 +101,7 @@ class MaximumErrors:
         exception is raised.
     """
 
-    def __init__(self, max_errors: int):
+    def __init__(self, max_errors: int) -> None:
         self.max_errors = max_errors
         self.error_count = 0
 

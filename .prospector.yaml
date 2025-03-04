@@ -3,11 +3,10 @@ inherits:
   - utils:base
   - utils:fix
   - utils:no-design-checks
-  - utils:unsafe
 
 ignore-patterns:
-  - ^tilecloud/scripts/tc_.*.py
-  - ^examples/.*.py
+  - ^tilecloud/scripts/tc_.*\.py
+  - ^examples/.*\.py
 
 pylint:
   options:
@@ -15,7 +14,25 @@ pylint:
   disable:
     - cyclic-import # see: https://github.com/PyCQA/pylint/issues/850
 
+mypy:
+  options:
+    python-version: '3.10'
+
 ruff:
+  options:
+    target-version: py310
   disable:
     - D102 # Missing docstring in public method
-    - D107 # Missing docstring in `__init__`
+    - ARG002 # Unused method argument
+    - PERF203 # `try`-`except` within a loop incurs performance overhead
+    - TRY300 # Consider moving this statement to an `else` block
+    - PTH # Path
+    - BLE001 # Do not catch blind exception
+    - TD # TODO
+    - FIX # FIXME
+    - PGH003 # Use specific rule codes when ignoring type issues
+    - TRY003 # Avoid specifying long messages outside the exception class
+    - ISC003 # Explicitly concatenated string should be implicitly concatenated
+    - N818 # Exception name `{}` should be named with an Error suffix
+    - G201 # Logging `.exception(...)` should be used instead of `.error(..., exc_info=True)`
+    - A005 # Module `queue` shadows a Python standard-library module

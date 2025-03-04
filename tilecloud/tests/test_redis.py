@@ -18,7 +18,7 @@ skip_no_redis = pytest.mark.skipif(
 )
 
 
-@pytest.fixture()
+@pytest.fixture
 def store():
     store = RedisTileStore(
         url,
@@ -30,7 +30,7 @@ def store():
         max_errors_age=1,
     )
     store.delete_all()
-    yield store
+    return store
 
 
 @skip_no_redis
@@ -68,7 +68,7 @@ def test_recovery_from_failing_slave(store):
     for y in range(10):
         store.put_one(Tile(TileCoord(0, 0, y)))
 
-    with pytest.raises(SlaveException):
+    with pytest.raises(SlaveException):  # noqa: PT012
         for _ in store.list():
             raise SlaveException  # fail the processing of the first tile
 

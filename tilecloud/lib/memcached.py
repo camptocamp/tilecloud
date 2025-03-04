@@ -1,6 +1,5 @@
 import re
 import socket
-from typing import Optional
 
 
 class MemcachedError(RuntimeError):
@@ -12,7 +11,7 @@ class MemcachedClient:
 
     VALUE_RE = re.compile(rb"VALUE\s+(?P<key>\S+)\s+(?P<flags>\d+)\s+(?P<bytes>\d+)(?:\s+(?P<cas>\d+))?\Z")
 
-    def __init__(self, host: str = "localhost", port: int = 11211):
+    def __init__(self, host: str = "localhost", port: int = 11211) -> None:
         self.socket = socket.create_connection((host, port))
         self.buffer = b""
 
@@ -25,7 +24,7 @@ class MemcachedClient:
             return False
         raise MemcachedError(line)
 
-    def get(self, key: str) -> tuple[Optional[int], Optional[bytes], Optional[int]]:
+    def get(self, key: str) -> tuple[int | None, bytes | None, int | None]:
         self.writeline(f"get {key}".encode())
         line = self.readline()
         if line == b"END":

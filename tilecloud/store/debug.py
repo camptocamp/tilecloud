@@ -1,5 +1,5 @@
 from io import BytesIO
-from typing import Any, Optional
+from typing import Any
 
 import PIL.Image
 import PIL.ImageDraw
@@ -12,11 +12,11 @@ from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 class DebugTileStore(TileStore):
     """A tile store that generates a debug image."""
 
-    def __init__(self, color: tuple[int, int, int] = (0, 0, 0), **kwargs: Any):
+    def __init__(self, color: tuple[int, int, int] = (0, 0, 0), **kwargs: Any) -> None:
         TileStore.__init__(self, content_type="image/png", **kwargs)
         self.color = color
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         image = PIL.Image.new("RGBA", (256, 256), (0, 0, 0, 0))
         draw = PIL.ImageDraw.Draw(image)
         draw.line([(0, 255), (0, 0), (255, 0)], fill=self.color)
@@ -34,7 +34,7 @@ class DebugTileStore(TileStore):
         return tile
 
     def put_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

@@ -1,6 +1,6 @@
 import logging
 from collections.abc import Iterable
-from typing import Any, Optional
+from typing import Any
 
 import requests
 
@@ -15,7 +15,7 @@ class URLTileStore(TileStore):
     def __init__(
         self,
         tilelayouts: Iterable[TileLayout],
-        headers: Optional[Any] = None,
+        headers: Any | None = None,
         allows_no_contenttype: bool = False,
         **kwargs: Any,
     ) -> None:
@@ -26,7 +26,7 @@ class URLTileStore(TileStore):
         if headers is not None:
             self.session.headers.update(headers)
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         if tile is None:
             return None
         if self.bounding_pyramid is not None and tile.tilecoord not in self.bounding_pyramid:
@@ -57,11 +57,10 @@ class URLTileStore(TileStore):
                         tile.data = response.content
                     else:
                         tile.error = f"URL: {url}\n{response.text}"
+                elif self.allows_no_contenttype:
+                    tile.data = response.content
                 else:
-                    if self.allows_no_contenttype:
-                        tile.data = response.content
-                    else:
-                        tile.error = f"URL: {url}\nThe Content-Type header is missing"
+                    tile.error = f"URL: {url}\nThe Content-Type header is missing"
 
             else:
                 tile.error = f"URL: {url}\n{response.status_code}: {response.reason}\n{response.text}"
@@ -71,7 +70,7 @@ class URLTileStore(TileStore):
         return tile
 
     def put_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

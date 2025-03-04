@@ -1,17 +1,15 @@
-from typing import Optional
-
 from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 
 
 class SearchUpTileStore(TileStore):
     """A tile store that searches up the tile grid for a tile."""
 
-    def __init__(self, tilestore: TileStore, tilegrid: TileGrid):
+    def __init__(self, tilestore: TileStore, tilegrid: TileGrid) -> None:
         super().__init__()
         self.tilestore = tilestore
         self.tilegrid = tilegrid
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         if not tile:
             return None
         test_tile = Tile(tile.tilecoord)
@@ -29,7 +27,7 @@ class SearchUpTileStore(TileStore):
         return None
 
     def put_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

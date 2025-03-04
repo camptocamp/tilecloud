@@ -5,7 +5,7 @@ It requires the PIL lib.
 """
 
 from io import BytesIO
-from typing import Any, Optional
+from typing import Any
 
 import PIL.Image
 import PIL.ImageFilter
@@ -26,7 +26,7 @@ class ImageFormatConverter:
         Extra arguments passed to ``PIL`` when opening the tile image.
     """
 
-    def __init__(self, content_type: str, **kwargs: Any):
+    def __init__(self, content_type: str, **kwargs: Any) -> None:
         self.content_type = content_type
         self.kwargs = kwargs
         self.format = FORMAT_BY_CONTENT_TYPE[content_type]
@@ -55,7 +55,7 @@ class MergeFilter:
         other tile. Default is ``None``.
     """
 
-    def __init__(self, tilestores: list[TileStore], content_type: Optional[str] = None, **kwargs: Any):
+    def __init__(self, tilestores: list[TileStore], content_type: str | None = None, **kwargs: Any) -> None:
         self.tilestores = list(tilestores)
         self.content_type = content_type
         self.kwargs = kwargs
@@ -91,7 +91,7 @@ class PILImageFilter:
         Extra params passed to the PIL ``save`` function.
     """
 
-    def __init__(self, image_filter: PIL.ImageFilter.Filter, **kwargs: Any):
+    def __init__(self, image_filter: PIL.ImageFilter.Filter, **kwargs: Any) -> None:
         self.filter = image_filter
         self.kwargs = kwargs
 

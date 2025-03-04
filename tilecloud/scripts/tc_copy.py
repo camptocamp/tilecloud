@@ -108,7 +108,7 @@ def main() -> None:
         logging.basicConfig(level=logging.INFO)
         if benchmark:
             keys = ["get"]
-            keys.extend("generate-%i" % (i,) for i in range(0, len(generate)))
+            keys.extend("generate-%i" % (i,) for i in range(len(generate)))
             keys.extend(["put", "delete"])
             for key in keys:
                 if key in benchmark.statisticss:
@@ -118,7 +118,7 @@ def main() -> None:
                             key,
                             statistics,
                             f" ({1.0 / statistics.mean:.1f} tiles/s)" if statistics.n else "",
-                        )
+                        ),
                     )
 
 

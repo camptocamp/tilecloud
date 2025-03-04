@@ -1,5 +1,5 @@
 from json import dumps
-from typing import Any, Optional
+from typing import Any
 
 from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 
@@ -24,11 +24,11 @@ class MapnikTileStore(TileStore):
         image_buffer: int = 0,
         output_format: str = "png256",
         resolution: int = 2,
-        layers_fields: Optional[dict[str, list[str]]] = None,
+        layers_fields: dict[str, list[str]] | None = None,
         drop_empty_utfgrid: bool = False,
-        proj4_literal: Optional[str] = None,
+        proj4_literal: str | None = None,
         **kwargs: Any,
-    ):
+    ) -> None:
         """
         Construct a MapnikTileStore.
 
@@ -55,12 +55,12 @@ class MapnikTileStore(TileStore):
         self.drop_empty_utfgrid = drop_empty_utfgrid
 
         self.mapnik = mapnik.Map(tilegrid.tile_size, tilegrid.tile_size)
-        mapnik.load_map(self.mapnik, mapfile, True)
+        mapnik.load_map(self.mapnik, mapfile, True)  # noqa: FBT003
         self.mapnik.buffer_size = data_buffer
         if proj4_literal is not None:
             self.mapnik.srs = proj4_literal
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         bbox = self.tilegrid.extent(tile.tilecoord, self.buffer)
         bbox2d = mapnik.Box2d(bbox[0], bbox[1], bbox[2], bbox[3])
 
@@ -73,7 +73,10 @@ class MapnikTileStore(TileStore):
             for number, layer in enumerate(self.mapnik.layers):
                 if layer.name in self.layers_fields:
                     mapnik.render_layer(
-                        self.mapnik, grid, layer=number, fields=self.layers_fields[layer.name]
+                        self.mapnik,
+                        grid,
+                        layer=number,
+                        fields=self.layers_fields[layer.name],
                     )
 
             encode = grid.encode("utf", resolution=self.resolution)
@@ -89,7 +92,7 @@ class MapnikTileStore(TileStore):
         return tile
 
     def put_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

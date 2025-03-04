@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from tilecloud import BoundingPyramid, NotSupportedOperation, Tile, TileStore
 
@@ -6,11 +6,11 @@ from tilecloud import BoundingPyramid, NotSupportedOperation, Tile, TileStore
 class BoundingPyramidTileStore(TileStore):
     """All tiles in a bounding box."""
 
-    def __init__(self, bounding_pyramid: Optional[BoundingPyramid] = None, **kwargs: Any):
+    def __init__(self, bounding_pyramid: BoundingPyramid | None = None, **kwargs: Any) -> None:
         TileStore.__init__(self, **kwargs)
         self.bounding_pyramid = bounding_pyramid or BoundingPyramid()
 
-    def get_one(self, tile: Tile) -> Optional[Tile]:
+    def get_one(self, tile: Tile) -> Tile | None:
         if tile and tile.tilecoord in self.get_cheap_bounding_pyramid():
             return tile
         return None
@@ -24,4 +24,4 @@ class BoundingPyramidTileStore(TileStore):
         return tile
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

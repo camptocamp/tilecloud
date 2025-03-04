@@ -4,7 +4,7 @@ import socket
 import sys
 import time
 from collections.abc import Iterable, Iterator
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 import redis.sentinel
 from prometheus_client import Counter, Gauge
@@ -38,7 +38,7 @@ class RedisTileStore(TileStore):
 
     def __init__(
         self,
-        url: Optional[str] = None,
+        url: str | None = None,
         name: str = "tilecloud",
         stop_if_empty: bool = True,
         timeout: int = 5,
@@ -48,12 +48,12 @@ class RedisTileStore(TileStore):
         max_errors_nb: int = 100,
         pending_count: int = 10,
         pending_max_count: int = sys.maxsize,
-        sentinels: Optional[list[tuple[str, int]]] = None,
+        sentinels: list[tuple[str, int]] | None = None,
         service_name: str = "mymaster",
         sentinel_kwargs: Any = None,
         connection_kwargs: Any = None,
         **kwargs: Any,
-    ):
+    ) -> None:
         super().__init__(**kwargs)
 
         connection_kwargs = connection_kwargs or {}
@@ -61,7 +61,9 @@ class RedisTileStore(TileStore):
         if sentinels is not None:
             logger.debug("Initialize using sentinels")
             sentinel = redis.sentinel.Sentinel(
-                sentinels, sentinel_kwargs=sentinel_kwargs, **connection_kwargs
+                sentinels,
+                sentinel_kwargs=sentinel_kwargs,
+                **connection_kwargs,
             )
             self._master = sentinel.master_for(service_name)
             self._slave = sentinel.slave_for(service_name)
@@ -85,7 +87,9 @@ class RedisTileStore(TileStore):
         self._errors_name = self._name + b"_errors"
         try:
             logger.debug(
-                "Create the Redis stream name: %s, group name: %s, id: 0-0, MKSTREAM", name, STREAM_GROUP
+                "Create the Redis stream name: %s, group name: %s, id: 0-0, MKSTREAM",
+                name,
+                STREAM_GROUP,
             )
             self._master.xgroup_create(name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
         except redis.ResponseError as error:
@@ -154,7 +158,9 @@ class RedisTileStore(TileStore):
     def put_one(self, tile: Tile) -> Tile:
         try:
             logger.debug(
-                "Add tile to the Redis stream name: %s, fields: %s", self._name, encode_message(tile)
+                "Add tile to the Redis stream name: %s, fields: %s",
+                self._name,
+                encode_message(tile),
             )
             self._master.xadd(name=self._name, fields={"message": encode_message(tile)})
         except Exception as exception:  # pylint: disable=broad-except
@@ -191,11 +197,15 @@ class RedisTileStore(TileStore):
         logger.debug("Delete all tiles from Redis stream name: %s, group name: %s", self._name, STREAM_GROUP)
         self._master.xgroup_destroy(name=self._name, groupname=STREAM_GROUP)  # type: ignore[no-untyped-call]
         logger.debug(
-            "Create the Redis stream name: %s, group name: %s, id: 0-0, MKSTREAM", self._name, STREAM_GROUP
+            "Create the Redis stream name: %s, group name: %s, id: 0-0, MKSTREAM",
+            self._name,
+            STREAM_GROUP,
         )
         self._master.xgroup_create(name=self._name, groupname=STREAM_GROUP, id="0-0", mkstream=True)
         logger.debug(
-            "Delete all tiles from Redis stream name: %s, group name: %s", self._errors_name, STREAM_GROUP
+            "Delete all tiles from Redis stream name: %s, group name: %s",
+            self._errors_name,
+            STREAM_GROUP,
         )
         self._master.xtrim(name=self._errors_name, maxlen=0)
 
@@ -216,7 +226,11 @@ class RedisTileStore(TileStore):
                 self._pending_count,
             )
             pendings = self._master.xpending_range(
-                name=self._name, groupname=STREAM_GROUP, min=min_, max="+", count=self._pending_count
+                name=self._name,
+                groupname=STREAM_GROUP,
+                min=min_,
+                max="+",
+                count=self._pending_count,
             )
             if not pendings:
                 logger.debug("Empty pending")
@@ -313,7 +327,7 @@ class RedisTileStore(TileStore):
         # Empty means there are pending jobs, but they are not old enough to be stolen
         return [], has_pendings
 
-    def get_status(self) -> dict[str, Union[str, int]]:
+    def get_status(self) -> dict[str, str | int]:
         """Get a map of stats."""
         nb_messages = self._slave.xlen(self._name)
         pending = self._slave.xpending(self._name, STREAM_GROUP)  # type: ignore[no-untyped-call]
