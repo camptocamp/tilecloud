@@ -113,5 +113,5 @@ class MaximumErrors:
         return tile
 
 
-class TooManyErrors(RuntimeError):  # noqa: N818(ruff
+class TooManyErrors(RuntimeError):
     """TooManyErrors exception class."""
