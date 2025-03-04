@@ -32,9 +32,9 @@ class TestBounds(unittest.TestCase):
     def test_update(self) -> None:
         bounds1 = Bounds(1, 3)
         bounds2 = Bounds(3, 5)
-        self.assertTrue(bounds1.update(bounds2) is bounds1)
-        self.assertEqual(len(bounds1), 4)
-        self.assertEqual(list(bounds1), [1, 2, 3, 4])
+        assert bounds1.update(bounds2) is bounds1
+        assert len(bounds1) == 4
+        assert list(bounds1) == [1, 2, 3, 4]
 
     def test_update_empty(self) -> None:
         bounds1 = Bounds()
