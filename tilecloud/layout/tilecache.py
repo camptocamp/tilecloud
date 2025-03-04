@@ -28,7 +28,7 @@ class TileCacheDiskLayout(RETileLayout):
                 y_string[0:3],
                 y_string[3:6],
                 y_string[6:9],
-            )
+            ),
         )
 
     @staticmethod

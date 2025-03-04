@@ -19,11 +19,10 @@ def detect_edge(tilestore, z, first, last, other, horizontal, up):
                 last = middle
             else:
                 first = middle + 1
+        elif tile_exists:
+            first = middle + 1
         else:
-            if tile_exists:
-                first = middle + 1
-            else:
-                last = middle
+            last = middle
     return last
 
 

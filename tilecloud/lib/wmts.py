@@ -11,7 +11,7 @@ METERS_PER_UNIT = {"feet": 3.28084, "meters": 1, "degrees": 111118.752, "inch": 
 
 def _to_wsg84(srs: str, x: float, y: float) -> tuple[float, float]:  # pylint: disable=invalid-name
     return cast(
-        tuple[float, float], transform(Proj(init=srs.lower()), Proj(proj="latlong", datum="WGS84"), x, y)
+        tuple[float, float], transform(Proj(init=srs.lower()), Proj(proj="latlong", datum="WGS84"), x, y),
     )
 
 

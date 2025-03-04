@@ -25,7 +25,7 @@ BOUNDING_PYRAMID_SQL = textwrap.dedent(
         zoom_level
     ORDER BY
         zoom_level
-    """
+    """,
 )
 
 

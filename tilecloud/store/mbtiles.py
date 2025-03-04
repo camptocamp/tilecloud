@@ -76,7 +76,7 @@ class MBTilesTileStore(TileStore):
     SET_METADATA_ZOOMS_SQL = "SELECT MIN(zoom_level), MAX(zoom_level) FROM tiles"
 
     def __init__(
-        self, connection: Connection, commit: bool = True, tilecoord_in_topleft: bool = False, **kwargs: Any
+        self, connection: Connection, commit: bool = True, tilecoord_in_topleft: bool = False, **kwargs: Any,
     ) -> None:
         self.connection = connection
         self.metadata = Metadata(self.connection, commit)  # pylint: disable=no-member
@@ -105,7 +105,7 @@ class MBTilesTileStore(TileStore):
     def get_cheap_bounding_pyramid(self) -> BoundingPyramid:
         bounds = {}
         for z, xstart, xstop, ystart, ystop in _query(  # pylint: disable=invalid-name
-            self.connection, self.BOUNDING_PYRAMID_SQL
+            self.connection, self.BOUNDING_PYRAMID_SQL,
         ):
             bounds[z] = (Bounds(xstart, xstop), Bounds(ystart, ystop))
         return BoundingPyramid(bounds)

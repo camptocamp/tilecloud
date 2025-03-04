@@ -84,5 +84,5 @@ class QuadTileGrid(TileGrid):
 
     def zs(self) -> Iterable[int]:
         if self.max_zoom:
-            return range(0, self.max_zoom + 1)
+            return range(self.max_zoom + 1)
         return count(0)

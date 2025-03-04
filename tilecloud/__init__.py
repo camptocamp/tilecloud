@@ -149,7 +149,7 @@ class BoundingPyramid:
     """
 
     def __init__(
-        self, bounds: dict[int, tuple[Bounds, Bounds]] | None = None, tilegrid: Any | None = None
+        self, bounds: dict[int, tuple[Bounds, Bounds]] | None = None, tilegrid: Any | None = None,
     ) -> None:
         self.bounds = bounds or {}
         self.tilegrid = tilegrid
@@ -380,7 +380,8 @@ class TileCoord:
         """
         Construct a TileCoord.
 
-        Attributes:
+        Attributes
+        ----------
             z: Zoom level
             x: X coordinate
             y: Y coordinate
@@ -422,8 +423,8 @@ class TileCoord:
 
     def __iter__(self) -> Iterator["TileCoord"]:
         """Yield each TileCoord."""
-        for i in range(0, self.n):
-            for j in range(0, self.n):
+        for i in range(self.n):
+            for j in range(self.n):
                 yield TileCoord(self.z, self.x + i, self.y + j)
 
     def __repr__(self) -> str:  # pragma: no cover
@@ -516,7 +517,8 @@ class TileLayout:
         """
         Return the filename for the given tile coordinate.
 
-        Attributes:
+        Attributes
+        ----------
             tilecoord: Tile coordinate
 
         """
@@ -526,7 +528,8 @@ class TileLayout:
         """
         Return the tile coordinate for the given filename.
 
-        Attributes:
+        Attributes
+        ----------
             filename: Filename
 
         """
@@ -545,7 +548,8 @@ class TileStore:
         """
         Construct a :class:`TileStore`.
 
-        Attributes:
+        Attributes
+        ----------
             bounding_pyramid: Bounding pyramid
             content_type: Default content type for tiles in this store
             kwargs: Extra attributes
@@ -560,7 +564,8 @@ class TileStore:
         """
         Return true if this store contains ``tile``.
 
-        Attributes:
+        Attributes
+        ----------
             tile: Tile
 
         """
@@ -576,7 +581,8 @@ class TileStore:
         """
         Delete ``tiles`` from the store.
 
-        Attributes:
+        Attributes
+        ----------
             tiles: Input tilestream
 
         """
@@ -586,7 +592,8 @@ class TileStore:
         """
         Delete ``tile`` and return ``tile``.
 
-        Attributes:
+        Attributes
+        ----------
             tile: Tile
 
         """
@@ -596,7 +603,8 @@ class TileStore:
         """
         Add data to each of ``tiles``.
 
-        Attributes:
+        Attributes
+        ----------
             tiles: Tilestream
 
         """
@@ -609,7 +617,7 @@ class TileStore:
     def get_bounding_pyramid(self) -> BoundingPyramid:
         """Get the bounding pyramid that encloses all tiles in the store."""
         return reduce(
-            BoundingPyramid.add, map(attrgetter("tilecoord"), ifilter(None, self.list())), BoundingPyramid()
+            BoundingPyramid.add, map(attrgetter("tilecoord"), ifilter(None, self.list())), BoundingPyramid(),
         )
 
     def get_cheap_bounding_pyramid(self) -> BoundingPyramid | None:
@@ -625,7 +633,8 @@ class TileStore:
         """
         Add data to ``tile``, or return ``None`` if ``tile`` is not in the store.
 
-        Attributes:
+        Attributes
+        ----------
             tile: Tile
 
         """
@@ -641,7 +650,8 @@ class TileStore:
         """
         Store ``tiles`` in the store.
 
-        Attributes:
+        Attributes
+        ----------
             tiles: Tilestream
 
         """
@@ -651,7 +661,8 @@ class TileStore:
         """
         Store ``tile`` in the store.
 
-        Attributes:
+        Attributes
+        ----------
             tile: Tile
 
         """
@@ -662,7 +673,8 @@ class TileStore:
         """
         Construct a :class:`TileStore` from a name.
 
-        Attributes:
+        Attributes
+        ----------
             name: Name
 
         The following shortcuts are available:
