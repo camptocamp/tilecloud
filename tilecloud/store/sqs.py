@@ -37,7 +37,7 @@ class SQSTileStore(TileStore):
         queue: "botocore.client.SQS",
         on_empty: Callable[["botocore.client.SQS"], bool] = _maybe_stop,
         **kwargs: Any,
-    ):
+    ) -> None:
         TileStore.__init__(self, **kwargs)
         self.queue = queue
         self.on_empty = on_empty

@@ -14,7 +14,7 @@ class MemcachedTileStore(TileStore):
         flags: int = 0,
         exptime: int = 0,
         **kwargs: Any,
-    ):
+    ) -> None:
         TileStore.__init__(self, **kwargs)
         self.client = client
         self.tilelayout = tilelayout

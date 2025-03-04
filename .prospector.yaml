@@ -21,3 +21,13 @@ mypy:
 ruff:
   options:
     target-version: py310
+  disable:
+    - D102 # Missing docstring in public method
+    - ARG002 # Unused method argument
+    - PERF203 # `try`-`except` within a loop incurs performance overhead
+    - TRY300 # Consider moving this statement to an `else` block
+    - PTH # Path
+    - BLE001 # Do not catch blind exception
+    - TD # TODO
+    - FIX # FIXME
+    - PGH003 # Use specific rule codes when ignoring type issues

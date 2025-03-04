@@ -70,11 +70,12 @@ repos:
       - id: prospector
         args:
           - --profile=utils:pre-commit
+          - --profile=.prospector.yaml
           - --die-on-tool-error
           - --output-format=pylint
         additional_dependencies:
           - prospector-profile-duplicated==1.10.4 # pypi
-          - prospector-profile-utils==1.21.9 # pypi
+          - prospector-profile-utils==1.22.3 # pypi
         exclude: |-
           (?x)(
             ^tests?/?
@@ -92,7 +93,7 @@ repos:
           - --profile=utils:pre-commit
           - --profile=.prospector-tests.yaml
         additional_dependencies:
-          - prospector-profile-utils==1.21.4 # pypi
+          - prospector-profile-utils==1.22.3 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:

@@ -1,3 +1,4 @@
 ruff:
   disable:
     - PT027 # Use `pytest.raises` instead of unittest-style `assertRaises`
+    - UP031 # Use format specifiers instead of percent format

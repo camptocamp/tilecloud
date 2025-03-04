@@ -50,4 +50,4 @@ class WMSTileLayout(TileLayout):
         return self.url + "?" + urlencode(params)
 
     def tilecoord(self, filename: str) -> TileCoord:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

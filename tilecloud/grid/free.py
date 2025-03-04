@@ -21,7 +21,7 @@ class FreeTileGrid(TileGrid):
     ) -> None:
         TileGrid.__init__(self, max_extent=max_extent, tile_size=tile_size, flip_y=flip_y)
         assert list(resolutions) == sorted(resolutions, reverse=True)
-        assert all(isinstance(r, (int, float)) for r in resolutions)
+        assert all(isinstance(r, int | float) for r in resolutions)
         self.resolutions = resolutions
         self.scale = float(scale)
         self.parent_zs: list[int | None] = []
@@ -40,9 +40,9 @@ class FreeTileGrid(TileGrid):
         if tilecoord.z < len(self.resolutions):
             for child_z in self.child_zs[tilecoord.z]:
                 factor = self.resolutions[tilecoord.z] / self.resolutions[child_z]
-                for i in range(0, int(factor)):
+                for i in range(int(factor)):
                     x = round(factor * tilecoord.x + i)  # pylint: disable=invalid-name
-                    for j in range(0, int(factor)):
+                    for j in range(int(factor)):
                         y = round(factor * tilecoord.y + j)  # pylint: disable=invalid-name
                         yield TileCoord(child_z, x, y)
 
@@ -115,7 +115,7 @@ class FreeTileGrid(TileGrid):
         return range(len(self.resolutions))
 
     def fill_up(self, z: int, bounds: tuple[Bounds, Bounds]) -> tuple[Bounds, Bounds]:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def fill_down(self, z: int, bounds: tuple[Bounds, Bounds]) -> tuple[Bounds, Bounds]:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

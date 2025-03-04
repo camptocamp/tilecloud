@@ -6,7 +6,7 @@ from tilecloud import BoundingPyramid, NotSupportedOperation, Tile, TileStore
 class BoundingPyramidTileStore(TileStore):
     """All tiles in a bounding box."""
 
-    def __init__(self, bounding_pyramid: BoundingPyramid | None = None, **kwargs: Any):
+    def __init__(self, bounding_pyramid: BoundingPyramid | None = None, **kwargs: Any) -> None:
         TileStore.__init__(self, **kwargs)
         self.bounding_pyramid = bounding_pyramid or BoundingPyramid()
 
@@ -24,4 +24,4 @@ class BoundingPyramidTileStore(TileStore):
         return tile
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

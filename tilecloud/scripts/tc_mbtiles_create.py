@@ -2,7 +2,6 @@
 
 import fileinput
 import sqlite3
-import sys
 from optparse import OptionParser
 
 from tilecloud import BoundingPyramid, consume
@@ -45,7 +44,7 @@ def main() -> None:
     elif options.store == "s3":
         store = S3TileStore(options.bucket_name, tilelayout)
     else:
-        raise AssertionError()
+        raise AssertionError
     if options.bounds:
         bounds = BoundingPyramid.from_string(options.bounds)
         tilestream = BoundingPyramidTileStore(bounds).list()
@@ -64,4 +63,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

@@ -12,7 +12,7 @@ class GzipCompressor:
         The compression level. Default is 9.
     """
 
-    def __init__(self, compresslevel: int = 9):
+    def __init__(self, compresslevel: int = 9) -> None:
         self.compresslevel = compresslevel
 
     def __call__(self, tile: Tile) -> Tile:

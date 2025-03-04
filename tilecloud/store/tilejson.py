@@ -21,7 +21,7 @@ class TileJSONTileStore(URLTileStore):
 
     KEYS = "name description version attribution template legend center".split()
 
-    def __init__(self, tile_json: str, urls_key: str = "tiles", **kwargs: Any):
+    def __init__(self, tile_json: str, urls_key: str = "tiles", **kwargs: Any) -> None:
         # FIXME schema  # pylint: disable=fixme
         # FIXME version 1.0.0 support  # pylint: disable=fixme
         tile = json.loads(tile_json)
@@ -35,7 +35,12 @@ class TileJSONTileStore(URLTileStore):
             if "bounds" in tile:
                 lonmin, latmin, lonmax, latmax = tile["bounds"]
                 bounding_pyramid = BoundingPyramid.from_wgs84(  # type: ignore[attr-defined] # pylint: disable=no-member
-                    zmin, zmax, lonmin, lonmax, latmin, latmax
+                    zmin,
+                    zmax,
+                    lonmin,
+                    lonmax,
+                    latmin,
+                    latmax,
                 )
             else:
                 bounding_pyramid = BoundingPyramid.full(zmin, zmax)
@@ -55,4 +60,4 @@ class TileJSONTileStore(URLTileStore):
         return cls(urlopen(url).read())  # nosec
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

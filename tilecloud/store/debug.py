@@ -12,7 +12,7 @@ from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 class DebugTileStore(TileStore):
     """A tile store that generates a debug image."""
 
-    def __init__(self, color: tuple[int, int, int] = (0, 0, 0), **kwargs: Any):
+    def __init__(self, color: tuple[int, int, int] = (0, 0, 0), **kwargs: Any) -> None:
         TileStore.__init__(self, content_type="image/png", **kwargs)
         self.color = color
 
@@ -34,7 +34,7 @@ class DebugTileStore(TileStore):
         return tile
 
     def put_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

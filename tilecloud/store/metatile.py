@@ -26,7 +26,10 @@ class MetaTileSplitterTileStore(TileStore):
                 for tilecoord in metatile.tilecoord:
                     if metatile.error:
                         yield Tile(
-                            tilecoord, metadata=metatile.metadata, error=metatile.error, metatile=metatile
+                            tilecoord,
+                            metadata=metatile.metadata,
+                            error=metatile.error,
+                            metatile=metatile,
                         )
                         continue
                     if metatile.data is None:
@@ -56,10 +59,10 @@ class MetaTileSplitterTileStore(TileStore):
                     )
 
     def get_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def put_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

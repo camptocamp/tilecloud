@@ -22,16 +22,16 @@ class AzureStorageBlobTileStore(TileStore):
         cache_control: str | None = None,
         container_client: ContainerClient | None = None,
         **kwargs: Any,
-    ):
+    ) -> None:
         if container_client is None:
             if "AZURE_STORAGE_CONNECTION_STRING" in os.environ:
                 assert container is not None
                 self.container_client = BlobServiceClient.from_connection_string(
-                    os.environ["AZURE_STORAGE_CONNECTION_STRING"]
+                    os.environ["AZURE_STORAGE_CONNECTION_STRING"],
                 ).get_container_client(container=container)
             elif "AZURE_STORAGE_BLOB_CONTAINER_URL" in os.environ:
                 self.container_client = ContainerClient.from_container_url(
-                    os.environ["AZURE_STORAGE_BLOB_CONTAINER_URL"]
+                    os.environ["AZURE_STORAGE_BLOB_CONTAINER_URL"],
                 )
                 if os.environ.get("AZURE_STORAGE_BLOB_VALIDATE_CONTAINER_NAME", "false").lower() == "true":
                     assert container == self.container_client.container_name

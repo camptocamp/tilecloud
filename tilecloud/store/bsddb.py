@@ -9,7 +9,7 @@ from tilecloud import Tile, TileCoord, TileStore
 class BSDDBTileStore(TileStore):
     """Tiles stored in a BSDDB database."""
 
-    def __init__(self, db: bsddb.DB, **kwargs: Any):
+    def __init__(self, db: bsddb.DB, **kwargs: Any) -> None:
         self.db = db  # pylint: disable=invalid-name
         TileStore.__init__(self, **kwargs)
 
@@ -39,7 +39,7 @@ class BSDDBTileStore(TileStore):
             return None
 
     def list(self) -> Iterator[Tile]:
-        return map(lambda s: Tile(TileCoord.from_string(s)), self.db.keys())
+        return (Tile(TileCoord.from_string(s)) for s in self.db)
 
     def put_one(self, tile: Tile) -> Tile:
         self.db[str(tile.tilecoord).encode("utf-8")] = getattr(tile, "data", "")

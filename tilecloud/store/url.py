@@ -57,11 +57,10 @@ class URLTileStore(TileStore):
                         tile.data = response.content
                     else:
                         tile.error = f"URL: {url}\n{response.text}"
+                elif self.allows_no_contenttype:
+                    tile.data = response.content
                 else:
-                    if self.allows_no_contenttype:
-                        tile.data = response.content
-                    else:
-                        tile.error = f"URL: {url}\nThe Content-Type header is missing"
+                    tile.error = f"URL: {url}\nThe Content-Type header is missing"
 
             else:
                 tile.error = f"URL: {url}\n{response.status_code}: {response.reason}\n{response.text}"
@@ -71,7 +70,7 @@ class URLTileStore(TileStore):
         return tile
 
     def put_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

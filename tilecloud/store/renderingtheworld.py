@@ -14,7 +14,7 @@ class RenderingTheWorldTileStore(TileStore):
         tilegrid: TileGrid | None = None,
         queue: deque[Tile] | None = None,
         seeds: tuple[Tile, ...] = (),
-    ):
+    ) -> None:
         super().__init__()
         self.subdivide = subdivide
         self.tilegrid = tilegrid
@@ -40,7 +40,7 @@ class RenderingTheWorldTileStore(TileStore):
         return tile
 
     def get_one(self, tile: Tile) -> Tile | None:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

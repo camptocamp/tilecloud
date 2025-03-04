@@ -4,7 +4,7 @@ from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 class SearchUpTileStore(TileStore):
     """A tile store that searches up the tile grid for a tile."""
 
-    def __init__(self, tilestore: TileStore, tilegrid: TileGrid):
+    def __init__(self, tilestore: TileStore, tilegrid: TileGrid) -> None:
         super().__init__()
         self.tilestore = tilestore
         self.tilegrid = tilegrid
@@ -27,7 +27,7 @@ class SearchUpTileStore(TileStore):
         return None
 
     def put_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

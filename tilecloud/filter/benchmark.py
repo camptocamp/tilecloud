@@ -13,7 +13,7 @@ _TILES_ERROR_COUINTER = Counter("tilecloud_tiles_errors", "Number of tiles in er
 class Statistics:
     """Compute statistics on a sequence of numbers."""
 
-    def __init__(self, format_pattern: str = "%f"):
+    def __init__(self, format_pattern: str = "%f") -> None:
         self.format = format_pattern
         self.n = 0  # pylint: disable=invalid-name
         self.sum = 0.0
@@ -51,7 +51,7 @@ class Statistics:
 class Benchmark:
     """Create a filter for benchmarking tiles."""
 
-    def __init__(self, attr: str = "benchmark"):
+    def __init__(self, attr: str = "benchmark") -> None:
         self.attr = attr
         self.statisticss: dict[str, Statistics] = {}
 

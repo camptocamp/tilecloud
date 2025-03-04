@@ -11,7 +11,7 @@ class InBoundingPyramid:
         A :class:`tilecloud.BoundingPyramid` object.
     """
 
-    def __init__(self, bounding_pyramid: BoundingPyramid):
+    def __init__(self, bounding_pyramid: BoundingPyramid) -> None:
         self.bounding_pyramid = bounding_pyramid
 
     def __call__(self, tile: Tile) -> Tile | None:

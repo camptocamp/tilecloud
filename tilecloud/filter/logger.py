@@ -7,7 +7,7 @@ from tilecloud import Tile
 class Logger:
     """Log tiles."""
 
-    def __init__(self, logger: logging.Logger, level: int, msgformat: str, *args: Any, **kwargs: Any):
+    def __init__(self, logger: logging.Logger, level: int, msgformat: str, *args: Any, **kwargs: Any) -> None:
         self.logger = logger
         self.level = level
         self.msgformat = msgformat

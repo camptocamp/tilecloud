@@ -45,8 +45,7 @@ class WMTSTileLayout(TileLayout):
 
         query.extend([("Version", "1.0.0"), ("Layer", self.layer), ("Style", self.style)])
 
-        for name in self.dimensions_name:
-            query.append((name, metadata["dimension_" + name]))
+        query.extend((name, metadata["dimension_" + name]) for name in self.dimensions_name)
 
         query.extend(
             [
@@ -54,11 +53,11 @@ class WMTSTileLayout(TileLayout):
                 ("TileMatrix", str(self.tile_matrix(tilecoord.z))),
                 ("TileRow", str(tilecoord.y)),
                 ("TileCol", str(tilecoord.x)),
-            ]
+            ],
         )
         if self.request_encoding == "KVP":
             return self.url + "&".join("=".join(p) for p in query)
         return self.url + "/".join(p[1] for p in query) + self.format
 
     def tilecoord(self, filename: str) -> TileCoord:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

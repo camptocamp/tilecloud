@@ -13,7 +13,7 @@ _LOGGER = logging.getLogger(__name__)
 class FilesystemTileStore(TileStore):
     """Tiles stored in a filesystem."""
 
-    def __init__(self, tilelayout: TileLayout, **kwargs: Any):
+    def __init__(self, tilelayout: TileLayout, **kwargs: Any) -> None:
         TileStore.__init__(self, **kwargs)
         assert tilelayout is not None
         self.tilelayout = tilelayout

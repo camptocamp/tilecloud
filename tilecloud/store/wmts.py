@@ -18,9 +18,9 @@ class WMTSTileStore(URLTileStore):
         tile_matrix_set: str | None = None,
         tile_matrix: Callable[[int], str] = str,
         **kwargs: Any,
-    ):
+    ) -> None:
         layout = WMTSTileLayout(url, layer, style, format_pattern, tile_matrix_set, tile_matrix)
         URLTileStore.__init__(self, (layout,), **kwargs)
 
     def delete_one(self, tile: Tile) -> Tile:
-        raise NotSupportedOperation()
+        raise NotSupportedOperation

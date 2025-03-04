@@ -46,7 +46,7 @@ class MaximumConsecutiveErrors:
         exceeded a :class:`TooManyErrors` exception is raised.
     """
 
-    def __init__(self, max_consecutive_errors: int):
+    def __init__(self, max_consecutive_errors: int) -> None:
         self.max_consecutive_errors = max_consecutive_errors
         self.consecutive_errors = 0
 
@@ -74,7 +74,7 @@ class MaximumErrorRate:
        exception can be raised. Defaults to 8.
     """
 
-    def __init__(self, max_error_rate: float, min_tiles: int = 8):
+    def __init__(self, max_error_rate: float, min_tiles: int = 8) -> None:
         self.max_error_rate = max_error_rate
         self.min_tiles = min_tiles
         self.tile_count = 0
@@ -101,7 +101,7 @@ class MaximumErrors:
         exception is raised.
     """
 
-    def __init__(self, max_errors: int):
+    def __init__(self, max_errors: int) -> None:
         self.max_errors = max_errors
         self.error_count = 0
 
@@ -113,5 +113,5 @@ class MaximumErrors:
         return tile
 
 
-class TooManyErrors(RuntimeError):
+class TooManyErrors(RuntimeError):  # noqa: N818(ruff
     """TooManyErrors exception class."""
