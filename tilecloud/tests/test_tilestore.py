@@ -71,7 +71,7 @@ class TestDictTileStore(unittest.TestCase):
         assert tiles[0].tilecoord == TileCoord(1, 0, 0)
         assert tiles[0].data == "data"
         assert tiles[1].tilecoord == TileCoord(1, 0, 1)
-        assert tiles[1].error == True
+        assert tiles[1].error is True
         assert Tile(TileCoord(1, 0, 0)) in tilestore
         assert Tile(TileCoord(1, 0, 1)) in tilestore
         tilestream = [Tile(TileCoord(1, 0, 0)), Tile(TileCoord(1, 0, 1))]
@@ -82,7 +82,7 @@ class TestDictTileStore(unittest.TestCase):
         assert tiles[0].tilecoord == TileCoord(1, 0, 0)
         assert tiles[0].data == "data"
         assert tiles[1].tilecoord == TileCoord(1, 0, 1)
-        assert tiles[1].error == True
+        assert tiles[1].error is True
         tilestream = [Tile(TileCoord(1, 0, 0))]
         tilestream = tilestore.delete(tilestream)
         consume(tilestream, None)
@@ -108,7 +108,7 @@ class TestMBTilesTileStore(unittest.TestCase):
         assert tiles[0].tilecoord == TileCoord(1, 0, 0)
         assert tiles[0].data == b"data"
         assert tiles[1].tilecoord == TileCoord(1, 0, 1)
-        assert tiles[1].error == True
+        assert tiles[1].error is True
         assert Tile(TileCoord(1, 0, 0)) in tilestore
         assert Tile(TileCoord(1, 0, 1)) in tilestore
         tilestream = [Tile(TileCoord(1, 0, 0)), Tile(TileCoord(1, 0, 1))]

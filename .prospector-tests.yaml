@@ -1,0 +1,3 @@
+ruff:
+  disable:
+    - PT027 # Use `pytest.raises` instead of unittest-style `assertRaises`

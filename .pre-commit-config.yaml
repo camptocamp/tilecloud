@@ -90,6 +90,7 @@ repos:
           - --output-format=pylint
           - --profile=utils:tests
           - --profile=utils:pre-commit
+          - --profile=.prospector-tests.yaml
         additional_dependencies:
           - prospector-profile-utils==1.21.4 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
