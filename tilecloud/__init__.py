@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # pylint: disable=import-outside-toplevel
 
 import builtins
@@ -11,7 +10,7 @@ from collections.abc import Iterable, Iterator
 from functools import reduce
 from itertools import islice
 from operator import attrgetter
-from typing import Any, Optional, Union, cast
+from typing import Any, Optional, cast
 
 logger = logging.getLogger(__name__)
 
@@ -226,7 +225,7 @@ class BoundingPyramid:
             self.add_bounds(z - 1, self.tilegrid.fill_up(z, self.bounds[z]))
 
     def iterbottomup(self) -> Iterator["TileCoord"]:
-        for z in reversed(sorted(self.bounds.keys())):  # pylint: disable=invalid-name
+        for z in sorted(self.bounds.keys(), reverse=True):  # pylint: disable=invalid-name
             yield from self.ziter(z)
 
     def itertopdown(self) -> Iterator["TileCoord"]:
@@ -719,7 +718,7 @@ class TileStore:
             return FilesystemTileStore(
                 TemplateTileLayout(name[7:]),
             )
-        if name.startswith("http://") or name.startswith("https://"):
+        if name.startswith(("http://", "https://")):
             from tilecloud.layout.template import TemplateTileLayout
             from tilecloud.store.url import URLTileStore
 
