@@ -10,24 +10,24 @@ from tilecloud.store.null import NullTileStore
 class TestTileStore(unittest.TestCase):
     def test_empty(self) -> None:
         ts = TileStore()
-        assert ts.bounding_pyramid == None
-        assert ts.content_type == None
+        assert ts.bounding_pyramid is None
+        assert ts.content_type is None
         assert len(ts) == 0
         self.assertRaises(NotImplementedError, next, ts.delete((Tile(TileCoord(0, 0, 0)),)))
         self.assertRaises(NotImplementedError, ts.delete_one, None)
-        assert ts.get_cheap_bounding_pyramid() == None
+        assert ts.get_cheap_bounding_pyramid() is None
         self.assertRaises(NotImplementedError, next, ts.get((Tile(TileCoord(0, 0, 0)),)))
         assert list(ts.get_all()) == []
         self.assertRaises(NotImplementedError, ts.get_one, None)
         assert list(ts.list()) == []
         self.assertRaises(NotImplementedError, next, ts.put((Tile(TileCoord(0, 0, 0)),)))
         self.assertRaises(NotImplementedError, ts.put_one, None)
-        assert not None in ts
+        assert None not in ts
         assert ts.get_bounding_pyramid() == BoundingPyramid()
 
     def test_init_kwargs(self) -> None:
         ts = TileStore(kwarg=None)
-        assert ts.kwarg == None
+        assert ts.kwarg is None
 
     def test_init_boundingpyramid(self) -> None:
         ts = TileStore(bounding_pyramid=BoundingPyramid.from_string("1/0/0:1/1"))
@@ -88,12 +88,12 @@ class TestDictTileStore(unittest.TestCase):
         consume(tilestream, None)
         tiles = list(tilestore.get_all())
         assert len(tiles) == 1
-        assert not Tile(TileCoord(1, 0, 0)) in tilestore
+        assert Tile(TileCoord(1, 0, 0)) not in tilestore
         assert Tile(TileCoord(1, 0, 1)) in tilestore
 
     def test_get_one(self) -> None:
         tilestore = DictTileStore()
-        assert tilestore.get_one(Tile(TileCoord(0, 0, 0))) == None
+        assert tilestore.get_one(Tile(TileCoord(0, 0, 0))) is None
 
 
 class TestMBTilesTileStore(unittest.TestCase):
@@ -123,14 +123,14 @@ class TestMBTilesTileStore(unittest.TestCase):
         assert tiles[0].tilecoord == TileCoord(1, 0, 0)
         assert bytes(tiles[0].data) == b"data"
         assert tiles[1].tilecoord == TileCoord(1, 0, 1)
-        assert tiles[1].data == None
+        assert tiles[1].data is None
         tilestream = [Tile(TileCoord(1, 0, 0))]
         tilestream = tilestore.delete(tilestream)
         consume(tilestream, None)
         assert len(tilestore) == 1
         tiles = list(tilestore.get_all())
         assert len(tiles) == 1
-        assert not Tile(TileCoord(1, 0, 0)) in tilestore
+        assert Tile(TileCoord(1, 0, 0)) not in tilestore
         assert Tile(TileCoord(1, 0, 1)) in tilestore
 
     def test_metadata(self) -> None:
@@ -161,7 +161,7 @@ class TestNullTileStore(unittest.TestCase):
     def test(self) -> None:
         tilestore = NullTileStore()
         tile = Tile(TileCoord(0, 0, 0))
-        assert not tile in tilestore
+        assert tile not in tilestore
         assert list(tilestore.delete([tile])) == [tile]
         assert list(tilestore.list()) == []
         assert list(tilestore.get([tile])) == [tile]

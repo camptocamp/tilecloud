@@ -7,21 +7,23 @@ class TestBoundingPyramid(unittest.TestCase):
     def test_empty(self) -> None:
         bp = BoundingPyramid()
         assert len(bp) == 0
-        assert not TileCoord(0, 0, 0) in bp
+        assert TileCoord(0, 0, 0) not in bp
         self.assertRaises(StopIteration, next, iter(bp))
 
     def test_eq(self) -> None:
         assert BoundingPyramid() == BoundingPyramid()
-        assert BoundingPyramid({5: (Bounds(2, 5), Bounds(6, 15))}) == BoundingPyramid({5: (Bounds(2, 5), Bounds(6, 15))})
+        assert BoundingPyramid({5: (Bounds(2, 5), Bounds(6, 15))}) == BoundingPyramid(
+            {5: (Bounds(2, 5), Bounds(6, 15))}
+        )
 
     def test_add(self) -> None:
         bp = BoundingPyramid()
         bp.add(TileCoord(1, 0, 0))
         assert len(bp) == 1
         assert TileCoord(1, 0, 0) in bp
-        assert not TileCoord(1, 0, 1) in bp
-        assert not TileCoord(1, 1, 0) in bp
-        assert not TileCoord(1, 1, 1) in bp
+        assert TileCoord(1, 0, 1) not in bp
+        assert TileCoord(1, 1, 0) not in bp
+        assert TileCoord(1, 1, 1) not in bp
         assert list(bp) == [TileCoord(1, 0, 0)]
 
     def test_fill_down(self) -> None:
