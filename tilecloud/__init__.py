@@ -149,7 +149,9 @@ class BoundingPyramid:
     """
 
     def __init__(
-        self, bounds: dict[int, tuple[Bounds, Bounds]] | None = None, tilegrid: Any | None = None,
+        self,
+        bounds: dict[int, tuple[Bounds, Bounds]] | None = None,
+        tilegrid: Any | None = None,
     ) -> None:
         self.bounds = bounds or {}
         self.tilegrid = tilegrid
@@ -617,7 +619,9 @@ class TileStore:
     def get_bounding_pyramid(self) -> BoundingPyramid:
         """Get the bounding pyramid that encloses all tiles in the store."""
         return reduce(
-            BoundingPyramid.add, map(attrgetter("tilecoord"), ifilter(None, self.list())), BoundingPyramid(),
+            BoundingPyramid.add,
+            map(attrgetter("tilecoord"), ifilter(None, self.list())),
+            BoundingPyramid(),
         )
 
     def get_cheap_bounding_pyramid(self) -> BoundingPyramid | None:

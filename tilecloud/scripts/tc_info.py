@@ -13,7 +13,9 @@ def main() -> None:
     option_parser.add_option("-b", "--bounding-pyramid", metavar="BOUNDING-PYRAMID")
     option_parser.add_option("-r", "--relative", action="store_true")
     option_parser.add_option(
-        "-t", "--tiles", choices=("bounding-pyramid", "completion", "count", "estimate-completion", "list"),
+        "-t",
+        "--tiles",
+        choices=("bounding-pyramid", "completion", "count", "estimate-completion", "list"),
     )
     options, args = option_parser.parse_args()
     for arg in args:

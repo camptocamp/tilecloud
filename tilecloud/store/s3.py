@@ -93,7 +93,11 @@ class S3TileStore(TileStore):
         if not self.dry_run:
             try:
                 self.client.put_object(
-                    ACL="public-read", Body=tile.data, Key=key_name, Bucket=self.bucket, **args,
+                    ACL="public-read",
+                    Body=tile.data,
+                    Key=key_name,
+                    Bucket=self.bucket,
+                    **args,
                 )
             except botocore.exceptions.ClientError as exc:
                 _LOGGER.warning("Error while putting tile %s", tile, exc_info=True)
@@ -116,5 +120,7 @@ def get_client(s3_host: str | None) -> "botocore.client.S3":
     config = botocore.config.Config(connect_timeout=_CLIENT_TIMEOUT, read_timeout=_CLIENT_TIMEOUT)
     with _LOCK:
         return boto3.client(
-            "s3", endpoint_url=(f"https://{s3_host}/") if s3_host is not None else None, config=config,
+            "s3",
+            endpoint_url=(f"https://{s3_host}/") if s3_host is not None else None,
+            config=config,
         )
