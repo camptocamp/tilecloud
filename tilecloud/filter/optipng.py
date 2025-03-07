@@ -17,7 +17,7 @@ class OptiPNG:
                 assert tile.data is not None
                 ntf.write(tile.data)
                 ntf.close()
-                retcode = call([*self.args, ntf.name])  # nosec
+                retcode = call([*self.args, ntf.name])  # noqa: S603
                 if retcode == 0:
                     with open(ntf.name, "rb") as file:
                         tile.data = file.read()
