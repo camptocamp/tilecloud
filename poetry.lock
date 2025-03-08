@@ -1250,14 +1250,14 @@ twisted = ["twisted"]
 
 [[package]]
 name = "prospector"
-version = "1.15.2"
+version = "1.15.3"
 description = "Prospector is a tool to analyse Python code by aggregating the result of other tools."
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["dev"]
 files = [
-    {file = "prospector-1.15.2-py3-none-any.whl", hash = "sha256:06f8986e96a2d7f82904821710745418496e5c163241a922cac8dc3e3bc7dd43"},
-    {file = "prospector-1.15.2.tar.gz", hash = "sha256:e080667fc33baa93f5b2ab3d88650bbef201a9edcb1982a3ccf6b0696e1f4ab0"},
+    {file = "prospector-1.15.3-py3-none-any.whl", hash = "sha256:240e75f9dcb6624574204a997004ef145f615540a00b50ba4203db9a429044f2"},
+    {file = "prospector-1.15.3.tar.gz", hash = "sha256:78bf3ff0a46e4b7d95df355d53a34c41e4dd9e24c72ddd01558a273c39df0df6"},
 ]
 
 [package.dependencies]
@@ -2431,4 +2431,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.13"
-content-hash = "b23928b3cd5a3b41c56b06487d6d76d71c6dd40f33c5d5bb396b6ff7dddc62c2"
+content-hash = "dab07333743e918302a6681c20af29996889fcdfde91c7cd210816ff301f8640"
