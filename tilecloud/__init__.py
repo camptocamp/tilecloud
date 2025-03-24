@@ -20,7 +20,7 @@ class NotSupportedOperation(Exception):
 
 
 def _cmp(a: Any, b: Any) -> int:  # pylint: disable=invalid-name
-    return cast(bool, a > b) - cast(bool, a < b)
+    return cast("bool", a > b) - cast("bool", a < b)
 
 
 def consume(
@@ -775,4 +775,4 @@ class TileStore:
         module = __import__(name)
         components = name.split(".")
         module = reduce(getattr, components[1:], module)
-        return cast(TileStore, module.tilestore)
+        return cast("TileStore", module.tilestore)

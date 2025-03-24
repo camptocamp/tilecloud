@@ -19,7 +19,7 @@ from tilecloud.store.url import URLTileStore
 class TileJSONTileStore(URLTileStore):
     """A tile store for tiles in JSON data."""
 
-    KEYS = "name description version attribution template legend center".split()
+    KEYS = ["name", "description", "version", "attribution", "template", "legend", "center"]
 
     def __init__(self, tile_json: str, urls_key: str = "tiles", **kwargs: Any) -> None:
         # FIXME schema  # pylint: disable=fixme

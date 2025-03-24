@@ -112,7 +112,7 @@ class S3TileStore(TileStore):
 
 
 def _get_status(s3_client_exception: botocore.exceptions.ClientError) -> int:
-    return cast(int, s3_client_exception.response["ResponseMetadata"]["HTTPStatusCode"])
+    return cast("int", s3_client_exception.response["ResponseMetadata"]["HTTPStatusCode"])
 
 
 def get_client(s3_host: str | None) -> "botocore.client.S3":

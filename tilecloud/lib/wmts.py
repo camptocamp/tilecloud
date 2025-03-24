@@ -11,7 +11,7 @@ METERS_PER_UNIT = {"feet": 3.28084, "meters": 1, "degrees": 111118.752, "inch": 
 
 def _to_wsg84(srs: str, x: float, y: float) -> tuple[float, float]:  # pylint: disable=invalid-name
     return cast(
-        tuple[float, float],
+        "tuple[float, float]",
         transform(Proj(init=srs.lower()), Proj(proj="latlong", datum="WGS84"), x, y),
     )
 
@@ -104,7 +104,7 @@ def _get_capabilities(layers: list[_Layer], tile_matrix_set: _TileMatrixSet, wmt
         yorigin: 'top' if the tiles origin is at top
     """
     return cast(
-        str,
+        "str",
         jinja2_template(
             WMTS_GET_CAPABILITIES_TEMPLATE,
             layers=layers,

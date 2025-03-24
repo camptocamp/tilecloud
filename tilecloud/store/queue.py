@@ -8,8 +8,7 @@ from tilecloud import Tile, TileCoord
 def encode_message(tile: Tile) -> str:
     """Encode a tile to a string message."""
     metadata = dict(tile.metadata)
-    if "sqs_message" in metadata:
-        del metadata["sqs_message"]
+    metadata.pop("sqs_message", None)
     message = {
         "z": tile.tilecoord.z,
         "x": tile.tilecoord.x,
