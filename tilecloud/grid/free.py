@@ -109,7 +109,7 @@ class FreeTileGrid(TileGrid):
             )
             ty = n - ty  # pylint: disable=invalid-name
 
-        return TileCoord(z, int(floor(tx)), int(floor(ty)))
+        return TileCoord(z, floor(tx), floor(ty))
 
     def zs(self) -> range:
         return range(len(self.resolutions))
