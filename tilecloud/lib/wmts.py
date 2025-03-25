@@ -49,8 +49,8 @@ def _matrix_sets(tile_matrix_set: _TileMatrixSet) -> dict[str, _MatrixSet]:
     units = tile_matrix_set["units"]
     matrix_set: _MatrixSet = {"crs": tile_matrix_set["srs"].replace(":", "::"), "matrices": []}
     for i, resolution in enumerate(tile_matrix_set["resolutions"]):
-        col = int(ceil(((tile_matrix_set["bbox"][2] - tile_matrix_set["bbox"][0]) / tile_size) / resolution))
-        row = int(ceil(((tile_matrix_set["bbox"][3] - tile_matrix_set["bbox"][1]) / tile_size) / resolution))
+        col = ceil(((tile_matrix_set["bbox"][2] - tile_matrix_set["bbox"][0]) / tile_size) / resolution)
+        row = ceil(((tile_matrix_set["bbox"][3] - tile_matrix_set["bbox"][1]) / tile_size) / resolution)
         if tile_matrix_set.get("yorigin", "bottom") == "top":
             maxy = tile_matrix_set["bbox"][1]
         else:

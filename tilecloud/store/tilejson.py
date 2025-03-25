@@ -6,7 +6,7 @@ import json
 import mimetypes
 import os.path
 import re
-from typing import Any
+from typing import Any, ClassVar
 from urllib.parse import urlparse
 
 from urllib2 import urlopen  # pylint: disable=import-error
@@ -19,7 +19,15 @@ from tilecloud.store.url import URLTileStore
 class TileJSONTileStore(URLTileStore):
     """A tile store for tiles in JSON data."""
 
-    KEYS = ["name", "description", "version", "attribution", "template", "legend", "center"]
+    KEYS: ClassVar[list[str]] = [
+        "name",
+        "description",
+        "version",
+        "attribution",
+        "template",
+        "legend",
+        "center",
+    ]
 
     def __init__(self, tile_json: str, urls_key: str = "tiles", **kwargs: Any) -> None:
         # FIXME schema  # pylint: disable=fixme
