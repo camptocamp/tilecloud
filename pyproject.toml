@@ -28,7 +28,7 @@ classifiers = [
     'Topic :: Scientific/Engineering :: GIS',
     'Typing :: Typed',
 ]
-include = ["tilecloud_chain/py.typed"]
+include = ["tilecloud/py.typed"]
 
 [tool.poetry.scripts]
 c2cciutils = "c2cciutils.scripts.main:main"
