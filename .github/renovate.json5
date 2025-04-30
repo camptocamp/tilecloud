@@ -1,7 +1,9 @@
 {
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
     'github>camptocamp/gs-renovate-config-preset:base.json5#1.0.1',
     'github>camptocamp/gs-renovate-config-preset:group.json5#1.0.1',
+    'github>camptocamp/gs-renovate-config-preset:stabilization-branches.json5#1.0.1',
     'github>camptocamp/gs-renovate-config-preset:ci.json5#1.0.1',
     'github>camptocamp/gs-renovate-config-preset:preset.json5#1.0.1',
     'github>camptocamp/gs-renovate-config-preset:pre-commit.json5#1.0.1',
@@ -12,6 +14,7 @@
     'github>camptocamp/gs-renovate-config-preset:json-schema.json5#1.0.1',
     'github>camptocamp/gs-renovate-config-preset:shellcheck.json5#1.0.1',
   ],
+  baseBranches: ['master', '1.12'],
   packageRules: [
     {
       matchDatasources: ['docker'],
@@ -32,5 +35,4 @@
       groupName: 'pycairo',
     },
   ],
-  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
 }
