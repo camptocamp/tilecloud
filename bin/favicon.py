@@ -3,7 +3,7 @@ import math
 
 import cairo
 from shapely.geometry import Point, Polygon
-from shapely.ops import cascaded_union
+from shapely.ops import unary_union
 
 
 def _box(minx: float, miny: float, maxx: float, maxy: float) -> Polygon:
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     circle2 = Point(1 + 1 / GOLDEN_RATIO, 2 + Y0).buffer(1 / GOLDEN_RATIO)
     circle3 = Point(5 - GOLDEN_RATIO, 2 + Y0).buffer(GOLDEN_RATIO)
     circle4 = Point(5, 1 + Y0).buffer(1)
-    cloud = cascaded_union((rectangle, circle1, circle2, circle3, circle4))
+    cloud = unary_union((rectangle, circle1, circle2, circle3, circle4))
 
     SIZE = 16
     TRANSLATE = 1
