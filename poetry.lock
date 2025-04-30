@@ -1967,13 +1967,13 @@ files = [
 
 [[package]]
 name = "types-boto"
-version = "2.49.18.20240806"
+version = "2.49.18.20241019"
 description = "Typing stubs for boto"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-boto-2.49.18.20240806.tar.gz", hash = "sha256:31ccb4a618e413ab2e5960376c7161279e6ede52bf81f8a67abb222f01439b7c"},
-    {file = "types_boto-2.49.18.20240806-py3-none-any.whl", hash = "sha256:52ab6a2bdd55b2b7c7b185da2bb18562c10a0278fc58bd8b1d50f53aec0d20f7"},
+    {file = "types-boto-2.49.18.20241019.tar.gz", hash = "sha256:b0830da491c201f16e12ec7b1e3a31372215889e707c75565506a208d85192f1"},
+    {file = "types_boto-2.49.18.20241019-py3-none-any.whl", hash = "sha256:a9ff488898bbef6c4d7d40a7204fd433f632ba128507cc895e9f80fc9cc1383c"},
 ]
 
 [[package]]
@@ -2007,13 +2007,13 @@ types-cffi = "*"
 
 [[package]]
 name = "types-redis"
-version = "4.6.0.20240819"
+version = "4.6.0.20241004"
 description = "Typing stubs for redis"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-redis-4.6.0.20240819.tar.gz", hash = "sha256:08f51f550ad41d0152bd98d77ac9d6d8f761369121710a213642f6036b9a7183"},
-    {file = "types_redis-4.6.0.20240819-py3-none-any.whl", hash = "sha256:86db9af6f0033154e12bc22c77236cef0907b995fda8c9f0f0eacd59943ed2fc"},
+    {file = "types-redis-4.6.0.20241004.tar.gz", hash = "sha256:5f17d2b3f9091ab75384153bfa276619ffa1cf6a38da60e10d5e6749cc5b902e"},
+    {file = "types_redis-4.6.0.20241004-py3-none-any.whl", hash = "sha256:ef5da68cb827e5f606c8f9c0b49eeee4c2669d6d97122f301d3a55dc6a63f6ed"},
 ]
 
 [package.dependencies]
@@ -2090,13 +2090,13 @@ testing = ["coverage", "pytest", "pytest-cov"]
 
 [[package]]
 name = "webob"
-version = "1.8.8"
+version = "1.8.9"
 description = "WSGI request and response object"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 files = [
-    {file = "WebOb-1.8.8-py2.py3-none-any.whl", hash = "sha256:b60ba63f05c0cf61e086a10c3781a41fcfe30027753a8ae6d819c77592ce83ea"},
-    {file = "webob-1.8.8.tar.gz", hash = "sha256:2abc1555e118fc251e705fc6dc66c7f5353bb9fbfab6d20e22f1c02b4b71bcee"},
+    {file = "WebOb-1.8.9-py2.py3-none-any.whl", hash = "sha256:45e34c58ed0c7e2ecd238ffd34432487ff13d9ad459ddfd77895e67abba7c1f9"},
+    {file = "webob-1.8.9.tar.gz", hash = "sha256:ad6078e2edb6766d1334ec3dee072ac6a7f95b1e32ce10def8ff7f0f02d56589"},
 ]
 
 [package.extras]
@@ -2279,4 +2279,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "a759aabbf0a3decdc8d6b571428569f40088b24e6e6a939b60bfc0f5f263b471"
+content-hash = "9fed316d40f297d26e493109bf1d629e48af8703c905a652dc87e808e7ab5fb7"
