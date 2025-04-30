@@ -61,7 +61,7 @@ pyramid = { version = "2.0.2", optional = true }
 requests = "2.32.3"
 redis = { version = "5.0.8", optional = true }
 certifi = "2025.4.26"
-webob = "1.8.8"
+webob = "1.8.9"
 cryptography = "44.0.2"
 
 [tool.poetry.extras]
@@ -78,8 +78,8 @@ prospector-profile-duplicated = "1.5.0"
 prospector-profile-utils = "1.7.2"
 pytest = "8.2.2"
 pytest-cov = "5.0.0"
-types-boto = "2.49.18.20240806"
-types-redis = "4.6.0.20240819"
+types-boto = "2.49.18.20241019"
+types-redis = "4.6.0.20241004"
 types-requests = "2.31.0.20240406"
 pycairo = "1.26.1"
 Shapely = "2.0.6"
