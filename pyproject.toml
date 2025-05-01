@@ -72,7 +72,7 @@ pytest-cov = "6.1.1"
 types-boto = "2.49.18.20241019"
 types-redis = "4.6.0.20241004"
 types-requests = "2.32.0.20250328"
-pycairo = "1.27.0"
+pycairo = "1.28.0"
 Shapely = "2.1.0"
 urllib3 = "2.4.0" # Lock the used version to avoid lock issue
 
