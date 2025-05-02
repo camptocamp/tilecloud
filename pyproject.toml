@@ -62,7 +62,7 @@ requests = "2.32.3"
 redis = { version = "5.0.8", optional = true }
 certifi = "2025.4.26"
 webob = "1.8.9"
-cryptography = "44.0.2"
+cryptography = "44.0.3"
 
 [tool.poetry.extras]
 azure = ["azure-storage-blob", "azure-identity"]
