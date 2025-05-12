@@ -60,10 +60,10 @@ pyproj = "3.6.1"
 pyramid = { version = "2.0.2", optional = true }
 requests = "2.32.3"
 redis = { version = "5.0.8", optional = true }
-cryptography = "43.0.1"
+cryptography = "43.0.3"
 idna = "3.7"
 urllib3 = "1.26.20"
-certifi = "2024.7.4"
+certifi = "2024.12.14"
 webob = "1.8.8"
 
 [tool.poetry.extras]
