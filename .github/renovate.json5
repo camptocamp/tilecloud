@@ -3,7 +3,6 @@
   extends: [
     'github>camptocamp/gs-renovate-config-preset:base.json5#1.0.1',
     'github>camptocamp/gs-renovate-config-preset:group.json5#1.0.1',
-    'github>camptocamp/gs-renovate-config-preset:stabilization-branches.json5#1.0.1',
     'github>camptocamp/gs-renovate-config-preset:ci.json5#1.0.1',
     'github>camptocamp/gs-renovate-config-preset:preset.json5#1.0.1',
     'github>camptocamp/gs-renovate-config-preset:pre-commit.json5#1.0.1',
