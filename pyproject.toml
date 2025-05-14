@@ -49,7 +49,7 @@ tc-redifined-bounds = "tilecloud.scripts.tc_refine_bounds:main"
 tc-viewer = "tilecloud.scripts.tc_viewer:main"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.12"
+python = ">=3.9.2,<3.12"
 azure-storage-blob = { version = "12.18.3", optional = true }
 azure-identity = "1.16.1"
 boto3 = { version = "1.28.85", optional = true }
