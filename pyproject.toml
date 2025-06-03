@@ -87,6 +87,7 @@ authors = [{name = "Camptocamp",email = "info@camptocamp.com"}]
 packages = [{ include = "tilecloud" }]
 include = ["tilecloud/py.typed"]
 requires-python = ">=3.10"
+dependencies = ["bottle", "Pillow", "pyproj", "requests", "cryptography"]
 
 [project.urls]
 repository = "https://github.com/camptocamp/tilecloud"
@@ -102,6 +103,14 @@ tc-mbtiles = "tilecloud.scripts.tc_mbtiles_create:main"
 tc-mbtiles-info = "tilecloud.scripts.tc_mbtiles_info:main"
 tc-redifined-bounds = "tilecloud.scripts.tc_refine_bounds:main"
 tc-viewer = "tilecloud.scripts.tc_viewer:main"
+
+[project.optional-dependencies]
+azure = ["azure-storage-blob", "azure-identity"]
+all = ["azure-storage-blob", "azure-identity", "boto3", "prometheus_client", "pyramid", "redis"]
+aws = ["boto3"]
+prometheus = ["prometheus_client"]
+wsgi = ["pyramid"]
+redis = ["redis"]
 
 [build-system]
 requires = [
