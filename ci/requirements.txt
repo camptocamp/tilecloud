@@ -3,4 +3,4 @@ pre-commit==4.2.0
 poetry-dynamic-versioning==1.8.2
 poetry-plugin-export==1.9.0
 poetry-plugin-tweak-dependencies-version==1.5.2
-tag-publish==1.0.1
+tag-publish==1.1.0
