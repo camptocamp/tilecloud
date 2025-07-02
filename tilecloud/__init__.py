@@ -766,8 +766,8 @@ class TileStore:
             bucket, template = name[5:].split("/", 1)
             return S3TileStore(bucket, TemplateTileLayout(template))
         if name.startswith("sqs://"):
-            import boto.sqs  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
-            from boto.sqs.jsonmessage import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+            import boto.sqs  # noqa: PLC0415 # pylint: disable=import-outside-toplevel,import-error
+            from boto.sqs.jsonmessage import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel,import-error
                 JSONMessage,
             )
 
