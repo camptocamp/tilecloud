@@ -100,6 +100,15 @@ class Bounds:
             return f"{self.__class__.__name__}(None)"
         return f"{self.__class__.__name__}({self.start}, {self.stop})"
 
+    def __hash__(self) -> int:
+        """
+        Return a hash value.
+
+        The hash values are unique for all bounds with the same start and stop,
+        but bounds with different start and stop may have equal hash values.
+        """
+        return hash((self.start, self.stop))
+
     def add(self, value: int) -> "Bounds":
         """Extend self to include value."""
         if self.start is None:
@@ -155,7 +164,7 @@ class BoundingPyramid:
         self.bounds = bounds or {}
         self.tilegrid = tilegrid
         if self.tilegrid is None:
-            from tilecloud.grid.google import GoogleTileGrid
+            from tilecloud.grid.google import GoogleTileGrid  # noqa: PLC0415
 
             self.tilegrid = GoogleTileGrid
 
@@ -178,6 +187,15 @@ class BoundingPyramid:
     def __len__(self) -> int:
         """Get the total number of TileCoords in self."""
         return sum(len(xbounds) * len(ybounds) for xbounds, ybounds in self.bounds.values())
+
+    def __hash__(self) -> int:
+        """
+        Return a hash value.
+
+        The hash values are unique for all bounding pyramids with the same tilegrid,
+        but bounding pyramids with different tilegrids may have equal hash values.
+        """
+        return hash((self.tilegrid, frozenset(self.bounds.items())))
 
     def add(self, tilecoord: "TileCoord") -> "BoundingPyramid":
         """Extend self to include tilecoord."""
@@ -361,6 +379,15 @@ class Tile:
         keys = sorted(self.__dict__.keys())
         attrs = "".join(f" {key}={self.__dict__[key]}" for key in keys)
         return f"<Tile{attrs}>"
+
+    def __hash__(self) -> int:
+        """
+        Return a hash value.
+
+        The hash values are unique for all tiles at a given zoom level, but
+        tiles from different zoom levels may have equal hash values.
+        """
+        return hash(self.tilecoord)
 
     @property
     def formated_metadata(self) -> str:
@@ -704,45 +731,47 @@ class TileStore:
 
         """
         if name == "null://":
-            from tilecloud.store.null import NullTileStore
+            from tilecloud.store.null import NullTileStore  # noqa: PLC0415
 
             return NullTileStore()
         if name.startswith("bounds://"):
-            from tilecloud.store.boundingpyramid import BoundingPyramidTileStore
+            from tilecloud.store.boundingpyramid import BoundingPyramidTileStore  # noqa: PLC0415
 
             return BoundingPyramidTileStore(BoundingPyramid.from_string(name[9:]))
         if name.startswith("file://"):
-            from tilecloud.layout.template import TemplateTileLayout
-            from tilecloud.store.filesystem import FilesystemTileStore
+            from tilecloud.layout.template import TemplateTileLayout  # noqa: PLC0415
+            from tilecloud.store.filesystem import FilesystemTileStore  # noqa: PLC0415
 
             return FilesystemTileStore(
                 TemplateTileLayout(name[7:]),
             )
         if name.startswith(("http://", "https://")):
-            from tilecloud.layout.template import TemplateTileLayout
-            from tilecloud.store.url import URLTileStore
+            from tilecloud.layout.template import TemplateTileLayout  # noqa: PLC0415
+            from tilecloud.store.url import URLTileStore  # noqa: PLC0415
 
             return URLTileStore((TemplateTileLayout(name),), allows_no_contenttype=allows_no_contenttype)
         if name.startswith("memcached://"):
-            from tilecloud.layout.template import TemplateTileLayout
-            from tilecloud.lib.memcached import MemcachedClient
-            from tilecloud.store.memcached import MemcachedTileStore
+            from tilecloud.layout.template import TemplateTileLayout  # noqa: PLC0415
+            from tilecloud.lib.memcached import MemcachedClient  # noqa: PLC0415
+            from tilecloud.store.memcached import MemcachedTileStore  # noqa: PLC0415
 
             server, template = name[12:].split("/", 1)
             host, port = server.split(":", 1)
             client = MemcachedClient(host, int(port))
             return MemcachedTileStore(client, TemplateTileLayout(template))
         if name.startswith("s3://"):
-            from tilecloud.layout.template import TemplateTileLayout
-            from tilecloud.store.s3 import S3TileStore
+            from tilecloud.layout.template import TemplateTileLayout  # noqa: PLC0415
+            from tilecloud.store.s3 import S3TileStore  # noqa: PLC0415
 
             bucket, template = name[5:].split("/", 1)
             return S3TileStore(bucket, TemplateTileLayout(template))
         if name.startswith("sqs://"):
-            import boto.sqs  # pylint: disable=import-error
-            from boto.sqs.jsonmessage import JSONMessage  # pylint: disable=import-error
+            import boto.sqs  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+            from boto.sqs.jsonmessage import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+                JSONMessage,
+            )
 
-            from tilecloud.store.sqs import SQSTileStore
+            from tilecloud.store.sqs import SQSTileStore  # noqa: PLC0415
 
             region_name, queue_name = name[6:].split("/", 1)
             connection = boto.sqs.connect_to_region(region_name)
@@ -750,26 +779,26 @@ class TileStore:
             queue.set_message_class(JSONMessage)
             return SQSTileStore(queue)
         if name.startswith("redis://"):
-            from tilecloud.store.redis import RedisTileStore
+            from tilecloud.store.redis import RedisTileStore  # noqa: PLC0415
 
             return RedisTileStore(name)
         _, ext = os.path.splitext(name)
         if ext == ".bsddb":
-            import bsddb
+            import bsddb  # noqa: PLC0415
 
-            from tilecloud.store.bsddb import BSDDBTileStore
+            from tilecloud.store.bsddb import BSDDBTileStore  # noqa: PLC0415
 
             return BSDDBTileStore(bsddb.hashopen(name))  # pylint: disable=no-member
         if ext == ".mbtiles":
-            import sqlite3
+            import sqlite3  # noqa: PLC0415
 
-            from tilecloud.store.mbtiles import MBTilesTileStore
+            from tilecloud.store.mbtiles import MBTilesTileStore  # noqa: PLC0415
 
             return MBTilesTileStore(sqlite3.connect(name))
         if ext == ".zip":
-            import zipfile
+            import zipfile  # noqa: PLC0415
 
-            from tilecloud.store.zip import ZipTileStore
+            from tilecloud.store.zip import ZipTileStore  # noqa: PLC0415
 
             return ZipTileStore(zipfile.ZipFile(name, "a"))
         module = __import__(name)
