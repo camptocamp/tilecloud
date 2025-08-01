@@ -1,4 +1,4 @@
-FROM ghcr.io/osgeo/gdal:ubuntu-small-3.11.0 AS base-all
+FROM ghcr.io/osgeo/gdal:ubuntu-small-3.11.3 AS base-all
 LABEL org.opencontainers.image.authors="Camptocamp <info@camptocamp.com>"
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
