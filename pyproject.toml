@@ -10,9 +10,9 @@ version = "0.0.0"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
-azure-storage-blob = { version = "12.25.1", optional = true }
-azure-identity = { version = "1.23.0", optional = true }
-boto3 = { version = "1.39.1", optional = true }
+azure-storage-blob = { version = "12.26.0", optional = true }
+azure-identity = { version = "1.23.1", optional = true }
+boto3 = { version = "1.40.0", optional = true }
 bottle = "0.13.4"
 prometheus_client = { version = "0.22.1", optional = true }
 Pillow = "11.3.0"
