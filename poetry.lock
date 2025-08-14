@@ -658,40 +658,6 @@ files = [
 flake8 = "*"
 
 [[package]]
-name = "gitdb"
-version = "4.0.12"
-description = "Git Object Database"
-optional = false
-python-versions = ">=3.7"
-groups = ["dev"]
-files = [
-    {file = "gitdb-4.0.12-py3-none-any.whl", hash = "sha256:67073e15955400952c6565cc3e707c554a4eea2e428946f7a4c162fab9bd9bcf"},
-    {file = "gitdb-4.0.12.tar.gz", hash = "sha256:5ef71f855d191a3326fcfbc0d5da835f26b13fbcba60c32c21091c349ffdb571"},
-]
-
-[package.dependencies]
-smmap = ">=3.0.1,<6"
-
-[[package]]
-name = "gitpython"
-version = "3.1.45"
-description = "GitPython is a Python library used to interact with Git repositories"
-optional = false
-python-versions = ">=3.7"
-groups = ["dev"]
-files = [
-    {file = "gitpython-3.1.45-py3-none-any.whl", hash = "sha256:8908cb2e02fb3b93b7eb0f2827125cb699869470432cc885f019b8fd0fccff77"},
-    {file = "gitpython-3.1.45.tar.gz", hash = "sha256:85b0ee964ceddf211c41b9f27a49086010a190fd8132a24e21f362a4b36a791c"},
-]
-
-[package.dependencies]
-gitdb = ">=4.0.1,<5"
-
-[package.extras]
-doc = ["sphinx (>=7.1.2,<7.2)", "sphinx-autodoc-typehints", "sphinx_rtd_theme"]
-test = ["coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock ; python_version < \"3.8\"", "mypy", "pre-commit", "pytest (>=7.3.1)", "pytest-cov", "pytest-instafail", "pytest-mock", "pytest-sugar", "typing-extensions ; python_version < \"3.11\""]
-
-[[package]]
 name = "hupper"
 version = "1.12.1"
 description = "Integrated process monitor for developing and reloading daemons."
@@ -1413,20 +1379,19 @@ twisted = ["twisted"]
 
 [[package]]
 name = "prospector"
-version = "1.17.2"
+version = "1.17.3"
 description = "Prospector is a tool to analyse Python code by aggregating the result of other tools."
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "prospector-1.17.2-py3-none-any.whl", hash = "sha256:b99206e7f214c3823cff155cd458f507d45beae86b2dbcead2260eda570ed8db"},
-    {file = "prospector-1.17.2.tar.gz", hash = "sha256:44a92f5027bfbac4cc00b2598a773bf2a546067f5a7a6a525e7a1e96a2635a52"},
+    {file = "prospector-1.17.3-py3-none-any.whl", hash = "sha256:e3698bba95f86ef50d626df33b29272cf6462061aca2b19161186c4405a6a402"},
+    {file = "prospector-1.17.3.tar.gz", hash = "sha256:c4df723012c45fc70f5b71f5eee318dbccaf903c2012c8ecf3ec89f60e5cb822"},
 ]
 
 [package.dependencies]
 bandit = {version = "*", optional = true, markers = "extra == \"with-bandit\""}
 dodgy = ">=0.2.1,<0.3.0"
-GitPython = ">=3.1.27,<4.0.0"
 mccabe = ">=0.7.0,<0.8.0"
 mypy = {version = "*", optional = true, markers = "extra == \"with-mypy\""}
 packaging = "*"
@@ -2164,18 +2129,6 @@ files = [
 ]
 
 [[package]]
-name = "smmap"
-version = "5.0.2"
-description = "A pure Python implementation of a sliding window memory map manager"
-optional = false
-python-versions = ">=3.7"
-groups = ["dev"]
-files = [
-    {file = "smmap-5.0.2-py3-none-any.whl", hash = "sha256:b30115f0def7d7531d22a0fb6502488d879e75b260a9db4d0819cfb25403af5e"},
-    {file = "smmap-5.0.2.tar.gz", hash = "sha256:26ea65a03958fa0c8a1c7e8c7a58fdc77221b8910f6be2131affade476898ad5"},
-]
-
-[[package]]
 name = "snowballstemmer"
 version = "3.0.1"
 description = "This package provides 32 stemmers for 30 languages generated from Snowball algorithms."
@@ -2559,4 +2512,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "c42293278abd48bec497d1378fb0490cecd84a15028f5a7758d0dd483f07a4b7"
+content-hash = "0f3dd74e15b1eb4cff849b96e5d742c96089de12716f14072d5fd405f0348d13"
