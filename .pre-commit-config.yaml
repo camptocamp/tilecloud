@@ -19,7 +19,7 @@ repos:
       - id: trailing-whitespace
       - id: mixed-line-ending
   - repo: https://github.com/sbrunner/hooks
-    rev: 1.5.0
+    rev: 1.6.0
     hooks:
       - id: copyright
       - id: poetry2-lock
@@ -75,7 +75,7 @@ repos:
           - --output-format=pylint
         additional_dependencies:
           - prospector-profile-duplicated==1.10.5 # pypi
-          - prospector-profile-utils==1.25.0 # pypi
+          - prospector-profile-utils==1.26.0 # pypi
           - pylint[spelling]==3.3.7 # pypi
           - ruff==0.12.7 # pypi
         exclude: |-
@@ -96,7 +96,7 @@ repos:
           - --profile=utils:pre-commit
           - --profile=.prospector-tests.yaml
         additional_dependencies:
-          - prospector-profile-utils==1.25.0 # pypi
+          - prospector-profile-utils==1.26.0 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:
