@@ -45,7 +45,9 @@ class TestFreeTileGrid(unittest.TestCase):
 class TestFreeTileGrid2(unittest.TestCase):
     def setUp(self) -> None:
         self.ftg = FreeTileGrid(
-            resolutions=(750, 20, 10, 5), max_extent=(420000, 30000, 900000, 350000), tile_size=100,
+            resolutions=(750, 20, 10, 5),
+            max_extent=(420000, 30000, 900000, 350000),
+            tile_size=100,
         )
 
     def test_extent(self) -> None:
@@ -110,7 +112,9 @@ class TestFreeTileGridWithScale(unittest.TestCase):
 class TestFreeTileGridWithFloatResolutions(unittest.TestCase):
     def setUp(self) -> None:
         self.ftg = FreeTileGrid(
-            resolutions=(10, 5, 2.5), max_extent=(420000, 30000, 900000, 350000), tile_size=100,
+            resolutions=(10, 5, 2.5),
+            max_extent=(420000, 30000, 900000, 350000),
+            tile_size=100,
         )
 
     def test_extent(self) -> None:
@@ -121,10 +125,16 @@ class TestFreeTileGridWithFloatResolutions(unittest.TestCase):
 class TestFreeTileGridWithSubMetrics(unittest.TestCase):
     def setUp(self) -> None:
         self.ftg = FreeTileGrid(
-            resolutions=(2, 1), max_extent=(420000, 30000, 900000, 350000), tile_size=100, scale=200,
+            resolutions=(2, 1),
+            max_extent=(420000, 30000, 900000, 350000),
+            tile_size=100,
+            scale=200,
         )
         self.ftg2 = FreeTileGrid(
-            resolutions=(2, 1), max_extent=(420000, 30000, 900000, 350000), tile_size=256, scale=10,
+            resolutions=(2, 1),
+            max_extent=(420000, 30000, 900000, 350000),
+            tile_size=256,
+            scale=10,
         )
 
     def test_extent(self) -> None:

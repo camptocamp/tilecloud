@@ -15,6 +15,7 @@ convention = "numpy"
 "**/tests/**" = ["PT027", "UP031"]
 "**/test_*.py" = ["PT027", "UP031"]
 "**/*_test.py" = ["PT027", "UP031"]
+
 [tool.poetry]
 version = "0.0.0"
 
