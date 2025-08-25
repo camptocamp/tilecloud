@@ -55,55 +55,55 @@ def openwebglobe_layersettings(index):
     extent = [xbounds.start, ybounds.start, xbounds.stop, ybounds.stop]
     content_type = getattr(tilestore, "content_type", "image/jpeg")
     if content_type == "application/json":
-        return dict(extent=extent, maxlod=maxlod, name=name, type="elevation")
+        return {"extent": extent, "maxlod": maxlod, "name": name, "type": "elevation"}
     if content_type == "image/jpeg" or tilestore.content_type is None:
-        return dict(extent=extent, format="jpg", maxlod=maxlod, name=name, type="image")
+        return {"extent": extent, "format": "jpg", "maxlod": maxlod, "name": name, "type": "image"}
     if content_type == "image/png":
-        return dict(extent=extent, format="png", maxlod=maxlod, name=name, type="image")
+        return {"extent": extent, "format": "png", "maxlod": maxlod, "name": name, "type": "image"}
     raise AssertionError
 
 
 @bottle.route("/openlayers")
 @bottle.view("openlayers")
 def openlayers():
-    return dict(max_extent=max_extent, resolutions=resolutions, tilestores=tilestores)
+    return {"max_extent": max_extent, "resolutions": resolutions, "tilestores": tilestores}
 
 
 @bottle.route("/googlemaps")
 @bottle.view("googlemaps")
 def googlemaps():
-    return dict(tilestores=tilestores)
+    return {"tilestores": tilestores}
 
 
 @bottle.route("/jquerygeo")
 @bottle.view("jquerygeo")
 def jquerygeo():
-    return dict(tilestores=tilestores)
+    return {"tilestores": tilestores}
 
 
 @bottle.route("/leaflet")
 @bottle.view("leaflet")
 def leaflet():
-    return dict(tilestores=tilestores)
+    return {"tilestores": tilestores}
 
 
 @bottle.route("/modestmaps")
 @bottle.view("modestmaps")
 def modestmaps():
-    return dict(tilestores=tilestores)
+    return {"tilestores": tilestores}
 
 
 @bottle.route("/polymaps")
 @bottle.view("polymaps")
 def polymaps():
-    return dict(tilestores=tilestores)
+    return {"tilestores": tilestores}
 
 
 @bottle.route("/openwebglobe")
 @bottle.view("openwebglobe")
 def openwebglobe():
     quality = float(bottle.request.GET.get("q")) if "q" in bottle.request.GET else None
-    return dict(quality=quality, tilestores=tilestores)
+    return {"quality": quality, "tilestores": tilestores}
 
 
 @bottle.route("/favicon.ico")
@@ -119,11 +119,11 @@ def static(path):
 @bottle.route("/")
 @bottle.view("index")
 def index():
-    return dict(debug=bottle.request.GET.get("debug"))
+    return {"debug": bottle.request.GET.get("debug")}
 
 
 def main() -> None:
-    global _root
+    global _root  # noqa: PLW0603
 
     option_parser = OptionParser()
     option_parser.add_option("--cache", action="store_true")
@@ -155,7 +155,7 @@ def main() -> None:
         except ImportError:
             options.server = "wsgiref"
 
-    global cache, max_extent, resolutions, tilestores, content_type_adder
+    global cache, max_extent, resolutions, tilestores, content_type_adder  # noqa: PLW0603
     cache = {} if options.cache else None
     max_extent = options.max_extent
     resolutions = options.resolutions

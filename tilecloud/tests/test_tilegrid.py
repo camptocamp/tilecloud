@@ -39,7 +39,7 @@ class TestFreeTileGrid(unittest.TestCase):
         assert self.ftg.parent(TileCoord(0, 0, 0)) is None
 
     def test_zs(self) -> None:
-        assert list(self.ftg.zs()) == [e for e in range(len(self.resolutions))]
+        assert list(self.ftg.zs()) == list(range(len(self.resolutions)))
 
 
 class TestFreeTileGrid2(unittest.TestCase):
@@ -267,7 +267,7 @@ class TestQuadTileGrid(unittest.TestCase):
                     assert self.qtg.tilecoord(z, minx, miny) == tilecoord
 
     def test_zs(self) -> None:
-        assert list(islice(self.qtg.zs(), 50)) == [e for e in range(50)]
+        assert list(islice(self.qtg.zs(), 50)) == list(range(50))
 
 
 class TestQuadTileGridFlipY(unittest.TestCase):

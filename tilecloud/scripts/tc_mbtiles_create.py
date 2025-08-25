@@ -40,7 +40,7 @@ def main() -> None:
     if options.store == "filesystem":
         store = FilesystemTileStore(tilelayout)
     elif options.store == "log":
-        store = LogTileStore(tilelayout, fileinput.input(args))
+        store = LogTileStore(tilelayout, fileinput.input(args))  # noqa: SIM115
     elif options.store == "s3":
         store = S3TileStore(options.bucket_name, tilelayout)
     else:

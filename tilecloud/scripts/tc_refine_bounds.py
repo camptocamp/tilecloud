@@ -9,10 +9,7 @@ from tilecloud import BoundingPyramid, Tile, TileCoord, TileStore
 def detect_edge(tilestore, z, first, last, other, horizontal, up):
     while first < last:
         middle = (first + last) // 2
-        if horizontal:
-            tile = Tile(TileCoord(z, middle, other))
-        else:
-            tile = Tile(TileCoord(z, other, middle))
+        tile = Tile(TileCoord(z, middle, other)) if horizontal else Tile(TileCoord(z, other, middle))
         tile_exists = tile in tilestore
         if up:
             if tile_exists:
