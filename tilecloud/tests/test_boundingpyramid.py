@@ -13,7 +13,7 @@ class TestBoundingPyramid(unittest.TestCase):
     def test_eq(self) -> None:
         assert BoundingPyramid() == BoundingPyramid()
         assert BoundingPyramid({5: (Bounds(2, 5), Bounds(6, 15))}) == BoundingPyramid(
-            {5: (Bounds(2, 5), Bounds(6, 15))}
+            {5: (Bounds(2, 5), Bounds(6, 15))},
         )
 
     def test_add(self) -> None:
@@ -123,7 +123,7 @@ class TestBoundingPyramid(unittest.TestCase):
 class TestGoogleTileGrid(unittest.TestCase):
     def test_fill(self) -> None:
         bp = BoundingPyramid()
-        bp.fill(range(0, 8), (572215.4395248143, 5684416.95917649, 1277662.36597472, 6145307.39552287))
+        bp.fill(range(8), (572215.4395248143, 5684416.95917649, 1277662.36597472, 6145307.39552287))
         assert bp.zget(0) == (Bounds(0, 1), Bounds(0, 1))
         assert bp.zget(1) == (Bounds(1, 2), Bounds(0, 1))
         assert bp.zget(2) == (Bounds(2, 3), Bounds(1, 2))

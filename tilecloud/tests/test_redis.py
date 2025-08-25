@@ -14,7 +14,7 @@ else:
     REDIS_VERSION = []
 
 skip_no_redis = pytest.mark.skipif(
-    url is None or REDIS_VERSION < [5, 0, 0], reason="skipped because of missing REDIS_URL"
+    url is None or REDIS_VERSION < [5, 0, 0], reason="skipped because of missing REDIS_URL",
 )
 
 

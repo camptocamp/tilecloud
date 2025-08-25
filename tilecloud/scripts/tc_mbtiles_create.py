@@ -17,7 +17,7 @@ from tilecloud.store.s3 import S3TileStore
 
 def main() -> None:
     tilelayouts = {"i3d": I3DTileLayout, "osm": OSMTileLayout}
-    tilestores = "filesystem log s3".split()
+    tilestores = ["filesystem", "log", "s3"]
     option_parser = OptionParser()
     option_parser.add_option("--bounds", metavar="Z1/X1/Y1:(Z2/)?X2/Y2")
     option_parser.add_option("--bucket", dest="bucket_name", metavar="BUCKET")
@@ -53,7 +53,7 @@ def main() -> None:
         tilestream = store.get_all()
     connection = sqlite3.connect(options.output)
     mbtiles_tilestore = MBTilesTileStore(connection, commit=False)
-    for key in "name type version description format".split():
+    for key in ["name", "type", "version", "description", "format"]:
         value = getattr(options, key)
         if value is not None:
             mbtiles_tilestore.metadata[key] = getattr(options, key)
