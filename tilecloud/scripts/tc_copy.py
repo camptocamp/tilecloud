@@ -114,11 +114,10 @@ def main() -> None:
                 if key in benchmark.statisticss:
                     statistics = benchmark.statisticss[key]
                     logger.info(
-                        "{}: {}{}".format(
-                            key,
-                            statistics,
-                            f" ({1.0 / statistics.mean:.1f} tiles/s)" if statistics.n else "",
-                        ),
+                        "%s: %s%s",
+                        key,
+                        statistics,
+                        f" ({1.0 / statistics.mean:.1f} tiles/s)" if statistics.n else "",
                     )
 
 

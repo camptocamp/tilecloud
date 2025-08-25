@@ -38,7 +38,7 @@ class TestTileCoord(unittest.TestCase):
         assert str(TileCoord(1, 2, 3)) == "1/2/3"
 
     def test_str_metatile(self) -> None:
-        assert "3/4/6:+2/+2" == str(TileCoord(3, 4, 6, 2))
+        assert str(TileCoord(3, 4, 6, 2)) == "3/4/6:+2/+2"
 
     def test_str_metatile_error(self) -> None:
         self.assertRaises(ValueError, TileCoord.from_string, "3/4/6:+2/+3")

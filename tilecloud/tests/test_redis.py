@@ -14,7 +14,8 @@ else:
     REDIS_VERSION = []
 
 skip_no_redis = pytest.mark.skipif(
-    url is None or REDIS_VERSION < [5, 0, 0], reason="skipped because of missing REDIS_URL"
+    url is None or REDIS_VERSION < [5, 0, 0],
+    reason="skipped because of missing REDIS_URL",
 )
 
 
@@ -104,7 +105,7 @@ def test_dropping_too_many_retries(store):
                 if tile.tilecoord.y == 0:  # this tile always fails and will be dropped after two tries
                     nb_tries += 1
                     assert nb_tries <= 3
-                    raise SlaveException
+                    raise SlaveException  # noqa: TRY301
                 count += 1
                 store.delete_one(tile)
         except SlaveException:

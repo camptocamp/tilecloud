@@ -9,7 +9,6 @@ class TestBounds(unittest.TestCase):
         assert len(bounds) == 0
         assert 1 not in bounds
         self.assertRaises(StopIteration, next, iter(bounds))
-        assert bounds == bounds
 
     def test_init_one_argument(self) -> None:
         bounds = Bounds(1)
