@@ -30,7 +30,7 @@ jobs:
           patterns: pypi
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
       - run: python3 -m pip install --requirement=ci/requirements.txt
