@@ -45,7 +45,7 @@ all = ["azure-storage-blob", "azure-identity", "boto3", "pyramid", "redis", "pro
 prospector = { version = "1.17.3", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils = "1.26.5"
-ruff = "0.12.11"
+ruff = "0.13.2"
 pytest = "8.4.2"
 pytest-cov = "6.3.0"
 types-boto = "2.49.18.20241019"
