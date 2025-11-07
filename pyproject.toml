@@ -26,7 +26,7 @@ azure-identity = { version = "1.25.1", optional = true }
 boto3 = { version = "1.40.64", optional = true }
 bottle = "0.13.4"
 prometheus_client = { version = "0.23.1", optional = true }
-Pillow = "11.3.0"
+Pillow = "12.0.0"
 pyproj = "3.7.2"
 pyramid = { version = "2.0.2", optional = true }
 requests = "2.32.5"
