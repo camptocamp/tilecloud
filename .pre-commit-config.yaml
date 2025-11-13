@@ -76,6 +76,7 @@ repos:
         additional_dependencies:
           - prospector-profile-duplicated==1.10.5 # pypi
           - prospector-profile-utils==1.22.3 # pypi
+          - ruff==0.11.13 # pypi
         exclude: |-
           (?x)(
             ^tests?/?
@@ -95,6 +96,7 @@ repos:
           - --profile=.prospector-tests.yaml
         additional_dependencies:
           - prospector-profile-utils==1.22.3 # pypi
+          - ruff==0.11.13 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:
