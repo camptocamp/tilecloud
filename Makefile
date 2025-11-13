@@ -27,7 +27,7 @@ prospector:
 
 .PHONY: tests
 tests:
-	pytest --verbose --color=yes --cov=tilecloud
+	pytest -vv --color=yes --cov=tilecloud
 
 .PHONY: build ## build the images for the checks
 build:
