@@ -1,6 +1,6 @@
 from collections.abc import Iterable, Iterator
 from io import BytesIO
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 from PIL import Image
 
@@ -9,10 +9,20 @@ from tilecloud.lib.PIL_ import FORMAT_BY_CONTENT_TYPE
 
 
 class MetaTileSplitterTileStore(TileStore):
-    def __init__(self, format_pattern: str, tile_size: int = 256, border: int = 0, **kwargs: Any) -> None:
+    """A tile store that splits metatiles into tiles."""
+
+    def __init__(
+        self,
+        format_pattern: str,
+        tile_size: int = 256,
+        border: int = 0,
+        save_options: Union[dict[str, Any], None] = None,
+        **kwargs: Any,
+    ) -> None:
         self.format = format_pattern
         self.tile_size = tile_size
         self.border = border
+        self._save_options = save_options or {}
         TileStore.__init__(self, **kwargs)
 
     def get(self, tiles: Iterable[Optional[Tile]]) -> Iterator[Tile]:
@@ -44,7 +54,7 @@ class MetaTileSplitterTileStore(TileStore):
                     )
                     image = metaimage.crop((x, y, x + self.tile_size, y + self.tile_size))
                     bytes_io = BytesIO()
-                    image.save(bytes_io, FORMAT_BY_CONTENT_TYPE[self.format])
+                    image.save(bytes_io, FORMAT_BY_CONTENT_TYPE[self.format], **self._save_options)
                     yield Tile(
                         tilecoord,
                         data=bytes_io.getvalue(),
