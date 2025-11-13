@@ -33,7 +33,7 @@ class WMSTileLayout(TileLayout):
             "SRS": srs,
         }
         self.params.update(params)
-        if params.get("FILTER", None) is not None:
+        if params.get("FILTER") is not None:
             self.params["FILTER"] = params["FILTER"].format(**params)
 
     def filename(self, tilecoord: TileCoord, metadata: Any | None = None) -> str:
