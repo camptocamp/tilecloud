@@ -23,7 +23,7 @@ class WMSTileLayout(TileLayout):
         self.params = {
             "LAYERS": layers,
             "FORMAT": format_pattern,
-            "TRANSPARENT": "TRUE" if format_pattern == "image/png" else "FALSE",
+            "TRANSPARENT": "TRUE" if format_pattern in ("image/png", "image/webp") else "FALSE",
             "SERVICE": "WMS",
             "VERSION": "1.1.1",
             "REQUEST": "GetMap",
