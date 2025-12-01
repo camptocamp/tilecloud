@@ -67,7 +67,7 @@ class ZipTileStore(TileStore):
         filename = self.layout.filename(tile.tilecoord, tile.metadata)
         zipinfo = zipfile.ZipInfo(filename)
         zipinfo.compress_type = getattr(self, "compress_type", zipfile.ZIP_DEFLATED)
-        zipinfo.date_time = datetime.datetime.now(tz=datetime.timezone.utc).timetuple()[:6]
+        zipinfo.date_time = datetime.datetime.now(tz=datetime.UTC).timetuple()[:6]
         zipinfo.external_attr = 0o644 << 16
         self.zipfile.writestr(zipinfo, tile.data)
         return tile
