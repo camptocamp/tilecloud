@@ -7,3 +7,4 @@ tag-publish==1.1.1
 protobuf>=4.25.8 # not directly required, pinned by Snyk to avoid a vulnerability
 urllib3>=2.6.0 # not directly required, pinned by Snyk to avoid a vulnerability
 pip>=25.2 # not directly required, pinned by Snyk to avoid a vulnerability
+idna>=3.7 # not directly required, pinned by Snyk to avoid a vulnerability
