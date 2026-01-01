@@ -295,8 +295,8 @@ prospector on the codebase with the command:
 
 ## License
 
-Copyright (c) 2012-2025, Tom Payne <twpayne@gmail.com> All rights reserved.
-Copyright (c) 2012-2025, Camptocamp All rights reserved.
+Copyright (c) 2012-2026, Tom Payne <twpayne@gmail.com> All rights reserved.
+Copyright (c) 2012-2026, Camptocamp All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that
 the following conditions are met:
