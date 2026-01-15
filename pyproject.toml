@@ -4,7 +4,7 @@ line-length = 110
 
 [tool.ruff.lint]
 select = []
-ignore = ["A005", "ANN401", "ARG002", "BLE001", "C90", "D100", "D102", "D104", "D105", "D107", "D200", "D202", "D207", "D208", "D212", "E501", "EM101", "EM102", "ERA001", "FA", "FBT001", "FBT002", "FIX", "FIX002", "G201", "I001", "ISC003", "N818", "PERF203", "PGH003", "PLR09", "PLR2004", "PTH", "Q000", "S101", "SIM105", "T201", "TD", "TD002", "TRY003", "TRY300", "W293"]
+ignore = ["A005", "ANN401", "ARG002", "BLE001", "C90", "COM812", "D100", "D102", "D104", "D105", "D107", "D200", "D202", "D207", "D208", "D212", "E501", "EM101", "EM102", "ERA001", "FA", "FBT001", "FBT002", "FIX", "FIX002", "G201", "I001", "ISC003", "N818", "PERF203", "PGH003", "PLR09", "PLR2004", "PTH", "Q000", "S101", "SIM105", "T201", "TD", "TD002", "TRY003", "TRY300", "W293"]
 extend-select = ["UP", "I", "S", "B", "ALL"]
 
 [tool.ruff.lint.pydocstyle]
@@ -43,7 +43,7 @@ all = ["azure-storage-blob", "azure-identity", "boto3", "pyramid", "redis", "pro
 
 [tool.poetry.group.dev.dependencies]
 prospector = { version = "1.17.3", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
-prospector-profile-duplicated = "1.10.5"
+prospector-profile-duplicated = "1.11.0"
 prospector-profile-utils = "1.26.5"
 ruff = "0.14.10"
 pytest = "9.0.2"
