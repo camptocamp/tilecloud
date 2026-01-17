@@ -2480,4 +2480,4 @@ wsgi = ["pyramid"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4"
-content-hash = "f6ed2d76619c4e383fd50af95a752e5cd794302981ae54380093837fd754a167"
+content-hash = "be1ee32cdef8262c7e9e79c5e71996ccc327ef4a8972edf2c994b5eab78c385f"
