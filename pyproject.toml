@@ -98,7 +98,7 @@ authors = [{name = "Camptocamp",email = "info@camptocamp.com"}]
 packages = [{ include = "tilecloud" }]
 include = ["tilecloud/py.typed"]
 requires-python = ">=3.11"
-dependencies = ["bottle", "Pillow", "pyproj", "requests", "cryptography"]
+dependencies = ["bottle", "Pillow", "pyproj", "requests", "cryptography", "azure-core==1.38.0"]
 
 [project.urls]
 repository = "https://github.com/camptocamp/tilecloud"
