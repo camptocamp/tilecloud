@@ -21,11 +21,11 @@ version = "0.0.0"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<4"
-azure-storage-blob = { version = "12.27.1", optional = true }
+azure-storage-blob = { version = "12.28.0", optional = true }
 azure-identity = { version = "1.25.1", optional = true }
-boto3 = { version = "1.42.21", optional = true }
+boto3 = { version = "1.42.39", optional = true }
 bottle = "0.13.4"
-prometheus_client = { version = "0.23.1", optional = true }
+prometheus_client = { version = "0.24.1", optional = true }
 Pillow = "12.1.0"
 pyproj = "3.7.2"
 pyramid = { version = "2.0.2", optional = true }
@@ -50,7 +50,7 @@ pytest = "9.0.2"
 pytest-cov = "7.0.0"
 types-boto = "2.49.18.20241019"
 types-redis = "4.6.0.20241004"
-types-requests = "2.32.4.20250913"
+types-requests = "2.32.4.20260107"
 pycairo = "1.29.0"
 Shapely = "2.1.2"
 urllib3 = "2.6.3" # Lock the used version to avoid lock issue
