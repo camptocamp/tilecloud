@@ -29,7 +29,7 @@ repos:
       - id: prospector-to-ruff
         additional_dependencies:
           - prospector-profile-duplicated==1.12.0 # pypi
-          - prospector-profile-utils==1.26.5 # pypi
+          - prospector-profile-utils==1.27.0 # pypi
         args:
           - --test=.prospector-tests.yaml
   - repo: https://github.com/codespell-project/codespell
@@ -81,7 +81,7 @@ repos:
           - --output-format=pylint
         additional_dependencies:
           - prospector-profile-duplicated==1.12.0 # pypi
-          - prospector-profile-utils==1.26.5 # pypi
+          - prospector-profile-utils==1.27.0 # pypi
           - pylint[spelling]==4.0.4 # pypi
           - ruff==0.15.0 # pypi
         exclude: |-
@@ -102,14 +102,14 @@ repos:
           - --profile=utils:pre-commit
           - --profile=.prospector-tests.yaml
         additional_dependencies:
-          - prospector-profile-utils==1.26.5 # pypi
+          - prospector-profile-utils==1.27.0 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:
       - id: jsonschema-validator
         files: ^\.github/publish\.yaml$
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 43.4.1
+    rev: 43.8.1
     hooks:
       - id: renovate-config-validator
   - repo: https://github.com/sbrunner/python-versions-hook
