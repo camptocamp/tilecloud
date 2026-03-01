@@ -22,15 +22,15 @@ version = "0.0.0"
 [tool.poetry.dependencies]
 python = ">=3.11,<4"
 azure-storage-blob = { version = "12.28.0", optional = true }
-azure-identity = { version = "1.25.1", optional = true }
-boto3 = { version = "1.42.39", optional = true }
+azure-identity = { version = "1.25.2", optional = true }
+boto3 = { version = "1.42.59", optional = true }
 bottle = "0.13.4"
 prometheus_client = { version = "0.24.1", optional = true }
 Pillow = "12.1.1"
 pyproj = "3.7.2"
 pyramid = { version = "2.0.2", optional = true }
 requests = "2.32.5"
-redis = { version = "7.1.0", optional = true }
+redis = { version = "7.2.1", optional = true }
 cryptography = "46.0.5"
 
 [tool.poetry.extras]
@@ -43,8 +43,8 @@ all = ["azure-storage-blob", "azure-identity", "boto3", "pyramid", "redis", "pro
 
 [tool.poetry.group.dev.dependencies]
 prospector = { version = "1.18.0", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
-prospector-profile-duplicated = "1.11.0"
-prospector-profile-utils = "1.26.5"
+prospector-profile-duplicated = "1.12.0"
+prospector-profile-utils = "1.27.0"
 ruff = "0.15.0"
 pytest = "9.0.2"
 pytest-cov = "7.0.0"
@@ -98,7 +98,7 @@ authors = [{name = "Camptocamp",email = "info@camptocamp.com"}]
 packages = [{ include = "tilecloud" }]
 include = ["tilecloud/py.typed"]
 requires-python = ">=3.11"
-dependencies = ["bottle", "Pillow", "pyproj", "requests", "cryptography", "azure-core==1.38.0"]
+dependencies = ["bottle", "Pillow", "pyproj", "requests", "cryptography", "azure-core==1.38.2"]
 
 [project.urls]
 repository = "https://github.com/camptocamp/tilecloud"
