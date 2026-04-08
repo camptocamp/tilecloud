@@ -30,7 +30,7 @@ Pillow = "12.1.1"
 pyproj = "3.7.2"
 requests = "2.33.0"
 redis = { version = "7.4.0", optional = true }
-cryptography = "46.0.6"
+cryptography = "46.0.7"
 
 [tool.poetry.group.dev.dependencies]
 prospector = { version = "1.18.0", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
