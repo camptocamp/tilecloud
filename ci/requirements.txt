@@ -1,5 +1,5 @@
 c2cciutils==1.7.5
-pre-commit==4.5.1
+pre-commit==4.6.0
 poetry==2.3.4
 poetry-dynamic-versioning==1.10.0
 poetry-plugin-export==1.10.0
