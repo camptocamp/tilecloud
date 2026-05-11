@@ -1,69 +1,11 @@
-[tool.ruff]
-target-version = "py311"
-line-length = 110
 
-[tool.ruff.lint]
-select = []
-ignore = ["A005", "ANN401", "ARG002", "BLE001", "C90", "COM812", "D100", "D102", "D104", "D105", "D107", "D200", "D202", "D207", "D208", "D212", "E501", "EM101", "EM102", "ERA001", "FA", "FBT001", "FBT002", "FIX", "FIX002", "G201", "I001", "ISC003", "N818", "PERF203", "PGH003", "PLR09", "PLR2004", "PTH", "Q000", "S101", "SIM105", "T201", "TD", "TD002", "TRY003", "TRY300", "W293"]
-extend-select = ["UP", "I", "S", "B", "ALL"]
-
-[tool.ruff.lint.pydocstyle]
-convention = "numpy"
-
-[tool.ruff.lint.extend-per-file-ignores]
-"tests/**" = ["PT027", "UP031"]
-"**/tests/**" = ["PT027", "UP031"]
-"**/test_*.py" = ["PT027", "UP031"]
-"**/*_test.py" = ["PT027", "UP031"]
-
-[tool.poetry]
-version = "0.0.0"
-
-[tool.poetry.dependencies]
-python = ">=3.11,<4"
-azure-storage-blob = { version = "12.28.0", optional = true }
-azure-identity = { version = "1.25.3", optional = true }
-boto3 = { version = "1.42.75", optional = true }
-bottle = "0.13.4"
-prometheus_client = { version = "0.25.0", optional = true }
-Pillow = "12.2.0"
-pyproj = "3.7.2"
-requests = "2.33.0"
-redis = { version = "7.4.0", optional = true }
-cryptography = "47.0.0"
-
-[tool.poetry.group.dev.dependencies]
-prospector = { version = "1.18.0", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
-prospector-profile-duplicated = "1.12.0"
-prospector-profile-utils = "1.27.0"
-ruff = "0.15.12"
-pytest = "9.0.3"
-pytest-cov = "7.1.0"
-types-boto = "2.49.18.20241019"
-types-redis = "4.6.0.20241004"
-types-requests = "2.33.0.20260408"
-pycairo = "1.29.0"
-Shapely = "2.1.2"
-urllib3 = "2.6.3" # Lock the used version to avoid lock issue
-
-[tool.poetry-dynamic-versioning]
-enable = true
-vcs = "git"
-pattern = "^(?P<base>\\d+(\\.\\d+)*)"
-format-jinja = """
-{%- if env.get("VERSION_TYPE") == "default_branch" -%}
-{{serialize_pep440(bump_version(base, 1), dev=distance)}}
-{%- elif env.get("VERSION_TYPE") == "stabilization_branch" -%}
-{{serialize_pep440(bump_version(base, 2), dev=distance)}}
-{%- elif distance == 0 -%}
-{{serialize_pep440(base)}}
-{%- else -%}
-{{serialize_pep440(bump_version(base), dev=distance)}}
-{%- endif -%}
-"""
-
-[tool.poetry-plugin-tweak-dependencies-version]
-default = "present"
+[build-system]
+requires = [
+    "poetry-core>=1.3.0",
+    "poetry-dynamic-versioning",
+    "poetry-plugin-tweak-dependencies-version>=1.1.0",
+]
+build-backend = "poetry.core.masonry.api"
 
 [project]
 classifiers = [
@@ -113,10 +55,69 @@ aws = ["boto3"]
 prometheus = ["prometheus_client"]
 redis = ["redis"]
 
-[build-system]
-requires = [
-    "poetry-core>=1.3.0",
-    "poetry-dynamic-versioning",
-    "poetry-plugin-tweak-dependencies-version>=1.1.0",
-]
-build-backend = "poetry.core.masonry.api"
+[tool.ruff]
+target-version = "py311"
+line-length = 110
+
+[tool.ruff.lint]
+select = []
+ignore = ["A005", "ANN401", "ARG002", "BLE001", "C90", "COM812", "D100", "D102", "D104", "D105", "D107", "D200", "D202", "D207", "D208", "D212", "E501", "EM101", "EM102", "ERA001", "FA", "FBT001", "FBT002", "FIX", "FIX002", "G201", "I001", "ISC003", "N818", "PERF203", "PGH003", "PLR09", "PLR2004", "PTH", "Q000", "S101", "SIM105", "T201", "TD", "TD002", "TRY003", "TRY300", "W293"]
+extend-select = ["UP", "I", "S", "B", "ALL"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/**" = ["PT027", "UP031"]
+"**/tests/**" = ["PT027", "UP031"]
+"**/test_*.py" = ["PT027", "UP031"]
+"**/*_test.py" = ["PT027", "UP031"]
+
+[tool.poetry]
+version = "0.0.0"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<4"
+azure-storage-blob = { version = "12.28.0", optional = true }
+azure-identity = { version = "1.25.3", optional = true }
+boto3 = { version = "1.42.75", optional = true }
+bottle = "0.13.4"
+prometheus_client = { version = "0.25.0", optional = true }
+Pillow = "12.2.0"
+pyproj = "3.7.2"
+requests = "2.33.0"
+redis = { version = "7.4.0", optional = true }
+cryptography = "47.0.0"
+
+[tool.poetry.group.dev.dependencies]
+prospector = { version = "1.18.0", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
+prospector-profile-duplicated = "1.12.0"
+prospector-profile-utils = "1.27.0"
+ruff = "0.15.12"
+pytest = "9.0.3"
+pytest-cov = "7.1.0"
+types-boto = "2.49.18.20241019"
+types-redis = "4.6.0.20241004"
+types-requests = "2.33.0.20260408"
+pycairo = "1.29.0"
+Shapely = "2.1.2"
+urllib3 = "2.7.0" # Lock the used version to avoid lock issue
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+pattern = "^(?P<base>\\d+(\\.\\d+)*)"
+format-jinja = """
+{%- if env.get("VERSION_TYPE") == "default_branch" -%}
+{{serialize_pep440(bump_version(base, 1), dev=distance)}}
+{%- elif env.get("VERSION_TYPE") == "stabilization_branch" -%}
+{{serialize_pep440(bump_version(base, 2), dev=distance)}}
+{%- elif distance == 0 -%}
+{{serialize_pep440(base)}}
+{%- else -%}
+{{serialize_pep440(bump_version(base), dev=distance)}}
+{%- endif -%}
+"""
+
+[tool.poetry-plugin-tweak-dependencies-version]
+default = "present"
