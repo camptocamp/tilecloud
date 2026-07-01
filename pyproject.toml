@@ -90,10 +90,10 @@ redis = { version = "7.4.1", optional = true }
 cryptography = "49.0.0"
 
 [tool.poetry.group.dev.dependencies]
-prospector = { version = "1.18.0", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
+prospector = { version = "1.19.0", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.12.0"
 prospector-profile-utils = "1.27.0"
-ruff = "0.15.14"
+ruff = "0.15.19"
 pytest = "9.1.1"
 pytest-cov = "7.1.0"
 types-boto = "2.49.18.20241019"
