@@ -4,7 +4,7 @@ line-length = 110
 
 [tool.ruff.lint]
 select = []
-ignore = ["A005", "ANN401", "ARG002", "BLE001", "C90", "COM812", "D100", "D102", "D104", "D105", "D107", "D200", "D202", "D207", "D208", "D212", "E501", "EM101", "EM102", "ERA001", "FA", "FBT001", "FBT002", "FIX", "FIX002", "G201", "I001", "ISC003", "N818", "PERF203", "PGH003", "PLR09", "PLR2004", "PTH", "Q000", "S101", "SIM105", "T201", "TD", "TD002", "TRY003", "TRY300", "W293"]
+ignore = ["A005", "ANN401", "ARG002", "BLE001", "C90", "COM812", "CPY001", "D100", "D102", "D104", "D105", "D107", "D200", "D202", "D207", "D208", "D212", "E501", "EM101", "EM102", "ERA001", "FA", "FBT001", "FBT002", "FIX", "FIX002", "G201", "I001", "ISC003", "N818", "PERF203", "PGH003", "PLR09", "PLR2004", "PTH", "Q000", "S101", "SIM105", "T201", "TD", "TD002", "TRY003", "TRY300", "W293"]
 extend-select = ["UP", "I", "S", "B", "ALL"]
 
 [tool.ruff.lint.pydocstyle]
@@ -33,10 +33,10 @@ redis = { version = "8.0.1", optional = true }
 cryptography = "49.0.0"
 
 [tool.poetry.group.dev.dependencies]
-prospector = { version = "1.19.0", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
+prospector = { version = "1.19.1", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.12.0"
 prospector-profile-utils = "1.27.0"
-ruff = "0.15.19"
+ruff = "0.16.0"
 pytest = "9.1.1"
 pytest-cov = "7.1.0"
 types-boto = "2.49.18.20241019"
