@@ -36,3 +36,4 @@ ruff:
     - N818 # Exception name `{}` should be named with an Error suffix
     - G201 # Logging `.exception(...)` should be used instead of `.error(..., exc_info=True)`
     - A005 # Module `queue` shadows a Python standard-library module
+    - CPY001 # Missing copyright notice (new in ruff 0.16.0)
