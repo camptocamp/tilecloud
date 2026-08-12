@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Camptocamp
+# Copyright (c) 2024-2026 Camptocamp
 from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 
 

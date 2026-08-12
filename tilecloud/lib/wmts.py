@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Camptocamp
+# Copyright (c) 2024-2026 Camptocamp
 from math import ceil
 from typing import TypedDict, cast
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2024 Camptocamp
+# Copyright (c) 2024-2026 Camptocamp
 from collections import deque
 from collections.abc import Callable, Iterator
 
