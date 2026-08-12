@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 import datetime
 import os.path
 import re

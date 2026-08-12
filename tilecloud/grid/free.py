@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 from collections.abc import Iterator, Sequence
 from math import floor
 

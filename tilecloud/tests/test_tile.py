@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 import unittest
 
 from tilecloud import Tile, TileCoord

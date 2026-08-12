@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 # pylint: disable=import-outside-toplevel
 
 import builtins

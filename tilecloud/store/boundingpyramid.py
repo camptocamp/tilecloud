@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 from typing import Any
 
 from tilecloud import BoundingPyramid, NotSupportedOperation, Tile, TileStore

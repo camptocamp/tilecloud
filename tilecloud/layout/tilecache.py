@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 import re
 from re import Match
 from typing import Any

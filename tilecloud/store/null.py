@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 from collections.abc import Iterable
 
 from tilecloud import Tile, TileStore

@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 # FIXME port to requests  # pylint: disable=fixme
 # FIXME rename url1 and url2 to url when pyflakes grows a second brain cell  # pylint: disable=fixme
 # https://github.com/mapbox/TileJSON

@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 import re
 from collections.abc import Iterator
 from typing import IO, Any

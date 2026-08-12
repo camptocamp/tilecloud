@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 from gzip import GzipFile
 from io import BytesIO
 

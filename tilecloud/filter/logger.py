@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 import logging
 from typing import Any
 

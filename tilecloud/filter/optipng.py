@@ -1,3 +1,4 @@
+# Copyright (c) 2024-2026 Camptocamp
 import os
 from subprocess import call  # nosec
 from tempfile import NamedTemporaryFile
