@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from collections import deque
 from collections.abc import Callable, Iterator
 

@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 """Module includes filters for dealing with errors in tiles."""
 
 from tilecloud import Tile

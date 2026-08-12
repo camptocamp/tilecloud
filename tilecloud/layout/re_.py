@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from re import Match, Pattern
 
 from tilecloud import TileCoord, TileLayout

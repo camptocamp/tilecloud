@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from io import BytesIO
 from typing import Any
 

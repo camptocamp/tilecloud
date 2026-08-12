@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from tilecloud.grid.quad import QuadTileGrid
 
 GoogleTileGrid = QuadTileGrid(

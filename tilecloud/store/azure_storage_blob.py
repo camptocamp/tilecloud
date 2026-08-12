@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 import logging
 import os
 from collections.abc import Iterator

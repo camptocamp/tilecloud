@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from math import ceil
 from typing import TypedDict, cast
 

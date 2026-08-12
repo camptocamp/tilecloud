@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from collections.abc import Iterator
 from typing import Any
 

@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from tilecloud import NotSupportedOperation, Tile, TileGrid, TileStore
 
 

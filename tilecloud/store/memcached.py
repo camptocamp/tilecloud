@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from typing import Any
 
 import tilecloud.lib.memcached

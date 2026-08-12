@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from json import dumps
 from typing import Any
 

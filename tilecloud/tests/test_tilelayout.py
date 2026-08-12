@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 import unittest
 from urllib.parse import parse_qs, urlparse
 

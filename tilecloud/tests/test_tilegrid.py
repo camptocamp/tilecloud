@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 import unittest
 from itertools import islice
 

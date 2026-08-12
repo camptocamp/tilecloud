@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from collections.abc import Callable
 from functools import reduce
 from typing import Any

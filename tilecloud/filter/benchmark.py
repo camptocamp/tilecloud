@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 import math
 import time
 from collections.abc import Callable

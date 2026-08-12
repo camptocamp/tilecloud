@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Copyright (c) 2024 Camptocamp
 
 import sys
 from collections import defaultdict

@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 """
 Module includes filters doing manipulations on the tile image.
 

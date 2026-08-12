@@ -1,3 +1,4 @@
+# Copyright (c) 2024 Camptocamp
 from collections.abc import Iterable, Iterator
 from itertools import count
 
