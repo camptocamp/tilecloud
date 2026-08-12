@@ -21,8 +21,6 @@ mypy:
 ruff:
   options:
     target-version: py312
-    flake8-copyright:
-      notice-rgx: "(?i)Copyright (?:(?:©)|(?:\\(c\\)))? ?(?:\\d{4}[\\-\\d,.]*)? ?Camptocamp"
   disable:
     - D102 # Missing docstring in public method
     - ARG002 # Unused method argument
