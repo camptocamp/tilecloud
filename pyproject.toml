@@ -52,6 +52,7 @@ types-requests = "2.33.0.20260712"
 pycairo = "1.29.0"
 Shapely = "2.1.2"
 urllib3 = "2.7.0" # Lock the used version to avoid lock issue
+pylint = "4.0.6"
 
 [tool.poetry-dynamic-versioning]
 enable = true
