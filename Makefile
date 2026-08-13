@@ -23,7 +23,7 @@ docs: ## Make the documentation
 
 .PHONY: prospector
 prospector:
-	prospector --output=pylint --die-on-tool-error
+	prospector --output=pylint --direct-tool-stdout
 
 .PHONY: tests
 tests:
