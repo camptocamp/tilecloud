@@ -72,8 +72,7 @@ class FilesystemTileStore(TileStore):
             tile.error = exception
             return tile
         dirname = os.path.dirname(filename)
-        if not os.path.exists(dirname):
-            os.makedirs(dirname)
+        os.makedirs(dirname, exist_ok=True)
         with open(filename, "wb") as file:
             file.write(tile.data)
         return tile
