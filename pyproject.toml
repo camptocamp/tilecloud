@@ -124,6 +124,5 @@ redis = ["redis"]
 requires = [
     "poetry-core==2.4.1",
     "poetry-dynamic-versioning==1.10.0",
-    "poetry-plugin-tweak-dependencies-version==1.5.6",
 ]
 build-backend = "poetry.core.masonry.api"
