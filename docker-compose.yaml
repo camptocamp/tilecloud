@@ -1,6 +1,6 @@
 services:
   redis:
-    image: redis:8.8.1
+    image: redis:8.10.1
 
   test:
     build: .
