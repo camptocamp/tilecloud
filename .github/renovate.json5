@@ -23,7 +23,7 @@
     },
     /** Disable update of Python version in pyproject.toml */
     {
-      matchFiles: ['pyproject.toml'],
+      matchFileNames: ['pyproject.toml'],
       enabled: false,
       matchDepNames: ['python'],
     },
