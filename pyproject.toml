@@ -43,7 +43,7 @@ cryptography = "50.0.1"
 prospector = { version = "1.19.1", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.12.0"
 prospector-profile-utils = "1.27.0"
-ruff = "0.16.1"
+ruff = "0.16.4"
 pytest = "9.1.1"
 pytest-cov = "7.1.0"
 types-boto = "2.49.18.20241019"
@@ -52,7 +52,7 @@ types-requests = "2.33.0.20260712"
 pycairo = "1.29.0"
 Shapely = "2.1.2"
 urllib3 = "2.7.0" # Lock the used version to avoid lock issue
-pylint = "4.0.6"
+pylint = "4.0.7"
 
 [tool.poetry-dynamic-versioning]
 enable = true
