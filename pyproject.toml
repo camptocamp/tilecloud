@@ -43,7 +43,7 @@ cryptography = "50.0.1"
 prospector = { version = "1.19.1", extras = ["with_bandit", "with_mypy", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.12.0"
 prospector-profile-utils = "1.27.0"
-ruff = "0.16.8"
+ruff = "0.16.9"
 pytest = "9.1.1"
 pytest-cov = "7.1.0"
 types-boto = "2.49.18.20241019"
