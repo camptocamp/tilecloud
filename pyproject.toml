@@ -51,7 +51,7 @@ types-redis = "4.6.0.20241004"
 types-requests = "2.33.0.20260712"
 pycairo = "1.29.1"
 Shapely = "2.1.2"
-urllib3 = "2.7.0" # Lock the used version to avoid lock issue
+urllib3 = "2.8.0" # Lock the used version to avoid lock issue
 pylint = "4.0.7"
 
 [tool.poetry-dynamic-versioning]
