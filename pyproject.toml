@@ -28,13 +28,13 @@ version = "0.0.0"
 
 [tool.poetry.dependencies]
 python = ">=3.12,<4"
-azure-storage-blob = { version = "12.30.0", optional = true }
+azure-storage-blob = { version = "12.30.3", optional = true }
 azure-identity = { version = "1.25.3", optional = true }
-boto3 = { version = "1.43.79", optional = true }
+boto3 = { version = "1.43.102", optional = true }
 bottle = "0.13.4"
 prometheus_client = { version = "0.26.0", optional = true }
 Pillow = "12.3.0"
-pyproj = "3.7.2"
+pyproj = "3.8.0"
 requests = "2.34.2"
 redis = { version = "8.1.0", optional = true }
 cryptography = "50.0.2"
@@ -48,7 +48,7 @@ pytest = "9.1.1"
 pytest-cov = "7.1.0"
 types-boto = "2.49.18.20241019"
 types-redis = "4.6.0.20241004"
-types-requests = "2.33.0.20260712"
+types-requests = "2.33.0.20260906"
 pycairo = "1.29.1"
 Shapely = "2.1.2"
 urllib3 = "2.8.0" # Lock the used version to avoid lock issue
@@ -122,7 +122,7 @@ redis = ["redis"]
 
 [build-system]
 requires = [
-    "poetry-core==2.4.1",
+    "poetry-core==2.5.0",
     "poetry-dynamic-versioning[plugin]==1.10.0",
 ]
 build-backend = "poetry.core.masonry.api"
