@@ -92,7 +92,7 @@ jobs:
           python-version: '3.13'
 
       - name: Publish
-        run: uv run --locked --isolated --project=.github/publish tag-publish
+        run: uv run --locked --isolated --no-build --project=.github/publish tag-publish
         if: |
           env.HAS_SECRETS == 'HAS_SECRETS'
           && github.event_name == 'push'
