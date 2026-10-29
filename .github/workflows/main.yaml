@@ -86,8 +86,6 @@ jobs:
         with:
           version: latest-known
           cache-python: true
-          # The Publish step is skipped outside of a push on master or a tag, and then uv never
-          # runs, so its cache directory is never created.
           python-version: '3.13'
 
       - name: Publish
