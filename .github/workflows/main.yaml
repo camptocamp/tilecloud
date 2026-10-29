@@ -19,6 +19,9 @@ jobs:
     timeout-minutes: 10
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
+    outputs:
+      success: ${{ steps.success.outputs.success }}
+
     steps:
       - run: docker system prune --all --force
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -50,8 +53,43 @@ jobs:
         run: c2cciutils-docker-logs
         if: always()
 
+      # Mark as success
+      - id: success
+        run: echo "success=true" >> $GITHUB_OUTPUT
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    needs: main
+    if: always()
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - run: '[[ "${{ needs.main.outputs.success }}" == "true" ]]'
+
+      # The full history is required to compute the version from the tags.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      # Provides the pip, python3 and poetry that tag-publish calls to build the wheel.
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - run: python3 -m pip install '--only-binary=:all:' --requirement=ci/requirements.txt
+
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: latest-known
+          cache-python: true
+          python-version: '3.13'
+
       - name: Publish
-        run: tag-publish
+        run: uv run --locked --isolated --project=.github/publish tag-publish
         if: |
           env.HAS_SECRETS == 'HAS_SECRETS'
           && github.event_name == 'push'
@@ -66,7 +104,6 @@ jobs:
           path: /tmp/dpkg-versions.patch
           retention-days: 1
         if: failure()
+
 permissions:
-  contents: write
-  packages: write
-  id-token: write
+  contents: read
