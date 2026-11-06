@@ -607,7 +607,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tag-publish", extras = ["pypi"], specifier = "==1.3.2" }]
+requires-dist = [{ name = "tag-publish", extras = ["pypi"], specifier = "==1.3.3" }]
 
 [[package]]
 name = "pycparser"
@@ -865,16 +865,16 @@ wheels = [
 
 [[package]]
 name = "tag-publish"
-version = "1.3.2"
+version = "1.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "githubkit" },
     { name = "pyyaml" },
     { name = "security-md" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a5/a0/5ea1839aeff648f003fa0f3f31113b9f9f47219283fac9a6d2c0e6f794fa/tag_publish-1.3.2.tar.gz", hash = "sha256:705a878f6f6f5ff39d7b88018b0a11ff6f6df6159835da457c4590f21d9e7d90", size = 31385, upload-time = "2026-10-26T08:38:18.468Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d5/98/0040918dfa41bd8baf724684536fa96315e227d42f462ce7d2ce343cca6b/tag_publish-1.3.3.tar.gz", hash = "sha256:86d216b18d803d4a416039946890d77b0aecb0b82b3ab5cd3ea5b5e8e9eea983", size = 31475, upload-time = "2026-10-30T14:13:48.246Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7c/b2/7155d6582365f7c935237848de9e153c88a9f0aafd13eee6f84882ac3d6c/tag_publish-1.3.2-py3-none-any.whl", hash = "sha256:c673b7b269d4e8ef274117e5c0bae39fb791181add008dab0817bee3049e8460", size = 31162, upload-time = "2026-10-26T08:38:17.31Z" },
+    { url = "https://files.pythonhosted.org/packages/c2/49/d01c4a9f234bec2bb88cb50c171e56178897687ef1c0555e4bf9f4e4225a/tag_publish-1.3.3-py3-none-any.whl", hash = "sha256:a4a0e69876df4a1388ebf5cdf3a4466c96e9941cc6eb26bcb8ba64824cc62281", size = 31276, upload-time = "2026-10-30T14:13:47.323Z" },
 ]
 
 [package.optional-dependencies]
