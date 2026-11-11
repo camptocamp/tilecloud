@@ -269,7 +269,7 @@ wheels = [
 
 [[package]]
 name = "githubkit"
-version = "0.17.0"
+version = "0.17.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -279,9 +279,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7d/45/5f1fddc86cf2a9e9cdc6aa63e43bad3f8e230ba739f474604f984531ff9d/githubkit-0.17.0.tar.gz", hash = "sha256:ccedcd9f2fc3fa270e126d468a61bdecf9a7f9b1dbc43fb0eef74cf5060203d7", size = 39896, upload-time = "2026-10-28T17:29:25.089Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/52/00/c6bdf4f48a71255232a742a1b473cba9c129a5a21b0ad3e88621aa15edbd/githubkit-0.17.1.tar.gz", hash = "sha256:ea15afe3992d54478dca2906701d34a5f5caa4e5b0d5aebb8224da609ee75a9e", size = 40501, upload-time = "2026-11-06T06:09:16.972Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/37/5f/ba187d5d1da0b29599e9617fe20bed22ad2eca0d10611a4d1907ae63a2de/githubkit-0.17.0-py3-none-any.whl", hash = "sha256:3439e35462044142aa21c01d00102d8c03cb2b98f1aa354c2a83cb026c9af249", size = 43922, upload-time = "2026-10-28T17:29:24.15Z" },
+    { url = "https://files.pythonhosted.org/packages/dc/ef/29208aa0a927eb5c6918ac46f2b364e40cbd3559abe12446d8744f286817/githubkit-0.17.1-py3-none-any.whl", hash = "sha256:d341a048e8c15cd594cbedc9f8e9a62e14bd2c33c248006de2a911ce47009bf9", size = 43922, upload-time = "2026-11-06T06:09:15.86Z" },
 ]
 
 [[package]]
@@ -607,7 +607,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tag-publish", extras = ["pypi"], specifier = "==1.3.3" }]
+requires-dist = [{ name = "tag-publish", extras = ["pypi"], specifier = "==1.3.4" }]
 
 [[package]]
 name = "pycparser"
@@ -865,16 +865,17 @@ wheels = [
 
 [[package]]
 name = "tag-publish"
-version = "1.3.3"
+version = "1.3.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "githubkit" },
+    { name = "githubkit-schemas" },
     { name = "pyyaml" },
     { name = "security-md" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d5/98/0040918dfa41bd8baf724684536fa96315e227d42f462ce7d2ce343cca6b/tag_publish-1.3.3.tar.gz", hash = "sha256:86d216b18d803d4a416039946890d77b0aecb0b82b3ab5cd3ea5b5e8e9eea983", size = 31475, upload-time = "2026-10-30T14:13:48.246Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/30/3d/dda7dce8b70a5a12b0cf6fcc1059da02932b9b97c44c9f938fe7fe0161f5/tag_publish-1.3.4.tar.gz", hash = "sha256:3b674e9b90b6ad176725ae9f1cc23ece41e5cfb731839296e130d276982cf043", size = 31592, upload-time = "2026-11-06T09:43:42.054Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c2/49/d01c4a9f234bec2bb88cb50c171e56178897687ef1c0555e4bf9f4e4225a/tag_publish-1.3.3-py3-none-any.whl", hash = "sha256:a4a0e69876df4a1388ebf5cdf3a4466c96e9941cc6eb26bcb8ba64824cc62281", size = 31276, upload-time = "2026-10-30T14:13:47.323Z" },
+    { url = "https://files.pythonhosted.org/packages/a8/2d/23a8a9848c5c913000163b13273eea55fb0a2a60e439f228d56217ab8089/tag_publish-1.3.4-py3-none-any.whl", hash = "sha256:14a63366162a2e4c822c6234a0497ec33308ec8d36a7c2b041a019a2743e07d7", size = 31291, upload-time = "2026-11-06T09:43:41.028Z" },
 ]
 
 [package.optional-dependencies]
